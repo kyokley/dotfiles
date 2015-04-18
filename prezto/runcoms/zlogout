@@ -1,0 +1,14 @@
+#
+# Executes commands at logout.
+#
+# Authors:
+#   Sorin Ionescu <sorin.ionescu@gmail.com>
+#
+
+# Print the message.
+cat <<-EOF
+
+And as for the critics, tell me I don’t get it.
+Everybody can tell you how to do it, they never did it.
+  -- Jay-Z
+EOF
