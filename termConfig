@@ -1,7 +1,5 @@
 [global_config]
   enabled_plugins = LaunchpadCodeURLHandler, APTURLHandler, LaunchpadBugURLHandler
-  use_system_font = False
-  font = Inconsolata 9 
 [keybindings]
   go_up = <Shift><Control>Up
   next_tab = <Control>Tab
@@ -12,9 +10,9 @@
 [profiles]
   [[default]]
     background_darkness = 0.94
-    background_type = transparent
     background_image = None
     font = Inconsolata Medium 9
+    background_type = transparent
 [layouts]
   [[default]]
     [[[child1]]]
