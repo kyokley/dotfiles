@@ -64,8 +64,11 @@ if (( $#commands[(i)lesspipe(|.sh)] )); then
 fi
 
 # Less for psql!
-if which vimpager &>/dev/null; then
-  alias psql='PAGER=vimpager psql';
+if which vimpsqlpager &>/dev/null; then
+  alias psql='PAGER=vimpsqlpager psql';
+fi
+if which vimpgclipager &>/dev/null; then
+  alias pgcli='PAGER=vimpgclipager pgcli';
 fi
 
 #
