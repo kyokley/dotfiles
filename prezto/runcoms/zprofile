@@ -113,6 +113,6 @@ export PATH=$PATH:~/.cabal/bin
 alias google-chrome='google-chrome --disable-gpu-compositing'
 alias runserver='./manage.py runserver --settings=dev_settings'
 # and/or you can set the django settings module with an environment setting
-export DJANGO_SETTINGS_MODULE='dev_settings'
+# export DJANGO_SETTINGS_MODULE='dev_settings'
 alias cpm='if [ $VIRTUAL_ENV ]; then deactivate; else source ~/virtualenvs/cpm/bin/activate; fi'
 
