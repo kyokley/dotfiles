@@ -1,0 +1,58 @@
+#!/bin/bash
+# 
+# Installation script which setup up an Ubuntu Precise machine to use this
+# xmonad configuration. 
+#
+# WARNING!!! 
+# * This has only been tested on a limited number of machines running 
+#   Ubuntu 12.04 64-bit.
+# * This is not a sophisticated installation script by any stretch 
+#   of the imagination. 
+# * I take no responsibility if this overwrites any configuration settings 
+#   or otherwise messes up your system. 
+#
+# Please review the readme file to find out exactly what it does and does not 
+# do. Or, visit the repository for more information: 
+# https://github.com/davidbrewer/xmonad-ubuntu-conf
+# 
+# Author: David Brewer
+
+echo "Installing required packages..."
+sudo aptitude install -y cabal-install
+sudo aptitude install -y libxrandr-dev
+sudo aptitude install -y libghc-x11-xft-dev
+cabal update
+cabal install xmonad
+cabal install xmonad-contrib
+sudo aptitude install -y xmobar 
+sudo aptitude install -y xcompmgr 
+sudo aptitude install -y nitrogen 
+sudo aptitude install -y trayer 
+sudo aptitude install -y thunar 
+sudo aptitude install -y terminator 
+sudo aptitude install -y xautolock
+sudo aptitude install -y suckless-tools
+sudo aptitude install -y weather-util
+sudo aptitude install -y arandr
+
+echo "Creating xmonad xsession configuration..."
+sudo mv /usr/share/xsessions/xmonad.desktop /usr/share/xsessions/xmonad.desktop.original
+sudo cp ~/.xmonad/xmonad.desktop /usr/share/xsessions
+sudo cp ~/.xmonad/images/custom_xmonad_badge.png /usr/share/unity-greeter
+
+echo "Linking to customized gnome 2 configuration..."
+mv ~/.gtkrc-2.0 ~/gtkrc-2.0.original
+ln -s .xmonad/.gtkrc-2.0 ~/.gtkrc-2.0
+
+ln -s ~/.xmonad/wallpaper.jpg ~/Pictures/
+
+# TODO: Run nitrogen and set the path to the pictures folder:
+#     nitrogen ~/Pictures
+# Add cabal to the path in .bashrc:
+#     export PATH=$PATH:~/.cabal/bin
+
+#It might be necessary to run
+    #cabal install X11 -v --reinstall
+#if
+    #ghc -e Graphics.X11.Xinerama.compiledWithXinerama
+#fails

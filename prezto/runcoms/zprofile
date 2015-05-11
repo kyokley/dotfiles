@@ -102,6 +102,7 @@ export TEXTURA_DATABASE_PATH=$HOME/appserver1 # where dumps are stored (defaults
 export TEXTURA_LETTUCE_VIRTUALENV_PATH=$HOME/virtualenvs/py27
 export T=https://dev1.texturallc.net/svn/textura
 dfpgdev2=(-h dfpgdev2.texturallc.net -U textura_system)
+dfpgdev3=(-h dfpgdev3.texturallc.net -U kyokley)
 dfappps1=(-h dfappps1.texturallc.net -U textura_system)
 dev009=(-h dev009.texturallc.net -U yokley)
 dev062=(-h dev062.texturallc.net -U kevinyokley)
@@ -112,6 +113,6 @@ export PATH=$PATH:~/.cabal/bin
 alias google-chrome='google-chrome --disable-gpu-compositing'
 alias runserver='./manage.py runserver --settings=dev_settings'
 # and/or you can set the django settings module with an environment setting
-export DJANGO_SETTINGS_MODULE='dev_settings'
+# export DJANGO_SETTINGS_MODULE='dev_settings'
 alias cpm='if [ $VIRTUAL_ENV ]; then deactivate; else source ~/virtualenvs/cpm/bin/activate; fi'
 
