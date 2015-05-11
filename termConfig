@@ -13,6 +13,7 @@
     background_image = None
     font = Inconsolata Medium 9
     background_type = transparent
+    scrollback_infinite = True
 [layouts]
   [[default]]
     [[[child1]]]

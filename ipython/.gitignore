@@ -1,3 +1,4 @@
 *.pyc
 db
 history
+IPython_crash_report.txt
