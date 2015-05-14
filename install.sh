@@ -7,6 +7,7 @@ ZSHRC=$HOME/.zshrc
 BIN=$HOME/dotfiles/prezto/modules
 DIR=$BIN/wd
 MANLOC=/usr/share/man/man1
+INSTALL_DIR=`pwd`
 
 if [ -e ~/.bashrc ]; then
     mv ~/.bashrc ~/.bashrc_bak
@@ -74,3 +75,9 @@ ln -s "$HOME/dotfiles/termConfig" "$HOME/.config/terminator/config"
 
 mv "$HOME/.gitconfig"  "$HOME/.gitconfig_bak"
 ln -s "$HOME/dotfiles/gitconfig" "$HOME/.gitconfig"
+
+cd $INSTALL_DIR
+git clone https://github.com/facebook/PathPicker.git
+cd PathPicker
+ln -s "$(pwd)/fpp" /usr/local/bin/fpp
+cd $INSTALL_DIR
