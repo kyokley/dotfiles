@@ -79,5 +79,5 @@ ln -s "$HOME/dotfiles/gitconfig" "$HOME/.gitconfig"
 cd $INSTALL_DIR
 git clone https://github.com/facebook/PathPicker.git
 cd PathPicker
-ln -s "$(pwd)/fpp" /usr/local/bin/fpp
+sudo ln -s "$(pwd)/fpp" /usr/local/bin/fpp
 cd $INSTALL_DIR
