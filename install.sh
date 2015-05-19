@@ -77,7 +77,7 @@ mv "$HOME/.gitconfig"  "$HOME/.gitconfig_bak"
 ln -s "$HOME/dotfiles/gitconfig" "$HOME/.gitconfig"
 
 cd $INSTALL_DIR
-git clone https://github.com/facebook/PathPicker.git
+git submodule update --init --recursive
 cd PathPicker
 sudo ln -s "$(pwd)/fpp" /usr/local/bin/fpp
 cd $INSTALL_DIR
