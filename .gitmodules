@@ -1,4 +1,4 @@
 [submodule "PathPicker"]
 	path = PathPicker
-	url = git@github.com:kyokley/PathPicker.git
+	url = https://github.com/kyokley/PathPicker.git
     branch = master
