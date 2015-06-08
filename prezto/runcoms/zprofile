@@ -106,6 +106,7 @@ dfpgdev3=(-h dfpgdev3.texturallc.net -U kyokley)
 dfappps1=(-h dfappps1.texturallc.net -U textura_system)
 dev009=(-h dev009.texturallc.net -U yokley)
 dev062=(-h dev062.texturallc.net -U kevinyokley)
+kottke=10.140.6.48
 
 almagest=(-h almagest.dyndns.org -U yokley)
 export PATH=$PATH:~/.cabal/bin
