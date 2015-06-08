@@ -100,6 +100,7 @@ export TEXTURA_APPDIR=$HOME/TexturaWD                # so that you don't have to
 export TEXTURA_TTOOLS_VERBOSE=1                                  # display every command that dbmigration and tapp run along with its output
 export TEXTURA_DATABASE_PATH=$HOME/appserver1 # where dumps are stored (defaults to home directory)
 export TEXTURA_LETTUCE_VIRTUALENV_PATH=$HOME/virtualenvs/py27
+export TEXTURA_MOCHA_VIRTUALENV_PATH=$HOME/virtualenvs/mocha
 export T=https://dev1.texturallc.net/svn/textura
 dfpgdev2=(-h dfpgdev2.texturallc.net -U textura_system)
 dfpgdev3=(-h dfpgdev3.texturallc.net -U kyokley)
