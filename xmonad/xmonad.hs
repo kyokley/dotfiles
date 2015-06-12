@@ -174,18 +174,33 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm .|. controlMask, xK_j),
        spawn "amixer -q set Master 10%-")
 
+    , ((mod4Mask, xK_Down),
+       spawn "amixer -q set Master 10%-")
+
     -- Increase volume.
     , ((modm .|. controlMask, xK_k),
+       spawn "amixer -q set Master 10%+")
+
+    , ((mod4Mask, xK_Up),
        spawn "amixer -q set Master 10%+")
 
     , ((modm .|. controlMask, xK_n),
        spawn "bash ~/workspace/spotify/spotify.sh n > /dev/null")
 
+    , ((mod4Mask, xK_Right),
+       spawn "bash ~/workspace/spotify/spotify.sh n > /dev/null")
+
     , ((modm .|. controlMask, xK_p),
        spawn "bash ~/workspace/spotify/spotify.sh p > /dev/null")
 
+    , ((mod4Mask, xK_Left),
+       spawn "bash ~/workspace/spotify/spotify.sh p > /dev/null")
+
+    , ((mod4Mask, xK_space),
+       spawn "bash ~/workspace/spotify/spotify.sh pause > /dev/null")
+
     , ((modm .|. controlMask, xK_space),
-       spawn "bash ~/workspace/spotify/spotify.sh space > /dev/null")
+       spawn "bash ~/workspace/spotify/spotify.sh pause > /dev/null")
 
     , ((modm .|. controlMask, xK_s),
        spawn "sudo /usr/sbin/pm-suspend")
