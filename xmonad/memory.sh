@@ -20,11 +20,11 @@ used=`echo $mem_stats | grep -Po '\d+$'`
 mem_val=`echo "$used $total" | python -c "print str(100 * round(reduce(lambda x, y: float(x) / float(y), raw_input().split(' ')), 3))"`
 
 if float_cond "$mem_val < 35"; then
-    temp="<fc=#ff0000>${mem_val}</fc>%"
+    temp="Mem: <fc=#0ca961>${mem_val}</fc>%"
 elif float_cond "$mem_val < 75"; then
-    temp="<fc=#ac9cdb>${mem_val}</fc>%"
+    temp="Mem: <fc=#ac9cdb>${mem_val}</fc>%"
 else
-    temp="<fc=#0ca961>${mem_val}</fc>%"
+    temp="Mem: <fc=#ff0000>${mem_val}</fc>%"
 fi
 
 echo $temp
