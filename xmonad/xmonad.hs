@@ -35,6 +35,7 @@ import XMonad.Actions.CycleWS
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.UrgencyHook
 import XMonad.Actions.CycleWS
+import XMonad.Hooks.EwmhDesktops
 import Data.Monoid
 import System.Exit
 
@@ -360,7 +361,7 @@ myStartupHook = do
 --
 main = do
   xmproc <- spawnPipe "xmobar ~/.xmonad/xmobarrc"
-  xmonad $ withUrgencyHook NoUrgencyHook $ defaultConfig {
+  xmonad $ withUrgencyHook NoUrgencyHook $ ewmh defaultConfig {
     focusedBorderColor = myFocusedBorderColor
   , focusFollowsMouse  = myFocusFollowsMouse
   , normalBorderColor = myNormalBorderColor
