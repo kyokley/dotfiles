@@ -64,11 +64,11 @@ if (( $#commands[(i)lesspipe(|.sh)] )); then
 fi
 
 # Less for psql!
-if which vimpsqlpager &>/dev/null; then
-  alias psql='PAGER=vimpsqlpager psql';
+if [ -e ~/.vim/bundle/vim-psql-pager/vimpsqlpager ]; then
+  alias psql='PAGER=~/.vim/bundle/vim-psql-pager/vimpsqlpager psql';
 fi
-if which vimpgclipager &>/dev/null; then
-  alias pgcli='PAGER=vimpgclipager pgcli';
+if [ -e ~/.vim/bundle/vim-psql-pager/vimpgclipager ]; then
+  alias pgcli='PAGER=~/.vim/bundle/vim-psql-pager/vimpgclipager pgcli';
 fi
 
 #
