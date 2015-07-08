@@ -102,6 +102,7 @@ export TEXTURA_DATABASE_PATH=$HOME/appserver1 # where dumps are stored (defaults
 export TEXTURA_LETTUCE_VIRTUALENV_PATH=$HOME/virtualenvs/py27
 export TEXTURA_MOCHA_VIRTUALENV_PATH=$HOME/virtualenvs/mocha
 export T=https://dev1.texturallc.net/svn/textura
+export PDQBACH_SETTINGS=~/pdqbach.conf
 dfpgdev2=(-h dfpgdev2.texturallc.net -U textura_system)
 dfpgdev3=(-h dfpgdev3.texturallc.net -U kyokley)
 dfappps1=(-h dfappps1.texturallc.net -U textura_system)
