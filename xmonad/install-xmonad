@@ -18,22 +18,12 @@
 # Author: David Brewer
 
 echo "Installing required packages..."
-sudo aptitude install -y cabal-install
-sudo aptitude install -y libxrandr-dev
-sudo aptitude install -y libghc-x11-xft-dev
+sudo aptitude install -y cabal-install libxrandr-dev libghc-x11-xft-dev libxpm-dev
 cabal update
 cabal install xmonad
 cabal install xmonad-contrib
-sudo aptitude install -y xmobar 
-sudo aptitude install -y xcompmgr 
-sudo aptitude install -y nitrogen 
-sudo aptitude install -y trayer 
-sudo aptitude install -y thunar 
-sudo aptitude install -y terminator 
-sudo aptitude install -y xautolock
-sudo aptitude install -y suckless-tools
-sudo aptitude install -y weather-util
-sudo aptitude install -y arandr
+cabal install xmobar
+sudo aptitude install -y xcompmgr nitrogen trayer thunar terminator xautolock suckless-tools weather-util arandr
 
 echo "Creating xmonad xsession configuration..."
 sudo mv /usr/share/xsessions/xmonad.desktop /usr/share/xsessions/xmonad.desktop.original
