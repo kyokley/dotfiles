@@ -14,7 +14,7 @@ if [ -e ~/.bashrc ]; then
 fi
 ln -s ~/dotfiles/bashrc ~/.bashrc
 
-sudo aptitude install zsh terminator fonts-inconsolata silversearcher-ag
+sudo aptitude install -y zsh terminator fonts-inconsolata silversearcher-ag
 
 if [ ! -h ~/.zprezto ]; then
     ln -s ~/dotfiles/prezto ~/.zprezto
