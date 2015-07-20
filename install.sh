@@ -27,10 +27,6 @@ ln -s ~/dotfiles/prezto/runcoms/zprofile ~/.zprofile
 
 if [ ! -h ~/.zshrc ]; then
     ln -s ~/dotfiles/prezto/runcoms/zshrc ~/.zshrc
-    echo "Installing man page to ${MANLOC}/wd.1"
-    sudo mkdir -p ${MANLOC}
-    sudo cp -f ${DIR}/wd.1 ${MANLOC}/wd.1
-    sudo chmod 644 ${MANLOC}/wd.1
     rm -f ~/.zcompdump
 fi
 
