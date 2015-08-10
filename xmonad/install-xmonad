@@ -23,7 +23,7 @@ cabal update
 cabal install xmonad
 cabal install xmonad-contrib
 cabal install xmobar
-sudo aptitude install -y xcompmgr nitrogen trayer thunar terminator xautolock suckless-tools weather-util arandr
+sudo aptitude install -y xcompmgr nitrogen trayer thunar terminator xautolock suckless-tools weather-util arandr moreutils
 
 echo "Creating xmonad xsession configuration..."
 sudo mv /usr/share/xsessions/xmonad.desktop /usr/share/xsessions/xmonad.desktop.original
