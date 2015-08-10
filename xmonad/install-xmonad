@@ -18,11 +18,11 @@
 # Author: David Brewer
 
 echo "Installing required packages..."
-sudo aptitude install -y cabal-install libxrandr-dev libghc-x11-xft-dev libxpm-dev
+sudo aptitude install -y cabal-install libxrandr-dev libghc-x11-xft-dev libxpm-dev ghc
 cabal update
-cabal install xmonad
-cabal install xmonad-contrib
-cabal install xmobar
+cabal install xmonad-0.11
+cabal install xmonad-contrib-0.11.3
+sudo aptitude install xmobar
 sudo aptitude install -y xcompmgr nitrogen trayer thunar terminator xautolock suckless-tools weather-util arandr moreutils
 
 echo "Creating xmonad xsession configuration..."
