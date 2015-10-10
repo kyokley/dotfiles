@@ -7,13 +7,14 @@ ZSHRC=$HOME/.zshrc
 BIN=$HOME/dotfiles/prezto/modules
 DIR=$BIN/wd
 MANLOC=/usr/share/man/man1
+INSTALL_DIR=`pwd`
 
 if [ -e ~/.bashrc ]; then
     mv ~/.bashrc ~/.bashrc_bak
 fi
 ln -s ~/dotfiles/bashrc ~/.bashrc
 
-sudo aptitude install zsh terminator fonts-inconsolata
+sudo aptitude install -y zsh terminator fonts-inconsolata silversearcher-ag
 
 if [ ! -h ~/.zprezto ]; then
     ln -s ~/dotfiles/prezto ~/.zprezto
@@ -26,29 +27,10 @@ ln -s ~/dotfiles/prezto/runcoms/zprofile ~/.zprofile
 
 if [ ! -h ~/.zshrc ]; then
     ln -s ~/dotfiles/prezto/runcoms/zshrc ~/.zshrc
-    while true
-    do
-        echo "Would you like to install the man page for wd? (requires root access) (Y/n)"
-        read -r answer
-#
-        case "$answer" in
-            Y|y|YES|yes|Yes )
-                echo "Installing man page to ${MANLOC}/wd.1"
-                sudo mkdir -p ${MANLOC}
-                sudo cp -f ${DIR}/wd.1 ${MANLOC}/wd.1
-                sudo chmod 644 ${MANLOC}/wd.1
-                break
-                ;;
-            N|n|NO|no|No )
-                echo "If you change your mind, see README for instructions"
-                break
-                ;;
-            * )
-                echo "Please provide a valid answer (y or n)"
-                ;;
-        esac
-    done
-
+    echo "Installing man page to ${MANLOC}/wd.1"
+    sudo mkdir -p ${MANLOC}
+    sudo cp -f ${DIR}/wd.1 ${MANLOC}/wd.1
+    sudo chmod 644 ${MANLOC}/wd.1
     rm -f ~/.zcompdump
 fi
 
@@ -74,3 +56,9 @@ ln -s "$HOME/dotfiles/termConfig" "$HOME/.config/terminator/config"
 
 mv "$HOME/.gitconfig"  "$HOME/.gitconfig_bak"
 ln -s "$HOME/dotfiles/gitconfig" "$HOME/.gitconfig"
+
+cd $INSTALL_DIR
+git submodule update --init --recursive
+cd PathPicker
+sudo ln -s "$(pwd)/fpp" /usr/local/bin/fpp
+cd $INSTALL_DIR

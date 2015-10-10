@@ -1,6 +1,8 @@
 [alias]
         lol = log --graph --decorate --pretty=oneline --abbrev-commit
         lola = log --graph --decorate --pretty=oneline --abbrev-commit --all
+        pullall = !git pull && git submodule update --init --recursive
+
 [color]
         branch = auto
         diff = auto
@@ -12,3 +14,5 @@
 	email = kyokley2@gmail.com
 [core]
 	editor = vim
+[push]
+	default = simple

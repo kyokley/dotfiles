@@ -19,7 +19,7 @@ fi
 
 export EDITOR='vim'
 export SVN_EDITOR='vim'
-export VISUAL='nano'
+export VISUAL='vim'
 export PAGER='less'
 
 #
@@ -64,11 +64,11 @@ if (( $#commands[(i)lesspipe(|.sh)] )); then
 fi
 
 # Less for psql!
-if which vimpsqlpager &>/dev/null; then
-  alias psql='PAGER=vimpsqlpager psql';
+if [ -e ~/.vim/bundle/vim-psql-pager/vimpsqlpager ]; then
+  alias psql='PAGER=~/.vim/bundle/vim-psql-pager/vimpsqlpager psql';
 fi
-if which vimpgclipager &>/dev/null; then
-  alias pgcli='PAGER=vimpgclipager pgcli';
+if [ -e ~/.vim/bundle/vim-psql-pager/vimpgclipager ]; then
+  alias pgcli='PAGER=~/.vim/bundle/vim-psql-pager/vimpgclipager pgcli';
 fi
 
 #
@@ -100,11 +100,16 @@ export TEXTURA_APPDIR=$HOME/TexturaWD                # so that you don't have to
 export TEXTURA_TTOOLS_VERBOSE=1                                  # display every command that dbmigration and tapp run along with its output
 export TEXTURA_DATABASE_PATH=$HOME/appserver1 # where dumps are stored (defaults to home directory)
 export TEXTURA_LETTUCE_VIRTUALENV_PATH=$HOME/virtualenvs/py27
+export TEXTURA_MOCHA_VIRTUALENV_PATH=$HOME/virtualenvs/mocha
 export T=https://dev1.texturallc.net/svn/textura
+export PDQBACH_SETTINGS=~/pdqbach.conf
+export TXT_PYPI='http://pypi.texturallc.net/cpm_qa/qa/+simple/'
 dfpgdev2=(-h dfpgdev2.texturallc.net -U textura_system)
+dfpgdev3=(-h dfpgdev3.texturallc.net -U kyokley)
 dfappps1=(-h dfappps1.texturallc.net -U textura_system)
 dev009=(-h dev009.texturallc.net -U yokley)
 dev062=(-h dev062.texturallc.net -U kevinyokley)
+kottke=10.140.6.48
 
 almagest=(-h almagest.dyndns.org -U yokley)
 export PATH=$PATH:~/.cabal/bin
@@ -112,6 +117,6 @@ export PATH=$PATH:~/.cabal/bin
 alias google-chrome='google-chrome --disable-gpu-compositing'
 alias runserver='./manage.py runserver --settings=dev_settings'
 # and/or you can set the django settings module with an environment setting
-export DJANGO_SETTINGS_MODULE='dev_settings'
+# export DJANGO_SETTINGS_MODULE='dev_settings'
 alias cpm='if [ $VIRTUAL_ENV ]; then deactivate; else source ~/virtualenvs/cpm/bin/activate; fi'
-
+alias pdq='if [ $VIRTUAL_ENV ]; then deactivate; else source ~/virtualenvs/pdq/bin/activate; fi'
