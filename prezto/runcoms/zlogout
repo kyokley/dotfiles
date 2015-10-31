@@ -4,11 +4,26 @@
 # Authors:
 #   Sorin Ionescu <sorin.ionescu@gmail.com>
 #
-
-# Print the message.
-cat <<-EOF
-
+qoute1="
 And as for the critics, tell me I don’t get it.
 Everybody can tell you how to do it, they never did it.
   -- Jay-Z
+"
+
+qoute2="
+I'm the greatest
+I'm the greatest
+I'm the greatest
+Pimpin' I'm the greatest
+  -- T.I.
+"
+
+expressions=($qoute1 $qoute2)
+
+# Seed random generator
+RANDOM=$$$(date +%s)
+
+# Print the message.
+cat <<-EOF
+${expressions[($RANDOM % ${#expressions[@]}) + 1]}
 EOF
