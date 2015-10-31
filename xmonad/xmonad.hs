@@ -305,6 +305,7 @@ myManagementHooks = [
   , (className =? "Google-chrome") --> doF (W.shift "6:Web")
   , (className =? "Spotify") --> doF (W.shift "7:Music")
   , (className =? "Pidgin") --> doF (W.shift "8:Chat")
+  , (className =? "HipChat") --> doF (W.shift "8:Chat")
   , (className =? "Thunderbird") --> doF (W.shift "9:Email")
   ]
 
