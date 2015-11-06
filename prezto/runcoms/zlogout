@@ -4,11 +4,59 @@
 # Authors:
 #   Sorin Ionescu <sorin.ionescu@gmail.com>
 #
-
-# Print the message.
-cat <<-EOF
-
+#
+qoute1="
 And as for the critics, tell me I don’t get it.
 Everybody can tell you how to do it, they never did it.
   -- Jay-Z
+"
+
+qoute2="
+I'm the greatest
+I'm the greatest
+I'm the greatest
+Pimpin' I'm the greatest
+  -- T.I.
+"
+
+quote3="
+Puff told me like
+The key to this joint
+The key to staying on top of things
+Is treat everything like it's your first project, nomsayin'
+Like it's your first day like back when you was an intern
+Like, that's how you try to treat things like, just stay hungry
+  -- Notorious B.I.G.
+"
+
+quote4="
+Only fear God
+Know the weapons of the weak
+The weakness of the heart
+And never fall asleep
+  -- Lupe Fiasco
+"
+
+quote5="
+I never sleep, cause sleep is the cousin of death
+  -- Nas
+"
+
+quote6="
+This morning, I woke up
+Feeling brand new, I jumped up
+Feeling my highs and my lows
+In my soul and my goals...
+Just to get by, just to get by
+  -- Talib Kweli
+"
+
+expressions=($qoute1 $qoute2 $quote3 $quote4 $quote5 $quote6)
+
+# Seed random generator
+RANDOM=$$$(date +%s)
+
+# Print the message.
+cat <<-EOF
+${expressions[($RANDOM % ${#expressions[@]}) + 1]}
 EOF

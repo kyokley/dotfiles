@@ -22,6 +22,8 @@ export SVN_EDITOR='vim'
 export VISUAL='vim'
 export PAGER='less'
 
+export DE='gnome'
+
 #
 # Language
 #
@@ -93,6 +95,8 @@ case $TERM in
         precmd () {print -Pn "\e]0;%n@%m: %~\a"}
         ;;
 esac
+
+export GOPATH="$HOME/workspace/golang"
 
 # from /home/yokley/.bashrc
 export EMAIL=kevin.yokley #youremailusername - for database scrubbing
