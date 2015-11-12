@@ -84,13 +84,13 @@ myUrgentWSRight = "}"
 --
 -- > workspaces = ["web", "irc", "code" ] ++ map show [4..9]
 --
+myExtraWorkspaces = [(xK_0, "0"),(xK_minus, "tmp"),(xK_equal, "swap")]
 myWorkspaces =
   [
     "1",  "2", "3",
     "4",  "5:LO", "6:Web",
     "7:Music", "8:Chat", "9:Email"
-  ]
-
+  ] ++ (map snd myExtraWorkspaces)
 startupWorkspace = "1"  -- which workspace do you want to be on after launch?
 
 
@@ -218,7 +218,14 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
         | (i, k) <- zip (XMonad.workspaces conf) [xK_1 .. xK_9]
         , (f, m) <- [(W.greedyView, 0), (W.shift, shiftMask)]]
     ++
-
+    [
+        ((myModMask, key), (windows $ W.greedyView ws))
+        | (key,ws) <- myExtraWorkspaces
+      ] ++ [
+        ((myModMask .|. shiftMask, key), (windows $ W.shift ws))
+        | (key,ws) <- myExtraWorkspaces
+      ]
+    ++
     --
     -- mod-{w,e,r}, Switch to physical/Xinerama screens 1, 2, or 3
     -- mod-shift-{w,e,r}, Move client to screen 1, 2, or 3
@@ -302,6 +309,7 @@ myManagementHooks = [
   , resource =? "stalonetray" --> doIgnore
   , className =? "rdesktop" --> doFloat
   , ("libreoffice" `isPrefixOf`) <$> className --> doF (W.shift "5:LO")
+  , (className =? "google-chrome") --> doF (W.shift "6:Web")
   , (className =? "Google-chrome") --> doF (W.shift "6:Web")
   , (className =? "Spotify") --> doF (W.shift "7:Music")
   , (className =? "Pidgin") --> doF (W.shift "8:Chat")
