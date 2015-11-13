@@ -1,4 +1,6 @@
 [global_config]
+  use_custom_url_handler = True
+  custom_url_handler = google-chrome
   enabled_plugins = LaunchpadCodeURLHandler, APTURLHandler, LaunchpadBugURLHandler
 [keybindings]
   go_up = <Shift><Control>Up

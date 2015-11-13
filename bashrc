@@ -103,6 +103,8 @@ if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
     . /etc/bash_completion
 fi
 
+export GOPATH="$HOME/workspace/golang"
+
 # /home/yokley/.bashrc
 export EMAIL=kevin.yokley #youremailusername - for database scrubbing
 export TEXTURA_APPDIR=$HOME/TexturaWD                # so that you don't have to tell tapp where your environment is
