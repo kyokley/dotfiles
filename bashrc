@@ -105,6 +105,8 @@ fi
 
 export GOPATH="$HOME/workspace/golang"
 
+export TERM='xterm-256colors'
+
 # /home/yokley/.bashrc
 export EMAIL=kevin.yokley #youremailusername - for database scrubbing
 export TEXTURA_APPDIR=$HOME/TexturaWD                # so that you don't have to tell tapp where your environment is

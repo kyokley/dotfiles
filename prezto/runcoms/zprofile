@@ -23,6 +23,7 @@ export VISUAL='vim'
 export PAGER='less'
 
 export DE='gnome'
+export TERM='xterm-256color'
 
 #
 # Language
@@ -107,7 +108,7 @@ export TEXTURA_LETTUCE_VIRTUALENV_PATH=$HOME/virtualenvs/py27
 export TEXTURA_MOCHA_VIRTUALENV_PATH=$HOME/virtualenvs/mocha
 export T=https://dev1.texturallc.net/svn/textura
 export PDQBACH_SETTINGS=~/pdqbach.conf
-export TXT_PYPI='http://pypi.texturallc.net/cpm_qa/qa/+simple/'
+export PYPI='http://pypi.texturallc.net/cpm_dev/dev/+simple/'
 dfpgdev2=(-h dfpgdev2.texturallc.net -U textura_system)
 dfpgdev3=(-h dfpgdev3.texturallc.net -U kyokley)
 dfappps1=(-h dfappps1.texturallc.net -U textura_system)
