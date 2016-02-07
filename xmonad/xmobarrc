@@ -68,6 +68,8 @@ Config {
 
     Run Com "/bin/bash" ["-c", "/home/yokley/.xmonad/weather.sh"] "myweather" 18000,
 
+    Run Com "/bin/bash" ["-c", "/home/yokley/.xmonad/world_clock.sh"] "mytime" 30,
+
     -- Run Weather "KORD" ["-t","<tempF>F <skyCondition>","-L","50","-H","77","-n","#CEFFAC","-h","#FFB6B0","-l","#96CBFE"] 18000,
 
     -- This line tells xmobar to read input from stdin. That's how we
@@ -84,5 +86,5 @@ Config {
 
    -- Overall template for the layout of the xmobar contents. Note that
    -- space is significant and can be used to add padding.
-   template = "%StdinReader% }{ %cpu% | %memory% | Vol: %myvolume% | %myweather% | %mystocks% <fc=#e6744c>%date%</fc> "
+   template = "%StdinReader% }{ %cpu% | %memory% | Vol: %myvolume% | %myweather% | %mystocks% | %mytime% | <fc=#e6744c>%date%</fc> "
 }
