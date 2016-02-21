@@ -70,6 +70,10 @@ fi
 alias psql='PAGER=vimpsqlpager psql';
 alias pgcli='PAGER=vimpgclipager pgcli';
 
+# Unaltered PSQL/PGCLI
+alias rpsql='PAGER=less /usr/bin/psql';
+alias rpgcli='PAGER=less /usr/local/bin/pgcli';
+
 #
 # Temporary Files
 #
