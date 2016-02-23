@@ -66,13 +66,13 @@ if (( $#commands[(i)lesspipe(|.sh)] )); then
   export LESSOPEN="| /usr/bin/env $commands[(i)lesspipe(|.sh)] %s 2>&-"
 fi
 
-# Less for psql!
-if [ -e ~/.vim/bundle/vim-psql-pager/vimpsqlpager ]; then
-  alias psql='PAGER=~/.vim/bundle/vim-psql-pager/vimpsqlpager psql';
-fi
-if [ -e ~/.vim/bundle/vim-psql-pager/vimpgclipager ]; then
-  alias pgcli='PAGER=~/.vim/bundle/vim-psql-pager/vimpgclipager pgcli';
-fi
+# Vim Pager for psql!
+alias psql='PAGER=vimpsqlpager psql'
+alias pgcli='PAGER=vimpgclipager pgcli'
+
+# Unaltered PSQL/PGCLI
+alias rpsql='PAGER=less /usr/bin/psql'
+alias rpgcli='PAGER=less /usr/local/bin/pgcli'
 
 #
 # Temporary Files
