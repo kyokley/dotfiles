@@ -9,6 +9,8 @@ DIR=$BIN/wd
 MANLOC=/usr/share/man/man1
 INSTALL_DIR=`pwd`
 
+ln -s ~/dotfiles/psqlrc ~/.psqlrc
+
 if [ -e ~/.bashrc ]; then
     mv ~/.bashrc ~/.bashrc_bak
 fi
