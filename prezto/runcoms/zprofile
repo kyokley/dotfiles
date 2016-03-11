@@ -66,14 +66,6 @@ if (( $#commands[(i)lesspipe(|.sh)] )); then
   export LESSOPEN="| /usr/bin/env $commands[(i)lesspipe(|.sh)] %s 2>&-"
 fi
 
-# Vim Pager for psql!
-alias psql='PAGER=vimpsqlpager psql'
-alias pgcli='PAGER=vimpgclipager pgcli'
-
-# Unaltered PSQL/PGCLI
-alias rpsql='PAGER=less /usr/bin/psql'
-alias rpgcli='PAGER=less /usr/local/bin/pgcli'
-
 #
 # Temporary Files
 #
@@ -98,30 +90,3 @@ case $TERM in
 esac
 
 export GOPATH="$HOME/workspace/golang"
-
-# from /home/yokley/.bashrc
-export EMAIL=kevin.yokley #youremailusername - for database scrubbing
-export TEXTURA_APPDIR=$HOME/TexturaWD                # so that you don't have to tell tapp where your environment is
-export TEXTURA_TTOOLS_VERBOSE=1                                  # display every command that dbmigration and tapp run along with its output
-export TEXTURA_DATABASE_PATH=$HOME/appserver1 # where dumps are stored (defaults to home directory)
-export TEXTURA_LETTUCE_VIRTUALENV_PATH=$HOME/virtualenvs/py27
-export TEXTURA_MOCHA_VIRTUALENV_PATH=$HOME/virtualenvs/mocha
-export T=https://dev1.texturallc.net/svn/textura
-export PDQBACH_SETTINGS=~/pdqbach.conf
-export PYPI='http://pypi.texturallc.net/cpm_dev/dev/+simple/'
-dfpgdev2=(-h dfpgdev2.texturallc.net -U textura_system)
-dfpgdev3=(-h dfpgdev3.texturallc.net -U kyokley)
-dfappps1=(-h dfappps1.texturallc.net -U textura_system)
-dev009=(-h dev009.texturallc.net -U yokley)
-dev062=(-h dev062.texturallc.net -U kevinyokley)
-kottke=10.140.6.48
-
-almagest=(-h almagest.dyndns.org -U yokley)
-export PATH=$PATH:~/.cabal/bin
-
-alias google-chrome='google-chrome --disable-gpu-compositing'
-alias runserver='./manage.py runserver --settings=dev_settings'
-# and/or you can set the django settings module with an environment setting
-# export DJANGO_SETTINGS_MODULE='dev_settings'
-alias cpm='if [ $VIRTUAL_ENV ]; then deactivate; else source ~/virtualenvs/cpm/bin/activate; fi'
-alias pdq='if [ $VIRTUAL_ENV ]; then deactivate; else source ~/virtualenvs/pdq/bin/activate; fi'
