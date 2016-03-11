@@ -53,3 +53,6 @@ alias runserver='./manage.py runserver --settings=dev_settings'
 # export DJANGO_SETTINGS_MODULE='dev_settings'
 alias cpm='if [ $VIRTUAL_ENV ]; then deactivate; else source ~/virtualenvs/cpm/bin/activate; fi'
 alias pdq='if [ $VIRTUAL_ENV ]; then deactivate; else source ~/virtualenvs/pdq/bin/activate; fi'
+
+# Source private env vars.
+source "$HOME/dotfiles/prezto/runcoms/zpriv"
