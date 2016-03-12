@@ -55,6 +55,6 @@ alias cpm='if [ $VIRTUAL_ENV ]; then deactivate; else source ~/virtualenvs/cpm/b
 alias pdq='if [ $VIRTUAL_ENV ]; then deactivate; else source ~/virtualenvs/pdq/bin/activate; fi'
 
 # Source private env vars.
-if [ -f "$HOME/dotfiles/prezto/runcoms/zpriv" ]; then
-    source "$HOME/dotfiles/prezto/runcoms/zpriv"
+if [ -f "$HOME/.zpriv" ]; then
+    source "$HOME/.zpriv"
 fi
