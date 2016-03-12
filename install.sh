@@ -26,6 +26,7 @@ ln -s ~/dotfiles/prezto/runcoms/zlogin ~/.zlogin
 ln -s ~/dotfiles/prezto/runcoms/zlogout ~/.zlogout
 ln -s ~/dotfiles/prezto/runcoms/zpreztorc ~/.zpreztorc
 ln -s ~/dotfiles/prezto/runcoms/zprofile ~/.zprofile
+ln -s ~/dotfiles/prezto/runcoms/zpriv ~/.zpriv
 
 if [ ! -h ~/.zshrc ]; then
     ln -s ~/dotfiles/prezto/runcoms/zshrc ~/.zshrc
