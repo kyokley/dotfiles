@@ -51,7 +51,17 @@ Just to get by, just to get by
   -- Talib Kweli
 "
 
-expressions=($qoute1 $qoute2 $quote3 $quote4 $quote5 $quote6)
+quote7="
+I don't bust back because I shoot first
+  -- Lil' Wayne
+"
+
+quote8="
+If I can't do it, Homie, it can't be done
+  -- 50 Cent
+"
+
+expressions=($qoute1 $qoute2 $quote3 $quote4 $quote5 $quote6 $qoute7 $qoute8)
 
 # Seed random generator
 RANDOM=$$$(date +%s)
