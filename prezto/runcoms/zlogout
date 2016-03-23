@@ -61,7 +61,13 @@ If I can't do it, Homie, it can't be done
   -- 50 Cent
 "
 
-expressions=($qoute1 $qoute2 $quote3 $quote4 $quote5 $quote6 $qoute7 $qoute8)
+quote9="
+Who are the 5 greatest rappers of all time? Dylan, Dylan, Dylan, Dylan, and Dylan.
+Because I spit hot fire
+  -- Dylan
+"
+
+expressions=($qoute1 $qoute2 $quote3 $quote4 $quote5 $quote6 $qoute7 $qoute8 $quote9)
 
 # Seed random generator
 RANDOM=$$$(date +%s)
