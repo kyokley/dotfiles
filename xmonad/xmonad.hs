@@ -188,6 +188,9 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm .|. controlMask, xK_n),
        spawn "bash ~/workspace/spotify/spotify.sh n > /dev/null")
 
+    , ((modm .|. controlMask, xK_period),
+       spawn "bash ~/workspace/spotify/spotify.sh n > /dev/null")
+
     , ((mod4Mask, xK_Right),
        spawn "bash ~/workspace/spotify/spotify.sh n > /dev/null")
 
@@ -195,6 +198,9 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
        spawn "bash ~/workspace/spotify/spotify.sh p > /dev/null")
 
     , ((mod4Mask, xK_Left),
+       spawn "bash ~/workspace/spotify/spotify.sh p > /dev/null")
+
+    , ((modm .|. controlMask, xK_comma),
        spawn "bash ~/workspace/spotify/spotify.sh p > /dev/null")
 
     , ((mod4Mask, xK_space),
