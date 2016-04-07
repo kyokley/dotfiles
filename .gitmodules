@@ -5,3 +5,4 @@
 [submodule "prezto"]
 	path = prezto
 	url = git@github.com:kyokley/prezto.git
+    branch = master
