@@ -1,2 +1,7 @@
 $PROMPT = '{env_name}{PURPLE}{user}{NO_COLOR}@{YELLOW}{hostname}{NO_COLOR}|{GREEN}{cwd}{branch_color}{curr_branch} {BLUE}{prompt_end}{NO_COLOR} '
 xontrib load prompt_ret_code
+
+from xonsh.environ import git_dirty_working_directory
+$FORMATTER_DICT['branch_color'] = lambda: ('{BOLD_INTENSE_RED}'
+                                           if git_dirty_working_directory(include_untracked=True)
+                                           else '{BOLD_INTENSE_GREEN}')
