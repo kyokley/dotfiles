@@ -1,7 +1,15 @@
-$PROMPT = '{env_name}{PURPLE}{user}{NO_COLOR}@{YELLOW}{hostname}{NO_COLOR}|{GREEN}{cwd}{branch_color}{curr_branch} {BLUE}{prompt_end}{NO_COLOR} '
+from datetime import datetime
+from xonsh.environ import git_dirty_working_directory
+
 xontrib load prompt_ret_code
 
-from xonsh.environ import git_dirty_working_directory
+$PROMPT = '{env_name}{PURPLE}{user}{NO_COLOR}@{YELLOW}{hostname}{NO_COLOR}|{GREEN}{cwd}{branch_color}({curr_branch})\n{BLUE}{prompt_end}{NO_COLOR} '
+
 $FORMATTER_DICT['branch_color'] = lambda: ('{BOLD_INTENSE_RED}'
                                            if git_dirty_working_directory(include_untracked=True)
                                            else '{BOLD_INTENSE_GREEN}')
+
+$SHELL_TYPE = 'prompt_toolkit'
+$DYNAMIC_CWD_WIDTH = '30%'
+$RIGHT_PROMPT = '{right_prompt}'
+$FORMATTER_DICT['right_prompt'] = lambda : datetime.now().strftime('%a %b %d %H:%M:%S')
