@@ -1,0 +1,2 @@
+$PROMPT = '{env_name}{PURPLE}{user}{NO_COLOR}@{YELLOW}{hostname}{NO_COLOR}|{GREEN}{cwd}{branch_color}{curr_branch} {BLUE}{prompt_end}{NO_COLOR} '
+xontrib load prompt_ret_code
