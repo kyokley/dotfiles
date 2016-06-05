@@ -122,7 +122,7 @@ export almagest='-h almagest.dyndns.org -U yokley'
 export PATH=$PATH:~/.cabal/bin
 
 # and/or you can set the django settings module with an environment setting
-export DJANGO_SETTINGS_MODULE='dev_settings'
+#export DJANGO_SETTINGS_MODULE='dev_settings'
 
 function be_get_branch {
   local dir="$PWD"
