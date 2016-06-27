@@ -1,8 +1,6 @@
 from datetime import datetime
 from xonsh.environ import git_dirty_working_directory, get_git_branch
 
-xontrib load prompt_ret_code
-
 $PROMPT = '{env_name}{PURPLE}{user}{NO_COLOR}@{YELLOW}{hostname}{NO_COLOR}|{GREEN}{cwd} {vcs_info}\n{BLUE}{prompt_end}{NO_COLOR} '
 
 $SHELL_TYPE = 'prompt_toolkit'
@@ -27,3 +25,5 @@ def _display_vcs_info():
     return result
 
 $FORMATTER_DICT['vcs_info'] = lambda: _display_vcs_info()
+xontrib load prompt_ret_code
+
