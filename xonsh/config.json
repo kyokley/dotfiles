@@ -7,7 +7,7 @@
  },
  "foreign_shells": [
   {
-   "shell": "zsh"
+   "shell": "bash"
   }
  ],
  "xontribs": [
