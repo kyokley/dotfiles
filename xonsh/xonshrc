@@ -1,0 +1,28 @@
+from datetime import datetime
+from xonsh.environ import git_dirty_working_directory, get_git_branch
+
+$PROMPT = '{env_name}{PURPLE}{user}{NO_COLOR}@{YELLOW}{hostname}{NO_COLOR}|{GREEN}{cwd} {vcs_info}\n{BLUE}{prompt_end}{NO_COLOR} '
+
+$SHELL_TYPE = 'prompt_toolkit'
+$DYNAMIC_CWD_WIDTH = '30%'
+$RIGHT_PROMPT = '{right_prompt}'
+$FORMATTER_DICT['right_prompt'] = lambda : datetime.now().strftime('%a %b %d %H:%M:%S')
+$CASE_SENSITIVE_COMPLETIONS = False
+
+def _display_vcs_info():
+    result = ''
+    branch = get_git_branch()
+    if branch:
+        if branch[0] == '(' and branch[-1] == ')':
+            # Remove surrounding parens if they exist
+            branch = branch[1:-1]
+        branch_color = ('{BOLD_INTENSE_RED}'
+                              if git_dirty_working_directory(include_untracked=True)
+                              else '{BOLD_INTENSE_GREEN}')
+
+        result = '{NO_COLOR}on %(branch_color)s(%(branch)s){NO_COLOR}' % {'branch': branch,
+                                                                          'branch_color': branch_color}
+    return result
+
+$FORMATTER_DICT['vcs_info'] = lambda: _display_vcs_info()
+xontrib load prompt_ret_code

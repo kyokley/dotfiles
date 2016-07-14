@@ -105,6 +105,8 @@ fi
 
 export GOPATH="$HOME/workspace/golang"
 
+export TERM='xterm-256colors'
+
 # /home/yokley/.bashrc
 export EMAIL=kevin.yokley #youremailusername - for database scrubbing
 export TEXTURA_APPDIR=$HOME/TexturaWD                # so that you don't have to tell tapp where your environment is
@@ -120,7 +122,7 @@ export almagest='-h almagest.dyndns.org -U yokley'
 export PATH=$PATH:~/.cabal/bin
 
 # and/or you can set the django settings module with an environment setting
-export DJANGO_SETTINGS_MODULE='dev_settings'
+#export DJANGO_SETTINGS_MODULE='dev_settings'
 
 function be_get_branch {
   local dir="$PWD"

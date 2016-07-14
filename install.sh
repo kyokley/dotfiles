@@ -3,11 +3,15 @@
 #    compinit
 # in zsh after this script runs
 
+git submodule update --init --recursive
+
 ZSHRC=$HOME/.zshrc
 BIN=$HOME/dotfiles/prezto/modules
 DIR=$BIN/wd
 MANLOC=/usr/share/man/man1
 INSTALL_DIR=`pwd`
+
+ln -s ~/dotfiles/psqlrc ~/.psqlrc
 
 if [ -e ~/.bashrc ]; then
     mv ~/.bashrc ~/.bashrc_bak
@@ -54,7 +58,6 @@ mv "$HOME/.gitconfig"  "$HOME/.gitconfig_bak"
 ln -s "$HOME/dotfiles/gitconfig" "$HOME/.gitconfig"
 
 cd $INSTALL_DIR
-git submodule update --init --recursive
 cd PathPicker
 sudo ln -s "$(pwd)/fpp" /usr/local/bin/fpp
 cd $INSTALL_DIR
