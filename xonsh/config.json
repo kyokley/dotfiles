@@ -1,7 +1,7 @@
 {
  "env": {
   "BASH_COMPLETIONS": [
-    "('/etc/bash_completion', '/usr/share/bash-completion/completions/git')"
+   "('/etc/bash_completion', '/usr/share/bash-completion/completions/git')"
   ],
   "XONSH_SHOW_TRACEBACK": "True"
  },

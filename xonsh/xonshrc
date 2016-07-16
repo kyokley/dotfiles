@@ -26,4 +26,3 @@ def _display_vcs_info():
 
 $FORMATTER_DICT['vcs_info'] = lambda: _display_vcs_info()
 xontrib load prompt_ret_code
-
