@@ -119,7 +119,7 @@ export dfappps1='-h dfappps1.texturallc.net -U textura_system'
 export dev009='-h dev009.texturallc.net -U yokley'
 export dev062='-h dev062.texturallc.net -U kevinyokley'
 export almagest='-h almagest.dyndns.org -U yokley'
-export PATH=$PATH:~/.cabal/bin
+export PATH=/usr/local/bin:$PATH:~/.cabal/bin
 
 # and/or you can set the django settings module with an environment setting
 #export DJANGO_SETTINGS_MODULE='dev_settings'
