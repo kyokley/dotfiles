@@ -13,7 +13,7 @@ function float_cond()
 }
 
 data=$(curl -H "Accept:application/json" 'http://api.openweathermap.org/data/2.5/weather?id=4887398&units=imperial&appid=c4f4551816bd45b67708bea102d93522')
-val=$(echo $data | python -m json.tool | grep temp -w | grep -Eoe '-?[0-9]*(?=\.?[0-9]*)' | head -n 1)
+val=$(echo $data | python -m json.tool | grep temp -w | grep -Poe '-?[0-9]*(?=\.?[0-9]*)' | head -n 1)
 conditions=$(echo $data | python -m json.tool | grep description -w | head -n 1 | grep -Po '"[^"]+"' | tail -n 1 | tr -d '"')
 
 if float_cond "$val < 45.0"; then
