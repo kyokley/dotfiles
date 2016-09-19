@@ -64,6 +64,8 @@ ln -s "$HOME/dotfiles/gitconfig" "$HOME/.gitconfig"
 mv "$HOME/.noserc"  "$HOME/.noserc_bak"
 ln -s "$HOME/dotfiles/noserc" "$HOME/.noserc"
 
+ln -s "$HOME/dotfiles/xmonad" "$HOME/.xmonad"
+
 cd $INSTALL_DIR
 cd PathPicker
 sudo ln -s "$(pwd)/fpp" /usr/local/bin/fpp
