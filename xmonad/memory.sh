@@ -16,7 +16,7 @@ mem_stats=$(free | grep buffers | grep -Po '^\D+\d+\s+\d+' | grep -Po '\d+\s+\d+
 used=$(echo $mem_stats | grep -Po '^\d+')
 free=$(echo $mem_stats | grep -Po '\d+$')
 
-mem_val=$(echo "$used $free" | python -c "print str(100 * round(reduce(lambda x, y: float(x) / float(int(x) + int(y)), raw_input().split(' ')), 3))")
+mem_val=$(echo "$used $free" | python -c "print str(int(100 * round(reduce(lambda x, y: float(x) / float(int(x) + int(y)), raw_input().split(' ')), 3)))")
 
 if float_cond "$mem_val < 35"; then
     temp="Mem: <fc=#0ca961>${mem_val}</fc>%"
