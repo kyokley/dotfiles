@@ -19,7 +19,7 @@ free=$(echo $mem_stats | grep -Po '\d+$')
 mem_val=$(echo "$used $free" | python -c "print str(int(100 * round(reduce(lambda x, y: float(x) / float(int(x) + int(y)), raw_input().split(' ')), 3)))")
 
 if float_cond "$mem_val < 35"; then
-    temp="Mem: <fc=#0ca961>${mem_val}</fc>%"
+    temp="Mem: <fc=#00ff00>${mem_val}</fc>%"
 elif float_cond "$mem_val < 75"; then
     temp="Mem: <fc=#ac9cdb>${mem_val}</fc>%"
 else
