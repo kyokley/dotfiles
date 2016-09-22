@@ -70,3 +70,6 @@ cd $INSTALL_DIR
 cd PathPicker
 sudo ln -s "$(pwd)/fpp" /usr/local/bin/fpp
 cd $INSTALL_DIR
+
+# Install vim-psql-pager
+sudo $HOME/dotfiles/vim-psql-pager/install.py
