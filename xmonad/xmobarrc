@@ -57,8 +57,6 @@ Config {
     --            "-l", "red", "-m", "blue", "-h", "green"]
     --           600,
 
-    Run Com "/bin/bash" ["-c", "/home/yokley/.xmonad/battery.sh"] "battery" 600,
-
     -- To get volume information, we run a custom bash script.
     -- This is because the built-in volume support in xmobar is disabled
     -- in Debian and derivatives like Ubuntu. 
@@ -86,5 +84,5 @@ Config {
 
    -- Overall template for the layout of the xmobar contents. Note that
    -- space is significant and can be used to add padding.
-   template = "%StdinReader% }{ %battery% | %cpu% | %memory% | Vol: %myvolume% | %myweather% | %mystocks% | %mytime% | <fc=#e6744c>%date%</fc> "
+   template = "%StdinReader% }{ %cpu% | %memory% | Vol: %myvolume% | %myweather% | %mystocks% | %mytime% | <fc=#e6744c>%date%</fc> "
 }
