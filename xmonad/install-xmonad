@@ -35,6 +35,7 @@ mv ~/.gtkrc-2.0 ~/gtkrc-2.0.original
 ln -s ~/.xmonad/.gtkrc-2.0 ~/.gtkrc-2.0
 
 ln -s ~/.xmonad/wallpaper.jpg ~/Pictures/
+ln -s ~/.xmonad/haters.jpg ~/Pictures/
 
 # TODO: Run nitrogen and set the path to the pictures folder:
 #     nitrogen ~/Pictures
