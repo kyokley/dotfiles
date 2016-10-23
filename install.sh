@@ -66,6 +66,8 @@ ln -s "$HOME/dotfiles/noserc" "$HOME/.noserc"
 
 ln -s "$HOME/dotfiles/xmonad" "$HOME/.xmonad"
 
+ln -s "$HOME/dotfiles/npmrc" "$HOME/.npmrc"
+
 cd $INSTALL_DIR
 cd PathPicker
 sudo ln -s "$(pwd)/fpp" /usr/local/bin/fpp
