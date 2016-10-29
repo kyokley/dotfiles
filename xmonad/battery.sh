@@ -12,14 +12,12 @@ function float_cond()
     return $stat
 }
 
-full=`cat /proc/acpi/battery/BAT0/info | grep "last full capacity" | egrep -e '[0-9]+' -o`
-current=`cat /proc/acpi/battery/BAT0/state | grep "remaining capacity" | egrep -e '[0-9]+' -o`
 
-val=`python -c "blah=100 * ($current/${full}.0); print round(blah, 1)"`
+val=$(upower --show-info /org/freedesktop/UPower/devices/battery_BAT0 | grep percentage | awk '{print $2}' | grep -Po '\d+')
 
 refstr='charging'
-refstr2='charged'
-batcond=`cat /proc/acpi/battery/BAT0/state | grep "charging state" | egrep -e "(\<charging\>|\<charged\>)$" -o`
+refstr2='fully-charged'
+batcond=$(upower --show-info /org/freedesktop/UPower/devices/battery_BAT0 | grep state | awk '{print $2}')
 
 batcond=`python -c "print ('$refstr' == '$batcond' or '$refstr2' == '$batcond') and 'AC' or 'Batt'"`
 
