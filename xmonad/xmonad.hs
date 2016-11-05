@@ -211,6 +211,9 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
 
     , ((modm .|. controlMask, xK_s),
        spawn "sudo /usr/sbin/pm-suspend")
+
+    , ((modm .|. controlMask, xK_l),
+       spawn "xscreensaver-command -activate -lock")
     ]
     ++
 
