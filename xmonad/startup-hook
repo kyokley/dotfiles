@@ -41,10 +41,11 @@ if [ -x /usr/bin/gnome-power-manager ] ; then
     gnome-power-manager &
 fi
 
-#xautolock -time 15 -locker "gnome-screensaver-command -l" -notify 10 -notifier "notify-send -t 5000 -i gtk-dialog-info 'Locking in 10 seconds'" &
-
 xscreensaver &
-xautolock -time 15 -locker "xscreensaver-command -lock" -notify 10 -notifier "notify-send -t 5000 -i gtk-dialog-info 'Locking in 10 seconds'" &
+#xautolock -time 10 -locker "xscreensaver-command -lock" -notify 10 -notifier "notify-send -t 5000 -i gtk-dialog-info 'Locking in 10 seconds'" &
+
+# xscreensaver actually triggers lock screen. xautolock only sends notification
+xautolock -time 10 -notify 10 -notifier "notify-send -t 5000 -i gtk-dialog-info 'Locking in 10 seconds'" &
 
 #
 # APPLICATION LAUNCHER
