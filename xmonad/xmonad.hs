@@ -54,6 +54,8 @@ myTerminal           = "terminator"   -- which terminal software to use
 myFocusFollowsMouse :: Bool
 myFocusFollowsMouse = False
 
+myScreensaver = "xscreensaver-command -lock"
+
 -- modMask lets you specify which modkey you want to use. The default
 -- is mod1Mask ("left alt").  You may also consider using mod3Mask
 -- ("right alt"), which does not conflict with emacs keybindings. The
@@ -104,6 +106,8 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
 
     -- launch dmenu
     , ((modm,               xK_p     ), spawn "dmenu_run")
+
+    , ((modm .|. controlMask, xK_l), spawn myScreensaver)
 
     -- launch gmrun
     , ((modm .|. shiftMask, xK_p     ), spawn "gmrun")
@@ -212,8 +216,6 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm .|. controlMask, xK_s),
        spawn "sudo /usr/sbin/pm-suspend")
 
-    , ((modm .|. controlMask, xK_l),
-       spawn "xscreensaver-command -activate -lock")
     ]
     ++
 

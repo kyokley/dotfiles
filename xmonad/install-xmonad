@@ -20,8 +20,8 @@
 echo "Installing required packages..."
 sudo aptitude install -y cabal-install libxrandr-dev libghc-x11-xft-dev libxpm-dev ghc
 cabal update
-cabal install xmonad-0.11.1
-cabal install xmonad-contrib-0.11.4
+cabal install xmonad
+cabal install xmonad-contrib
 sudo aptitude install xmobar
 sudo aptitude install -y xcompmgr nitrogen trayer thunar terminator xautolock suckless-tools weather-util arandr moreutils
 
