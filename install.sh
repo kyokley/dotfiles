@@ -41,11 +41,9 @@ fi
 
 ln -s ~/dotfiles/prezto/runcoms/zshenv ~/.zshenv
 
-if [ -e ~/.ipython ]; then
-    mv ~/.ipython ~/.ipython_bak
+if [ ! -h $HOME/.ipython ]; then
+    ln -s ~/dotfiles/ipython ~/.ipython
 fi
-
-ln -s ~/dotfiles/ipython ~/.ipython
 
 if [ -e /usr/bin/zsh ]; then
     chsh -s /usr/bin/zsh
@@ -65,7 +63,9 @@ ln -s "$HOME/dotfiles/gitconfig" "$HOME/.gitconfig"
 mv "$HOME/.noserc"  "$HOME/.noserc_bak"
 ln -s "$HOME/dotfiles/noserc" "$HOME/.noserc"
 
-ln -s "$HOME/dotfiles/xmonad" "$HOME/.xmonad"
+if [ ! -h $HOME/.xmonad ]; then
+    ln -s "$HOME/dotfiles/xmonad" "$HOME/.xmonad"
+fi
 
 ln -s "$HOME/dotfiles/npmrc" "$HOME/.npmrc"
 
