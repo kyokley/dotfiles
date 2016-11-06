@@ -18,7 +18,8 @@ if [ -e ~/.bashrc ]; then
 fi
 ln -s ~/dotfiles/bashrc ~/.bashrc
 
-sudo aptitude install -y zsh terminator fonts-inconsolata silversearcher-ag
+sudo aptitude purge gnome-screensaver -y
+sudo aptitude install -y zsh terminator fonts-inconsolata silversearcher-ag xscreensaver xscreensaver-screensaver-bsod
 
 if [ ! -h ~/.zprezto ]; then
     ln -s ~/dotfiles/prezto ~/.zprezto
@@ -65,6 +66,10 @@ mv "$HOME/.noserc"  "$HOME/.noserc_bak"
 ln -s "$HOME/dotfiles/noserc" "$HOME/.noserc"
 
 ln -s "$HOME/dotfiles/xmonad" "$HOME/.xmonad"
+
+ln -s "$HOME/dotfiles/npmrc" "$HOME/.npmrc"
+
+ln -s "$HOME/dotfiles/xscreensaver" "$HOME/.xscreensaver"
 
 cd $INSTALL_DIR
 cd PathPicker
