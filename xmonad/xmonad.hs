@@ -392,6 +392,9 @@ main = do
     ,keys               = myKeys
 --  , modMask = myModMask
 --  , handleEventHook = fullscreenEventHook
+  , handleEventHook = mconcat
+                    [ docksEventHook
+                    , handleEventHook defaultConfig ]
   , startupHook = do
       windows $ W.greedyView startupWorkspace
       spawn "~/.xmonad/startup-hook"
