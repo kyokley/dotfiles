@@ -18,7 +18,7 @@
 # Author: David Brewer
 
 echo "Installing required packages..."
-sudo aptitude install -y cabal-install libxrandr-dev libghc-x11-xft-dev libxpm-dev ghc
+sudo aptitude install -y cabal-install libxrandr-dev libghc-x11-xft-dev libxpm-dev ghc xbacklight
 cabal update
 cabal install xmonad
 cabal install xmonad-contrib
