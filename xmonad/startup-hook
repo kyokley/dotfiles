@@ -53,6 +53,7 @@ xautolock -time 10 -notify 10 -notifier "notify-send -t 5000 -i gtk-dialog-info 
 #Start up syndaemon
 syndaemon -i 1 -d
 xinput set-prop 12 "Synaptics Palm Detection" 1
+xinput set-prop 12 "Synaptics Two-Finger Scrolling" 1 1
 
 #
 # APPLICATION LAUNCHER
