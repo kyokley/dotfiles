@@ -190,28 +190,28 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
        spawn "amixer -q set Master 10%+")
 
     , ((modm .|. controlMask, xK_n),
-       spawn "bash ~/workspace/spotify/spotify.sh n > /dev/null")
+       spawn "bash ~/workspace/SpotifyController/spotify.sh n > /dev/null")
 
     , ((modm .|. controlMask, xK_period),
-       spawn "bash ~/workspace/spotify/spotify.sh n > /dev/null")
+       spawn "bash ~/workspace/SpotifyController/spotify.sh n > /dev/null")
 
     , ((mod4Mask, xK_Right),
-       spawn "bash ~/workspace/spotify/spotify.sh n > /dev/null")
+       spawn "bash ~/workspace/SpotifyController/spotify.sh n > /dev/null")
 
     , ((modm .|. controlMask, xK_p),
-       spawn "bash ~/workspace/spotify/spotify.sh p > /dev/null")
+       spawn "bash ~/workspace/SpotifyController/spotify.sh p > /dev/null")
 
     , ((mod4Mask, xK_Left),
-       spawn "bash ~/workspace/spotify/spotify.sh p > /dev/null")
+       spawn "bash ~/workspace/SpotifyController/spotify.sh p > /dev/null")
 
     , ((modm .|. controlMask, xK_comma),
-       spawn "bash ~/workspace/spotify/spotify.sh p > /dev/null")
+       spawn "bash ~/workspace/SpotifyController/spotify.sh p > /dev/null")
 
     , ((mod4Mask, xK_space),
-       spawn "bash ~/workspace/spotify/spotify.sh pause > /dev/null")
+       spawn "bash ~/workspace/SpotifyController/spotify.sh pause > /dev/null")
 
     , ((modm .|. controlMask, xK_space),
-       spawn "bash ~/workspace/spotify/spotify.sh pause > /dev/null")
+       spawn "bash ~/workspace/SpotifyController/spotify.sh pause > /dev/null")
 
     , ((modm .|. controlMask, xK_s),
        spawn "sudo /usr/sbin/pm-suspend")
