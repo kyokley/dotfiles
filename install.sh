@@ -71,6 +71,8 @@ ln -s "$HOME/dotfiles/npmrc" "$HOME/.npmrc"
 
 ln -s "$HOME/dotfiles/xscreensaver" "$HOME/.xscreensaver"
 
+ln -s "$HOME/dotfiles/pdbrc.py" "$HOME/.pdbrc.py"
+
 cd $INSTALL_DIR
 cd PathPicker
 sudo ln -s "$(pwd)/fpp" /usr/local/bin/fpp
