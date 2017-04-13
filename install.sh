@@ -78,5 +78,7 @@ cd PathPicker
 sudo ln -s "$(pwd)/fpp" /usr/local/bin/fpp
 cd $INSTALL_DIR
 
+sudo ln -s "$(pwd)/ovpn.sh" /usr/local/bin/ovpn
+
 # Install vim-psql-pager
 sudo $HOME/dotfiles/vim-psql-pager/install.py
