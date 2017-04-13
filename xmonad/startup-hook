@@ -50,6 +50,8 @@ xautolock -time 10 -notify 10 -notifier "notify-send -t 5000 -i gtk-dialog-info 
 # Starting screen dimmer process
 ~/.xmonad/xflux -z 60601
 
+xhost +
+
 #
 # APPLICATION LAUNCHER
 #
