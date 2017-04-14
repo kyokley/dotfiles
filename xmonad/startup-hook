@@ -55,6 +55,8 @@ syndaemon -i 1 -d
 xinput set-prop 12 "Synaptics Palm Detection" 1
 xinput set-prop 12 "Synaptics Two-Finger Scrolling" 1 1
 
+xhost +
+
 #
 # APPLICATION LAUNCHER
 #
