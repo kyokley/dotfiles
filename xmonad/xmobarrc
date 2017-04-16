@@ -69,6 +69,8 @@ Config {
 
     Run Com "/bin/bash" ["-c", "/home/yokley/.xmonad/weather.sh"] "myweather" 18000,
 
+    Run Com "/bin/bash" ["-c", "/home/yokley/.xmonad/get-cal.sh"] "mycal" 55,
+
     -- This line tells xmobar to read input from stdin. That's how we
     -- get the information that xmonad is sending it for display.
     Run StdinReader
@@ -83,5 +85,5 @@ Config {
 
    -- Overall template for the layout of the xmobar contents. Note that
    -- space is significant and can be used to add padding.
-   template = "%StdinReader% }{ %battery% | %cpu% | %memory% | Vol: %myvolume% | %myweather% | %mystocks% | <fc=#e6744c>%date%</fc> "
+   template = "%StdinReader% }{ %battery% | %cpu% | %memory% | Vol: %myvolume% | %myweather% | %mystocks% | %mycal% | <fc=#e6744c>%date%</fc> "
 }
