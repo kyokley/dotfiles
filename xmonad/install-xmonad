@@ -47,4 +47,4 @@ ln -s ~/.xmonad/haters.jpg ~/Pictures/
 
 echo "Don't forget to git clone git@github.com:kyokley/SpotifyController.git for spotify controls!"
 
-gcalcli
+gcalcli agenda
