@@ -24,7 +24,7 @@ cabal install xmonad
 cabal install xmonad-contrib
 sudo aptitude install xmobar
 sudo aptitude install -y xcompmgr nitrogen trayer thunar terminator xautolock suckless-tools weather-util arandr moreutils
-sudo pip install git+https://github.com/kyokley/gcalcli.git
+sudo pip install git+https://github.com/kyokley/gcalcli.git --force --upgrade
 
 echo "Creating xmonad xsession configuration..."
 sudo mv /usr/share/xsessions/xmonad.desktop /usr/share/xsessions/xmonad.desktop.original
@@ -47,4 +47,4 @@ ln -s ~/.xmonad/haters.jpg ~/Pictures/
 
 echo "Don't forget to git clone git@github.com:kyokley/SpotifyController.git for spotify controls!"
 
-gcalcli agenda
+gcalcli agenda > /dev/null
