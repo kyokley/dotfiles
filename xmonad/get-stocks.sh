@@ -24,11 +24,13 @@ function float_cond()
 
 cd ~/.xmonad
 
-stockList=( `cat "stocks"` )
-#counter=$((`date +%S`%${#stockList[*]}))
+stockList=($(cat stocks | tr '\n' ' '))
 counter=$(($RANDOM%${#stockList[*]}))
 
-arr=(`curl --connect-timeout 1 -m 4 -s http://download.finance.yahoo.com/d/quotes.csv?s=${stockList[$counter]}\&f=l1p2 | tr -d '\r"%' | tr "," "\n"`)
+arr=($(curl --connect-timeout 1 \
+            -m 4 \
+            -s \
+            "http://download.finance.yahoo.com/d/quotes.csv?s=${stockList[$counter]}\&f=l1p2" | tr -d '\r"%' | tr ',' ' '))
 lastPrice=${arr[0]}
 
 if float_cond "${arr[1]} < 0.0"; then
