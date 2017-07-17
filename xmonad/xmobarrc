@@ -71,14 +71,15 @@ Config {
 
     Run Com "/bin/bash" ["-c", "/home/yokley/.xmonad/get-cal.sh"] "mycal" 55,
 
-    Run Com "/bin/bash" ["-c", "/home/yokley/.xmonad/vt.sh"] "myvt" 100,
+    -- Run Com "/bin/bash" ["-c", "/home/yokley/.xmonad/vt.sh"] "myvt" 100,
+    Run Com "/home/yokley/.xmonad/vt.sh" [] "myvt" 100,
 
     -- This line tells xmobar to read input from stdin. That's how we
     -- get the information that xmonad is sending it for display.
     Run StdinReader
    ],
 
-   -- Separator character used to wrape variables in the xmobar template
+   -- Separator character used to wrap variables in the xmobar template
    sepChar = "%",
 
    -- Alignment separater characer used in the xmobar template. Everything
