@@ -25,6 +25,7 @@ cabal install xmonad-contrib
 sudo aptitude install xmobar
 sudo aptitude install -y xcompmgr nitrogen trayer thunar terminator xautolock suckless-tools weather-util arandr moreutils
 sudo pip install git+https://github.com/kyokley/gcalcli.git --force --upgrade
+sudo pip install colorclass
 
 echo "Creating xmonad xsession configuration..."
 sudo mv /usr/share/xsessions/xmonad.desktop /usr/share/xsessions/xmonad.desktop.original
