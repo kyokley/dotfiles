@@ -5,4 +5,4 @@ data=$(docker run --rm -it -v ~/.ssh:/root/.ssh --env VT_URL="https://almagest.d
 guid=$(echo $data | awk '{print $1}')
 info=$(echo $data | awk '{for(i=2;i<NF;++i) printf("%s ", $i)}')
 
-echo "<fc=yellow>$guid</fc> <fc=blue>$info</fc>"
+echo "<fc=yellow>$guid</fc><fc=cyan>$info</fc>"
