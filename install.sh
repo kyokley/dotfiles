@@ -83,7 +83,6 @@ sudo ln -s "$(pwd)/ovpn.sh" /usr/local/bin/ovpn
 # Install vim-psql-pager
 sudo $HOME/dotfiles/vim-psql-pager/install.py
 
-exec "$SHELL"
 if [ ! -h $HOME/.pyenv ]; then
     git clone https://github.com/pyenv/pyenv.git $HOME/.pyenv
 fi
