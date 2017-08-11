@@ -88,6 +88,6 @@ if [ ! -h $HOME/.pyenv ]; then
     git clone https://github.com/pyenv/pyenv.git $HOME/.pyenv
 fi
 
-if [ ! -h $(pyenv root)/plugins/pyenv-virtualenv ]; then
-    git clone https://github.com/pyenv/pyenv-virtualenv.git $(pyenv root)/plugins/pyenv-virtualenv
+if [ ! -h $HOME/.pyenv/plugins/pyenv-virtualenv ]; then
+    git clone https://github.com/pyenv/pyenv-virtualenv.git $HOME/.pyenv/plugins/pyenv-virtualenv
 fi
