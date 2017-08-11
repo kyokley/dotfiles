@@ -84,5 +84,10 @@ sudo ln -s "$(pwd)/ovpn.sh" /usr/local/bin/ovpn
 sudo $HOME/dotfiles/vim-psql-pager/install.py
 
 exec "$SHELL"
-git clone https://github.com/pyenv/pyenv.git $HOME/.pyenv
-git clone https://github.com/pyenv/pyenv-virtualenv.git $(pyenv root)/plugins/pyenv-virtualenv
+if [ ! -h $HOME/.pyenv ]; then
+    git clone https://github.com/pyenv/pyenv.git $HOME/.pyenv
+fi
+
+if [ ! -h $(pyenv root)/plugins/pyenv-virtualenv ]; then
+    git clone https://github.com/pyenv/pyenv-virtualenv.git $(pyenv root)/plugins/pyenv-virtualenv
+fi
