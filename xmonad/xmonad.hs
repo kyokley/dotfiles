@@ -418,7 +418,9 @@ main = do
     , ((0, 0x1008FF17), spawn "bash ~/workspace/spotify/spotify.sh n > /dev/null")
     , ((0, 0x1008FF16), spawn "bash ~/workspace/spotify/spotify.sh p > /dev/null")
     , ((0, 0x1008FF14), spawn "bash ~/workspace/spotify/spotify.sh pause > /dev/null")
-    , ((0, 0x1008FF02), spawn "xbacklight -inc 10")
-    , ((0, 0x1008FF03), spawn "xbacklight -dec 10")
+    --, ((0, 0x1008FF02), spawn "xbacklight -inc 10")
+    --, ((0, 0x1008FF03), spawn "xbacklight -dec 10")
+    , ((0, 0x1008FF02), spawn "xrandr --output eDP-1-1 --brightness $(xrandr --current --verbose | grep -i brightness | awk '{print $2}' | python -c 'import sys; foo = float(sys.stdin.read()); print(foo + .1)')")
+    , ((0, 0x1008FF03), spawn "xrandr --output eDP-1-1 --brightness $(xrandr --current --verbose | grep -i brightness | awk '{print $2}' | python -c 'import sys; foo = float(sys.stdin.read()); print(foo - .1)')")
     , ((0, 0x1008FF15), spawn "spotify & > /dev/null")
     ]
