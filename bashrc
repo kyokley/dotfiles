@@ -157,3 +157,5 @@ function be_get_branch {
 export PS1="\$(be_get_branch "$2")${PS1}";
 export EDITOR="vim";
 alias cpm='if [[ $VIRTUAL_ENV ]]; then deactivate; else source ~/virtualenvs/cpm/bin/activate; fi'
+
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
