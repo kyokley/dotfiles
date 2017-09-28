@@ -164,7 +164,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- Use this binding with avoidStruts from Hooks.ManageDocks.
     -- See also the statusBar function from Hooks.DynamicLog.
     --
-    -- , ((modm              , xK_b     ), sendMessage ToggleStruts)
+    , ((modm              , xK_b     ), sendMessage ToggleStruts)
 
     -- Quit xmonad
     , ((modm .|. shiftMask, xK_q     ), io (exitWith ExitSuccess))
@@ -381,7 +381,7 @@ myStartupHook = do
 --
 main = do
   xmproc <- spawnPipe "xmobar ~/.xmonad/xmobarrc"
-  xmonad $ withUrgencyHook NoUrgencyHook $ ewmh defaultConfig {
+  xmonad $ withUrgencyHook NoUrgencyHook $ ewmh $ docks def {
     focusedBorderColor = myFocusedBorderColor
   , focusFollowsMouse  = myFocusFollowsMouse
   , normalBorderColor = myNormalBorderColor
