@@ -9,7 +9,7 @@ if [ ! -h $HOME/.pyenv/plugins/pyenv-virtualenv ]; then
 fi
 
 sudo aptitude update
-sudo aptitude install libreadline-dev zlib1g-dev
+sudo aptitude install -y libreadline-dev zlib1g-dev
 export PATH="$HOME/.pyenv/bin:$PATH"
 export PYENV_VERSION='2.7.12'
 eval "$(pyenv init -)"
