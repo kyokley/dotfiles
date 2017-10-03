@@ -8,6 +8,8 @@ if [ ! -h $HOME/.pyenv/plugins/pyenv-virtualenv ]; then
     git clone https://github.com/pyenv/pyenv-virtualenv.git $HOME/.pyenv/plugins/pyenv-virtualenv
 fi
 
+sudo aptitude update
+sudo aptitude install -y libreadline-dev zlib1g-dev libbz2-dev libsqlite3-dev libssl-dev
 export PATH="$HOME/.pyenv/bin:$PATH"
 export PYENV_VERSION='2.7.12'
 eval "$(pyenv init -)"
