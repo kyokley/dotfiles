@@ -12,14 +12,14 @@ function float_cond()
     return $stat
 }
 
-mem_stats=`free | grep buffers | grep -Po '^\D+\d+\s+\d+' | grep -Po '\d+\s+\d+$'`
-used=`echo $mem_stats | grep -Po '^\d+'`
-free=`echo $mem_stats | grep -Po '\d+$'`
+mem_stats=$(free | grep 'Mem')
+used=$(echo $mem_stats | awk '{print $3}')
+total=$(echo $mem_stats | awk '{print $2}')
 
-mem_val=`echo "$used $free" | python -c "print str(100 * round(reduce(lambda x, y: float(x) / float(int(x) + int(y)), raw_input().split(' ')), 3))"`
+mem_val=$(echo "$used $total" | python -c "print str(int(100 * round(reduce(lambda x, y: float(x) / float(y), raw_input().split(' ')), 3)))")
 
 if float_cond "$mem_val < 35"; then
-    temp="Mem: <fc=#0ca961>${mem_val}</fc>%"
+    temp="Mem: <fc=#00ff00>${mem_val}</fc>%"
 elif float_cond "$mem_val < 75"; then
     temp="Mem: <fc=#ac9cdb>${mem_val}</fc>%"
 else

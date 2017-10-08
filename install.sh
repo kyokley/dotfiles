@@ -18,7 +18,8 @@ if [ -e ~/.bashrc ]; then
 fi
 ln -s ~/dotfiles/bashrc ~/.bashrc
 
-sudo aptitude install -y zsh terminator fonts-inconsolata silversearcher-ag
+sudo aptitude purge gnome-screensaver -y
+sudo aptitude install -y zsh terminator fonts-inconsolata silversearcher-ag xscreensaver xscreensaver-screensaver-bsod
 
 if [ ! -h ~/.zprezto ]; then
     ln -s ~/dotfiles/prezto ~/.zprezto
@@ -36,11 +37,9 @@ fi
 
 ln -s ~/dotfiles/prezto/runcoms/zshenv ~/.zshenv
 
-if [ -e ~/.ipython ]; then
-    mv ~/.ipython ~/.ipython_bak
+if [ ! -h $HOME/.ipython ]; then
+    ln -s ~/dotfiles/ipython ~/.ipython
 fi
-
-ln -s ~/dotfiles/ipython ~/.ipython
 
 if [ -e /usr/bin/zsh ]; then
     chsh -s /usr/bin/zsh
@@ -57,7 +56,25 @@ ln -s "$HOME/dotfiles/termConfig" "$HOME/.config/terminator/config"
 mv "$HOME/.gitconfig"  "$HOME/.gitconfig_bak"
 ln -s "$HOME/dotfiles/gitconfig" "$HOME/.gitconfig"
 
+mv "$HOME/.noserc"  "$HOME/.noserc_bak"
+ln -s "$HOME/dotfiles/noserc" "$HOME/.noserc"
+
+if [ ! -h $HOME/.xmonad ]; then
+    ln -s "$HOME/dotfiles/xmonad" "$HOME/.xmonad"
+fi
+
+ln -s "$HOME/dotfiles/npmrc" "$HOME/.npmrc"
+
+ln -s "$HOME/dotfiles/xscreensaver" "$HOME/.xscreensaver"
+
+ln -s "$HOME/dotfiles/pdbrc.py" "$HOME/.pdbrc.py"
+
 cd $INSTALL_DIR
 cd PathPicker
 sudo ln -s "$(pwd)/fpp" /usr/local/bin/fpp
 cd $INSTALL_DIR
+
+sudo ln -s "$(pwd)/ovpn.sh" /usr/local/bin/ovpn
+
+# Install vim-psql-pager
+sudo $HOME/dotfiles/vim-psql-pager/install.py
