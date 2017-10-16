@@ -1,28 +1,30 @@
 [global_config]
-  use_custom_url_handler = True
   custom_url_handler = google-chrome
   enabled_plugins = LaunchpadCodeURLHandler, APTURLHandler, LaunchpadBugURLHandler
+  use_custom_url_handler = True
 [keybindings]
+  go_down = <Shift><Control>Down
+  go_left = <Shift><Control>Left
+  go_right = <Shift><Control>Right
   go_up = <Shift><Control>Up
   next_tab = <Control>Tab
   prev_tab = <Shift><Control>Tab
-  go_down = <Shift><Control>Down
-  go_right = <Shift><Control>Right
-  go_left = <Shift><Control>Left
+[layouts]
+  [[default]]
+    [[[child1]]]
+      parent = window0
+      profile = default
+      type = Terminal
+    [[[window0]]]
+      parent = ""
+      type = Window
+[plugins]
 [profiles]
   [[default]]
     background_darkness = 0.94
     background_image = None
-    font = Inconsolata Medium 9
     background_type = transparent
+    font = Inconsolata Medium 9
     scrollback_infinite = True
-[layouts]
-  [[default]]
-    [[[child1]]]
-      type = Terminal
-      parent = window0
-      profile = default
-    [[[window0]]]
-      type = Window
-      parent = ""
-[plugins]
+  [[solid_background]]
+    background_image = None
