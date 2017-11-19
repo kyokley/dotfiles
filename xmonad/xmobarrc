@@ -65,7 +65,9 @@ Config {
     -- in Debian and derivatives like Ubuntu.
     Run Com "/bin/bash" ["-c", "/home/yokley/.xmonad/get-volume"] "myvolume" 10,
 
-    Run Com "/bin/bash" ["-c", "/home/yokley/.xmonad/get-stocks.sh"] "mystocks" 55,
+    -- I keep getting 999 errors from yahoo so I'm assuming I'm being rate limited or something
+    -- Putting stock quotes on pause for the time being
+    -- Run Com "/bin/bash" ["-c", "/home/yokley/.xmonad/get-stocks.sh"] "mystocks" 55,
 
     Run Com "/bin/bash" ["-c", "/home/yokley/.xmonad/weather.sh"] "myweather" 18000,
 
@@ -88,5 +90,5 @@ Config {
 
    -- Overall template for the layout of the xmobar contents. Note that
    -- space is significant and can be used to add padding.
-   template = "%StdinReader% }{ %battery% | %cpu% | %memory% | Vol: %myvolume% | %myweather% | %myvt% | %mystocks% | %mycal% | <fc=#e6744c>%date%</fc> "
+   template = "%StdinReader% }{ %battery% | %cpu% | %memory% | Vol: %myvolume% | %myweather% | %myvt% | %mycal% | <fc=#e6744c>%date%</fc> "
 }
