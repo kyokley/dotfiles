@@ -14,7 +14,7 @@ function float_cond()
 
 drive="$1"
 
-space_used=$(df -lh | tail -n +2 | grep -w "$drive" | awk '{print $5}' | head -c -2)
+space_used=$(df -lh | tail -n +2 | grep -wP "$drive$" | awk '{print $5}' | head -c -2)
 if float_cond "$space_used < 35"; then
     temp="$drive: <fc=#00ff00>${space_used}</fc>%"
 elif float_cond "$space_used < 75"; then
