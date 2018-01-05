@@ -73,6 +73,9 @@ Config {
 
     Run Com "/bin/bash" ["-c", "/home/yokley/.xmonad/get-cal.sh"] "mycal" 55,
 
+    Run Com "/bin/bash" ["-c", "/home/yokley/.xmonad/disk_usage.sh /"] "root_disk_usage" 600,
+    Run Com "/bin/bash" ["-c", "/home/yokley/.xmonad/disk_usage.sh /home"] "home_disk_usage" 600,
+
     -- Run Com "/bin/bash" ["-c", "/home/yokley/.xmonad/vt.sh"] "myvt" 100,
     Run Com "/home/yokley/.xmonad/vt.sh" [] "myvt" 100,
 
