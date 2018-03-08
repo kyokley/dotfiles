@@ -322,6 +322,8 @@ myManagementHooks = [
   , ("libreoffice" `isPrefixOf`) <$> className --> doF (W.shift "5:LO")
   , (className =? "google-chrome") --> doF (W.shift "6:Web")
   , (className =? "Google-chrome") --> doF (W.shift "6:Web")
+  , (className =? "vivaldi-stable") --> doF (W.shift "6:Web")
+  , (className =? "Vivaldi-stable") --> doF (W.shift "6:Web")
   , (className =? "Spotify") --> doF (W.shift "7:Music")
   , (className =? "Pidgin") --> doF (W.shift "8:Chat")
   , (className =? "HipChat") --> doF (W.shift "8:Chat")
