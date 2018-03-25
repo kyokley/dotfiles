@@ -190,28 +190,28 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
        spawn "amixer -q set Master 10%+")
 
     , ((modm .|. controlMask, xK_n),
-       spawn "bash ~/workspace/spotify/spotify.sh n > /dev/null")
+       spawn "bash ~/workspace/SpotifyController/spotify.sh n > /dev/null")
 
     , ((modm .|. controlMask, xK_period),
-       spawn "bash ~/workspace/spotify/spotify.sh n > /dev/null")
+       spawn "bash ~/workspace/SpotifyController/spotify.sh n > /dev/null")
 
     , ((mod4Mask, xK_Right),
-       spawn "bash ~/workspace/spotify/spotify.sh n > /dev/null")
+       spawn "bash ~/workspace/SpotifyController/spotify.sh n > /dev/null")
 
     , ((modm .|. controlMask, xK_p),
-       spawn "bash ~/workspace/spotify/spotify.sh p > /dev/null")
+       spawn "bash ~/workspace/SpotifyController/spotify.sh p > /dev/null")
 
     , ((mod4Mask, xK_Left),
-       spawn "bash ~/workspace/spotify/spotify.sh p > /dev/null")
+       spawn "bash ~/workspace/SpotifyController/spotify.sh p > /dev/null")
 
     , ((modm .|. controlMask, xK_comma),
-       spawn "bash ~/workspace/spotify/spotify.sh p > /dev/null")
+       spawn "bash ~/workspace/SpotifyController/spotify.sh p > /dev/null")
 
     , ((mod4Mask, xK_space),
-       spawn "bash ~/workspace/spotify/spotify.sh pause > /dev/null")
+       spawn "bash ~/workspace/SpotifyController/spotify.sh pause > /dev/null")
 
     , ((modm .|. controlMask, xK_space),
-       spawn "bash ~/workspace/spotify/spotify.sh pause > /dev/null")
+       spawn "bash ~/workspace/SpotifyController/spotify.sh pause > /dev/null")
 
     , ((modm .|. controlMask, xK_s),
        spawn "sudo /usr/sbin/pm-suspend")
@@ -325,6 +325,7 @@ myManagementHooks = [
   , (className =? "vivaldi-stable") --> doF (W.shift "6:Web")
   , (className =? "Vivaldi-stable") --> doF (W.shift "6:Web")
   , (className =? "Spotify") --> doF (W.shift "7:Music")
+  , (className =? "spotify") --> doF (W.shift "7:Music")
   , (className =? "Pidgin") --> doF (W.shift "8:Chat")
   , (className =? "HipChat") --> doF (W.shift "8:Chat")
   , (className =? "Slack") --> doF (W.shift "8:Chat")
@@ -416,8 +417,8 @@ main = do
     [((0, 0x1008FF12), spawn "amixer -q set Master toggle")
     , ((0, 0x1008FF11), spawn "amixer -q set Master 10%-")
     , ((0, 0x1008FF13), spawn "amixer -q set Master 10%+")
-    , ((0, 0x1008FF17), spawn "bash ~/workspace/spotify/spotify.sh n > /dev/null")
-    , ((0, 0x1008FF16), spawn "bash ~/workspace/spotify/spotify.sh p > /dev/null")
-    , ((0, 0x1008FF14), spawn "bash ~/workspace/spotify/spotify.sh pause > /dev/null")
+    , ((0, 0x1008FF17), spawn "bash ~/workspace/SpotifyController/spotify.sh n > /dev/null")
+    , ((0, 0x1008FF16), spawn "bash ~/workspace/SpotifyController/spotify.sh p > /dev/null")
+    , ((0, 0x1008FF14), spawn "bash ~/workspace/SpotifyController/spotify.sh pause > /dev/null")
     , ((0, 0x1008FF15), spawn "spotify & > /dev/null")
     ]
