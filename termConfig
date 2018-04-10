@@ -26,5 +26,3 @@
     background_type = transparent
     font = Inconsolata Medium 9
     scrollback_infinite = True
-  [[solid_background]]
-    background_image = None
