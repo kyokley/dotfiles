@@ -9,7 +9,8 @@ if [ ! -h $HOME/.pyenv/plugins/pyenv-virtualenv ]; then
 fi
 
 sudo aptitude update
-sudo aptitude install -y libreadline-dev zlib1g-dev libbz2-dev libsqlite3-dev libssl-dev
+sudo aptitude install -y make build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev libncursesw5-dev xz-utils tk-dev
+
 export PATH="$HOME/.pyenv/bin:$PATH"
 export PYENV_VERSION='2.7.12'
 eval "$(pyenv init -)"
