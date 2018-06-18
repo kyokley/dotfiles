@@ -15,7 +15,7 @@ sudo aptitude update
 sudo aptitude install -y make build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev libncursesw5-dev xz-utils tk-dev
 
 export PATH="$HOME/.pyenv/bin:$PATH"
-export PYENV_VERSION='2.7.12'
+export PYENV_VERSION="$PY27"
 eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
 
