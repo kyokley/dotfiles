@@ -26,9 +26,9 @@ pyenv virtualenv $PY27 neovim2
 pyenv virtualenv $PY3 neovim3
 
 pyenv shell neovim2
-pip install neovim pip pyflakes --upgrade
+pip install neovim pip pyflakes bandit --upgrade
 pyenv which python  # Note the path
 
 pyenv shell neovim3
-pip install neovim pip pyflakes --upgrade
+pip install neovim pip pyflakes bandit --upgrade
 pyenv which python  # Note the path
