@@ -1,7 +1,7 @@
 #!/bin/bash
 
-PY27='2.7.12'
-PY3='3.5.2'
+PY27='2.7.13'
+PY3='3.6.2'
 
 if [ ! -h $HOME/.pyenv ]; then
     git clone https://github.com/pyenv/pyenv.git $HOME/.pyenv
