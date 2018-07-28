@@ -82,3 +82,6 @@ sudo ln -s "$(pwd)/ovpn.sh" /usr/local/bin/ovpn
 
 # Install vim-psql-pager
 sudo $HOME/dotfiles/vim-psql-pager/install.py
+
+# Grab sec opts for chrome
+wget https://raw.githubusercontent.com/jfrazelle/dotfiles/master/etc/docker/seccomp/chrome.json -O ~/chrome_sec.json
