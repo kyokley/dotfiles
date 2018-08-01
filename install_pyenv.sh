@@ -1,7 +1,7 @@
 #!/bin/bash
 
-PY27='2.7.12'
-PY3='3.5.2'
+PY27='2.7.13'
+PY3='3.6.2'
 
 if [ ! -h $HOME/.pyenv ]; then
     git clone https://github.com/pyenv/pyenv.git $HOME/.pyenv
@@ -26,9 +26,9 @@ pyenv virtualenv $PY27 neovim2
 pyenv virtualenv $PY3 neovim3
 
 pyenv shell neovim2
-pip install neovim pip pyflakes bandit --upgrade
+pip install python-language-server[all] neovim pip pyflakes bandit --upgrade
 pyenv which python  # Note the path
 
 pyenv shell neovim3
-pip install neovim pip pyflakes bandit --upgrade
+pip install python-language-server[all] neovim pip pyflakes bandit --upgrade
 pyenv which python  # Note the path

@@ -16,3 +16,10 @@
 	editor = vim
 [push]
 	default = simple
+[merge]
+	tool = diffconflicts
+[mergetool "diffconflicts"]
+	cmd = vim -c DiffConflicts \"$MERGED\" \"$BASE\" \"$LOCAL\" \"$REMOTE\"
+	trustExitCode = false
+[mergetool]
+	keepBackup = false
