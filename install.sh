@@ -87,5 +87,5 @@ sudo $HOME/dotfiles/vim-psql-pager/install.py
 wget https://raw.githubusercontent.com/jfrazelle/dotfiles/master/etc/docker/seccomp/chrome.json -O ~/chrome_sec.json
 
 # Install bat
-wget https://github.com/sharkdp/bat/releases/download/v0.6.1/bat-musl_0.6.1_amd64.deb -O /tmp/dotfile_install/bat.deb
-sudo dpkg -i /tmp/dotfile_install/bat.deb
+wget https://github.com/sharkdp/bat/releases/download/v0.6.1/bat-musl_0.6.1_amd64.deb -O /tmp/bat.deb
+sudo dpkg -i /tmp/bat.deb
