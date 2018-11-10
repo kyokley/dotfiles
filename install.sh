@@ -19,7 +19,7 @@ fi
 ln -s ~/dotfiles/bashrc ~/.bashrc
 
 sudo aptitude purge gnome-screensaver -y
-sudo aptitude install -y zsh terminator fonts-inconsolata silversearcher-ag xscreensaver xscreensaver-screensaver-bsod
+sudo aptitude install -y zsh terminator fonts-inconsolata silversearcher-ag xscreensaver xscreensaver-screensaver-bsod direnv
 
 if [ ! -h ~/.zprezto ]; then
     ln -s ~/dotfiles/prezto ~/.zprezto
