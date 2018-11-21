@@ -5,7 +5,7 @@
 [submodule "prezto"]
 	path = prezto
 	url = git@github.com:kyokley/prezto.git
-    branch = master
+    branch = saturn
 [submodule "xonsh/xonsh"]
 	path = xonsh/xonsh
 	url = git@github.com:kyokley/xonsh.git
