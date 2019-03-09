@@ -1,5 +1,5 @@
 [global_config]
-  custom_url_handler = google-chrome
+  custom_url_handler = vivaldi
   enabled_plugins = LaunchpadCodeURLHandler, APTURLHandler, LaunchpadBugURLHandler
 [keybindings]
   go_down = <Shift><Control>Down

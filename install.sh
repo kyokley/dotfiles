@@ -19,7 +19,7 @@ fi
 ln -s ~/dotfiles/bashrc ~/.bashrc
 
 sudo aptitude purge gnome-screensaver -y
-sudo aptitude install -y zsh terminator fonts-inconsolata silversearcher-ag xscreensaver xscreensaver-screensaver-bsod
+sudo aptitude install -y zsh terminator fonts-inconsolata silversearcher-ag xscreensaver xscreensaver-screensaver-bsod direnv
 
 if [ ! -h ~/.zprezto ]; then
     ln -s ~/dotfiles/prezto ~/.zprezto
@@ -81,3 +81,7 @@ sudo $HOME/dotfiles/vim-psql-pager/install.py
 
 # Grab sec opts for chrome
 wget https://raw.githubusercontent.com/jfrazelle/dotfiles/master/etc/docker/seccomp/chrome.json -O ~/chrome_sec.json
+
+# Install bat
+wget https://github.com/sharkdp/bat/releases/download/v0.6.1/bat-musl_0.6.1_amd64.deb -O /tmp/bat.deb
+sudo dpkg -i /tmp/bat.deb
