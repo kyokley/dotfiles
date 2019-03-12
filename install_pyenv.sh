@@ -32,5 +32,5 @@ pyenv which python  # Note the path
 
 pyenv shell neovim3
 pip install pip --upgrade
-pip install python-language-server[all] neovim pip pyflakes flake8 bandit --upgrade
+pip install python-language-server[all] neovim pip pyflakes flake8 bandit black --upgrade
 pyenv which python  # Note the path
