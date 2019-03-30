@@ -9,6 +9,3 @@
 [submodule "xonsh/xonsh"]
 	path = xonsh/xonsh
 	url = git@github.com:kyokley/xonsh.git
-[submodule "vim-psql-pager"]
-	path = vim-psql-pager
-	url = git@github.com:kyokley/vim-psql-pager.git
