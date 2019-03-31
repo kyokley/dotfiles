@@ -1,6 +1,8 @@
 [global_config]
   custom_url_handler = vivaldi
   enabled_plugins = LaunchpadCodeURLHandler, APTURLHandler, LaunchpadBugURLHandler
+  title_font = Inconsolata 12
+  title_use_system_font = False
 [keybindings]
   go_down = <Shift><Control>Down
   go_left = <Shift><Control>Left
@@ -21,7 +23,8 @@
 [profiles]
   [[default]]
     background_darkness = 0.94
-    background_image = None
     background_type = transparent
-    font = Inconsolata Medium 9
+    cursor_color = "#aaaaaa"
+    font = Inconsolata 12
     scrollback_infinite = True
+    use_system_font = False
