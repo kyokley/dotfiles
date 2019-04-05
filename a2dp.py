@@ -1,4 +1,4 @@
-#! /usr/bin/env python3.5
+#!/usr/bin/python
 """
 ####################################################################
         DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
