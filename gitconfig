@@ -23,3 +23,9 @@
 	trustExitCode = false
 [mergetool]
 	keepBackup = false
+[diff]
+  tool = vimdiff
+[difftool]
+  prompt = false
+[difftool "vimdiff"]
+  cmd = nvim -R -d \"$LOCAL\" \"$REMOTE\" -c \"nnoremap q :qa!<CR>\" -c \"nnoremap Q :qa!<CR>\"
