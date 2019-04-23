@@ -1,4 +1,5 @@
 [global_config]
+  borderless = True
   custom_url_handler = vivaldi
   enabled_plugins = LaunchpadCodeURLHandler, APTURLHandler, LaunchpadBugURLHandler
   title_font = Inconsolata 12
@@ -26,5 +27,9 @@
     background_type = transparent
     cursor_color = "#aaaaaa"
     font = Inconsolata 12
+    icon_bell = False
     scrollback_infinite = True
+    scrollbar_position = hidden
+    show_titlebar = False
     use_system_font = False
+    visible_bell = True
