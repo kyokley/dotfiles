@@ -5,6 +5,8 @@ source ~/.mutt/password
 set from = "kyokley2@gmail.com"
 set realname = "Kevin Yokley"
 set imap_user=kyokley2@gmail.com
+set smtp_url = "smtps://$imap_user:$imap_pass@smtp.gmail.com:465/"
+set ssl_force_tls = yes
 set folder=imaps://imap.gmail.com/
 set spoolfile=+INBOX
 set imap_check_subscribed
@@ -56,7 +58,7 @@ bind index <tab> imap-fetch-mail
 set sort = "reverse-date"
 
 alternative_order text/plain text/html
-set editor='vim + -c "set textwidth=72" -c "set wrap" -c "set spell spelllang=en"'
+set editor='nvim + -c "set textwidth=72" -c "set wrap" -c "set spell spelllang=en"'
 set include = yes
 set fast_reply
 
