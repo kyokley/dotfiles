@@ -12,6 +12,7 @@
 [user]
 	name = Kevin Yokley
 	email = kyokley2@gmail.com
+	signingkey = BEEE0CE6
 [core]
 	editor = vim
 [push]
