@@ -1,34 +1,44 @@
 [alias]
-        lol = log --graph --decorate --pretty=oneline --abbrev-commit --max-count=200
-        lola = log --graph --decorate --pretty=oneline --abbrev-commit --all --max-count=200
-        pullall = !git pull && git submodule update --init --recursive
+    lol = log --graph --decorate --pretty=oneline --abbrev-commit --max-count=200
+    lola = log --graph --decorate --pretty=oneline --abbrev-commit --all --max-count=200
+    pullall = !git pull && git submodule update --init --recursive
 
 [color]
-        branch = auto
-        diff = auto
-        interactive = auto
-        status = auto
-        ui = auto
+    branch = auto
+    diff = auto
+    interactive = auto
+    status = auto
+    ui = auto
+
 [user]
-	name = Kevin Yokley
-	email = kyokley2@gmail.com
-	signingkey = C9CD5535
+    name = Kevin Yokley
+    email = kyokley2@gmail.com
+    signingkey = C9CD5535
+
 [core]
-	editor = vim
+    editor = vim
+
 [push]
-	default = simple
+    default = simple
+
 [merge]
-	tool = diffconflicts
+    tool = diffconflicts
+
 [mergetool "diffconflicts"]
-	cmd = vim -c DiffConflicts \"$MERGED\" \"$BASE\" \"$LOCAL\" \"$REMOTE\"
-	trustExitCode = false
+    cmd = vim -c DiffConflicts \"$MERGED\" \"$BASE\" \"$LOCAL\" \"$REMOTE\"
+    trustExitCode = false
+
 [mergetool]
-	keepBackup = false
+    keepBackup = false
+
 [diff]
-  tool = vimdiff
+    tool = vimdiff
+
 [difftool]
-  prompt = false
+    prompt = false
+
 [difftool "vimdiff"]
-  cmd = nvim -R -d \"$LOCAL\" \"$REMOTE\" -c \"nnoremap q :qa!<CR>\" -c \"nnoremap Q :qa!<CR>\"
+    cmd = nvim -R -d \"$LOCAL\" \"$REMOTE\" -c \"nnoremap q :qa!<CR>\" -c \"nnoremap Q :qa!<CR>\"
+
 [commit]
-	gpgsign = true
+    gpgsign = false
