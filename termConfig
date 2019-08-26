@@ -1,8 +1,9 @@
 [global_config]
   borderless = True
   custom_url_handler = vivaldi
-  enabled_plugins = LaunchpadCodeURLHandler, APTURLHandler, LaunchpadBugURLHandler
-  title_font = Inconsolata 12
+  enabled_plugins = InactivityWatch, ActivityWatch, LaunchpadCodeURLHandler, APTURLHandler, LaunchpadBugURLHandler
+  inactive_color_offset = 0.72
+  title_font = Inconsolata Nerd Font Medium 15
   title_use_system_font = False
 [keybindings]
   go_down = <Shift><Control>Down
