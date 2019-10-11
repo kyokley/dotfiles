@@ -17,7 +17,8 @@
 
 [core]
     editor = vim
-    pager = docker run --rm -i kyokley/delta --dark --plus-color="#012800" --minus-color="#340001" | less -R
+    pager = docker run --rm -i kyokley/delta --theme 'Monokai Extended Origin' --width=variable | less -R
+    # pager = docker run --rm -i kyokley/delta --dark --plus-color="#012800" --minus-color="#340001" --width=variable | less -R
 [push]
     default = simple
 
