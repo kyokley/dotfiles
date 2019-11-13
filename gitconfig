@@ -2,6 +2,10 @@
     lol = log --graph --decorate --pretty=oneline --abbrev-commit --max-count=200
     lola = log --graph --decorate --pretty=oneline --abbrev-commit --all --max-count=200
     pullall = !git pull && git submodule update --init --recursive
+    files = !git diff --name-only $(git merge-base HEAD \"$GIT_BASE\")
+    stat = !git diff --stat $(git merge-base HEAD \"$GIT_BASE\")
+    review = !vim -p $(git files) +\"tabdo Gvdiffsplit $GIT_BASE\" +\"let g:gitgutter_diff_base = '$GIT_BASE'\" +\"nnoremap <S-l> :tabnext<CR>\" +\"nnoremap <S-h> :tabprev<CR>\"
+    reviewone = !vim -p +\"tabdo Gvdiffsplit $GIT_BASE\" +\"let g:gitgutter_diff_base = '$GIT_BASE'\" +\"nnoremap <S-l> :tabnext<CR>\" +\"nnoremap <S-h> :tabprev<CR>\"
 
 [color]
     branch = auto
@@ -17,7 +21,7 @@
 
 [core]
     editor = vim
-    pager = docker run --rm -i kyokley/delta --theme 'Monokai Extended Origin' --width=variable | less -R
+    pager = docker run --rm -i kyokley/delta --theme 'Monokai Extended Origin' --width=variable | less -RF
     # pager = docker run --rm -i kyokley/delta --dark --plus-color="#012800" --minus-color="#340001" --width=variable | less -R
 [push]
     default = simple
