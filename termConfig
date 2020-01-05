@@ -1,5 +1,4 @@
 [global_config]
-  borderless = True
   custom_url_handler = vivaldi
   enabled_plugins = InactivityWatch, ActivityWatch, LaunchpadCodeURLHandler, APTURLHandler, LaunchpadBugURLHandler
   inactive_color_offset = 0.72
@@ -32,3 +31,7 @@
     scrollbar_position = hidden
     use_system_font = False
     visible_bell = True
+  [[demo]]
+    cursor_color = "#aaaaaa"
+    font = Hack 25
+    use_system_font = False
