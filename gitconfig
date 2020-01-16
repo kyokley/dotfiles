@@ -6,6 +6,7 @@
     stat = !git diff --stat $(git merge-base HEAD \"$GIT_BASE\")
     review = !vim -p $(git files) +\"tabdo Gvdiffsplit $GIT_BASE\" +\"let g:gitgutter_diff_base = '$GIT_BASE'\" +\"nnoremap <S-l> :tabnext<CR>\" +\"nnoremap <S-h> :tabprev<CR>\"
     reviewone = !vim -p +\"tabdo Gvdiffsplit $GIT_BASE\" +\"let g:gitgutter_diff_base = '$GIT_BASE'\" +\"nnoremap <S-l> :tabnext<CR>\" +\"nnoremap <S-h> :tabprev<CR>\"
+    ls-files-root = !git ls-files
 
 [color]
     branch = auto
