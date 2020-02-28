@@ -1,8 +1,10 @@
 [global_config]
   custom_url_handler = vivaldi
   enabled_plugins = InactivityWatch, ActivityWatch, LaunchpadCodeURLHandler, APTURLHandler, LaunchpadBugURLHandler
+  geometry_hinting = True
   inactive_color_offset = 0.72
   title_font = Inconsolata Nerd Font Medium 15
+  title_receive_fg_color = "#f3f3f3"
   title_use_system_font = False
 [keybindings]
   go_down = <Shift><Control>Down
@@ -23,8 +25,7 @@
 [plugins]
 [profiles]
   [[default]]
-    background_darkness = 0.8
-    background_type = transparent
+    background_darkness = 0.9
     cursor_color = "#aaaaaa"
     font = Hack 13
     scrollback_infinite = True
