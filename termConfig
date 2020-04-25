@@ -36,3 +36,8 @@
     cursor_color = "#aaaaaa"
     font = Hack 25
     use_system_font = False
+  [[no_compton]]
+    background_darkness = 0.0
+    cursor_color = "#aaaaaa"
+    font = Inconsolata 14
+    use_system_font = False
