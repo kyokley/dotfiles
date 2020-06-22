@@ -18,8 +18,8 @@ if [ -e ~/.bashrc ]; then
 fi
 ln -s ~/dotfiles/bashrc ~/.bashrc
 
-sudo aptitude purge gnome-screensaver -y
-sudo aptitude install -y zsh terminator fonts-inconsolata silversearcher-ag xscreensaver xscreensaver-screensaver-bsod direnv fonts-hack-ttf
+sudo apt-get purge gnome-screensaver -y
+sudo apt-get install -y zsh terminator fonts-inconsolata silversearcher-ag xscreensaver xscreensaver-screensaver-bsod direnv fonts-hack-ttf
 
 if [ ! -h ~/.zprezto ]; then
     ln -s ~/dotfiles/prezto ~/.zprezto
@@ -75,17 +75,10 @@ ln -s "$HOME/dotfiles/pdbrc.py" "$HOME/.pdbrc.py"
 
 cd $INSTALL_DIR
 cd PathPicker
-sudo ln -s "$(pwd)/fpp" /usr/local/bin/fpp
+ln -s "$(pwd)/fpp" "$HOME/.local/bin/fpp"
 cd $INSTALL_DIR
 
-sudo ln -s "$(pwd)/ovpn.sh" /usr/local/bin/ovpn
-
-# Install vim-psql-pager
-sudo $HOME/dotfiles/vim-psql-pager/install.py
+ln -s "$(pwd)/ovpn.sh" "$HOME/.local/bin/ovpn"
 
 # Grab sec opts for chrome
 wget https://raw.githubusercontent.com/jfrazelle/dotfiles/master/etc/docker/seccomp/chrome.json -O ~/chrome_sec.json
-
-# Install bat
-wget https://github.com/sharkdp/bat/releases/download/v0.6.1/bat-musl_0.6.1_amd64.deb -O /tmp/bat.deb
-sudo dpkg -i /tmp/bat.deb
