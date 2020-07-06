@@ -9,7 +9,9 @@ ZSHRC=$HOME/.zshrc
 BIN=$HOME/dotfiles/prezto/modules
 DIR=$BIN/wd
 MANLOC=/usr/share/man/man1
-INSTALL_DIR=`pwd`
+
+USE_APT_GET=$(which apt-get >/dev/null 2>&1 && echo "true")
+USE_PAMAC=$(which apt-get >/dev/null 2>&1 && echo "true")
 
 ln -s ~/dotfiles/psqlrc ~/.psqlrc
 
@@ -18,9 +20,18 @@ if [ -e ~/.bashrc ]; then
 fi
 ln -s ~/dotfiles/bashrc ~/.bashrc
 
-pamac install the_silver_searcher ttf-inconsolata noto-fonts-emoji bluez-utils ttf-hack
-pamac build nerd-fonts-inconsolata
-fc-cache -f -v
+if [ -n $USE_PAMAC ]
+then
+    pamac install the_silver_searcher ttf-inconsolata noto-fonts-emoji bluez-utils ttf-hack
+    pamac build nerd-fonts-inconsolata
+    fc-cache -f -v
+fi
+
+if [ -n $USE_APT_GET ]
+then
+    sudo aptitude purge gnome-screensaver -y
+    sudo aptitude install -y zsh terminator fonts-inconsolata silversearcher-ag xscreensaver xscreensaver-screensaver-bsod direnv fonts-hack-ttf
+fi
 
 if [ ! -h ~/.zprezto ]; then
     ln -s ~/dotfiles/prezto ~/.zprezto
@@ -70,10 +81,8 @@ ln -s "$HOME/dotfiles/xscreensaver" "$HOME/.xscreensaver"
 
 ln -s "$HOME/dotfiles/pdbrc.py" "$HOME/.pdbrc.py"
 
-cd $INSTALL_DIR
-cd PathPicker
-sudo ln -s "$(pwd)/fpp" /usr/local/bin/fpp
-cd $INSTALL_DIR
+git clone https://github.com/kyokley/PathPicker.git $HOME/.local/share/PathPicker
+ln -s "$HOME/.local/share/PathPicker/fpp" $HOME/.local/bin/fpp
 
 # Grab sec opts for chrome
 wget https://raw.githubusercontent.com/jfrazelle/dotfiles/master/etc/docker/seccomp/chrome.json -O ~/chrome_sec.json
