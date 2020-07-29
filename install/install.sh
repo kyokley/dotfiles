@@ -22,9 +22,12 @@ ln -s ~/dotfiles/bashrc ~/.bashrc
 
 if [ -n $USE_PAMAC ]
 then
-    pamac install the_silver_searcher ttf-inconsolata noto-fonts-emoji bluez-utils ttf-hack
+    pamac install the_silver_searcher ttf-inconsolata noto-fonts-emoji bluez-utils ttf-hack kitty
     pamac build nerd-fonts-inconsolata
     fc-cache -f -v
+
+    mkdir -p ~/.config/kitty
+    ln -s ~/dotfiles/kitty.conf ~/.config/kitty/
 fi
 
 if [ -n $USE_APT_GET ]
