@@ -7,7 +7,7 @@
     review = !vim -p $(git files) +\"tabdo Gvdiffsplit $GIT_BASE\" +\"let g:gitgutter_diff_base = '$GIT_BASE'\" +\"nnoremap <S-l> :tabnext<CR>\" +\"nnoremap <S-h> :tabprev<CR>\"
     reviewone = !vim -p +\"tabdo Gvdiffsplit $GIT_BASE\" +\"let g:gitgutter_diff_base = '$GIT_BASE'\" +\"nnoremap <S-l> :tabnext<CR>\" +\"nnoremap <S-h> :tabprev<CR>\"
     ls-files-root = !git ls-files
-
+    ls-merges = !git log --merges --first-parent master --pretty=format:'%h %<(10,trunc)%aN %C(white)%<(15)%ar%Creset %C(red bold)%<(15)%D%Creset %s' -n 1000
 [color]
     branch = auto
     diff = auto
