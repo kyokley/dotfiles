@@ -32,8 +32,8 @@ fi
 
 if [ -n $USE_APT_GET ]
 then
-    sudo aptitude purge gnome-screensaver -y
-    sudo aptitude install -y zsh terminator fonts-inconsolata silversearcher-ag xscreensaver xscreensaver-screensaver-bsod direnv fonts-hack-ttf
+    sudo apt-get purge gnome-screensaver -y
+    sudo apt-get install -y zsh terminator fonts-inconsolata silversearcher-ag xscreensaver xscreensaver-screensaver-bsod direnv fonts-hack-ttf
 fi
 
 if [ ! -h ~/.zprezto ]; then

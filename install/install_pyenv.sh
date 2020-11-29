@@ -6,8 +6,8 @@ USE_APT_GET=$(which apt-get >/dev/null 2>&1 && echo "true")
 
 if [ -n $USE_APT_GET ]
 then
-    sudo aptitude update
-    sudo aptitude install -y make build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev libncursesw5-dev xz-utils tk-dev
+    sudo apt-get update
+    sudo apt-get install -y make build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev libncursesw5-dev xz-utils tk-dev
 fi
 
 if [ ! -h $HOME/.pyenv ]; then
@@ -19,7 +19,7 @@ if [ ! -h $HOME/.pyenv/plugins/pyenv-virtualenv ]; then
 fi
 
 if [ ! -h $HOME/.pyenv/plugins/pyenv-update ]; then
-    git clone https://github.com/pyenv/pyenv-update.git $(pyenv root)/plugins/pyenv-update
+    git clone https://github.com/pyenv/pyenv-update.git $HOME/.pyenv/plugins/pyenv-update
 fi
 export PATH="$HOME/.pyenv/bin:$PATH"
 export PYENV_VERSION="$PY3"
