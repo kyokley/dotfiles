@@ -19,7 +19,7 @@
 [user]
     name = Kevin Yokley
     email = kyokley2@gmail.com
-    signingkey = C9CD5535
+    signingkey = BEEE0CE6
 
 [core]
     editor = vim
@@ -48,4 +48,4 @@
     cmd = nvim -R -d \"$LOCAL\" \"$REMOTE\" -c \"nnoremap q :qa!<CR>\" -c \"nnoremap Q :qa!<CR>\"
 
 [commit]
-    gpgsign = false
+    gpgsign = true
