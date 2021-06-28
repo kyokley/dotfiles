@@ -9,6 +9,8 @@
     ls-files-root = !git ls-files
     ls-merges = !git log --merges --pretty=format:'%h %<(10,trunc)%aN %C(white)%<(15)%ar%Creset %C(red bold)%<(15)%D%Creset %s' -n 1000
     select = !echo \"$(git branch | awk '{print $NF}')\" \"\n\" \"$(git branch -r | grep -v HEAD | awk '{print $NF}' | sed -E 's!^[^/]+/!!')\" | sort -u | rofi -dmenu -p \"Branch:\" | xargs -r git switch
+    find-merge = "!sh -c 'commit=$0 && branch=${1:-HEAD} && (git rev-list $commit..$branch --ancestry-path | cat -n; git rev-list $commit..$branch --first-parent | cat -n) | sort -k2 -s | uniq -f1 -d | sort -n | tail -1 | cut -f2'"
+    show-merge = "!sh -c 'merge=$(git find-merge $0 $1) && [ -n \"$merge\" ] && git show $merge'"
 [color]
     branch = auto
     diff = auto
@@ -50,3 +52,5 @@
 
 [commit]
     gpgsign = true
+[init]
+	defaultBranch = main
