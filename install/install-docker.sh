@@ -28,6 +28,7 @@ fi
 sudo groupadd docker
 sudo usermod -aG docker $USER
 sudo systemctl enable docker
+sudo systemctl start docker
 
 sudo docker run hello-world
 if [ $? != 0 ];
