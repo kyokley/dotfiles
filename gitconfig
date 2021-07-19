@@ -25,7 +25,7 @@
 
 [core]
     editor = nvim
-    pager = docker run --rm -i kyokley/delta --theme 'Monokai Extended Origin' --width=variable | less -RF
+    pager = docker run --rm -i kyokley/delta --theme 'Monokai Extended Origin' --width=variable | less -R
     excludesFile = ~/dotfiles/gitignore
     # pager = docker run --rm -i kyokley/delta --dark --plus-color="#012800" --minus-color="#340001" --width=variable | less -R
 [push]
