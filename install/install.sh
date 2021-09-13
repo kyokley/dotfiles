@@ -83,6 +83,7 @@ ln -s "$HOME/dotfiles/xscreensaver" "$HOME/.xscreensaver"
 
 ln -s "$HOME/dotfiles/pdbrc.py" "$HOME/.pdbrc.py"
 
+mkdir -p $HOME/.local/{share,bin/fpp}
 git clone https://github.com/kyokley/PathPicker.git $HOME/.local/share/PathPicker
 ln -s "$HOME/.local/share/PathPicker/fpp" $HOME/.local/bin/fpp
 
