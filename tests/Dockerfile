@@ -10,8 +10,8 @@ FROM ubuntu AS ubuntu
 ENV DEBIAN_FRONTEND=noninteractive
 ENV TZ=America/Chicago
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
-# RUN echo "America/Chicago" > /config/etc/timezone
 
+RUN echo 'DPkg::options { "--force-confdef"; };' >> /etc/apt/apt.conf
 WORKDIR /root/dotfiles
 RUN apt-get update && \
         apt-get install --no-install-recommends -y sudo git wget
