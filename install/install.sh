@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # Be sure to run !!!!!!!!!!!!!!!!!!!!!!!!!!!
 #    compinit
 # in zsh after this script runs
@@ -10,9 +10,6 @@ BIN=$HOME/dotfiles/prezto/modules
 DIR=$BIN/wd
 MANLOC=/usr/share/man/man1
 
-USE_APT_GET=$(which apt-get >/dev/null 2>&1 && echo "true")
-USE_PAMAC=$(which pamac >/dev/null 2>&1 && echo "true")
-
 ln -s ~/dotfiles/psqlrc ~/.psqlrc
 
 if [ -e ~/.bashrc ]; then
@@ -20,18 +17,20 @@ if [ -e ~/.bashrc ]; then
 fi
 ln -s ~/dotfiles/bashrc ~/.bashrc
 
-if [ -n $USE_PAMAC ]
+if $(which pamac >/dev/null 2>&1)
 then
-    pamac install the_silver_searcher ttf-inconsolata noto-fonts-emoji bluez-utils ttf-hack kitty
-    pamac build nerd-fonts-inconsolata
+    echo "Installing using pamac"
+    pamac install --no-confirm the_silver_searcher ttf-inconsolata noto-fonts-emoji bluez-utils ttf-hack kitty zsh
+    pamac build --no-confirm nerd-fonts-inconsolata
     fc-cache -f -v
 
     mkdir -p ~/.config/kitty
     ln -s ~/dotfiles/kitty.conf ~/.config/kitty/
 fi
 
-if [ -n $USE_APT_GET ]
+if $(which apt-get >/dev/null 2>&1)
 then
+    echo "Installing using apt-get"
     sudo apt-get purge gnome-screensaver -y
     sudo apt-get install -y zsh terminator fonts-inconsolata silversearcher-ag xscreensaver xscreensaver-screensaver-bsod direnv fonts-hack-ttf
 fi
