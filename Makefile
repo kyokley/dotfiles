@@ -11,7 +11,7 @@ ubuntu-shell: ubuntu-build
 	docker run --rm -it -v $$(pwd):/root/dotfiles kyokley/dotfiles
 
 test-manjaro-install: manjaro-build
-	docker run --rm -it -v $$(pwd):/root/dotfiles kyokley/dotfiles /usr/bin/bash -c '/root/dotfiles/install/install.sh && zsh -c exit'
+	docker run --rm -t -v $$(pwd):/root/dotfiles kyokley/dotfiles /usr/bin/bash -c '/root/dotfiles/install/install.sh && zsh -c exit'
 
 test-ubuntu-install: ubuntu-build
-	docker run --rm -it -v $$(pwd):/root/dotfiles kyokley/dotfiles /usr/bin/bash -c '/root/dotfiles/install/install.sh && zsh -c exit'
+	docker run --rm -t -v $$(pwd):/root/dotfiles kyokley/dotfiles /usr/bin/bash -c '/root/dotfiles/install/install.sh && zsh -c exit'

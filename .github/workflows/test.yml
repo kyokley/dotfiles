@@ -15,5 +15,5 @@ jobs:
     - name: Test Manjaro Config
       run: make test-manjaro-install
 
-    - name: Run Bandit
+    - name: Test Ubuntu Config
       run: make test-ubuntu-install
