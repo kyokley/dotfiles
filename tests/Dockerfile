@@ -7,6 +7,7 @@ RUN sed -i "s/\[options\]/[options]\nColor\nILoveCandy\n/" /etc/pacman.conf && \
 CMD ["/bin/bash"]
 
 FROM ubuntu AS ubuntu
+ENV DEBIAN_FRONTEND=noninteractive
 ENV TZ=America/Chicago
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 # RUN echo "America/Chicago" > /config/etc/timezone
