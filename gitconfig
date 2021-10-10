@@ -1,25 +1,57 @@
 [alias]
-        lol = log --graph --decorate --pretty=oneline --abbrev-commit --max-count=200
-        lola = log --graph --decorate --pretty=oneline --abbrev-commit --all --max-count=200
-        pullall = !git pull && git submodule update --init --recursive
-
+    lol = log --graph --decorate --pretty=oneline --abbrev-commit --max-count=1000
+    lola = log --graph --decorate --pretty=oneline --abbrev-commit --all --max-count=1000
+    pullall = !git pull && git submodule update --init --recursive
+    files = !git diff --name-only $(git merge-base HEAD \"$GIT_BASE\")
+    stat = !git diff --stat $(git merge-base HEAD \"$GIT_BASE\")
+    review = !vim -p $(git files) +\"tabdo Gvdiffsplit $GIT_BASE\" +\"let g:gitgutter_diff_base = '$GIT_BASE'\" +\"nnoremap <S-l> :tabnext<CR>\" +\"nnoremap <S-h> :tabprev<CR>\"
+    reviewone = !vim -p +\"tabdo Gvdiffsplit $GIT_BASE\" +\"let g:gitgutter_diff_base = '$GIT_BASE'\" +\"nnoremap <S-l> :tabnext<CR>\" +\"nnoremap <S-h> :tabprev<CR>\"
+    ls-files-root = !git ls-files
+    ls-merges = !git log --merges --pretty=format:'%h %<(10,trunc)%aN %C(white)%<(15)%ar%Creset %C(red bold)%<(15)%D%Creset %s' -n 1000
+    select = !echo \"$(git branch | awk '{print $NF}')\" \"\n\" \"$(git branch -r | grep -v HEAD | awk '{print $NF}' | sed -E 's!^[^/]+/!!')\" | sort -u | rofi -dmenu -p \"Branch:\" | xargs -r git switch
+    fzf = !echo \"$(git branch | awk '{print $NF}')\" \"\n\" \"$(git branch -r | grep -v HEAD | awk '{print $NF}' | sed -E 's!^[^/]+/!!')\" | sort -u | fzf | xargs -r git switch
+    find-merge = "!sh -c 'commit=$0 && branch=${1:-HEAD} && (git rev-list $commit..$branch --ancestry-path | cat -n; git rev-list $commit..$branch --first-parent | cat -n) | sort -k2 -s | uniq -f1 -d | sort -n | tail -1 | cut -f2'"
+    show-merge = "!sh -c 'merge=$(git find-merge $0 $1) && [ -n \"$merge\" ] && git show $merge'"
 [color]
-        branch = auto
-        diff = auto
-        interactive = auto
-        status = auto
-        ui = auto
+    branch = auto
+    diff = auto
+    interactive = auto
+    status = auto
+    ui = auto
+
 [user]
-	name = Kevin Yokley
-	email = kyokley2@gmail.com
+    name = Kevin Yokley
+    email = kyokley2@gmail.com
+    signingkey = BEEE0CE6
+
 [core]
-	editor = vim
+    editor = vim
+    pager = docker run --rm -i kyokley/delta --theme 'Monokai Extended Origin' --width=variable | less -RF
+    excludesFile = ~/dotfiles/gitignore
+    # pager = docker run --rm -i kyokley/delta --dark --plus-color="#012800" --minus-color="#340001" --width=variable | less -R
 [push]
-	default = simple
+    default = simple
+
 [merge]
-	tool = diffconflicts
+    tool = diffconflicts
+
 [mergetool "diffconflicts"]
-	cmd = vim -c DiffConflicts \"$MERGED\" \"$BASE\" \"$LOCAL\" \"$REMOTE\"
-	trustExitCode = false
+    cmd = vim -c DiffConflicts \"$MERGED\" \"$BASE\" \"$LOCAL\" \"$REMOTE\"
+    trustExitCode = false
+
 [mergetool]
-	keepBackup = false
+    keepBackup = false
+
+[diff]
+    tool = vimdiff
+
+[difftool]
+    prompt = false
+
+[difftool "vimdiff"]
+    cmd = nvim -R -d \"$LOCAL\" \"$REMOTE\" -c \"nnoremap q :qa!<CR>\" -c \"nnoremap Q :qa!<CR>\"
+
+[commit]
+    gpgsign = true
+[init]
+	defaultBranch = main

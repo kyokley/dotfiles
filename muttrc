@@ -1,0 +1,82 @@
+# Create password file containing an entry similar to:
+# set imap_pass=mypassword
+source ~/.mutt/password
+
+set from = "user.name"
+set realname = "Kevin Yokley"
+set imap_user=user.name
+set smtp_url = "smtp://$imap_user:$imap_pass@127.0.0.1:1025/"
+set ssl_force_tls = yes
+set folder="imap://$imap_user:$imap_pass@127.0.0.1:1143/"
+set spoolfile=+INBOX
+set imap_check_subscribed
+
+set spoolfile="+INBOX"
+set trash="+Trash"
+set mbox="+Received"
+set move=no
+set record="+Sent"
+set copy=no
+set postponed="+Drafts"
+set postpone=yes
+
+# Store message headers locally to speed things up.
+# If hcache is a folder, Mutt will create sub cache folders for each account which may speeds things up even more.
+set header_cache = "~/.mutt/header_cache"
+
+# Store messages locally to speed things up, like searching message bodies.
+# Can be the same folder as header_cache.
+# This will cost important disk usage according to your e-mail amount.
+set message_cachedir = "~/.mutt/body_cache"
+
+# Allow Mutt to open a new IMAP connection automatically.
+unset imap_passive
+
+# Keep the IMAP connection alive by polling intermittently (time in seconds).
+set imap_keepalive = 300
+
+# How often to check for new mail (time in seconds).
+set mail_check = 120
+
+set date_format = "%m/%d"
+# set index_format = "%4C %Z %{%b %d} %-15.15L %?M?(#%03M)&(%4l)? %?y?{%.20y}? %?g?{%.20g} ?%s (%c)"
+set index_format = "%Z⌈%D⌋ %-20.20F ⌜%s⌟"
+
+#pager
+bind pager k previous-line
+bind pager j next-line
+bind index,pager K half-up
+bind index,pager J half-down
+bind pager g noop
+bind pager gg top
+bind pager G bottom
+bind index g noop
+bind index gg       first-entry
+bind index  G       last-entry
+bind index k previous-entry
+bind index j next-entry
+
+#sidebar
+bind index,pager <tab> sidebar-toggle-visible
+bind index,pager <down> sidebar-next
+bind index,pager <up> sidebar-prev
+bind index,pager <space> sidebar-open
+
+set sort = "reverse-date"
+
+alternative_order text/plain text/html
+set editor='nvim + -c "set textwidth=72" -c "set wrap" -c "set spell spelllang=en"'
+set include = yes
+set fast_reply
+
+ignore *
+unignore From To Reply-To Cc Bcc Subject Date Organization X-Label X-Mailer User-Agent
+
+set sidebar_visible = yes
+set sidebar_width = 35
+
+color sidebar_new yellow default
+color index	brightyellow default ~N	# New
+color index	yellow default ~O	# Old
+
+set pager_index_lines=8

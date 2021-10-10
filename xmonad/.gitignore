@@ -1,7 +1,0 @@
-*.errors
-*_bak
-*.hi
-*.o
-xmonad-x86_64-linux
-xmonad-i386-linux
-xmonad.state
