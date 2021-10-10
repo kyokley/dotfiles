@@ -31,8 +31,8 @@ fi
 if $(which apt-get >/dev/null 2>&1)
 then
     echo "Installing using apt-get"
-    sudo apt-get purge gnome-screensaver -y
-    sudo apt-get install -y zsh terminator fonts-inconsolata silversearcher-ag xscreensaver xscreensaver-screensaver-bsod direnv fonts-hack-ttf
+    sudo DEBIAN_FRONTEND=$DEBIAN_FRONTEND apt-get purge gnome-screensaver -yq
+    sudo DEBIAN_FRONTEND=$DEBIAN_FRONTEND apt-get install -yq zsh terminator fonts-inconsolata silversearcher-ag xscreensaver xscreensaver-screensaver-bsod direnv fonts-hack-ttf
 fi
 
 if [ ! -h ~/.zprezto ]; then
