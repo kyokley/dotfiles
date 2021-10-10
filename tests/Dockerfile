@@ -3,8 +3,11 @@ FROM manjarolinux/base AS manjaro
 WORKDIR /root/dotfiles
 RUN sed -i "s/\[options\]/[options]\nColor\nILoveCandy\n/" /etc/pacman.conf && \
         pacman -Syyu && yes | pacman -Syu pamac-cli wget
+COPY . /root/dotfiles
+RUN /bin/bash /root/dotfiles/install/install_pyenv.sh \
+        && /bin/bash /root/dotfiles/install/install.sh
 
-CMD ["/bin/bash"]
+ENTRYPOINT ["/usr/bin/zsh"]
 
 FROM ubuntu AS ubuntu
 ENV DEBIAN_FRONTEND=noninteractive
@@ -15,4 +18,8 @@ RUN echo 'DPkg::options { "--force-confdef"; };' >> /etc/apt/apt.conf
 WORKDIR /root/dotfiles
 RUN apt-get update && \
         apt-get install --no-install-recommends -y sudo git wget
-CMD ["/bin/bash"]
+COPY . /root/dotfiles
+RUN /bin/bash /root/dotfiles/install/install_pyenv.sh \
+        && /bin/bash /root/dotfiles/install/install.sh
+
+ENTRYPOINT ["/usr/bin/zsh"]
