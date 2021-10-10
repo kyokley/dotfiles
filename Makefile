@@ -13,7 +13,7 @@ ubuntu-shell: ubuntu-build
 	docker run --rm -it kyokley/dotfiles
 
 test-manjaro-install: manjaro-build
-	docker run --rm -it kyokley/dotfiles -c exit
+	docker run --rm -t kyokley/dotfiles -c exit
 
 test-ubuntu-install: ubuntu-build
-	docker run --rm -it kyokley/dotfiles -c exit
+	docker run --rm -t kyokley/dotfiles -c exit
