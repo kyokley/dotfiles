@@ -11,6 +11,7 @@ ENTRYPOINT ["/usr/bin/zsh"]
 
 FROM ubuntu AS ubuntu
 ENV TZ=America/Chicago
+ENV TERM=linux
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 RUN echo 'DPkg::options { "--force-confdef"; };' >> /etc/apt/apt.conf
