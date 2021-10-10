@@ -1,3 +1,5 @@
+export DOCKER_BUILDKIT=1
+
 manjaro-build:
 	docker build -t kyokley/dotfiles --target=manjaro -f tests/Dockerfile .
 
