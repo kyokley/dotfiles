@@ -20,7 +20,7 @@ ln -s ~/dotfiles/bashrc ~/.bashrc
 if $(which pamac >/dev/null 2>&1)
 then
     echo "Installing using pamac"
-    pamac install --no-confirm the_silver_searcher ttf-inconsolata noto-fonts-emoji bluez-utils ttf-hack kitty zsh
+    pamac install --no-confirm the_silver_searcher ttf-inconsolata noto-fonts-emoji bluez-utils ttf-hack kitty zsh alsa-utils
     pamac build --no-confirm nerd-fonts-inconsolata
     fc-cache -f -v
 
@@ -54,10 +54,6 @@ if [ ! -h ~/.zshrc ]; then
 fi
 
 ln -s ~/dotfiles/prezto/runcoms/zshenv ~/.zshenv
-
-if [ ! -h $HOME/.ipython ]; then
-    ln -s ~/dotfiles/ipython ~/.ipython
-fi
 
 if [ -e /usr/bin/zsh ]; then
     chsh -s /usr/bin/zsh
