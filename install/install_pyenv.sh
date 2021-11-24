@@ -1,6 +1,6 @@
 #!/bin/bash
 
-PY3='3.9.7'
+PY3='3.10.0'
 
 USE_APT_GET=$(which apt-get >/dev/null 2>&1 && echo "true")
 
