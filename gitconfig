@@ -52,6 +52,6 @@
     cmd = nvim -R -d \"$LOCAL\" \"$REMOTE\" -c \"nnoremap q :qa!<CR>\" -c \"nnoremap Q :qa!<CR>\"
 
 [commit]
-    gpgsign = true
+    # gpgsign = true
 [init]
 	defaultBranch = main
