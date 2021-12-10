@@ -21,6 +21,11 @@ fi
 if [ ! -h $HOME/.pyenv/plugins/pyenv-update ]; then
     git clone https://github.com/pyenv/pyenv-update.git $HOME/.pyenv/plugins/pyenv-update
 fi
+
+if [ ! -h $HOME/.pyenv/plugins/pyenv-default-packages ]; then
+    git clone https://github.com/pyenv/pyenv-default-packages.git $HOME/.pyenv/plugins/pyenv-default-packages
+fi
+
 export PATH="$HOME/.pyenv/bin:$PATH"
 export PYENV_VERSION="$PY3"
 eval "$(pyenv init -)"
@@ -36,3 +41,10 @@ pip install python-language-server[all] neovim pip pyflakes flake8 bandit black 
 pyenv which python  # Note the path
 
 pyenv global $PY3
+
+cat <<EOF > $(pyenv root)/default-packages
+pdbpp
+bpython
+wheel
+pynvim
+EOF
