@@ -17,3 +17,5 @@ test-manjaro-install: manjaro-build
 
 test-ubuntu-install: ubuntu-build
 	docker run --rm -t kyokley/dotfiles -c exit
+
+tests: test-manjaro-install test-ubuntu-install

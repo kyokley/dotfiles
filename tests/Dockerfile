@@ -2,7 +2,7 @@ FROM manjarolinux/base AS manjaro
 
 WORKDIR /root/dotfiles
 RUN sed -i "s/\[options\]/[options]\nColor\nILoveCandy\n/" /etc/pacman.conf && \
-        pacman -Syyu && yes | pacman -Syu pamac-cli wget
+        pacman -Syyu --noconfirm && pacman-db-upgrade && pacman -S --noconfirm pamac-cli wget
 COPY . /root/dotfiles
 RUN /bin/bash /root/dotfiles/install/install_pyenv.sh \
         && /bin/bash /root/dotfiles/install/install.sh
