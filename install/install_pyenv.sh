@@ -47,4 +47,7 @@ pdbpp
 bpython
 wheel
 pynvim
+pyflakes
+flake8
+bandit
 EOF
