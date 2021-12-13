@@ -31,6 +31,17 @@ export PYENV_VERSION="$PY3"
 eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
 
+cat <<EOF > $(pyenv root)/default-packages
+pdbpp
+bpython
+wheel
+pynvim
+pyflakes
+flake8
+bandit
+jedi
+EOF
+
 pyenv install $PY3
 
 pyenv virtualenv $PY3 neovim3
@@ -41,13 +52,3 @@ pip install python-language-server[all] neovim pip pyflakes flake8 bandit black 
 pyenv which python  # Note the path
 
 pyenv global $PY3
-
-cat <<EOF > $(pyenv root)/default-packages
-pdbpp
-bpython
-wheel
-pynvim
-pyflakes
-flake8
-bandit
-EOF
