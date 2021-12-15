@@ -2,9 +2,9 @@
 
 PY3='3.10.0'
 
-USE_APT_GET=$(which apt-get >/dev/null 2>&1 && echo "true")
+USE_APT_GET=$(which apt-get >/dev/null 2>&1 && echo "true" || echo "false")
 
-if [ -n $USE_APT_GET ]
+if [ $USE_APT_GET == "true" ]
 then
     sudo apt-get update
     sudo apt-get install -y make build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev libncursesw5-dev xz-utils tk-dev
@@ -23,7 +23,7 @@ if [ ! -h $HOME/.pyenv/plugins/pyenv-update ]; then
 fi
 
 if [ ! -h $HOME/.pyenv/plugins/pyenv-default-packages ]; then
-    git clone https://github.com/pyenv/pyenv-default-packages.git $HOME/.pyenv/plugins/pyenv-default-packages
+    git clone https://github.com/jawshooah/pyenv-default-packages.git $HOME/.pyenv/plugins/pyenv-default-packages
 fi
 
 export PATH="$HOME/.pyenv/bin:$PATH"
@@ -40,6 +40,7 @@ pyflakes
 flake8
 bandit
 jedi
+poetry
 EOF
 
 pyenv install $PY3
