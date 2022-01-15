@@ -28,6 +28,12 @@ then
     ln -s ~/dotfiles/kitty.conf ~/.config/kitty/
 fi
 
+if $(which yay >/dev/null 2>&1)
+then
+    echo "Installing using yay"
+    sudo pacman -Syu --noconfirm ripgrep zsh
+fi
+
 if $(which apt-get >/dev/null 2>&1)
 then
     echo "Installing using apt-get"
