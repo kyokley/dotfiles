@@ -31,7 +31,9 @@ fi
 if $(which yay >/dev/null 2>&1)
 then
     echo "Installing using yay"
-    sudo pacman -Syu --noconfirm ripgrep zsh
+    sudo pacman -Syu --noconfirm ripgrep zsh ttf-inconsolata noto-fonts-emoji
+    yay nerd-fonts-inconsolata
+    fc-cache -f -v
 fi
 
 if $(which apt-get >/dev/null 2>&1)
