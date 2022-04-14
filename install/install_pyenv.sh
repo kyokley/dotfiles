@@ -7,7 +7,7 @@ USE_APT_GET=$(which apt-get >/dev/null 2>&1 && echo "true" || echo "false")
 if [ $USE_APT_GET == "true" ]
 then
     sudo apt-get update
-    sudo apt-get install -y make build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev libncursesw5-dev xz-utils tk-dev
+    sudo apt-get install -y make build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev libncursesw5-dev xz-utils tk-dev python3-pip
 fi
 
 if [ ! -h $HOME/.pyenv ]; then
