@@ -19,7 +19,7 @@
     visible_bell = True
     background_darkness = 0.9
     cursor_color = "#aaaaaa"
-    font = Hack 13
+    font = Hack 16
     scrollback_infinite = True
     use_system_font = False
   [[demo]]

@@ -20,7 +20,7 @@ ln -s ~/dotfiles/bashrc ~/.bashrc
 if $(which pamac >/dev/null 2>&1)
 then
     echo "Installing using pamac"
-    pamac install --no-confirm the_silver_searcher ttf-inconsolata noto-fonts-emoji bluez-utils ttf-hack kitty zsh
+    pamac install --no-confirm the_silver_searcher ttf-inconsolata noto-fonts-emoji bluez-utils ttf-hack kitty zsh alsa-utils
     pamac build --no-confirm nerd-fonts-inconsolata
     fc-cache -f -v
 
@@ -28,11 +28,19 @@ then
     ln -s ~/dotfiles/kitty.conf ~/.config/kitty/
 fi
 
+if $(which yay >/dev/null 2>&1)
+then
+    echo "Installing using yay"
+    sudo pacman -Syu --noconfirm ripgrep zsh ttf-inconsolata noto-fonts-emoji
+    yay nerd-fonts-inconsolata
+    fc-cache -f -v
+fi
+
 if $(which apt-get >/dev/null 2>&1)
 then
     echo "Installing using apt-get"
-    sudo apt-get purge gnome-screensaver -y
-    sudo apt-get install -y zsh terminator fonts-inconsolata silversearcher-ag xscreensaver xscreensaver-screensaver-bsod direnv fonts-hack-ttf
+    sudo DEBIAN_FRONTEND=$DEBIAN_FRONTEND apt-get purge gnome-screensaver -yq
+    sudo DEBIAN_FRONTEND=$DEBIAN_FRONTEND apt-get install -yq zsh terminator fonts-inconsolata silversearcher-ag xscreensaver xscreensaver-screensaver-bsod direnv fonts-hack-ttf
 fi
 
 if [ ! -h ~/.zprezto ]; then
@@ -54,10 +62,6 @@ if [ ! -h ~/.zshrc ]; then
 fi
 
 ln -s ~/dotfiles/prezto/runcoms/zshenv ~/.zshenv
-
-if [ ! -h $HOME/.ipython ]; then
-    ln -s ~/dotfiles/ipython ~/.ipython
-fi
 
 if [ -e /usr/bin/zsh ]; then
     chsh -s /usr/bin/zsh

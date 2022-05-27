@@ -28,7 +28,6 @@
     editor = vim
     pager = docker run --rm -i kyokley/delta --theme 'Monokai Extended Origin' --width=variable | less -RF
     excludesFile = ~/dotfiles/gitignore
-    # pager = docker run --rm -i kyokley/delta --dark --plus-color="#012800" --minus-color="#340001" --width=variable | less -R
 [push]
     default = simple
 
@@ -51,7 +50,5 @@
 [difftool "vimdiff"]
     cmd = nvim -R -d \"$LOCAL\" \"$REMOTE\" -c \"nnoremap q :qa!<CR>\" -c \"nnoremap Q :qa!<CR>\"
 
-[commit]
-    gpgsign = true
 [init]
 	defaultBranch = main

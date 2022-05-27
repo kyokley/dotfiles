@@ -12,8 +12,8 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
+    - name: Test Ubuntu Config
+      run: make test-ubuntu-install
+
     - name: Test Manjaro Config
       run: make test-manjaro-install
-
-    - name: Run Bandit
-      run: make test-ubuntu-install
