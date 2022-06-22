@@ -20,8 +20,8 @@ ln -s ~/dotfiles/bashrc ~/.bashrc
 if $(which pamac >/dev/null 2>&1)
 then
     echo "Installing using pamac"
-    pamac install --no-confirm the_silver_searcher ttf-inconsolata noto-fonts-emoji bluez-utils ttf-hack kitty zsh alsa-utils
-    pamac build --no-confirm nerd-fonts-inconsolata
+    pamac install --no-confirm noto-fonts-emoji bluez-utils kitty zsh alsa-utils ripgrep
+    pamac build --no-confirm nerd-fonts-inconsolata nerd-fonts-hack
     fc-cache -f -v
 
     mkdir -p ~/.config/kitty

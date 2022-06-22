@@ -19,17 +19,17 @@
     visible_bell = True
     background_darkness = 0.9
     cursor_color = "#aaaaaa"
-    font = Hack 16
+    font = Hack Nerd Font 16
     scrollback_infinite = True
     use_system_font = False
   [[demo]]
     cursor_color = "#aaaaaa"
-    font = Hack 25
+    font = Hack Nerd Font 25
     use_system_font = False
   [[no_compton]]
     background_darkness = 0.0
     cursor_color = "#aaaaaa"
-    font = Inconsolata 14
+    font = Inconsolata Nerd Font 14
     use_system_font = False
 [layouts]
   [[default]]
