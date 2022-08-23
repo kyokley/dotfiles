@@ -25,8 +25,8 @@
     signingkey = BEEE0CE6
 
 [core]
-    editor = vim
-    pager = docker run --rm -i kyokley/delta --theme 'Monokai Extended Origin' --width=variable | less -RF
+    editor = nvim
+    pager = docker run --rm -i kyokley/delta --navigate | less -R --pattern='^(commit|added:|removed:|renamed:|Δ|•)'
     excludesFile = ~/dotfiles/gitignore
 [push]
     default = simple
