@@ -31,7 +31,7 @@ export PYENV_VERSION="$PY3"
 eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
 
-cat <<EOF >> $(pyenv root)/default-packages
+cat <<EOF >> "$(pyenv root)/default-packages"
 pdbpp
 bpython
 wheel
