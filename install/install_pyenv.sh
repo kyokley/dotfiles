@@ -41,6 +41,8 @@ flake8
 bandit
 jedi
 poetry
+ruff
+python-lsp-server[all]
 EOF
 cat $(pyenv root)/default-packages | sort -u > $(pyenv root)/default-packages
 
