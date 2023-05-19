@@ -42,8 +42,7 @@ bandit
 jedi
 poetry
 ruff
-python-lsp-ruff
-python-lsp-server[all]
+ruff-lsp
 EOF
 cat $(pyenv root)/default-packages | sort -u > $(pyenv root)/default-packages
 
