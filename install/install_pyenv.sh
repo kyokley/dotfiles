@@ -43,6 +43,7 @@ jedi
 poetry
 ruff
 ruff-lsp
+python-lsp-server
 EOF
 cat $(pyenv root)/default-packages | sort -u > $(pyenv root)/default-packages
 
