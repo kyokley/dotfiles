@@ -41,6 +41,40 @@ then
     echo "Installing using apt-get"
     sudo DEBIAN_FRONTEND=$DEBIAN_FRONTEND apt-get purge gnome-screensaver -yq
     sudo DEBIAN_FRONTEND=$DEBIAN_FRONTEND apt-get install -yq zsh terminator fonts-inconsolata silversearcher-ag xscreensaver xscreensaver-screensaver-bsod direnv fonts-hack-ttf
+
+    export ORIG_DIR=$(pwd)
+
+    declare -a fonts=(
+        FiraCode
+        FiraMono
+        Hack
+        RobotoMono
+        SourceCodePro
+        SpaceMono
+        UbuntuMono
+    )
+
+    version='2.1.0'
+    fonts_dir="${HOME}/.local/share/fonts"
+
+    if [[ ! -d "$fonts_dir" ]]; then
+        mkdir -p "$fonts_dir"
+    fi
+
+    for font in "${fonts[@]}"; do
+        zip_file="${font}.zip"
+        download_url="https://github.com/ryanoasis/nerd-fonts/releases/download/v${version}/${zip_file}"
+        echo "Downloading $download_url"
+        wget "$download_url"
+        unzip "$zip_file" -d "$fonts_dir"
+        rm "$zip_file"
+    done
+
+    find "$fonts_dir" -name '*Windows Compatible*' -delete
+
+    fc-cache -fv
+
+    cd "$ORIG_DIR"
 fi
 
 if [ ! -h ~/.zprezto ]; then
@@ -61,7 +95,9 @@ if [ ! -h ~/.zshrc ]; then
     rm -f ~/.zcompdump
 fi
 
-ln -s ~/dotfiles/prezto/runcoms/zshenv ~/.zshenv
+if [ ! -h ~/.zshenv ]; then
+    ln -s ~/dotfiles/prezto/runcoms/zshenv ~/.zshenv
+fi
 
 if [ -e /usr/bin/zsh ]; then
     chsh -s /usr/bin/zsh
