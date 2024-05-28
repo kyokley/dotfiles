@@ -253,6 +253,11 @@
     };
   };
 
+  programs.tmux = {
+    enable = true;
+    prefix = "C-a";
+  };
+
   programs.git = {
     enable = true;
     userName = "Kevin Yokley";
