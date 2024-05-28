@@ -263,7 +263,12 @@
     enable = true;
     userName = "Kevin Yokley";
     userEmail = "kyokley2@gmail.com";
-    delta.enable = true;
+    delta = {
+      enable = true;
+      options = {
+        line-numbers = true;
+      };
+    };
     extraConfig = {
       core = {
         editor = "nix run github:kyokley/nixvim --";
