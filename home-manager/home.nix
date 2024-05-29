@@ -288,6 +288,13 @@
       select = ''!echo "$(git branch | awk '{print $NF}')" "\n" "$(git branch -r | grep -v HEAD | awk '{print $NF}' | sed -E 's!^[^/]+/!!')" | sort -u | choose | xargs -r git switch'';
       fzf = ''!echo "$(git branch | awk '{print $NF}')" "\n" "$(git branch -r | grep -v HEAD | awk '{print $NF}' | sed -E 's!^[^/]+/!!')" | sort -u | fzf | xargs -r git switch'';
     };
+    ignores = [
+      ".python-version"
+      ".zsh_config"
+      "pyrightconfig.json"
+      ".DS_Store"
+      "__pycache__"
+    ];
   };
 
   # Let Home Manager install and manage itself.
