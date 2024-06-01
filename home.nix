@@ -100,14 +100,6 @@
   # };
   programs.poetry.enable = true;
 
-  programs.kitty = {
-    enable = false;
-    font = {
-      name = "Hack Regular";
-    };
-    shellIntegration.enableZshIntegration = true;
-  };
-
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
 }
