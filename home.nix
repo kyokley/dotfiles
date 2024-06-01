@@ -9,6 +9,7 @@
   imports = [
     ./programs/shell/zsh.nix
     ./programs/git/git.nix
+    ./programs/tmux.nix
   ];
 
   # This value determines the Home Manager release that your configuration is
@@ -98,12 +99,6 @@
   #   };
   # };
   programs.poetry.enable = true;
-
-  programs.tmux = {
-    enable = true;
-    prefix = "C-a";
-    shortcut = "a";
-  };
 
   programs.kitty = {
     enable = false;
