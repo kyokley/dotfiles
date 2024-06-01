@@ -34,6 +34,7 @@
     pkgs.tig
     pkgs.gnumake
     pkgs.fzf
+    pkgs.fd
 
     # # It is sometimes useful to fine-tune packages, for example, by applying
     # # overrides. You can do that directly here, just don't forget the
@@ -88,16 +89,6 @@
     vim = "nix run github:kyokley/nixvim --";
   };
 
-  # programs.terminator = {
-  #   enable = true;
-  #   config = {
-  #     profiles.default.font = "Hack Nerd Font Mono 16";
-  #     profiles.default.use_system_font = false;
-  #     profiles.default.scrollback_infinite = true;
-  #     profiles.demo.font = "Hack Nerd Font Mono 25";
-  #     profiles.demo.use_system_font = false;
-  #   };
-  # };
   programs.poetry.enable = true;
 
   # Let Home Manager install and manage itself.
