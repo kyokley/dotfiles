@@ -11,19 +11,18 @@
   };
 
   outputs = { nixpkgs, home-manager, ... }:
-    let
-      system = "aarch64-darwin";
-      pkgs = nixpkgs.legacyPackages.${system};
-    in {
-      homeConfigurations."yokley" = home-manager.lib.homeManagerConfiguration {
-        inherit pkgs;
+  {
+    homeConfigurations = {
+      "yokley@dioxygen" = home-manager.lib.homeManagerConfiguration {
+        pkgs = nixpkgs.legacyPackages.aarch64-darwin;
 
-        # Specify your home configuration modules here, for example,
-        # the path to your home.nix.
+# Specify your home configuration modules here, for example,
+# the path to your home.nix.
         modules = [ ./home.nix ];
 
-        # Optionally use extraSpecialArgs
-        # to pass through arguments to home.nix
+# Optionally use extraSpecialArgs
+# to pass through arguments to home.nix
       };
     };
+  };
 }
