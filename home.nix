@@ -1,10 +1,10 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 
 {
   # Home Manager needs a bit of information about you and the paths it should
   # manage.
-  home.username = "yokley";
-  home.homeDirectory = "/Users/yokley";
+  home.username = lib.mkDefault "yokley";
+  home.homeDirectory = lib.mkDefault "/Users/yokley";
 
   imports = [
     ./programs/shell/zsh.nix
