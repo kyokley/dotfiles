@@ -29,14 +29,14 @@
   # The home.packages option allows you to install Nix packages into your
   # environment.
   home.packages = [
-    pkgs.zsh
+    pkgs.fd
+    pkgs.fzf
+    pkgs.gnumake
     pkgs.ripgrep
-    pkgs.unzip
     pkgs.ruff
     pkgs.tig
-    pkgs.gnumake
-    pkgs.fzf
-    pkgs.fd
+    pkgs.unzip
+    pkgs.zsh
 
     # # It is sometimes useful to fine-tune packages, for example, by applying
     # # overrides. You can do that directly here, just don't forget the

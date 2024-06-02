@@ -1,27 +1,20 @@
-{ config, pkgs, ... }:
+{ pkgs, ... }:
 {
     imports = [
         ../programs/terminator.nix
     ];
 
     home.packages = [
-        pkgs.zsh
-            pkgs.ripgrep
-            pkgs.unzip
-            pkgs.thunderbird
-            pkgs.python311Packages.bpython
-            pkgs.ruff
-            pkgs.arandr
-            pkgs.nitrogen
-            pkgs.tig
-            pkgs.dunst
-            pkgs.gnumake
-            pkgs.fzf
-            pkgs.libreoffice
+        pkgs.arandr
+        pkgs.dunst
+        pkgs.libreoffice
+        pkgs.nitrogen
+        pkgs.python311Packages.bpython
+        pkgs.thunderbird
 
-            (pkgs.nerdfonts.override { fonts = [ "Hack" ]; })
+        (pkgs.nerdfonts.override { fonts = [ "Hack" ]; })
 
-            ];
+    ];
 
   home.file = {
     ".config/qtile" = {
@@ -33,7 +26,7 @@
 
   services.dunst = {
     enable = true;
-    configFile = "${config.home.homeDirectory}/dotfiles/dunst/dunstrc";
+    configFile = ../programs/dunst/dunstrc;
   };
   services.blueman-applet.enable = true;
   services.betterlockscreen = {
@@ -47,4 +40,14 @@
           Requires = [ "graphical-session-pre.target" ];
       };
   };
+
+  programs.rofi.enable = true;
+  programs.rofi.extraConfig = {
+      modi = "drun,combi,run";
+      show-icons = true;
+      combi-modi = "drun,run";
+      kb-cancel = "Escape,Control+c,Control+bracketleft";
+      drun-match-fields = "name";
+  };
+  programs.rofi.theme = ../programs/qtile-config/rofi/fancy.rasi;
 }
