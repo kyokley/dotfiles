@@ -45,7 +45,7 @@
     EDITOR = "nvim";
   };
 
-  programs.nixvim.enable = true;
+  programs.nixvim.enable = lib.mkDefault true;
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
