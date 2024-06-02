@@ -10,6 +10,7 @@
     ./programs/shell/zsh.nix
     ./programs/git/git.nix
     ./programs/tmux.nix
+    ./programs/vim.nix
   ];
 
   nix = {
@@ -43,6 +44,8 @@
   home.sessionVariables = {
     EDITOR = "nvim";
   };
+
+  programs.nixvim.enable = true;
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;

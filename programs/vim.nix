@@ -17,6 +17,8 @@ in
 
     config = lib.mkIf cfg.enable {
         programs.git.extraConfig.core.editor = "nix run 'github:kyokley/nixvim#${cfg.installType}' --";
-        programs.zsh.shellGlobalAliases = "nix run 'github:kyokley/nixvim#${cfg.installType}' --";
+        programs.zsh.shellGlobalAliases = {
+            vim = "nix run 'github:kyokley/nixvim#${cfg.installType}' --";
+        };
     };
 }

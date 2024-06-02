@@ -1,9 +1,5 @@
 { pkgs, ... }:
 {
-  imports = [
-    ../programs/vim.nix
-  ];
-
   home.packages = [
     pkgs.neovim
   ];

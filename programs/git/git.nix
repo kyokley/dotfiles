@@ -1,8 +1,9 @@
+{ lib, ... }:
 {
   programs.git = {
     enable = true;
     userName = "Kevin Yokley";
-    userEmail = "kyokley2@gmail.com";
+    userEmail = lib.mkDefault "kyokley2@gmail.com";
     delta = {
       enable = true;
       options = {
