@@ -1,6 +1,13 @@
+{ pkgs, ... }:
 {
   imports = [
-    ../programs/minimal-vim.nix
+    ../programs/vim.nix
   ];
+
+  home.packages = [
+    pkgs.neovim
+  ];
+
+  programs.nixvim.enable = false;
   home.homeDirectory = "/home/yokley";
 }

@@ -1,12 +1,8 @@
-{ lib, ... }:
 {
   programs.zsh = {
     enable = true;
     enableCompletion = true;
     syntaxHighlighting.enable = true;
-    shellGlobalAliases = {
-      vim = lib.mkDefault "nix run github:kyokley/nixvim --";
-    };
     prezto = {
       enable = true;
       caseSensitive = false;

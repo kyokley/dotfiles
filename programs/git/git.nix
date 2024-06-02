@@ -1,4 +1,3 @@
-{ lib, ... }:
 {
   programs.git = {
     enable = true;
@@ -11,9 +10,6 @@
       };
     };
     extraConfig = {
-      core = {
-        editor = lib.mkDefault "nix run github:kyokley/nixvim --";
-      };
       init = {
         defaultBranch = "main";
       };
