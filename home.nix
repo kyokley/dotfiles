@@ -4,7 +4,7 @@
   # Home Manager needs a bit of information about you and the paths it should
   # manage.
   home.username = lib.mkDefault "yokley";
-  home.homeDirectory = lib.mkDefault "/Users/yokley";
+  home.homeDirectory = lib.mkDefault "/home/yokley";
 
   imports = [
     ./programs/shell/zsh.nix
