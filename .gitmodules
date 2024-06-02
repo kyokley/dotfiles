@@ -1,3 +1,7 @@
 [submodule "xonsh/xonsh"]
 	path = xonsh/xonsh
 	url = git@github.com:kyokley/xonsh.git
+[submodule "programs/qtile-config"]
+	path = programs/qtile-config
+	url = git@github.com:kyokley/qtile-config.git
+	branch = mercury
