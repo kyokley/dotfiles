@@ -1,5 +1,6 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 {
+    home.homeDirectory = lib.mkForce "/home/yokley";
     imports = [
         ../programs/terminator.nix
         ../programs/dunst/dunst.nix
