@@ -2,6 +2,8 @@
 {
     imports = [
         ../programs/terminator.nix
+        ../programs/dunst/dunst.nix
+        ../programs/rofi/rofi.nix
     ];
 
     home.packages = [
@@ -24,10 +26,6 @@
     };
   };
 
-  services.dunst = {
-    enable = true;
-    configFile = ../programs/dunst/dunstrc;
-  };
   services.blueman-applet.enable = true;
   services.betterlockscreen = {
     enable = true;
@@ -41,13 +39,5 @@
       };
   };
 
-  programs.rofi.enable = true;
-  programs.rofi.extraConfig = {
-      modi = "drun,combi,run";
-      show-icons = true;
-      combi-modi = "drun,run";
-      kb-cancel = "Escape,Control+c,Control+bracketleft";
-      drun-match-fields = "name";
-  };
-  programs.rofi.theme = ../programs/qtile-config/rofi/fancy.rasi;
+  programs.poetry.enable = true;
 }
