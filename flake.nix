@@ -15,43 +15,27 @@
     homeConfigurations = {
       "dioxygen" = home-manager.lib.homeManagerConfiguration {
         pkgs = nixpkgs.legacyPackages.aarch64-darwin;
-
-# Specify your home configuration modules here, for example,
-# the path to your home.nix.
         modules = [ ./home.nix ./hosts/dioxygen.nix ];
-
-# Optionally use extraSpecialArgs
-# to pass through arguments to home.nix
       };
+
       "mercury" = home-manager.lib.homeManagerConfiguration {
         pkgs = nixpkgs.legacyPackages.x86_64-linux;
-
-# Specify your home configuration modules here, for example,
-# the path to your home.nix.
         modules = [ ./home.nix ./hosts/mercury.nix ];
-
-# Optionally use extraSpecialArgs
-# to pass through arguments to home.nix
       };
+
       "docker@dioxygen" = home-manager.lib.homeManagerConfiguration {
         pkgs = nixpkgs.legacyPackages.aarch64-linux;
-
-# Specify your home configuration modules here, for example,
-# the path to your home.nix.
         modules = [ ./home.nix ];
-
-# Optionally use extraSpecialArgs
-# to pass through arguments to home.nix
       };
+
       "venus" = home-manager.lib.homeManagerConfiguration {
         pkgs = nixpkgs.legacyPackages.x86_64-linux;
-
-# Specify your home configuration modules here, for example,
-# the path to your home.nix.
         modules = [ ./home.nix ./hosts/venus.nix ];
+      };
 
-# Optionally use extraSpecialArgs
-# to pass through arguments to home.nix
+      "almagest" = home-manager.lib.homeManagerConfiguration {
+        pkgs = nixpkgs.legacyPackages.x86_64-linux;
+        modules = [ ./home.nix ./hosts/almagest.nix ];
       };
     };
   };

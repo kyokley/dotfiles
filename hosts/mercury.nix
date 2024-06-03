@@ -1,6 +1,7 @@
 { pkgs, ... }:
 {
     home.homeDirectory = "/home/yokley";
+    programs.git.userEmail = "kyokley@mercury";
 
     imports = [
         ../programs/terminator.nix

@@ -155,6 +155,7 @@
       ssh.identities = [
         "id_ed25519"
       ];
+      tmux.autoStartRemote = true;
     };
   };
 }
