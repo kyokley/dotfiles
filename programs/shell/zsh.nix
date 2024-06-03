@@ -146,6 +146,7 @@
         "utility"
         "completion"
         "ssh"
+        "tmux"
         "git"
         "syntax-highlighting"
         "prompt"

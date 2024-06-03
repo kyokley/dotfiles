@@ -2,7 +2,7 @@
   programs.git.userEmail = "kyokley@almagest";
 
   programs.nixvim = {
-    enable = false;
+    enable = true;
     installType = "minimal";
   };
 }
