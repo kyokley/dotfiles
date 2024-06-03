@@ -1,8 +1,13 @@
+{ pkgs, ... }:
 {
+  home.packages = [
+    pkgs.neovim
+  ];
+
   programs.git.userEmail = "kyokley@almagest";
 
   programs.nixvim = {
-    enable = true;
+    enable = false;
     installType = "minimal";
   };
 }
