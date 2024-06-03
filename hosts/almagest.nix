@@ -10,6 +10,9 @@
     vimdiffAlias = true;
     defaultEditor = true;
   };
+  programs.zsh.shellGlobalAliases = {
+    vim = "nvim";
+  };
 
   programs.nixvim = {
     enable = false;
