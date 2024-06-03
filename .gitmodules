@@ -1,11 +1,4 @@
-[submodule "PathPicker"]
-	path = PathPicker
-	url = git@github.com:kyokley/PathPicker.git
-    branch = master
-[submodule "prezto"]
-	path = prezto
-	url = git@github.com:kyokley/prezto.git
-    branch = master
-[submodule "xonsh/xonsh"]
-	path = xonsh/xonsh
-	url = git@github.com:kyokley/xonsh.git
+[submodule "programs/qtile-config"]
+	path = programs/qtile-config
+	url = git@github.com:kyokley/qtile-config.git
+	branch = mercury
