@@ -2,7 +2,6 @@
     programs.git.userEmail = "kyokley@revantage.com";
     programs.git.extraConfig = {
       core = {
-        editor = "nix run github:kyokley/nixvim --";
         autocrlf = "input";
       };
       credential = {
