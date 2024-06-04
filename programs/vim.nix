@@ -1,6 +1,10 @@
 {config, lib, pkgs, ...}:
 let
     cfg = config.programs.nixvim;
+    mkIfElse = p: yes: no: lib.mkMerge [
+    (lib.mkIf p yes)
+(lib.mkIf (!p) no)
+    ];
 in
 {
     options.programs.nixvim = {
@@ -15,8 +19,8 @@ in
         };
     };
 
-    config = if cfg.enable
-    then {
+    config = mkIfElse cfg.enable
+    {
         home.packages = [
            pkgs.universal-ctags
         ];
@@ -25,7 +29,6 @@ in
             vim = "nix run 'github:kyokley/nixvim#${cfg.installType}' --";
         };
     }
-    else
     {
         home.packages = [
            pkgs.neovim
