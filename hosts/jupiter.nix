@@ -7,7 +7,7 @@
         ''
         function mc-run() {
             cd ~/workspace/MediaConverterProd
-            make mc-run
+            make run
             cd -
         }
         ''
