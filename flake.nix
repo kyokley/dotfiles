@@ -39,7 +39,11 @@
       };
       "jupiter" = home-manager.lib.homeManagerConfiguration {
         pkgs = nixpkgs.legacyPackages.x86_64-linux;
-        modules = [ ./home.nix ./hosts/almagest.nix ];
+        modules = [ ./home.nix ./hosts/jupiter.nix ];
+      };
+      "saturn" = home-manager.lib.homeManagerConfiguration {
+        pkgs = nixpkgs.legacyPackages.x86_64-linux;
+        modules = [ ./home.nix ./hosts/saturn.nix ];
       };
     };
   };
