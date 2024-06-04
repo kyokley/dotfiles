@@ -38,7 +38,6 @@
     pkgs.tig
     pkgs.unzip
     pkgs.zsh
-
   ];
 
   home.sessionVariables = {
