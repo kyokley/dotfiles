@@ -14,7 +14,7 @@
     };
 
     home.shellAliases = {
-        run-proxy = "cd /home/yokley/repos/tailscale-proxy && make up || true; make down; cd -";
+        run-proxy = "cd /home/yokley/repos/tailscale-proxy && make up; make down; cd -";
         explore = "explorer.exe .";
     };
 }
