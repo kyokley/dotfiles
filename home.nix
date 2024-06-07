@@ -41,7 +41,8 @@
   ];
 
   home.sessionVariables = {
-    EDITOR = "nvim";
+    EDITOR = "vim";
+    VISUAL = "vim";
   };
 
   programs.nixvim.enable = lib.mkDefault true;
