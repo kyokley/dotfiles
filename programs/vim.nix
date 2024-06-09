@@ -28,11 +28,22 @@ in
         programs.zsh.shellGlobalAliases = {
             vim = "nix run 'github:kyokley/nixvim#${cfg.installType}' --";
         };
+
+        home.sessionVariables = {
+            EDITOR = "nix run 'github:kyokley/nixvim#${cfg.installType}' --";
+            VISUAL = "nix run 'github:kyokley/nixvim#${cfg.installType}' --";
+        };
+
     }
     {
         home.packages = [
            pkgs.neovim
         ];
+
+        home.sessionVariables = {
+            EDITOR = "nvim";
+            VISUAL = "nvim";
+        };
 
         programs.zsh.shellGlobalAliases = {
             vim = "nvim";
