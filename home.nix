@@ -40,11 +40,6 @@
     pkgs.zsh
   ];
 
-  home.sessionVariables = {
-    EDITOR = "vim";
-    VISUAL = "vim";
-  };
-
   programs.nixvim.enable = lib.mkDefault true;
 
   # Let Home Manager install and manage itself.
