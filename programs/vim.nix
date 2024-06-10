@@ -14,7 +14,7 @@ in
             default = "default";
             type = lib.types.str;
             description = ''
-                Type of nixvim install to use. Either default or minimal.
+                Type of nixvim install to use. Either default, dos, or minimal.
             '';
         };
     };

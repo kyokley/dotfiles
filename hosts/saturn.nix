@@ -1,4 +1,6 @@
 {
+    programs.nixvim.installType = "dos";
+
     programs.git.userEmail = "kyokley@revantage.com";
     programs.git.extraConfig = {
       core = {
