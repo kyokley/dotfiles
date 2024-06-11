@@ -1,0 +1,8 @@
+configuration {
+	modi: "drun,combi,run";
+	show-icons: true;
+	combi-modi: "drun,run";
+	kb-cancel: "Escape,Control+c,Control+bracketleft";
+	drun-match-fields: "name";
+}
+@import "~/.config/rofi/fancy.rasi"
