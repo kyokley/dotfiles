@@ -45,6 +45,10 @@
         pkgs = nixpkgs.legacyPackages.x86_64-linux;
         modules = [ ./home.nix ./hosts/saturn.nix ];
       };
+      "singularity" = home-manager.lib.homeManagerConfiguration {
+        pkgs = nixpkgs.legacyPackages.x86_64-linux;
+        modules = [ ./home.nix ./hosts/singularity.nix ];
+      };
     };
   };
 }
