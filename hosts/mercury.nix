@@ -23,7 +23,7 @@
 
   home.file = {
     ".config/qtile" = {
-      source = ../programs/qtile-config;
+      source = ../programs/qtile;
       target = ".config/qtile";
       recursive = true;
     };
