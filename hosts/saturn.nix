@@ -3,9 +3,6 @@
 
     programs.git.userEmail = "kyokley@revantage.com";
     programs.git.extraConfig = {
-      core = {
-        autocrlf = "input";
-      };
       credential = {
         helper = "/home/yokley/WinGit/mingw64/bin/git-credential-manager.exe";
         useHttpPath = true;
