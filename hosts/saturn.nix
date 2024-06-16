@@ -1,4 +1,12 @@
+{ pkgs, lib, ... }:
 {
+    home.packages = [
+        pkgs.dotnetCorePackages.dotnet_8.sdk
+    ];
+
+    # nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg)
+    # [ "vscode" ];
+
     programs.nixvim.installType = "dos";
 
     programs.git.userEmail = "kyokley@revantage.com";
