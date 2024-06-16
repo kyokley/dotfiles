@@ -1,10 +1,10 @@
 {config, lib, pkgs, ...}:
 let
     cfg = config.programs.nixvim;
-    mkIfElse = p: yes: no: lib.mkMerge [
-    (lib.mkIf p yes)
-(lib.mkIf (!p) no)
-    ];
+    # mkIfElse = p: yes: no: lib.mkMerge [
+    #     (lib.mkIf p yes)
+    #     (lib.mkIf (!p) no)
+    # ];
 in
 {
     options.programs.nixvim = {
@@ -19,8 +19,7 @@ in
         };
     };
 
-    config = mkIfElse cfg.enable
-    {
+    config = {
         home.packages = [
            pkgs.universal-ctags
         ];
@@ -32,21 +31,6 @@ in
         home.sessionVariables = {
             EDITOR = "nix run 'github:kyokley/nixvim#${cfg.installType}' --";
             VISUAL = "nix run 'github:kyokley/nixvim#${cfg.installType}' --";
-        };
-
-    }
-    {
-        home.packages = [
-           pkgs.neovim
-        ];
-
-        home.sessionVariables = {
-            EDITOR = "nvim";
-            VISUAL = "nvim";
-        };
-
-        programs.zsh.shellGlobalAliases = {
-            vim = "nvim";
         };
     };
 }
