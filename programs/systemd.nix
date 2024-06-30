@@ -23,6 +23,7 @@ in
                     Type = "oneshot";
                     ExecStart = toString (
                         pkgs.writeShellScript "home-manager-update-script" ''
+                        PATH=$PATH:${lib.makeBinPath [ pkgs.nix ]}
                         ${pkgs.home-manager}/bin/home-manager switch --flake 'github:kyokley/dotfiles#${cfg.environment}'
                     ''
                     );
