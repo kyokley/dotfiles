@@ -1,9 +1,18 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
+let
+  nix-update = pkgs.writeShellScriptBin "nix-update" ''
+    PATH=$PATH:${lib.makeBinPath [ pkgs.nix ]}
+    ${pkgs.home-manager}/bin/home-manager switch --flake 'github:kyokley/dotfiles#saturn'
+    test $(echo "$(${pkgs.home-manager}/bin/home-manager generations | wc -l) > 1" | bc) -eq 1 && ${pkgs.home-manager}/bin/home-manager expire-generations "-30 days"
+    ${pkgs.nix}/bin/nix store gc
+  '';
+in
 {
-    programs.systemd-services.environment = "saturn";
+    programs.systemd-services.enable = false;
 
     home.packages = [
         pkgs.dotnetCorePackages.dotnet_8.sdk
+        nix-update
     ];
 
     # nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg)
