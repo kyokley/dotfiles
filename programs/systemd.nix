@@ -23,7 +23,7 @@ in
                     Type = "oneshot";
                     ExecStart = toString (
                         pkgs.writeShellScript "home-manager-update-script" ''
-                        ${pkgs.home-manager}/bin/home-manager switch --flake 'github:kyokley/dotfiles#${cfg.environment}'"
+                        ${pkgs.home-manager}/bin/home-manager switch --flake 'github:kyokley/dotfiles#${cfg.environment}'
                     ''
                     );
                 };
