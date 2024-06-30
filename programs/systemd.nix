@@ -64,6 +64,7 @@ in
                 Timer = {
                     OnCalendar = "daily";
                     Persistent = true;
+                    Unit = "home-manager-update.service";
                 };
             };
             home-manager-expire = {
@@ -74,6 +75,7 @@ in
                 Timer = {
                     OnCalendar = "daily";
                     Persistent = true;
+                    Unit = "home-manager-expire.service";
                 };
             };
             nix-gc = {
@@ -84,6 +86,7 @@ in
                 Timer = {
                     OnCalendar = "monthly";
                     Persistent = true;
+                    Unit = "nix-gc.service";
                 };
             };
         };
