@@ -35,6 +35,7 @@ in
                     Type = "oneshot";
                     ExecStart = toString (
                         pkgs.writeShellScript "home-manager-expire-script" ''
+                        PATH=$PATH:${lib.makeBinPath [ pkgs.nix ]}
                         test $(echo "$(${pkgs.home-manager}/bin/home-manager generations | wc -l) > 1" | bc) -eq 1 && home-manager expire-generations "-30 days"
                     ''
                     );
@@ -46,7 +47,7 @@ in
                     Type = "oneshot";
                     ExecStart = toString (
                         pkgs.writeShellScript "nix-gc-script" ''
-                        ${pkgs.bash}/bin/bash -c "nix store gc"
+                        ${pkgs.nix}/bin/nix store gc
                     ''
                     );
                 };
