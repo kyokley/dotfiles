@@ -1,5 +1,7 @@
-{ pkgs, lib, ... }:
+{ pkgs, ... }:
 {
+    programs.systemd-services.environment = "saturn";
+
     home.packages = [
         pkgs.dotnetCorePackages.dotnet_8.sdk
     ];
