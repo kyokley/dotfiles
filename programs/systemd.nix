@@ -66,6 +66,7 @@ in
                     Persistent = true;
                     Unit = "home-manager-update.service";
                 };
+                Install.WantedBy = ["timers.target"];
             };
             home-manager-expire = {
                 Unit = {
@@ -77,6 +78,7 @@ in
                     Persistent = true;
                     Unit = "home-manager-expire.service";
                 };
+                Install.WantedBy = ["timers.target"];
             };
             nix-gc = {
                 Unit = {
@@ -88,6 +90,7 @@ in
                     Persistent = true;
                     Unit = "nix-gc.service";
                 };
+                Install.WantedBy = ["timers.target"];
             };
         };
 
