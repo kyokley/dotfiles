@@ -1,5 +1,7 @@
 { pkgs, ... }:
 {
+    programs.systemd-services.environment = "mercury";
+
     home.homeDirectory = "/home/yokley";
     programs.git.userEmail = "kyokley@mercury";
 

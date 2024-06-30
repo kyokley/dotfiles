@@ -11,6 +11,7 @@
     ./programs/git/git.nix
     ./programs/tmux.nix
     ./programs/vim.nix
+    ./programs/systemd.nix
   ];
 
   nix = {
@@ -45,7 +46,7 @@
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
   services.home-manager.autoUpgrade = {
-    enable = true;
+    enable = lib.mkDefault true;
     frequency = "weekly";
   };
 }
