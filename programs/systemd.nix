@@ -36,7 +36,7 @@ in
                     ExecStart = toString (
                         pkgs.writeShellScript "home-manager-expire-script" ''
                         PATH=$PATH:${lib.makeBinPath [ pkgs.nix ]}
-                        test $(echo "$(${pkgs.home-manager}/bin/home-manager generations | wc -l) > 1" | bc) -eq 1 && home-manager expire-generations "-30 days"
+                        test $(echo "$(${pkgs.home-manager}/bin/home-manager generations | wc -l) > 1" | bc) -eq 1 && ${pkgs.home-manager}/bin/home-manager expire-generations "-30 days"
                     ''
                     );
                 };
@@ -81,7 +81,7 @@ in
                     After = [ "network.target" ];
                 };
                 Timer = {
-                    OnCalendar = "daily";
+                    OnCalendar = "monthly";
                     Persistent = true;
                 };
             };
