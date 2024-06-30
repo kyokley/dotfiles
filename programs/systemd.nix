@@ -16,6 +16,7 @@ in
     };
 
     config = {
+        systemd.user.startServices = true;
         systemd.user.services = {
             home-manager-update = {
                 Unit.Description = "Update home-manager config";
