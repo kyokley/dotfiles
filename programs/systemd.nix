@@ -26,17 +26,6 @@ in
                         pkgs.writeShellScript "home-manager-update-script" ''
                         PATH=$PATH:${lib.makeBinPath [ pkgs.nix pkgs.coreutils pkgs.busybox ]}
                         ${pkgs.home-manager}/bin/home-manager switch --flake 'github:kyokley/dotfiles#${cfg.environment}'
-                    ''
-                    );
-                };
-            };
-            home-manager-expire = {
-                Unit.Description = "Expire home-manager generation";
-                Service = {
-                    Type = "oneshot";
-                    ExecStart = toString (
-                        pkgs.writeShellScript "home-manager-expire-script" ''
-                        PATH=$PATH:${lib.makeBinPath [ pkgs.nix ]}
                         test $(echo "$(${pkgs.home-manager}/bin/home-manager generations | wc -l) > 1" | bc) -eq 1 && ${pkgs.home-manager}/bin/home-manager expire-generations "-30 days"
                     ''
                     );
@@ -68,18 +57,6 @@ in
                 };
                 Install.WantedBy = ["timers.target"];
             };
-            home-manager-expire = {
-                Unit = {
-                    Description = "Expire home-manager generations";
-                    After = [ "network.target" ];
-                };
-                Timer = {
-                    OnCalendar = "daily";
-                    Persistent = true;
-                    Unit = "home-manager-expire.service";
-                };
-                Install.WantedBy = ["timers.target"];
-            };
             nix-gc = {
                 Unit = {
                     Description = "Run nix gc";
@@ -87,6 +64,7 @@ in
                 };
                 Timer = {
                     OnCalendar = "monthly";
+                    RandomizedDelaySec = 14400;
                     Persistent = true;
                     Unit = "nix-gc.service";
                 };
