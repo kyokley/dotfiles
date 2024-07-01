@@ -52,6 +52,7 @@ in
                 };
                 Timer = {
                     OnCalendar = "daily";
+                    RandomizedDelaySec = 14400;
                     Persistent = true;
                     Unit = "home-manager-update.service";
                 };
