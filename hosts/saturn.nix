@@ -11,6 +11,7 @@ in
     programs.systemd-services.enable = false;
 
     home.packages = [
+        pkgs.devenv
         pkgs.dotnetCorePackages.dotnet_8.sdk
         nix-update
     ];
