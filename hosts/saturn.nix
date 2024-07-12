@@ -10,6 +10,10 @@ in
 {
     programs.systemd-services.enable = false;
 
+    imports = [
+        ../programs/rofi/rofi.nix
+    ];
+
     home.packages = [
         pkgs.devenv
         pkgs.dotnetCorePackages.dotnet_8.sdk
