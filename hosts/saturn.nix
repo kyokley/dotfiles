@@ -17,6 +17,7 @@ in
     home.packages = [
         pkgs.devenv
         pkgs.dotnetCorePackages.dotnet_8.sdk
+        pkgs.xfce.thunar
         nix-update
     ];
 
