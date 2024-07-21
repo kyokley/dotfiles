@@ -5,6 +5,7 @@ in
 {
   home.packages = [
     pkgs.docker-compose
+    pkgs.pass
   ];
 
   programs.systemd-services.environment = "almagest";
@@ -67,8 +68,14 @@ in
     };
   };
 
-  programs.nixvim.enable = false;
-  programs.nixvim.installType = "minimal";
+  programs = {
+    nixvim = {
+      enable = false;
+      installType = "minimal";
+    };
 
-  programs.git.userEmail = "kyokley@almagest";
+    git.userEmail = "kyokley@almagest";
+
+    borgmatic.enable = true;
+  };
 }

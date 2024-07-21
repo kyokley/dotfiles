@@ -1,5 +1,9 @@
 {pkgs, lib, ...}:
 {
+  home.packages = [
+    pkgs.pass
+  ];
+
   programs.systemd-services.environment = "jupiter";
 
   systemd.user.services = {
@@ -56,15 +60,33 @@
     };
   };
 
-  programs.nixvim.enable = false;
-  programs.git.userEmail = "kyokley@jupiter";
+  programs = {
+    nixvim.enable = false;
 
-  programs.zsh.prezto.extraConfig = lib.mkAfter
-        ''
-        function mc-run() {
-            cd ~/workspace/MediaConverterProd
-            make run
-            cd -
-        }
-        '';
+    git.userEmail = "kyokley@jupiter";
+
+    borgmatic = {
+      enable = true;
+      backups = {
+        mediawaiter = {
+          location = {
+            sourceDirectories = [ "/tmp/foo" ];
+            repositories = [ "ssh://u415868@u415868.your-storagebox.de/./mw-repo" ];
+          };
+          storage = {
+            encryptionPasscommand = "${pkgs.pass}/bin/pass Backup/hetzner.com";
+          };
+        };
+      };
+    };
+
+    zsh.prezto.extraConfig = lib.mkAfter
+          ''
+          function mc-run() {
+              cd ~/workspace/MediaConverterProd
+              make run
+              cd -
+          }
+          '';
+  };
 }
