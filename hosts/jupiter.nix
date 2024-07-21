@@ -71,7 +71,7 @@
         test = {
           location = {
             sourceDirectories = [ "/tmp/foo" ];
-            repositories = [ "ssh://u415868@u415868.your-storagebox.de/./test-repo" ];
+            repositories = [ "ssh://u415868@u415868.your-storagebox.de:23/./test-repo" ];
           };
         # mediawaiter = {
         #   location = {
