@@ -2,6 +2,7 @@
 {
   home.packages = [
     pkgs.pass
+    pkgs.borgbackup
   ];
 
   programs.systemd-services.environment = "jupiter";
