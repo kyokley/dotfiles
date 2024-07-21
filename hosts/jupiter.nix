@@ -71,13 +71,10 @@
         test = {
           location = {
             sourceDirectories = [ "/tmp/foo" ];
-            repositories = [ "ssh://u415868@u415868.your-storagebox.de/./test-repo" ];
+            repositories = [ "ssh://u415868@u415868.your-storagebox.de:23/./test-repo" ];
           };
           storage = {
             encryptionPasscommand = "${pkgs.pass}/bin/pass Backup/hetzner.com";
-            extraConfig = {
-              ssh_command = "ssh -p23";
-            };
           };
         };
         # mediawaiter = {
