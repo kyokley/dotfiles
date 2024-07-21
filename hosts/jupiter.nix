@@ -80,6 +80,7 @@
         #   };
           storage = {
             encryptionPasscommand = "${pkgs.pass}/bin/pass Backup/hetzner.com";
+            ssh_command = "ssh -p23";
           };
         };
       };
