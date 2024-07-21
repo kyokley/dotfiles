@@ -68,21 +68,18 @@
     borgmatic = {
       enable = true;
       backups = {
-        test = {
+        mediawaiter = {
           location = {
-            sourceDirectories = [ "/tmp/foo" ];
-            repositories = [ "ssh://u415868@u415868.your-storagebox.de:23/./test-repo" ];
+            sourceDirectories = [
+              "/mnt/hd"
+              "/mnt/hd2"
+            ];
+            repositories = [ "ssh://u415868@u415868.your-storagebox.de:23/./mw-repo" ];
           };
           storage = {
-            encryptionPasscommand = "${pkgs.pass}/bin/pass Backup/hetzner.com";
+            encryptionPasscommand = "${pkgs.pass}/bin/pass borg/mediawaiter";
           };
         };
-        # mediawaiter = {
-        #   location = {
-        #     sourceDirectories = [ "/tmp/foo" ];
-        #     repositories = [ "ssh://u415868@u415868.your-storagebox.de/./mw-repo" ];
-        #   };
-        # };
       };
     };
 

@@ -77,7 +77,7 @@ in
     git.userEmail = "kyokley@almagest";
 
     borgmatic = {
-      enable = true;
+      enable = false;
       backups = {
         test = {
           location = {
