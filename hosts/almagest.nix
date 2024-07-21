@@ -76,6 +76,25 @@ in
 
     git.userEmail = "kyokley@almagest";
 
-    borgmatic.enable = true;
+    borgmatic = {
+      enable = true;
+      backups = {
+        test = {
+          location = {
+            sourceDirectories = [ "/tmp/foo" ];
+            repositories = [ "ssh://u415868@u415868.your-storagebox.de:23/./test-repo" ];
+          };
+          storage = {
+            encryptionPasscommand = "${pkgs.pass}/bin/pass Backup/hetzner.com";
+          };
+        };
+        # mediawaiter = {
+        #   location = {
+        #     sourceDirectories = [ "/tmp/foo" ];
+        #     repositories = [ "ssh://u415868@u415868.your-storagebox.de/./mw-repo" ];
+        #   };
+        # };
+      };
+    };
   };
 }
