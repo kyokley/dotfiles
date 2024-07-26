@@ -30,7 +30,7 @@ in
     programs.git.extraConfig = {
       core.autocrlf = true;
       credential = {
-        helper = "/home/yokley/WinGit/mingw64/bin/git-credential-manager.exe";
+        helper = "/mnt/c/Program Files/Microsoft Visual Studio/2022/Professional/Common7/IDE/CommonExtensions/Microsoft/TeamFoundation/Team Explorer/Git/mingw64/doc/git-credential-manager";
         useHttpPath = true;
         # url."https://dev.azure.com" = {
         #   useHttpPath = true;
