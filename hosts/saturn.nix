@@ -24,7 +24,10 @@ in
     # nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg)
     # [ "vscode" ];
 
-    programs.nixvim.installType = "dos";
+    programs.nixvim = {
+      installType = "dos";
+      extraOptionsStr = "--offline";
+    };
 
     programs.git.userEmail = "kyokley@revantage.com";
     programs.git.extraConfig = {

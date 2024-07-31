@@ -17,20 +17,28 @@ in
                 Type of nixvim install to use. Either default, dos, or minimal.
             '';
         };
+
+        extraOptionsStr = lib.mkOption {
+            default = "";
+            type = lib.types.str;
+            description = ''
+                String of extra options to pass to nix run call
+            '';
+        };
     };
 
     config = {
         home.packages = [
            pkgs.universal-ctags
         ];
-        programs.git.extraConfig.core.editor = "nix run 'github:kyokley/nixvim#${cfg.installType}' --";
+        programs.git.extraConfig.core.editor = "nix run 'github:kyokley/nixvim#${cfg.installType}' ${cfg.extraOptionsStr} --";
         programs.zsh.shellGlobalAliases = {
-            vim = "nix run 'github:kyokley/nixvim#${cfg.installType}' --";
+            vim = "nix run 'github:kyokley/nixvim#${cfg.installType}' ${cfg.extraOptionsStr} --";
         };
 
         home.sessionVariables = {
-            EDITOR = "nix run 'github:kyokley/nixvim#${cfg.installType}' --";
-            VISUAL = "nix run 'github:kyokley/nixvim#${cfg.installType}' --";
+            EDITOR = "nix run 'github:kyokley/nixvim#${cfg.installType}' ${cfg.extraOptionsStr} --";
+            VISUAL = "nix run 'github:kyokley/nixvim#${cfg.installType}' ${cfg.extraOptionsStr} --";
         };
     };
 }
