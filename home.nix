@@ -39,6 +39,7 @@
     pkgs.tig
     pkgs.unzip
     pkgs.zsh
+    pkgs.python311Packages.bpython
   ];
 
   programs.nixvim.enable = lib.mkDefault true;
