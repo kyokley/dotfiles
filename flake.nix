@@ -20,7 +20,7 @@
 
       "mercury" = home-manager.lib.homeManagerConfiguration {
         pkgs = nixpkgs.legacyPackages.x86_64-linux;
-        modules = [ ./home.nix ./hosts/mercury.nix ];
+        modules = [ ./home.nix ./hosts/mercury/home.nix ];
       };
 
       "docker@dioxygen" = home-manager.lib.homeManagerConfiguration {

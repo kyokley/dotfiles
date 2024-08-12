@@ -6,9 +6,9 @@
     programs.git.userEmail = "kyokley@mercury";
 
     imports = [
-        ../programs/terminator.nix
-        ../programs/dunst/dunst.nix
-        ../programs/rofi/rofi.nix
+        ../../programs/terminator.nix
+        ../../programs/dunst/dunst.nix
+        ../../programs/rofi/rofi.nix
     ];
 
     home.packages = [
@@ -25,9 +25,12 @@
 
   home.file = {
     ".config/qtile" = {
-      source = ../programs/qtile;
+      source = ../../programs/qtile;
       target = ".config/qtile";
       recursive = true;
+    };
+    ".config/nixos/configuration.nix" = {
+      source = ./configuration.nix;
     };
   };
 
