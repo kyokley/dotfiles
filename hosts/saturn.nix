@@ -19,6 +19,7 @@ in
         pkgs.dotnetCorePackages.dotnet_8.sdk
         pkgs.xfce.thunar
         nix-update
+        pkgs.python311Packages.bpython
     ];
 
     # nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg)
