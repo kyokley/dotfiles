@@ -3,6 +3,7 @@
   home.packages = [
     pkgs.pass
     pkgs.borgbackup
+    pkgs.borgmatic
   ];
 
   programs.systemd-services.environment = "jupiter";
@@ -102,7 +103,7 @@
         ExecStart = toString (
             pkgs.writeShellScript "borg-update-script" ''
             PATH=$PATH:${lib.makeBinPath [ pkgs.nix pkgs.coreutils pkgs.busybox ]}
-            ${pkgs.borgbackup}/bin/borgmatic create --stats
+            ${pkgs.borgmatic}/bin/borgmatic create --stats
             ''
             );
       };
