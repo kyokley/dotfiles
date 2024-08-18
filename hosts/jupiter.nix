@@ -93,4 +93,35 @@
           }
           '';
   };
+
+  systemd.user.services = {
+    borg-update = {
+      Unit.Description = "Create borg backup";
+      Service = {
+        Type = "oneshot";
+        ExecStart = toString (
+            pkgs.writeShellScript "borg-update-script" ''
+            PATH=$PATH:${lib.makeBinPath [ pkgs.nix pkgs.coreutils pkgs.busybox ]}
+            ${pkgs.borgbackup}/bin/borgmatic create --stats
+            ''
+            );
+      };
+    };
+  };
+
+  systemd.user.timers = {
+      borg-update = {
+          Unit = {
+              Description = "Update borg backup";
+              After = [ "network.target" ];
+          };
+          Timer = {
+              OnCalendar = "*-*-* 2:00:00";
+              RandomizedDelaySec = 14400;
+              Persistent = true;
+              Unit = "borg-update.service";
+          };
+          Install.WantedBy = ["timers.target"];
+      };
+  };
 }
