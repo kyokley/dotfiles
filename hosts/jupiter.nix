@@ -117,7 +117,7 @@
           };
           Timer = {
               OnCalendar = "*-*-* 2:00:00";
-              RandomizedDelaySec = 14400;
+              RandomizedDelaySec = 3600;
               Persistent = true;
               Unit = "borg-update.service";
           };
