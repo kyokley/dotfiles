@@ -129,6 +129,11 @@
   # Enable tailscale
   services.tailscale.enable = true;
 
+  services.ollama = {
+    enable = true;
+    acceleration = "cuda";
+  };
+
   # Enable docker
   virtualisation.docker.enable = true;
 
