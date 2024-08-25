@@ -8,9 +8,13 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    picom = {
+      url = "github:yshui/picom/v12-rc2";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { nixpkgs, home-manager, ... }:
+  outputs = { nixpkgs, home-manager, picom, ... }:
   {
     homeConfigurations = {
       "dioxygen" = home-manager.lib.homeManagerConfiguration {
@@ -20,7 +24,15 @@
 
       "mercury" = home-manager.lib.homeManagerConfiguration {
         pkgs = nixpkgs.legacyPackages.x86_64-linux;
-        modules = [ ./home.nix ./hosts/mercury/home.nix ];
+        modules = [
+          ./home.nix
+          ./hosts/mercury/home.nix
+          {
+            # home.packages = [ picom.packages.x86_64-linux.default ];
+            services.picom.package = picom.packages.x86_64-linux.default;
+            # services.picom
+          }
+        ];
       };
 
       "docker@dioxygen" = home-manager.lib.homeManagerConfiguration {
