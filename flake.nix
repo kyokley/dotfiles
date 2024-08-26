@@ -12,14 +12,24 @@
       url = "github:yshui/picom/v12-rc2";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nixvim = {
+      url = "github:kyokley/nixvim";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { nixpkgs, home-manager, picom, ... }:
+  outputs = { nixpkgs, home-manager, picom, nixvim, ... }:
   {
     homeConfigurations = {
       "dioxygen" = home-manager.lib.homeManagerConfiguration {
         pkgs = nixpkgs.legacyPackages.aarch64-darwin;
-        modules = [ ./home.nix ./hosts/dioxygen.nix ];
+        modules = [
+          ./home.nix
+          ./hosts/dioxygen.nix
+          {
+            home.packages = [ nixvim.packages.aarch64-darwin.default ];
+          }
+          ];
       };
 
       "mercury" = home-manager.lib.homeManagerConfiguration {
