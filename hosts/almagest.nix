@@ -72,7 +72,6 @@ in
     git.userEmail = "kyokley@almagest";
     neovim = {
       enable = true;
-      defaultEditor = true;
       vimAlias = true;
       vimdiffAlias = true;
     };
