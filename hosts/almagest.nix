@@ -69,11 +69,6 @@ in
   };
 
   programs = {
-    nixvim = {
-      enable = false;
-      installType = "minimal";
-    };
-
     git.userEmail = "kyokley@almagest";
 
     borgmatic = {

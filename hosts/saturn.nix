@@ -22,14 +22,6 @@ in
         pkgs.python311Packages.bpython
     ];
 
-    # nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg)
-    # [ "vscode" ];
-
-    programs.nixvim = {
-      installType = "dos";
-      extraOptionsStr = "--offline";
-    };
-
     programs.git.userEmail = "kyokley@revantage.com";
     programs.git.extraConfig = {
       core.autocrlf = true;

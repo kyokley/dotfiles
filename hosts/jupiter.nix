@@ -63,8 +63,6 @@
   };
 
   programs = {
-    nixvim.enable = false;
-
     git.userEmail = "kyokley@jupiter";
 
     borgmatic = {

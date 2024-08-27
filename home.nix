@@ -10,7 +10,7 @@
     ./programs/shell/zsh.nix
     ./programs/git/git.nix
     ./programs/tmux.nix
-    # ./programs/vim.nix
+    ./programs/vim.nix
     ./programs/systemd.nix
   ];
 
