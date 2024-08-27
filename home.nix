@@ -40,6 +40,7 @@
     pkgs.tig
     pkgs.unzip
     pkgs.zsh
+    pkgs.nix-search-cli
   ];
 
   # Let Home Manager install and manage itself.
