@@ -27,6 +27,7 @@
     jupiter_system = "x86_64-linux";
     saturn_system = "x86_64-linux";
     singularity_system = "x86_64-linux";
+    titan_system = "x86_64-linux";
   in
   {
     homeConfigurations = {
@@ -106,6 +107,13 @@
         modules = [
           ./home.nix
           ./hosts/singularity.nix
+        ];
+      };
+      "titan" = home-manager.lib.homeManagerConfiguration {
+        pkgs = nixpkgs.legacyPackages.${titan_system};
+        modules = [
+          ./home.nix
+          ./hosts/titan.nix
         ];
       };
     };
