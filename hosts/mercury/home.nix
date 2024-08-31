@@ -56,7 +56,7 @@
               Type = "oneshot";
               ExecStart = toString (
                       pkgs.writeShellScript "betterlockscreen-update-script" ''
-                      PATH=$PATH:${lib.makeBinPath [ pkgs.nix pkgs.coreutils pkgs.busybox ]}
+                      PATH=$PATH:${lib.makeBinPath [ pkgs.nix pkgs.coreutils pkgs.busybox pkgs.xorg.xrdb ]}
                       ${pkgs.betterlockscreen}/bin/betterlockscreen -u /home/yokley/Pictures/wallpapers
                       ''
                       );
@@ -71,7 +71,8 @@
               After = [ "network.target" ];
           };
           Timer = {
-              OnCalendar = "*/5 * * * *";
+              OnCalendar = "*-*-* *:0/5:00";
+              Persistent = true;
               Unit = "update-lockscreen.service";
           };
           Install.WantedBy = ["timers.target"];
