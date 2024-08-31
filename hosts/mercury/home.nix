@@ -45,7 +45,7 @@
     not-when-fullscreen = true;
     timers = [
       {
-        delay = 250;
+        delay = 590;
         command = "${pkgs.dunst}/bin/dunstify '' 'Locking screen in 10 secs' -t 10";
       }
       {
