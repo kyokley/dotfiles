@@ -57,7 +57,7 @@
               ExecStart = toString (
                       pkgs.writeShellScript "betterlockscreen-update-script" ''
                       PATH=$PATH:${lib.makeBinPath [ pkgs.nix pkgs.coreutils pkgs.busybox pkgs.xorg.xrdb ]}
-                      ${pkgs.betterlockscreen}/bin/betterlockscreen -u /home/yokley/Pictures/wallpapers
+                      ${pkgs.betterlockscreen}/bin/betterlockscreen -u /home/yokley/Pictures/wallpapers --fx ""
                       ''
                       );
           };
