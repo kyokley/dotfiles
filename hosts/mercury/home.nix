@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 {
     programs.systemd-services.environment = "mercury";
 
@@ -40,13 +40,41 @@
   services.blueman-applet.enable = true;
   services.betterlockscreen = {
     enable = true;
-    arguments = ["-u ~/Pictures/wallpapers"];
   };
   services.network-manager-applet.enable = true;
   systemd.user.targets.tray = {
       Unit = {
           Description = "Home Manager System Tray";
           Requires = [ "graphical-session-pre.target" ];
+      };
+  };
+
+  systemd.user.services = {
+      update-lockscreen = {
+          Unit.Description = "Update lockscreen background image";
+          Service = {
+              Type = "oneshot";
+              ExecStart = toString (
+                      pkgs.writeShellScript "betterlockscreen-update-script" ''
+                      PATH=$PATH:${lib.makeBinPath [ pkgs.nix pkgs.coreutils pkgs.busybox ]}
+                      ${pkgs.betterlockscreen}/bin/betterlockscreen -u /home/yokley/Pictures/wallpapers
+                      ''
+                      );
+          };
+      };
+  };
+
+  systemd.user.timers = {
+      update-lockscreen = {
+          Unit = {
+              Description = "Update betterlockscreen";
+              After = [ "network.target" ];
+          };
+          Timer = {
+              OnCalendar = "*/5 * * * *";
+              Unit = "update-lockscreen.service";
+          };
+          Install.WantedBy = ["timers.target"];
       };
   };
 
