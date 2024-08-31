@@ -64,7 +64,10 @@ KEYS = [
     Key([MOD, CONTROL], "c", lazy.spawn(
         [os.path.expanduser(f'{QTILE_CONFIG_DIRECTORY}/toggle_picom.sh')])),
     Key([MOD], "p", lazy.spawn(
-        "rofi -show combi"
+        "rofi -show drun -modi drun,calc,emoji -no-history"
+    )),
+    Key([MOD], "q", lazy.spawn(
+        "rofi -show power-menu -modi power-menu:rofi-power-menu"
     )),
     Key([MOD, CONTROL], "j", lazy.spawn(
         [os.path.expanduser(f'{QTILE_CONFIG_DIRECTORY}/redbot-open.sh')]
