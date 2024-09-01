@@ -20,7 +20,7 @@
         pkgs.thunderbird
 
         (pkgs.nerdfonts.override { fonts = [ "Hack" ]; })
-
+        pkgs.vlc
     ];
 
   home.file = {
