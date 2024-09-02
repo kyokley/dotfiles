@@ -68,6 +68,11 @@
         modules = [
           ./home.nix
           ./hosts/venus.nix
+          {
+            home.packages = [
+              nixvim.packages.${venus_system}.minimal
+            ];
+          }
         ];
       };
 
