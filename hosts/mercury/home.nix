@@ -20,7 +20,7 @@
         pkgs.thunderbird
 
         (pkgs.nerdfonts.override { fonts = [ "Hack" ]; })
-
+        pkgs.vlc
     ];
 
   home.file = {
@@ -38,9 +38,24 @@
   };
 
   services.blueman-applet.enable = true;
-  services.betterlockscreen = {
+
+  services.xidlehook = {
     enable = true;
+    detect-sleep = true;
+    not-when-fullscreen = true;
+    timers = [
+      {
+        delay = 590;
+        command = "${pkgs.dunst}/bin/dunstify '' 'Locking screen in 10 secs' -t 10";
+      }
+      {
+        delay = 10;
+        command = "${pkgs.betterlockscreen}/bin/betterlockscreen --lock";
+      }
+    ];
   };
+
+
   services.network-manager-applet.enable = true;
   systemd.user.targets.tray = {
       Unit = {
