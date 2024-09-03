@@ -1,11 +1,6 @@
 { pkgs, lib, ... }:
 
 {
-  # Home Manager needs a bit of information about you and the paths it should
-  # manage.
-  home.username = lib.mkDefault "yokley";
-  home.homeDirectory = lib.mkDefault "/home/yokley";
-
   imports = [
     ./programs/shell/zsh.nix
     ./programs/git/git.nix
@@ -14,10 +9,17 @@
     ./programs/systemd.nix
   ];
 
+  # Home Manager needs a bit of information about you and the paths it should
+  # manage.
+  home.username = lib.mkDefault "yokley";
+  home.homeDirectory = lib.mkDefault "/home/yokley";
+
   nix = {
     package = pkgs.nix;
     settings.experimental-features = [ "nix-command" "flakes" ];
   };
+
+  programs.systemd-services.enable = lib.mkDefault true;
 
   # This value determines the Home Manager release that your configuration is
   # compatible with. This helps avoid breakage when a new Home Manager release
