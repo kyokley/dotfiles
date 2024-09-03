@@ -42,11 +42,4 @@
     pkgs.zsh
     pkgs.nix-search-cli
   ];
-
-  # Let Home Manager install and manage itself.
-  programs.home-manager.enable = true;
-  services.home-manager.autoUpgrade = {
-    enable = lib.mkDefault true;
-    frequency = "weekly";
-  };
 }

@@ -1,5 +1,9 @@
 {pkgs, lib, ...}:
 {
+  imports = [
+    ../programs/home-manager.nix
+  ];
+
   home.packages = [
     pkgs.pass
     pkgs.borgbackup
