@@ -18,7 +18,7 @@ in
         pkgs.devenv
         pkgs.dotnetCorePackages.dotnet_8.sdk
         pkgs.xfce.thunar
-	pkgs.xsel
+        pkgs.xsel
         nix-update
         pkgs.python311Packages.bpython
     ];
