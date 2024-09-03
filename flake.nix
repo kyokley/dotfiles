@@ -68,6 +68,11 @@
         modules = [
           ./home.nix
           ./hosts/venus.nix
+          {
+            home.packages = [
+              nixvim.packages.${venus_system}.minimal
+            ];
+          }
         ];
       };
 
@@ -76,6 +81,11 @@
         modules = [
           ./home.nix
           ./hosts/almagest.nix
+          {
+            home.packages = [
+              nixvim.packages.${almagest_system}.minimal
+            ];
+          }
         ];
       };
       "jupiter" = home-manager.lib.homeManagerConfiguration {
@@ -107,6 +117,11 @@
         modules = [
           ./home.nix
           ./hosts/singularity.nix
+          {
+            home.packages = [
+              nixvim.packages.${singularity_system}.minimal
+            ];
+          }
         ];
       };
       "titan" = home-manager.lib.homeManagerConfiguration {
