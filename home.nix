@@ -42,4 +42,6 @@
     pkgs.zsh
     pkgs.nix-search-cli
   ];
+
+  programs.home-manager.enable = true;
 }
