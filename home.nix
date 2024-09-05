@@ -46,4 +46,8 @@
   ];
 
   programs.home-manager.enable = true;
+  services.home-manager.autoUpgrade = {
+    enable = false;
+    frequency = "weekly";
+  };
 }

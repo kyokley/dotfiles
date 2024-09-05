@@ -9,7 +9,6 @@
         ../../programs/terminator.nix
         ../../programs/dunst/dunst.nix
         ../../programs/rofi/rofi.nix
-        ../../programs/home-manager.nix
     ];
 
     home.packages = [
