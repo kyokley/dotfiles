@@ -37,7 +37,6 @@ in
 
                             ${pkgs.home-manager}/bin/home-manager switch --flake 'github:kyokley/dotfiles#${cfg.environment}'
                             test $(echo "$(${pkgs.home-manager}/bin/home-manager generations | wc -l) > 1" | bc) -eq 1 && ${pkgs.home-manager}/bin/home-manager expire-generations "-30 days"
-                            ${pkgs.nix}/bin/nix-store --gc
                         ''
                         );
                     };
