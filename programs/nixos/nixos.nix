@@ -1,10 +1,5 @@
 { pkgs, lib, ... }:
 {
-    programs.systemd-services.environment = "mercury";
-
-    home.homeDirectory = "/home/yokley";
-    programs.git.userEmail = "kyokley@mercury";
-
     imports = [
         ../../programs/terminator.nix
         ../../programs/dunst/dunst.nix
