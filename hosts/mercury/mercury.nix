@@ -8,9 +8,9 @@
         ../../programs/nixos/nixos.nix
     ];
 
-  home.file = {
-    ".config/nixos/configuration.nix" = {
-      source = ./configuration.nix;
+    home.file = {
+        ".config/nixos/configuration.nix" = {
+            source = ./configuration.nix;
+        };
     };
-  };
 }

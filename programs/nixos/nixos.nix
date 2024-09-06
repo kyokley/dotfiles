@@ -27,6 +27,9 @@
     ".config/picom/picom-custom.conf" = {
       source = ./picom.conf;
     };
+    ".config/nixos/common-configuration.nix" = {
+        source = ./configuration.nix;
+    };
   };
 
   services.blueman-applet.enable = true;
