@@ -48,7 +48,7 @@
         pkgs = nixpkgs.legacyPackages.${mercury_system};
         modules = [
           ./home.nix
-          ./hosts/mercury/home.nix
+          ./hosts/mercury/mercury.nix
           {
             home.packages = [
               nixvim.packages.${mercury_system}.default
