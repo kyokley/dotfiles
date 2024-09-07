@@ -1,16 +1,22 @@
+let
+    home_dir = "/home/yokley";
+in
 {
-    programs.systemd-services.environment = "mars";
-
-    home.homeDirectory = "/home/yokley";
-    programs.git.userEmail = "kyokley@mars";
-
     imports = [
         ../../programs/nixos/nixos.nix
     ];
 
+    programs.systemd-services.environment = "mars";
+
+    home.homeDirectory = "${home_dir}";
+    programs.git.userEmail = "kyokley@mars";
+
     home.file = {
         ".config/nixos/configuration.nix" = {
             source = ./configuration.nix;
+        };
+        ".config/nixos/common-configuration.nix" = {
+            source = ../../programs/nixos/common-configuration.nix;
         };
     };
 }

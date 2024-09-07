@@ -12,5 +12,8 @@
         ".config/nixos/configuration.nix" = {
             source = ./configuration.nix;
         };
+        ".config/nixos/common-configuration.nix" = {
+            source = ../../programs/nixos/common-configuration.nix;
+        };
     };
 }
