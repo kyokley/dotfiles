@@ -28,7 +28,7 @@
       source = ./picom.conf;
     };
     ".config/nixos/common-configuration.nix" = {
-        source = ./configuration.nix;
+        source = ./common-configuration.nix;
     };
   };
 
