@@ -16,4 +16,8 @@ in
             source = ./configuration.nix;
         };
     };
+
+    home.sessionVariables = {
+        QTILE_NET_INTERFACE = "wlp1s0";
+    };
 }

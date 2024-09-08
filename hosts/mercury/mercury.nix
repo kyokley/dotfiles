@@ -16,4 +16,8 @@
             source = ../../programs/nixos/common-configuration.nix;
         };
     };
+
+    home.sessionVariables = {
+        QTILE_NET_INTERFACE = "enp14s0";
+    };
 }
