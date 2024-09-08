@@ -13,10 +13,7 @@ from libqtile.config import Screen
 from custom.layout import ScreenLayout
 from custom.utils import OS, determine_os, mount_exists
 
-BATTERY_PATHS = [
-        Path('/sys/class/power_supply/BAT0'),
-        Path('/sys/class/power_supply/BAT1'),
-        ]
+BATTERY_PATH = Path(os['QTILE_BAT_PATH']) if os.get('QTILE_BAT_PATH') else None
 WALLPAPER_DIR = Path('~/Pictures/wallpapers')
 HOME_DIR = '/home'
 ROOT_DIR = '/'
@@ -163,8 +160,7 @@ top_widgets.extend([
     ),
 ])
 
-if any([path.exists()
-        for path in BATTERY_PATHS]):
+if BATTERY_PATH and BATTERY_PATH.exists():
     top_widgets.extend([
         widget.TextBox('Bat:',
                        font=extension_defaults.font,

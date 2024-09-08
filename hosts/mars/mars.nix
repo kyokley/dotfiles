@@ -20,6 +20,8 @@ in
 
     home.sessionVariables = {
         QTILE_NET_INTERFACE = "wlp1s0";
+        QTILE_BAT_PATH = "/sys/class/power_supply/BAT1";
+        NIXPKGS_ALLOW_UNFREE = "1";
     };
 
     home.packages = [
