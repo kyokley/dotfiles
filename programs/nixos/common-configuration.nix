@@ -41,7 +41,6 @@
 
   # Enable the XFCE Desktop Environment.
   services.xserver.displayManager.lightdm.enable = true;
-  services.xserver.desktopManager.xfce.enable = false;
   services.xserver.windowManager.qtile = {
     enable = true;
     extraPackages = python3Packages: with python3Packages; [
@@ -102,6 +101,7 @@
 
   # Enable tailscale
   services.tailscale.enable = true;
+  services.tailscale.useRoutingFeatures = "client";
 
   # Enable docker
   virtualisation.docker.enable = true;

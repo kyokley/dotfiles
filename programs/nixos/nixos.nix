@@ -30,6 +30,9 @@
     ".config/nixos/common-configuration.nix" = {
         source = ./common-configuration.nix;
     };
+    ".config/nixpkgs/config.nix" = {
+        text = "{ allowUnfree = true; }";
+    };
   };
 
   services.blueman-applet.enable = true;

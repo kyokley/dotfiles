@@ -24,5 +24,6 @@ in
 
     home.packages = [
         pkgs.xbrightness
+        pkgs.spotify
     ];
 }
