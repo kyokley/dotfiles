@@ -12,12 +12,10 @@
         ".config/nixos/configuration.nix" = {
             source = ./configuration.nix;
         };
-        ".config/nixos/common-configuration.nix" = {
-            source = ../../programs/nixos/common-configuration.nix;
-        };
     };
 
     home.sessionVariables = {
         QTILE_NET_INTERFACE = "enp14s0";
+        NIXPKGS_ALLOW_UNFREE = "1";
     };
 }
