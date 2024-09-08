@@ -1,3 +1,4 @@
+{ pkgs, ... }:
 let
     home_dir = "/home/yokley";
 in
@@ -20,4 +21,8 @@ in
     home.sessionVariables = {
         QTILE_NET_INTERFACE = "wlp1s0";
     };
+
+    home.packages = [
+        pkgs.xbrightness
+    ];
 }
