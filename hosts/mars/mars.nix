@@ -16,16 +16,20 @@ in
         ".config/nixos/configuration.nix" = {
             source = ./configuration.nix;
         };
+        ".config/xdg-desktop-portal/portals.conf" = {
+            text = ''
+            [preferred]
+            default=gtk
+            '';
+        };
     };
 
     home.sessionVariables = {
         QTILE_NET_INTERFACE = "wlp1s0";
-        QTILE_BAT_PATH = "/sys/class/power_supply/BAT1";
         NIXPKGS_ALLOW_UNFREE = "1";
     };
 
     home.packages = [
         pkgs.xbrightness
-        pkgs.spotify
     ];
 }
