@@ -110,6 +110,8 @@
   services.tailscale.enable = true;
   services.tailscale.useRoutingFeatures = "client";
 
+  services.earlyoom.enable = true;
+
   # Enable docker
   virtualisation.docker = {
     enable = true;
