@@ -148,7 +148,6 @@
     htop
     git
     docker
-    qtile
     rofi
     xclip
     feh
