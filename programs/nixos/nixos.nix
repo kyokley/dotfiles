@@ -37,7 +37,6 @@
 
   services.blueman-applet.enable = true;
 
-  services.betterlockscreen.enable = true;
   services.xidlehook = {
     enable = true;
     detect-sleep = true;
