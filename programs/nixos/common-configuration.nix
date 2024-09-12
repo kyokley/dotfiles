@@ -43,7 +43,7 @@
   services.xserver.displayManager.lightdm.enable = true;
   services.xserver.windowManager.qtile = {
     enable = true;
-    extraPackages = python312Packages: with python312Packages; [
+    extraPackages = python3Packages: with python3Packages; [
         requests
         schedule
         pillow
@@ -151,7 +151,6 @@
     rofi
     xclip
     feh
-    python312Packages.qtile
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
