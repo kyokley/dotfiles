@@ -5,7 +5,10 @@ from libqtile.config import (Group,
                              Key,
                              )
 from custom.constants import MOD, SHIFT
-from libqtile.command import lazy
+try:
+    from libqtile.lazy import lazy
+except ImportError:
+    from libqtile.command import lazy # Soon to be deprecated
 
 
 def toscreen(qtile, group_name):

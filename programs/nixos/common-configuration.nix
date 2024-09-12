@@ -152,6 +152,7 @@
     rofi
     xclip
     feh
+    python312Packages.qtile
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
