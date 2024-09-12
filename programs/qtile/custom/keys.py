@@ -1,6 +1,9 @@
 import os
 from libqtile.config import Key
-from libqtile.command import lazy
+try:
+    from libqtile.lazy import lazy
+except ImportError:
+    from libqtile.command import lazy # Soon to be deprecated
 from custom.constants import (MOD,
                               SHIFT,
                               CONTROL,
