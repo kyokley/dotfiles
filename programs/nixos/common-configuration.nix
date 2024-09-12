@@ -43,7 +43,7 @@
   services.xserver.displayManager.lightdm.enable = true;
   services.xserver.windowManager.qtile = {
     enable = true;
-    extraPackages = python3Packages: with python3Packages; [
+    extraPackages = python312Packages: with python312Packages; [
         requests
         schedule
         pillow
