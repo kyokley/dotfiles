@@ -67,6 +67,7 @@
   services.blueman.enable = true;
 
   # Enable sound with pipewire.
+  hardware.alsa.enablePersistence = true;
   hardware.pulseaudio.enable = false;
   security.rtkit.enable = true;
   services.pipewire = {
