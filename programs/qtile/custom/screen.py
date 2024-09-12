@@ -1,3 +1,4 @@
+import os
 from pathlib import Path
 from libqtile import bar, widget, qtile
 from custom.widget import (WallpaperDir,
@@ -12,7 +13,10 @@ from libqtile.config import Screen
 from custom.layout import ScreenLayout
 from custom.utils import OS, determine_os, mount_exists
 
-BATTERY_PATH = Path('/sys/class/power_supply/BAT0')
+BATTERY_PATHS = [
+        Path('/sys/class/power_supply/BAT0'),
+        Path('/sys/class/power_supply/BAT1'),
+        ]
 WALLPAPER_DIR = Path('~/Pictures/wallpapers')
 HOME_DIR = '/home'
 ROOT_DIR = '/'
@@ -100,7 +104,7 @@ top_widgets.extend([
     widget.Net(foreground=extension_defaults.foreground,
                font=extension_defaults.font,
                fontsize=extension_defaults.fontsize,
-               interface='enp14s0',
+               interface=os.environ.get('QTILE_NET_INTERFACE'),
                format='{down:.0f}{down_suffix} ↓↑ {up:.0f}{up_suffix}',
                update_interval=2),
 ])
@@ -159,7 +163,8 @@ top_widgets.extend([
     ),
 ])
 
-if BATTERY_PATH.exists():
+if any([path.exists()
+        for path in BATTERY_PATHS]):
     top_widgets.extend([
         widget.TextBox('Bat:',
                        font=extension_defaults.font,

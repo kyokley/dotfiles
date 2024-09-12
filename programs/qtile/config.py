@@ -30,7 +30,12 @@ from libqtile.config import (Drag,
                              Click,
                              Match,
                              )
-from libqtile.command import lazy
+
+try:
+    from libqtile.lazy import lazy
+except ImportError:
+    from libqtile.command import lazy # Soon to be deprecated
+
 from libqtile import layout, hook
 from custom.screen import SCREENS
 from custom.utils import run_command

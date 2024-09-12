@@ -1,10 +1,5 @@
 { pkgs, lib, ... }:
 {
-    programs.systemd-services.environment = "mercury";
-
-    home.homeDirectory = "/home/yokley";
-    programs.git.userEmail = "kyokley@mercury";
-
     imports = [
         ../../programs/terminator.nix
         ../../programs/dunst/dunst.nix
@@ -25,15 +20,18 @@
 
   home.file = {
     ".config/qtile" = {
-      source = ../../programs/qtile;
+      source = ../qtile;
       target = ".config/qtile";
       recursive = true;
     };
-    ".config/nixos/configuration.nix" = {
-      source = ./configuration.nix;
-    };
     ".config/picom/picom-custom.conf" = {
       source = ./picom.conf;
+    };
+    ".config/nixos/common-configuration.nix" = {
+        source = ./common-configuration.nix;
+    };
+    ".config/nixpkgs/config.nix" = {
+        text = "{ allowUnfree = true; }";
     };
   };
 

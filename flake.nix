@@ -22,6 +22,7 @@
   let
     dioxygen_system = "aarch64-darwin";
     mercury_system = "x86_64-linux";
+    mars_system = "x86_64-linux";
     venus_system = "x86_64-linux";
     almagest_system = "x86_64-linux";
     jupiter_system = "x86_64-linux";
@@ -48,12 +49,26 @@
         pkgs = nixpkgs.legacyPackages.${mercury_system};
         modules = [
           ./home.nix
-          ./hosts/mercury/home.nix
+          ./hosts/mercury/mercury.nix
           {
             home.packages = [
               nixvim.packages.${mercury_system}.default
             ];
             services.picom.package = picom.packages.${mercury_system}.default;
+          }
+        ];
+      };
+
+      "mars" = home-manager.lib.homeManagerConfiguration {
+        pkgs = nixpkgs.legacyPackages.${mars_system};
+        modules = [
+          ./home.nix
+          ./hosts/mars/mars.nix
+          {
+            home.packages = [
+              nixvim.packages.${mars_system}.default
+            ];
+            services.picom.package = picom.packages.${mars_system}.default;
           }
         ];
       };

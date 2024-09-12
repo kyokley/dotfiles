@@ -1,6 +1,9 @@
 import os
 from libqtile.config import Key
-from libqtile.command import lazy
+try:
+    from libqtile.lazy import lazy
+except ImportError:
+    from libqtile.command import lazy # Soon to be deprecated
 from custom.constants import (MOD,
                               SHIFT,
                               CONTROL,
@@ -101,8 +104,8 @@ KEYS = [
     Key([], 'XF86AudioMute', lazy.spawn('amixer -q set Master toggle')),
 
     # Brightness Controls
-    Key([], 'XF86MonBrightnessUp', lazy.spawn("xbacklight -inc 10 -ctrl acpi_video0")),
-    Key([], 'XF86MonBrightnessDown', lazy.spawn("xbacklight -dec 10 -ctrl acpi_video0")),
+    Key([], 'XF86MonBrightnessUp', lazy.spawn("xbrightness +5000")),
+    Key([], 'XF86MonBrightnessDown', lazy.spawn("xbrightness -5000")),
 
     Key([MOD], 'F11', lazy.group['scratchpad'].dropdown_toggle('term')),
     Key([MOD], 'F12', lazy.group['scratchpad'].dropdown_toggle('browser')),
