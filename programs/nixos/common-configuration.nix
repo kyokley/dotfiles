@@ -48,6 +48,7 @@
         schedule
         pillow
         pywal
+        dateutil
       ];
   };
 
