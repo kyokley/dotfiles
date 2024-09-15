@@ -16,6 +16,7 @@
 
         (pkgs.nerdfonts.override { fonts = [ "Hack" ]; })
         pkgs.vlc
+        pkgs.spotify
     ];
 
   home.file = {
@@ -26,9 +27,6 @@
     };
     ".config/picom/picom-custom.conf" = {
       source = ./picom.conf;
-    };
-    ".config/nixos/common-configuration.nix" = {
-        source = ./common-configuration.nix;
     };
     ".config/nixpkgs/config.nix" = {
         text = "{ allowUnfree = true; }";

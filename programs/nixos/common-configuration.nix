@@ -1,10 +1,10 @@
 { pkgs, ... }:
 
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      /etc/nixos/hardware-configuration.nix
-    ];
+  # imports =
+  #   [ # Include the results of the hardware scan.
+  #     /etc/nixos/hardware-configuration.nix
+  #   ];
 
   nix = {
       package = pkgs.nixFlakes;

@@ -2,7 +2,8 @@
 {
   imports =
     [ # Include the results of the hardware scan.
-      /home/yokley/.config/nixos/common-configuration.nix
+      ./hardware-configuration.nix
+      ../../programs/nixos/common-configuration.nix
     ];
 
   # Bootloader.
@@ -23,8 +24,6 @@
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
-
-  sound.enable = true;
 
   system.stateVersion = "24.05"; # Did you read the comment?
 
