@@ -21,8 +21,6 @@
   outputs = { nixpkgs, home-manager, picom, nixvim, ... }@all:
   let
     dioxygen_system = "aarch64-darwin";
-    mercury_system = "x86_64-linux";
-    mars_system = "x86_64-linux";
     venus_system = "x86_64-linux";
     almagest_system = "x86_64-linux";
     jupiter_system = "x86_64-linux";
