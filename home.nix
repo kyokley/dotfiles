@@ -43,8 +43,8 @@
     pkgs.zsh
     pkgs.nix-search-cli
     pkgs.lftp
+    pkgs.home-manager
   ];
 
   programs.home-manager.enable = true;
-
 }
