@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, home-manager, ... }:
 
 {
   # imports =
@@ -182,4 +182,10 @@
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
   networking.firewall.enable = false;
+
+  home-manager = {
+    useGlobalPkgs = true;
+    useUserPackages = true;
+    users.yokley = import ../../home.nix;
+  };
 }

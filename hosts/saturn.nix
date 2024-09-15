@@ -11,7 +11,8 @@ in
     programs.systemd-services.enable = false;
 
     imports = [
-        ../programs/rofi/rofi.nix
+      ../programs/rofi/rofi.nix
+      ../home.nix
     ];
 
     home.packages = [

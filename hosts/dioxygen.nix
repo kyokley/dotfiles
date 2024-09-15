@@ -8,6 +8,10 @@ let
   '';
 in
 {
+  imports = [
+    ../home.nix
+  ];
+
   programs.systemd-services.enable = false;
 
   home.homeDirectory = "/Users/yokley";

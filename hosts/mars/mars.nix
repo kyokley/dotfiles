@@ -1,10 +1,12 @@
-{ pkgs, ... }:
+{ pkgs, nixvim, picom, ... }:
 let
     home_dir = "/home/yokley";
+    system = "x86_64-linux";
 in
 {
     imports = [
         ../../programs/nixos/nixos.nix
+        ../../home.nix
     ];
 
     programs.systemd-services.environment = "mars";
@@ -18,5 +20,8 @@ in
 
     home.packages = [
         pkgs.xbrightness
+        nixvim.packages.${system}.default
     ];
+
+    services.picom.package = picom.packages.${system}.default;
 }
