@@ -1,21 +1,16 @@
-{ lib, ... }:
+let
+  stateVersion = "24.05";
+in
 {
-  description = "A template that shows all standard flake outputs";
+  description = "NixOS Flake";
 
   # The nixpkgs entry in the flake registry.
   inputs.nixpkgsRegistry.url = "nixpkgs";
 
-  # The nixos-24.05 branch of the NixOS/nixpkgs repository on GitHub.
-  inputs.nixpkgsGitHubBranch.url = "github:NixOS/nixpkgs/nixos-24.05";
-
-  # A specific branch of a Git repository.
-  inputs.gitRepoBranch.url = "git+https://github.com/NixOS/patchelf?ref=master";
-
+  # The nixos-${stateVersion} branch of the NixOS/nixpkgs repository on GitHub.
+  inputs.nixpkgsGitHubBranch.url = "github:NixOS/nixpkgs/nixos-${stateVersion}";
 
   outputs = all@{ self, nixpkgs, ... }: {
-    nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
-      "spotify"
-    ];
 
     # Used with `nixos-rebuild --flake .#<hostname>`
     # nixosConfigurations."<hostname>".config.system.build.toplevel must be a derivation
@@ -23,7 +18,23 @@
       mars = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         modules = [
-          ./configuration.nix
+          ./common-configuration.nix
+          ../../hosts/mars/configuration.nix
+          ../../hosts/mars/hardware-configuration.nix
+          {
+            system.stateVersion = "${stateVersion}";
+          }
+        ] ;
+      };
+      mercury = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        modules = [
+          ./common-configuration.nix
+          ../../hosts/mercury/configuration.nix
+          ../../hosts/mercury/hardware-configuration.nix
+          {
+            system.stateVersion = "${stateVersion}";
+          }
         ] ;
       };
     };

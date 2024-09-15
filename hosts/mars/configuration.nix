@@ -1,10 +1,5 @@
 { pkgs, ... }:
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-      ../../programs/nixos/common-configuration.nix
-    ];
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -27,7 +22,4 @@
 
   services.xserver.desktopManager.xfce.enable = true;
   hardware.alsa.enablePersistence = true;
-
-  system.stateVersion = "24.05"; # Did you read the comment?
-
 }
