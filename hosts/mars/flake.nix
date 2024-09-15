@@ -4,8 +4,8 @@
   # The nixpkgs entry in the flake registry.
   inputs.nixpkgsRegistry.url = "nixpkgs";
 
-  # The nixos-24.05 branch of the NixOS/nixpkgs repository on GitHub.
-  inputs.nixpkgsGitHubBranch.url = "github:NixOS/nixpkgs/nixos-24.05";
+  # The nixos-23.11 branch of the NixOS/nixpkgs repository on GitHub.
+  inputs.nixpkgsGitHubBranch.url = "github:NixOS/nixpkgs/nixos-23.11";
 
   outputs = all@{ self, nixpkgs, ... }: {
 

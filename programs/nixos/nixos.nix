@@ -16,7 +16,6 @@
 
         (pkgs.nerdfonts.override { fonts = [ "Hack" ]; })
         pkgs.vlc
-        pkgs.spotify
     ];
 
   home.file = {

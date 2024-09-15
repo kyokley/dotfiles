@@ -25,6 +25,7 @@
   # networking.proxy.default = "http://user:password@proxy:port/";
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
+  services.xserver.desktopManager.xfce.enable = true;
   hardware.alsa.enablePersistence = true;
 
   system.stateVersion = "24.05"; # Did you read the comment?
