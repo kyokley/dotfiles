@@ -1,16 +1,17 @@
-let
-  stateVersion = "24.05";
-in
 {
   description = "NixOS Flake";
 
   # The nixpkgs entry in the flake registry.
   inputs.nixpkgsRegistry.url = "nixpkgs";
 
-  # The nixos-${stateVersion} branch of the NixOS/nixpkgs repository on GitHub.
-  inputs.nixpkgsGitHubBranch.url = "github:NixOS/nixpkgs/nixos-${stateVersion}";
+  inputs.nixpkgsGitHubBranch.url = "github:NixOS/nixpkgs/nixos-24.05";
 
-  outputs = all@{ self, nixpkgs, ... }: {
+  outputs = all@{ self, nixpkgs, ... }:
+  let
+    # Should match above nixpkgs version
+    stateVersion = "24.05";
+  in
+  {
 
     # Used with `nixos-rebuild --flake .#<hostname>`
     # nixosConfigurations."<hostname>".config.system.build.toplevel must be a derivation
