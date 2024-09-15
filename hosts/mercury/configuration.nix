@@ -29,4 +29,6 @@
   ];
 
   hardware.alsa.enablePersistence = true;
+
+  system.stateVersion = "23.11"; # Don't touch me!
 }

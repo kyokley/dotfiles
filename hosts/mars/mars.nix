@@ -24,4 +24,5 @@ in
     ];
 
     services.picom.package = picom.packages.${system}.default;
+
 }

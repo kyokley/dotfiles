@@ -5,7 +5,7 @@
     # Specify the source of Home Manager and Nixpkgs.
     nixpkgs.url = "github:nixos/nixpkgs/nixos-24.05";
     home-manager = {
-      url = "github:nix-community/home-manager";
+      url = "github:nix-community/home-manager/release-24.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     picom = {
@@ -14,7 +14,6 @@
     };
     nixvim = {
       url = "github:kyokley/nixvim";
-      inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
@@ -27,7 +26,6 @@
     saturn_system = "x86_64-linux";
     singularity_system = "x86_64-linux";
     titan_system = "x86_64-linux";
-    stateVersion = "24.05";
   in
   {
     nixosConfigurations = {
@@ -43,7 +41,6 @@
             home-manager.extraSpecialArgs = { inherit nixvim picom; };
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
-            system.stateVersion = "${stateVersion}";
           }
         ];
       };
@@ -58,7 +55,6 @@
             home-manager.extraSpecialArgs = { inherit nixvim picom; };
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
-            system.stateVersion = "${stateVersion}";
           }
         ];
       };

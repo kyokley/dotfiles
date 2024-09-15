@@ -28,14 +28,7 @@ in
                             pkgs.writeShellScript "home-manager-update-script" ''
                             PATH=$PATH:${lib.makeBinPath [ pkgs.nix pkgs.coreutils pkgs.busybox ]}
 
-                            echo "Update Nix's channels"
-                            ${pkgs.nix}/bin/nix-channel --update
-                            echo "Upgrade Home Manager"
-                            ${pkgs.home-manager}/bin/home-manager switch
-
                             test $(echo "$(${pkgs.home-manager}/bin/home-manager generations | wc -l) > 1" | bc) -eq 1 && ${pkgs.home-manager}/bin/home-manager expire-generations "-30 days"
-
-                            ${pkgs.home-manager}/bin/home-manager switch --keep-going --flake 'github:kyokley/dotfiles#${cfg.environment}'
                         ''
                         );
                     };
