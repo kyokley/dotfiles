@@ -15,6 +15,7 @@
   home.homeDirectory = lib.mkDefault "/home/yokley";
 
   nix = {
+    package = lib.mkDefault pkgs.nix;
     settings.experimental-features = [ "nix-command" "flakes" ];
   };
 
