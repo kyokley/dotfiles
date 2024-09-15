@@ -1,36 +1,16 @@
 {
   "nodes": {
-    "gitRepoBranch": {
-      "inputs": {
-        "nixpkgs": "nixpkgs"
-      },
-      "locked": {
-        "lastModified": 1718457448,
-        "narHash": "sha256-FSoxTcRZMGHNJh8dNtKOkcUtjhmhU6yQXcZZfUPLhQM=",
-        "ref": "master",
-        "rev": "a0f54334df36770b335c051e540ba40afcbf8378",
-        "revCount": 844,
-        "type": "git",
-        "url": "https://github.com/NixOS/patchelf"
-      },
-      "original": {
-        "ref": "master",
-        "type": "git",
-        "url": "https://github.com/NixOS/patchelf"
-      }
-    },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1672057183,
-        "narHash": "sha256-GN7/10DNNvs1FPj9tlZA2qgNdFuYKKuS3qlHTqAxasQ=",
+        "lastModified": 1726238386,
+        "narHash": "sha256-3//V84fYaGVncFImitM6lSAliRdrGayZLdxWlpcuGk0=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "b139e44d78c36c69bcbb825b20dbfa51e7738347",
+        "rev": "01f064c99c792715054dc7a70e4c1626dbbec0c3",
         "type": "github"
       },
       "original": {
         "id": "nixpkgs",
-        "ref": "nixpkgs-unstable",
         "type": "indirect"
       }
     },
@@ -64,24 +44,9 @@
         "type": "indirect"
       }
     },
-    "nixpkgs_2": {
-      "locked": {
-        "lastModified": 1726238386,
-        "narHash": "sha256-3//V84fYaGVncFImitM6lSAliRdrGayZLdxWlpcuGk0=",
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "01f064c99c792715054dc7a70e4c1626dbbec0c3",
-        "type": "github"
-      },
-      "original": {
-        "id": "nixpkgs",
-        "type": "indirect"
-      }
-    },
     "root": {
       "inputs": {
-        "gitRepoBranch": "gitRepoBranch",
-        "nixpkgs": "nixpkgs_2",
+        "nixpkgs": "nixpkgs",
         "nixpkgsGitHubBranch": "nixpkgsGitHubBranch",
         "nixpkgsRegistry": "nixpkgsRegistry"
       }
