@@ -3,8 +3,8 @@ let
   reboot-kexec = pkgs.writeScriptBin "reboot-kexec" ''
   #!${pkgs.stdenv.shell}
   cmdline="init=$(readlink -f /nix/var/nix/profiles/system/init) $(cat /nix/var/nix/profiles/system/kernel-params)"
-  kexec -l /nix/var/nix/profiles/system/kernel --initrd=/nix/var/nix/profiles/system/initrd --command-line="$cmdline"
-  systemctl kexec
+  sudo kexec -l /nix/var/nix/profiles/system/kernel --initrd=/nix/var/nix/profiles/system/initrd --append="$cmdline"
+  sudo systemctl kexec
   '';
 in
 {
