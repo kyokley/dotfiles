@@ -22,5 +22,10 @@
 
   sound.enable = true;
 
+  environment.systemPackages = with pkgs; [
+    protonvpn-gui
+    gnome.gnome-keyring
+  ];
+
   system.stateVersion = "24.05"; # Don't touch me!
 }
