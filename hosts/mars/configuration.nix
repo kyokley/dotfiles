@@ -27,28 +27,5 @@
     gnome.gnome-keyring
   ];
 
-  systemd.services = {
-    lock-before-sleeping = {
-      restartIfChanged = false;
-      unitConfig = {
-        Description = "Helper service to bind locker to sleep.target";
-      };
-      serviceConfig = {
-        ExecStart = "${pkgs.betterlockscreen}/bin/betterlockscreen --lock";
-        Type = "simple";
-      };
-      before = [
-        "pre-sleep.service"
-      ];
-      wantedBy= [
-        "pre-sleep.service"
-      ];
-      environment = {
-        DISPLAY = ":0";
-        XAUTHORITY = "/home/yokley/.Xauthority";
-      };
-    };
-  };
-
   system.stateVersion = "24.05"; # Don't touch me!
 }
