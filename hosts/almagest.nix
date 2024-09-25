@@ -3,6 +3,10 @@ let
   mv_path = "/home/yokley/workspace/MediaViewerProd";
 in
 {
+  imports = [
+    ../home.nix
+  ];
+
   home.packages = [
     pkgs.docker-compose
     pkgs.pass

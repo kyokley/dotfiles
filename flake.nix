@@ -3,9 +3,9 @@
 
   inputs = {
     # Specify the source of Home Manager and Nixpkgs.
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-24.05";
     home-manager = {
-      url = "github:nix-community/home-manager";
+      url = "github:nix-community/home-manager/release-24.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     picom = {
@@ -14,15 +14,12 @@
     };
     nixvim = {
       url = "github:kyokley/nixvim";
-      inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
-  outputs = { nixpkgs, home-manager, picom, nixvim, ... }:
+  outputs = { nixpkgs, home-manager, picom, nixvim, ... }@all:
   let
     dioxygen_system = "aarch64-darwin";
-    mercury_system = "x86_64-linux";
-    mars_system = "x86_64-linux";
     venus_system = "x86_64-linux";
     almagest_system = "x86_64-linux";
     jupiter_system = "x86_64-linux";
@@ -31,11 +28,43 @@
     titan_system = "x86_64-linux";
   in
   {
+    nixosConfigurations = {
+      mars = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        modules = [
+          ./programs/nixos/common-configuration.nix
+          ./hosts/mars/configuration.nix
+          ./hosts/mars/hardware-configuration.nix
+          home-manager.nixosModules.home-manager
+          {
+            home-manager.users.yokley = import ./hosts/mars/mars.nix;
+            home-manager.extraSpecialArgs = { inherit nixvim picom; };
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+          }
+        ];
+      };
+      mercury = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        modules = [
+          ./programs/nixos/common-configuration.nix
+          ./hosts/mercury/configuration.nix
+          ./hosts/mercury/hardware-configuration.nix
+          {
+            home-manager.users.yokley = import ./hosts/mercury/mercury.nix;
+            home-manager.extraSpecialArgs = { inherit nixvim picom; };
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+          }
+        ];
+      };
+    };
+
     homeConfigurations = {
       "dioxygen" = home-manager.lib.homeManagerConfiguration {
+        specialArgs = { inherit all; };
         pkgs = nixpkgs.legacyPackages.${dioxygen_system};
         modules = [
-          ./home.nix
           ./hosts/dioxygen.nix
           {
             home.packages = [
@@ -45,43 +74,14 @@
         ];
       };
 
-      "mercury" = home-manager.lib.homeManagerConfiguration {
-        pkgs = nixpkgs.legacyPackages.${mercury_system};
-        modules = [
-          ./home.nix
-          ./hosts/mercury/mercury.nix
-          {
-            home.packages = [
-              nixvim.packages.${mercury_system}.default
-            ];
-            services.picom.package = picom.packages.${mercury_system}.default;
-          }
-        ];
-      };
-
-      "mars" = home-manager.lib.homeManagerConfiguration {
-        pkgs = nixpkgs.legacyPackages.${mars_system};
-        modules = [
-          ./home.nix
-          ./hosts/mars/mars.nix
-          {
-            home.packages = [
-              nixvim.packages.${mars_system}.default
-            ];
-            services.picom.package = picom.packages.${mars_system}.default;
-          }
-        ];
-      };
-
-      "docker@dioxygen" = home-manager.lib.homeManagerConfiguration {
-        pkgs = nixpkgs.legacyPackages.aarch64-linux;
-        modules = [ ./home.nix ];
-      };
+      # "docker@dioxygen" = home-manager.lib.homeManagerConfiguration {
+      #   pkgs = nixpkgs.legacyPackages.aarch64-linux;
+      #   modules = [ ./home.nix ];
+      # };
 
       "venus" = home-manager.lib.homeManagerConfiguration {
         pkgs = nixpkgs.legacyPackages.${venus_system};
         modules = [
-          ./home.nix
           ./hosts/venus.nix
           {
             home.packages = [
@@ -94,7 +94,6 @@
       "almagest" = home-manager.lib.homeManagerConfiguration {
         pkgs = nixpkgs.legacyPackages.${almagest_system};
         modules = [
-          ./home.nix
           ./hosts/almagest.nix
           {
             home.packages = [
@@ -106,7 +105,6 @@
       "jupiter" = home-manager.lib.homeManagerConfiguration {
         pkgs = nixpkgs.legacyPackages.${jupiter_system};
         modules = [
-          ./home.nix
           ./hosts/jupiter.nix
           {
             home.packages = [
@@ -118,7 +116,6 @@
       "saturn" = home-manager.lib.homeManagerConfiguration {
         pkgs = nixpkgs.legacyPackages.${saturn_system};
         modules = [
-          ./home.nix
           ./hosts/saturn.nix
           {
             home.packages = [
@@ -130,7 +127,6 @@
       "singularity" = home-manager.lib.homeManagerConfiguration {
         pkgs = nixpkgs.legacyPackages.${singularity_system};
         modules = [
-          ./home.nix
           ./hosts/singularity.nix
           {
             home.packages = [
@@ -142,7 +138,6 @@
       "titan" = home-manager.lib.homeManagerConfiguration {
         pkgs = nixpkgs.legacyPackages.${titan_system};
         modules = [
-          ./home.nix
           ./hosts/titan.nix
         ];
       };

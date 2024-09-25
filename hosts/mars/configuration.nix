@@ -1,9 +1,5 @@
 { pkgs, ... }:
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      /home/yokley/.config/nixos/common-configuration.nix
-    ];
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -26,6 +22,10 @@
 
   sound.enable = true;
 
-  system.stateVersion = "24.05"; # Did you read the comment?
+  environment.systemPackages = with pkgs; [
+    protonvpn-gui
+    gnome.gnome-keyring
+  ];
 
+  system.stateVersion = "24.05"; # Don't touch me!
 }

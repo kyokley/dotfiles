@@ -1,4 +1,8 @@
 {
+  imports = [
+    ../home.nix
+  ];
+
   programs.systemd-services.environment = "titan";
   programs.git.userEmail = "kyokley@titan";
   programs.neovim = {

@@ -1,10 +1,12 @@
-{ pkgs, ... }:
+{ pkgs, nixvim, picom, ... }:
 let
     home_dir = "/home/yokley";
+    system = "x86_64-linux";
 in
 {
     imports = [
         ../../programs/nixos/nixos.nix
+        ../../home.nix
     ];
 
     programs.systemd-services.environment = "mars";
@@ -12,24 +14,33 @@ in
     home.homeDirectory = "${home_dir}";
     programs.git.userEmail = "kyokley@mars";
 
-    home.file = {
-        ".config/nixos/configuration.nix" = {
-            source = ./configuration.nix;
-        };
-        ".config/xdg-desktop-portal/portals.conf" = {
-            text = ''
-            [preferred]
-            default=gtk
-            '';
-        };
-    };
-
     home.sessionVariables = {
         QTILE_NET_INTERFACE = "wlp1s0";
-        NIXPKGS_ALLOW_UNFREE = "1";
     };
 
     home.packages = [
         pkgs.xbrightness
+        nixvim.packages.${system}.default
     ];
+
+    services.picom.package = picom.packages.${system}.default;
+
+  systemd.user.services = {
+    "lock-before-sleeping" = {
+      Unit = {
+        Description = "Helper service to bind locker to sleep.target";
+        Before = "pre-sleep.service";
+      };
+      Service = {
+        ExecStart = "${pkgs.betterlockscreen}/bin/betterlockscreen --lock -- --nofork";
+        Type = "simple";
+      };
+      Install = {
+          WantedBy = [ "pre-sleep.target" ];
+      };
+    };
+  };
+
+    home.stateVersion = "24.05"; # Don't touch me!
+
 }

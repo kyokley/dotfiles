@@ -1,16 +1,7 @@
 { pkgs, ... }:
 
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      /etc/nixos/hardware-configuration.nix
-    ];
-
   nix = {
-      package = pkgs.nixFlakes;
-      extraOptions = ''
-          experimental-features = nix-command flakes
-          '';
       gc = {
           automatic = true;
           dates = "weekly";
@@ -142,6 +133,7 @@
     neovim
     wget
     curl
+    brave
     terminator
     tailscale
     pavucontrol
@@ -182,4 +174,10 @@
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
   networking.firewall.enable = false;
+
+  home-manager = {
+    useGlobalPkgs = true;
+    useUserPackages = true;
+    users.yokley = import ../../home.nix;
+  };
 }
