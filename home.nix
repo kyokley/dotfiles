@@ -17,9 +17,6 @@
   nix = {
     package = lib.mkDefault pkgs.nix;
     settings.experimental-features = [ "nix-command" "flakes" ];
-    extraOptions = ''
-      trusted-users = root yokley
-    '';
   };
 
   programs.systemd-services.enable = lib.mkDefault true;

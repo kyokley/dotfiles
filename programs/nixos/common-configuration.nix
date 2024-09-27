@@ -2,20 +2,23 @@
 
 {
   nix = {
-      gc = {
-          automatic = true;
-          dates = "weekly";
-          options = "--delete-older-than 7d";
-      };
+    gc = {
+      automatic = true;
+      dates = "weekly";
+      options = "--delete-older-than 7d";
+    };
+    extraOptions = ''
+      trusted-users = root yokley
+      '';
   };
 
-  # Enable networking
+# Enable networking
   networking.networkmanager.enable = true;
 
-  # Set your time zone.
+# Set your time zone.
   time.timeZone = "America/Chicago";
 
-  # Select internationalisation properties.
+# Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
 
   i18n.extraLocaleSettings = {
@@ -30,35 +33,35 @@
     LC_TIME = "en_US.UTF-8";
   };
 
-  # Enable the XFCE Desktop Environment.
+# Enable the XFCE Desktop Environment.
   services.xserver.displayManager.lightdm.enable = true;
   services.xserver.windowManager.qtile = {
     enable = true;
     extraPackages = python3Packages: with python3Packages; [
-        requests
+      requests
         schedule
         pillow
         pywal
         dateutil
-      ];
+    ];
   };
 
-  # Configure keymap in X11
+# Configure keymap in X11
   services.xserver = {
     enable = true;
     xkb.layout = "us";
     xkb.variant = "";
   };
 
-  # Enable CUPS to print documents.
+# Enable CUPS to print documents.
   services.printing.enable = true;
 
-  # Enable bluetooth
+# Enable bluetooth
   hardware.bluetooth.enable = true;
   hardware.bluetooth.powerOnBoot = true;
   services.blueman.enable = true;
 
-  # Enable sound with pipewire.
+# Enable sound with pipewire.
   hardware.pulseaudio.enable = false;
   security.rtkit.enable = true;
   services.pipewire = {
@@ -66,30 +69,30 @@
     alsa.enable = true;
     alsa.support32Bit = true;
     pulse.enable = true;
-    # If you want to use JACK applications, uncomment this
-    #jack.enable = true;
+# If you want to use JACK applications, uncomment this
+#jack.enable = true;
 
-    # use the example session manager (no others are packaged yet so this is enabled by default,
-    # no need to redefine it in your config for now)
-    #media-session.enable = true;
+# use the example session manager (no others are packaged yet so this is enabled by default,
+# no need to redefine it in your config for now)
+#media-session.enable = true;
   };
 
-  # Enable touchpad support (enabled default in most desktopManager).
-  # services.xserver.libinput.enable = true;
+# Enable touchpad support (enabled default in most desktopManager).
+# services.xserver.libinput.enable = true;
 
-  # Enable flatpaks
+# Enable flatpaks
   xdg.portal.enable = true;
   xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
   xdg.portal.config.common.default = "*";
   services.flatpak.enable = true;
 
-  # Enable tailscale
+# Enable tailscale
   services.tailscale.enable = true;
   services.tailscale.useRoutingFeatures = "client";
 
   services.earlyoom.enable = true;
 
-  # Enable docker
+# Enable docker
   virtualisation.docker = {
     enable = true;
   };
@@ -98,23 +101,23 @@
     fontDir.enable = true;
     enableGhostscriptFonts = true;
     packages = with pkgs; [
-       corefonts
-       dejavu_fonts
-       inconsolata
-       # liberation_ttf
-       # terminus_font
-       # ttf_bitstream_vera
-       # vistafonts
+      corefonts
+        dejavu_fonts
+        inconsolata
+# liberation_ttf
+# terminus_font
+# ttf_bitstream_vera
+# vistafonts
     ];
   };
 
-  # Define a user account. Don't forget to set a password with ‘passwd’.
+# Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.yokley = {
     shell = pkgs.zsh;
     isNormalUser = true;
     description = "Kevin Yokley";
     extraGroups = [
-        "networkmanager"
+      "networkmanager"
         "wheel"
         "docker"
     ];
@@ -123,56 +126,56 @@
     ];
   };
 
-  # Allow unfree packages
+# Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
+# List packages installed in system profile. To search, run:
+# $ nix search wget
   environment.systemPackages = with pkgs; [
     nano # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-    neovim
-    wget
-    curl
-    brave
-    terminator
-    tailscale
-    pavucontrol
-    volctl
-    htop
-    git
-    docker
-    rofi
-    xclip
-    feh
+      neovim
+      wget
+      curl
+      brave
+      terminator
+      tailscale
+      pavucontrol
+      volctl
+      htop
+      git
+      docker
+      rofi
+      xclip
+      feh
   ];
 
-  # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
-  # programs.mtr.enable = true;
-  # programs.gnupg.agent = {
-  #   enable = true;
-  #   enableSSHSupport = true;
-  # };
+# Some programs need SUID wrappers, can be configured further or are
+# started in user sessions.
+# programs.mtr.enable = true;
+# programs.gnupg.agent = {
+#   enable = true;
+#   enableSSHSupport = true;
+# };
   programs.neovim = {
-      enable = false;
-      defaultEditor = true;
-      viAlias = true;
-      vimAlias = true;
+    enable = false;
+    defaultEditor = true;
+    viAlias = true;
+    vimAlias = true;
   };
 
   environment.variables.EDITOR = "nvim";
   programs.zsh.enable = true;
 
 
-  # List services that you want to enable:
+# List services that you want to enable:
 
-  # Enable the OpenSSH daemon.
-  # services.openssh.enable = true;
+# Enable the OpenSSH daemon.
+# services.openssh.enable = true;
 
-  # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
-  # Or disable the firewall altogether.
+# Open ports in the firewall.
+# networking.firewall.allowedTCPPorts = [ ... ];
+# networking.firewall.allowedUDPPorts = [ ... ];
+# Or disable the firewall altogether.
   networking.firewall.enable = false;
 
   home-manager = {
