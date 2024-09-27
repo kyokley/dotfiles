@@ -19,6 +19,7 @@ in
     };
 
     home.packages = [
+        pkgs.devenv
         pkgs.xbrightness
         nixvim.packages.${system}.default
     ];
