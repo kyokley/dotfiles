@@ -38,5 +38,5 @@
     pkgs.home-manager
   ];
 
-  programs.home-manager.enable = true;
+  programs.home-manager.enable = false;
 }
