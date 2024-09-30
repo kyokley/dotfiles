@@ -26,22 +26,6 @@ in
 
     services.picom.package = picom.packages.${system}.default;
 
-  systemd.user.services = {
-    "lock-before-sleeping" = {
-      Unit = {
-        Description = "Helper service to bind locker to sleep.target";
-        Before = "pre-sleep.service";
-      };
-      Service = {
-        ExecStart = "${pkgs.betterlockscreen}/bin/betterlockscreen --lock -- --nofork";
-        Type = "simple";
-      };
-      Install = {
-          WantedBy = [ "pre-sleep.target" ];
-      };
-    };
-  };
-
     home.stateVersion = "24.05"; # Don't touch me!
 
 }
