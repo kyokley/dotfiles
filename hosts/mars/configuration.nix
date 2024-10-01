@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 {
 
   # Bootloader.
@@ -26,6 +26,35 @@
     protonvpn-gui
     gnome.gnome-keyring
   ];
+
+  services = {
+    logind = {
+      lidSwitch = "ignore";
+      extraConfig = ''
+        HandlePowerKey=ignore
+        HandleLidSwitch=ignore
+      '';
+    };
+    acpid = {
+      enable = true;
+      lidEventCommands =
+      ''
+        export PATH=$PATH:${lib.makeBinPath [ pkgs.nix ]}
+
+        lid_state=$(cat /proc/acpi/button/lid/LID0/state | ${pkgs.gawk}/bin/awk '{print $NF}')
+        if [ $lid_state = "closed" ]; then
+          systemctl suspend
+          DISPLAY=:0 ${pkgs.sudo}/bin/sudo -u yokley ${pkgs.betterlockscreen}/bin/betterlockscreen --lock -- --nofork
+        fi
+      '';
+
+      powerEventCommands =
+      ''
+        systemctl suspend
+        DISPLAY=:0 ${pkgs.sudo}/bin/sudo -u yokley ${pkgs.betterlockscreen}/bin/betterlockscreen --lock -- --nofork
+      '';
+    };
+  };
 
   system.stateVersion = "24.05"; # Don't touch me!
 }

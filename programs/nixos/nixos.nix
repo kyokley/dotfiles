@@ -4,6 +4,7 @@
         ../../programs/terminator.nix
         ../../programs/dunst/dunst.nix
         ../../programs/rofi/rofi.nix
+        ../../programs/qtile/qtile.nix
     ];
 
     home.packages = [
