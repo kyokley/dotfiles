@@ -10,6 +10,7 @@
       extraConfig = (builtins.concatStringsSep "\n" [
         (builtins.readFile ./powerlevel10k_config.zsh)
         ''
+
         function init-psql() {
             touch $HOME/.psql_history
 
