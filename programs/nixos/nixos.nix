@@ -1,4 +1,12 @@
 { pkgs, lib, ... }:
+let
+  reboot-kexec = pkgs.writeScriptBin "reboot-kexec" ''
+  #!${pkgs.stdenv.shell}
+  cmdline="init=$(readlink -f /nix/var/nix/profiles/system/init) $(cat /nix/var/nix/profiles/system/kernel-params)"
+  sudo kexec -l /nix/var/nix/profiles/system/kernel --initrd=/nix/var/nix/profiles/system/initrd --append="$cmdline"
+  sudo systemctl kexec
+  '';
+in
 {
     imports = [
         ../../programs/terminator.nix
@@ -17,6 +25,7 @@
 
         (pkgs.nerdfonts.override { fonts = [ "Hack" ]; })
         pkgs.vlc
+        reboot-kexec
     ];
 
   home.file = {

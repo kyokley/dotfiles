@@ -11,7 +11,6 @@ in
     programs.systemd-services.enable = false;
 
     imports = [
-      ../programs/rofi/rofi.nix
       ../home.nix
     ];
 
