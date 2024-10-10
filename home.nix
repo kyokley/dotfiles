@@ -36,6 +36,7 @@
     pkgs.nix-search-cli
     pkgs.lftp
     pkgs.home-manager
+    pkgs.jq
   ];
 
   programs.home-manager.enable = false;

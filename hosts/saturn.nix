@@ -40,4 +40,6 @@ in
         run-proxy = "cd /home/yokley/repos/tailscale-proxy && make up; make down; cd -";
         explore = "explorer.exe .";
     };
+
+    home.stateVersion = "23.11"; # Please read the comment before changing.
 }
