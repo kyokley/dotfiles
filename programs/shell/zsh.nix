@@ -130,6 +130,14 @@
                 kyokley/psql \
                 "$@"
         }
+
+        function krill() {
+            docker run \
+                --rm -t \
+                kyokley/krill \
+                "$@"
+        }
+
         if [ -f "$HOME/.zpriv" ]; then
             source "$HOME/.zpriv"
         fi
