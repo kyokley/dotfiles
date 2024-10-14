@@ -62,7 +62,6 @@
 
     homeConfigurations = {
       "dioxygen" = home-manager.lib.homeManagerConfiguration {
-        specialArgs = { inherit all; };
         pkgs = nixpkgs.legacyPackages.${dioxygen_system};
         modules = [
           ./hosts/dioxygen.nix

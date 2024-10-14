@@ -26,5 +26,6 @@ in
   programs.git.aliases = {
       select = ''!echo "$(git branch | awk '{print $NF}')" "\n" "$(git branch -r | grep -v HEAD | awk '{print $NF}' | sed -E 's!^[^/]+/!!')" | sort -u | choose | xargs -r git switch'';
   };
+  home.stateVersion = "24.05";
 
 }
