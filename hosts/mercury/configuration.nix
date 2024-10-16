@@ -2,18 +2,11 @@
 
 {
   # Bootloader.
-  boot.loader.grub.enable = true;
-  boot.loader.grub.device = "/dev/nvme0n1";
-  boot.loader.grub.useOSProber = true;
+  boot.loader.systemd-boot.enable = true;
+  boot.loader.efi.canTouchEfiVariables = true;
+  boot.supportedFilesystems = [ "bcachefs" ];
+  boot.kernelPackages = pkgs.linuxPackages_latest;
 
-  # Setup keyfile
-  boot.initrd.secrets = {
-    "/crypto_keyfile.bin" = null;
-  };
-
-  boot.loader.grub.enableCryptodisk=true;
-
-  boot.initrd.luks.devices."luks-c96e0586-f735-4316-b2d8-15647605d941".keyFile = "/crypto_keyfile.bin";
   networking.hostName = "mercury"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
@@ -28,5 +21,5 @@
     ollama
   ];
 
-  system.stateVersion = "23.11"; # Don't touch me!
+  system.stateVersion = "24.05"; # Don't touch me!
 }
