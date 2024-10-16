@@ -11,7 +11,7 @@
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   services.ollama = {
-    enable = true;
+    enable = false;
     acceleration = "cuda";
   };
 
