@@ -50,6 +50,7 @@
           ./programs/nixos/common-configuration.nix
           ./hosts/mercury/configuration.nix
           ./hosts/mercury/hardware-configuration.nix
+          home-manager.nixosModules.home-manager
           {
             home-manager.users.yokley = import ./hosts/mercury/mercury.nix;
             home-manager.extraSpecialArgs = { inherit nixvim picom; };

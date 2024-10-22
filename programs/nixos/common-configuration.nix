@@ -147,6 +147,7 @@
       rofi
       xclip
       feh
+      alsa-utils
   ];
 
 # Some programs need SUID wrappers, can be configured further or are
