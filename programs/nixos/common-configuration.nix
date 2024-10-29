@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 
 {
   nix = {
@@ -88,7 +88,10 @@
 
 # Enable tailscale
   services.tailscale.enable = true;
-  services.tailscale.useRoutingFeatures = "client";
+  services.tailscale.useRoutingFeatures = "both";
+
+  # Enable trayscale once added to home-manager
+  # services.trayscale.enable = false;
 
   services.earlyoom.enable = true;
 
@@ -177,7 +180,11 @@
 # networking.firewall.allowedTCPPorts = [ ... ];
 # networking.firewall.allowedUDPPorts = [ ... ];
 # Or disable the firewall altogether.
+  networking.useDHCP = lib.mkDefault false;
   networking.firewall.enable = false;
+  networking.firewall.checkReversePath = "loose";
+  services.resolved.enable = true;
+  networking.useNetworkd = true;
 
   home-manager = {
     useGlobalPkgs = true;
