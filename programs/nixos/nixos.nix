@@ -22,7 +22,6 @@ in
         pkgs.nitrogen
         pkgs.python311Packages.bpython
         pkgs.thunderbird
-
         (pkgs.nerdfonts.override { fonts = [ "Hack" ]; })
         pkgs.vlc
         reboot-kexec

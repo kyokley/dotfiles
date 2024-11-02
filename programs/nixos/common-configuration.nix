@@ -151,6 +151,7 @@
       xclip
       feh
       alsa-utils
+      mattermost-desktop
   ];
 
 # Some programs need SUID wrappers, can be configured further or are
