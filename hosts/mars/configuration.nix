@@ -25,7 +25,6 @@
   environment.systemPackages = with pkgs; [
     protonvpn-gui
     gnome.gnome-keyring
-    steam
   ];
 
   services = {
