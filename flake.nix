@@ -17,7 +17,7 @@
     };
   };
 
-  outputs = { nixpkgs, home-manager, picom, nixvim, ... }@all:
+  outputs = { nixpkgs, home-manager, picom, nixvim, ... }:
   let
     dioxygen_system = "aarch64-darwin";
     venus_system = "x86_64-linux";
