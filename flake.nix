@@ -9,7 +9,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     picom = {
-      url = "github:yshui/picom/v12-rc2";
+      url = "github:yshui/picom/v12.3";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nixvim = {
