@@ -20,7 +20,7 @@ in
 
     home.packages = [
         pkgs.devenv
-        pkgs.xbrightness
+        pkgs.brightnessctl
         nixvim.packages.${system}.default
     ];
 

@@ -58,7 +58,7 @@ KEYS = [
     Key([MOD], SPACE, lazy.next_layout()),
     Key([MOD, SHIFT], "c", lazy.window.kill()),
 
-    Key([MOD, CONTROL], "r", lazy.restart()),
+    Key([MOD, CONTROL], "r", lazy.spawn("qtile cmd-obj -o cmd -f reload_config")),
     Key([MOD, CONTROL], "q", lazy.shutdown()),
     Key([MOD, CONTROL], "l", lazy.spawn(
         "force-lock-screen"
@@ -78,26 +78,17 @@ KEYS = [
     )),
 
     # Spotify Commands
-    # NEXT
-    Key([MOD, CONTROL], 'n', lazy.spawn(
-        [os.path.expanduser(
-            f"{QTILE_CONFIG_DIRECTORY}/SpotifyController/spotify.sh"), "n"])),
-    Key([MOD, CONTROL], PERIOD, lazy.spawn(
-        [os.path.expanduser(
-            f"{QTILE_CONFIG_DIRECTORY}/SpotifyController/spotify.sh"), "n"])),
+    #NEXT
+    Key([], 'XF86AudioNext', lazy.spawn("dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Next")),
+    Key([MOD, CONTROL], PERIOD, lazy.spawn("dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Next")),
 
     # PREV
-    Key([MOD, CONTROL], 'p', lazy.spawn(
-        [os.path.expanduser(
-            f"{QTILE_CONFIG_DIRECTORY}/SpotifyController/spotify.sh"), "p"])),
-    Key([MOD, CONTROL], COMMA, lazy.spawn(
-        [os.path.expanduser(
-            f"{QTILE_CONFIG_DIRECTORY}/SpotifyController/spotify.sh"), "p"])),
+    Key([], 'XF86AudioPrev', lazy.spawn("dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Previous")),
+    Key([MOD, CONTROL], COMMA, lazy.spawn("dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Previous")),
 
     # PAUSE
-    Key([MOD, CONTROL], SPACE, lazy.spawn(
-        [os.path.expanduser(
-            f"{QTILE_CONFIG_DIRECTORY}/SpotifyController/spotify.sh"), "pause"])),
+    Key([], 'XF86AudioPlay', lazy.spawn("dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause")),
+    Key([MOD, CONTROL], SPACE, lazy.spawn("dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause")),
 
     # Volume Controls
     Key([], 'XF86AudioRaiseVolume', lazy.spawn('amixer -q set Master 10%+')),
@@ -105,8 +96,8 @@ KEYS = [
     Key([], 'XF86AudioMute', lazy.spawn('amixer -q set Master toggle')),
 
     # Brightness Controls
-    Key([], 'XF86MonBrightnessUp', lazy.spawn("xbrightness +5000")),
-    Key([], 'XF86MonBrightnessDown', lazy.spawn("xbrightness -5000")),
+    Key([], 'XF86MonBrightnessUp', lazy.spawn("brightnessctl s +10%")),
+    Key([], 'XF86MonBrightnessDown', lazy.spawn("brightnessctl s 10%-")),
 
     Key([MOD], 'F11', lazy.group['scratchpad'].dropdown_toggle('term')),
     Key([MOD], 'F12', lazy.group['scratchpad'].dropdown_toggle('browser')),
