@@ -1,7 +1,6 @@
 { pkgs, nixvim, picom, ... }:
 let
     home_dir = "/home/yokley";
-    system = "x86_64-linux";
 in
 {
     imports = [
@@ -21,10 +20,10 @@ in
     home.packages = [
         pkgs.devenv
         pkgs.brightnessctl
-        nixvim.packages.${system}.default
+        nixvim.packages.${pkgs.stdenv.hostPlatform.system}.default
     ];
 
-    services.picom.package = picom.packages.${system}.default;
+    services.picom.package = picom.packages.${pkgs.stdenv.hostPlatform.system}.default;
 
     home.stateVersion = "24.05"; # Don't touch me!
 
