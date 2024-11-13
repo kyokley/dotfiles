@@ -59,7 +59,6 @@ KEYS = [
     Key([MOD, SHIFT], "c", lazy.window.kill()),
 
     Key([MOD, CONTROL], "r", lazy.spawn("qtile cmd-obj -o cmd -f reload_config")),
-    Key([MOD, CONTROL], "q", lazy.shutdown()),
     Key([MOD, CONTROL], "l", lazy.spawn(
         "force-lock-screen"
 )),
@@ -70,11 +69,8 @@ KEYS = [
     Key([MOD], "p", lazy.spawn(
         "rofi -show drun -modi drun,calc,emoji -no-history"
     )),
-    Key([MOD], "q", lazy.spawn(
+    Key([MOD, CONTROL], "q", lazy.spawn(
         "rofi -show power-menu -modi power-menu:rofi-power-menu"
-    )),
-    Key([MOD, CONTROL], "j", lazy.spawn(
-        [os.path.expanduser(f'{QTILE_CONFIG_DIRECTORY}/redbot-open.sh')]
     )),
 
     # Spotify Commands
