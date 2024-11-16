@@ -229,6 +229,7 @@ SCREENS = [
                       update_interval=21,
                       font=extension_defaults.font,
                       fontsize=extension_defaults.fontsize,
+                      debug=False,
                       ),
                 widget.TextBox('VT:',
                                font=extension_defaults.font,

@@ -8,6 +8,8 @@ import random
 import subprocess
 import multiprocessing
 
+from enum import StrEnum
+
 from datetime import datetime, timedelta
 from dateutil import tz
 from pathlib import Path
@@ -16,8 +18,17 @@ from custom.utils import determine_browser
 
 from libqtile.widget.generic_poll_text import GenPollText
 from libqtile.widget.graph import CPUGraph
+from libqtile.log_utils import logger
 
 rand = random.SystemRandom()
+
+class LogLevel(StrEnum):
+    WARNING = 'warning'
+    EXCEPTION = 'exception'
+
+
+REQUESTS_TIMEOUT = 30
+
 
 BUTTON_UP = 4
 BUTTON_DOWN = 5
@@ -51,13 +62,13 @@ GCAL_CMD = ('docker run --rm '
             f'-v {str(Path.home())}/.gcalcli_oauth:/root/.gcalcli_oauth '
             'kyokley/gcalcli')
 KRILL_CMD = (
-    'docker run --rm --cpus=.25 kyokley/krill '
-    'krill++ -S /app/sources.txt --snapshot')
+        'docker run --rm -t --cpus=.25 kyokley/krill -S /app/sources.txt --snapshot'
+        )
 
 KRILL_BROWSER = determine_browser()
 MAX_KRILL_LENGTH = 100
 
-XAUTOLOCK_STATUS_PATH = Path('/tmp/xautolock.status')
+XAUTOLOCK_STATUS_PATH = Path('/tmp/xautolock.status')  # nosec
 
 
 class ScheduledWidget(GenPollText):
@@ -288,9 +299,10 @@ class CachedProxyRequest(GenPollText):
         self._cached_data = None
         self._locked = False
 
-    def _print(self, msg):
+    def _print(self, msg, level=LogLevel.WARNING):
+        log_cmd = logger.warning if level == LogLevel.WARNING else logger.exception
         if self.debug:
-            print('{}: {}'.format(self.__class__, msg))
+            log_cmd('{}: {}'.format(str(self.__class__), msg))
 
     def cached_fetch(self):
         if self._locked:
@@ -310,8 +322,8 @@ class CachedProxyRequest(GenPollText):
                 self._print(self._cached_data)
                 self._last_update = datetime.now()
         except Exception as e:
-            self._print('Got error')
-            self._print(str(e))
+            self._print('Got error', level=LogLevel.EXCEPTION)
+            self._print(str(e), level=LogLevel.EXCEPTION)
         finally:
             self._print('Releasing lock')
             self._locked = False
@@ -321,7 +333,7 @@ class CachedProxyRequest(GenPollText):
         proxies = {'http': self.http_proxy,
                    'https': self.https_proxy,
                    }
-        resp = requests.get(self.URL, proxies=proxies)
+        resp = requests.get(self.URL, proxies=proxies, timeout=REQUESTS_TIMEOUT)
         resp.raise_for_status()
 
         return resp.json()
@@ -566,8 +578,26 @@ class Krill(CachedProxyRequest):
     def _fetch(self):
         cmd = shlex.split(KRILL_CMD)
         proc = subprocess.check_output(cmd)
+        data = []
+
         if proc:
-            return json.loads(proc)
+            for raw_item in proc.splitlines():
+                item = raw_item.decode('utf-8').strip()
+                self._print(item)
+                if not item:
+                    continue
+
+                try:
+                    item_data = json.loads(item)
+                    if item_data:
+                        data.append(item_data)
+                except Exception as e:
+                    self._print(item)
+                    self._print(e, level=LogLevel.EXCEPTION)
+
+            if data:
+                return data
+
         return ['Failed to load']
 
     def button_press(self, x, y, button):
