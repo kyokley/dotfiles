@@ -98,6 +98,13 @@
 # Enable docker
   virtualisation.docker = {
     enable = true;
+    daemon.settings = {
+      dns = ["127.0.0.53" "8.8.8.8"];
+      userland-proxy = false;
+      experimental = true;
+      ipv6 = true;
+      fixed-cidr-v6 = "fd00::/80";
+    };
   };
 
   fonts = {
@@ -168,7 +175,9 @@
     vimAlias = true;
   };
 
-  environment.variables.EDITOR = "nvim";
+  environment.variables = {
+    EDITOR = "nvim";
+  };
   programs.zsh.enable = true;
 
 
