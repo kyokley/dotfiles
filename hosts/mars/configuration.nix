@@ -1,5 +1,10 @@
 { pkgs, lib, ... }:
 {
+  imports = [
+      ../../programs/openconnect.nix
+  ];
+
+  networking.openconnect.interfaces.openconnect0.passwordFile = ./vpn_pass;
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
