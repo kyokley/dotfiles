@@ -64,7 +64,7 @@
         modules = [
           ./programs/nixos/common-configuration.nix
             ./hosts/mercury/configuration.nix
-            ./hosts/saturn.nix
+            ./hosts/saturn/saturn.nix
             home-manager.nixosModules.home-manager
             {
               home-manager.users.yokley = import ./hosts/saturn/saturn.nix;
