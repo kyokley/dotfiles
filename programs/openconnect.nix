@@ -11,7 +11,9 @@
       disable-ipv6 = true;
       no-proxy = true;
       useragent = "AnyConnect Linux_64 4.10.999999";
-      script = "${pkgs.vpn-slice}/bin/vpn-slice --no-host-names --no-ns-hosts oim.oraclecorp.com";
+      script = "${pkgs.vpn-slice}/bin/vpn-slice --no-host-names --no-ns-hosts oim.oraclecorp.com global-ebusiness.oraclecorp.com";
+      # Use below when attempting to find additional host IPs
+      # script = "${pkgs.vpn-slice}/bin/vpn-slice oim.oraclecorp.com global-ebusiness.oraclecorp.com";
     };
     protocol = "anyconnect";
     gateway = "myaccess.oraclevpn.com/exc";
