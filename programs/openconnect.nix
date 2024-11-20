@@ -2,6 +2,7 @@
 {
   environment.systemPackages = with pkgs; [
     vpn-slice
+    openconnect
   ];
 
   networking.openconnect.interfaces.openconnect0 = {
@@ -10,10 +11,16 @@
       disable-ipv6 = true;
       no-proxy = true;
       useragent = "AnyConnect Linux_64 4.10.999999";
-      script = "${pkgs.vpn-slice}/bin/vpn-slice oim.oraclecorp.com";
+      script = "${pkgs.vpn-slice}/bin/vpn-slice --no-host-names --no-ns-hosts oim.oraclecorp.com";
     };
     protocol = "anyconnect";
-    gateway = "myaccess.oraclevpn.com";
+    gateway = "myaccess.oraclevpn.com/exc";
     user = "kyokley_us";
   };
+
+  networking.extraHosts = ''
+    206.223.27.1 dns0.openconnect0
+    206.223.27.2 dns1.openconnect0
+    100.114.26.10 oim.oraclecorp.com
+  '';
 }
