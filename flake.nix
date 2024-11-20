@@ -63,8 +63,8 @@
         system = "x86_64-linux";
         modules = [
           ./programs/nixos/common-configuration.nix
-            ./hosts/mercury/configuration.nix
-            ./hosts/saturn/saturn.nix
+            ./hosts/saturn/configuration.nix
+            ./hosts/saturn/hardware-configuration.nix
             home-manager.nixosModules.home-manager
             {
               home-manager.users.yokley = import ./hosts/saturn/saturn.nix;
