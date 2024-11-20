@@ -65,6 +65,8 @@
       system = "x86_64-linux";
       pkgs = nixpkgs.legacyPackages.${saturn_system};
       modules = [
+        ./programs/nixos/common-configuration.nix
+        ./hosts/mercury/configuration.nix
         ./hosts/saturn.nix
         home-manager.nixosModules.home-manager
         {
