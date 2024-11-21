@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 {
   environment.systemPackages = with pkgs; [
     vpn-slice
@@ -6,7 +6,7 @@
   ];
 
   networking.openconnect.interfaces.openconnect0 = {
-    autoStart = false;
+    autoStart = lib.mkDefault false;
     extraOptions = {
       disable-ipv6 = true;
       no-proxy = true;

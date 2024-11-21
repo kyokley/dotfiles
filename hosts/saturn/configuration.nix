@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }:
+{ pkgs, ... }:
 {
   imports = [
       ../../programs/openconnect.nix
@@ -14,9 +14,9 @@
 
   networking.hostName = "saturn"; # Define your hostname.
 
-  # Configure network proxy if necessary
-  # networking.proxy.default = "http://user:password@proxy:port/";
-  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
+  networking.openconnect.interfaces.openconnect0 = {
+    autoStart = true;
+  };
 
   sound.enable = true;
 
@@ -35,17 +35,6 @@
     };
     acpid = {
       enable = true;
-      lidEventCommands =
-      ''
-        export PATH=$PATH:${lib.makeBinPath [ pkgs.nix ]}
-
-        lid_state=$(cat /proc/acpi/button/lid/LID0/state | ${pkgs.gawk}/bin/awk '{print $NF}')
-        if [ $lid_state = "closed" ]; then
-          systemctl suspend
-          DISPLAY=:0 ${pkgs.sudo}/bin/sudo -u yokley ${pkgs.betterlockscreen}/bin/betterlockscreen --lock -- --nofork
-        fi
-      '';
-
       powerEventCommands =
       ''
         systemctl suspend
@@ -53,6 +42,10 @@
       '';
     };
   };
+
+  networking.extraHosts = ''
+    192.168.50.75 jupiter
+  '';
 
   system.stateVersion = "24.05"; # Don't touch me!
 }

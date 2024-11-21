@@ -14,6 +14,7 @@
 
 # Enable networking
   networking.networkmanager.enable = true;
+  systemd.network.wait-online.enable = false;
 
 # Set your time zone.
   time.timeZone = "America/Chicago";
@@ -153,6 +154,7 @@
       alsa-utils
       mattermost-desktop
       slack
+      zoom-us
   ];
 
 # Some programs need SUID wrappers, can be configured further or are
