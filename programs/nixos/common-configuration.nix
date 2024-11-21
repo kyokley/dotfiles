@@ -87,7 +87,7 @@
   services.flatpak.enable = true;
 
 # Enable tailscale
-  services.tailscale.enable = true;
+  services.tailscale.enable = lib.mkDefault true;
   services.tailscale.useRoutingFeatures = "both";
 
   # Enable trayscale once added to home-manager
@@ -98,13 +98,6 @@
 # Enable docker
   virtualisation.docker = {
     enable = true;
-    daemon.settings = {
-      dns = ["127.0.0.53" "8.8.8.8"];
-      userland-proxy = false;
-      experimental = true;
-      ipv6 = true;
-      fixed-cidr-v6 = "fd00::/80";
-    };
   };
 
   fonts = {
