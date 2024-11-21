@@ -24,5 +24,6 @@
     206.223.27.1 dns0.openconnect0
     206.223.27.2 dns1.openconnect0
     100.114.26.10 oim.oraclecorp.com
+    100.112.22.206 global-ebusiness.oraclecorp.com
   '';
 }
