@@ -87,7 +87,7 @@
   services.flatpak.enable = true;
 
 # Enable tailscale
-  services.tailscale.enable = true;
+  services.tailscale.enable = lib.mkDefault true;
   services.tailscale.useRoutingFeatures = "both";
 
   # Enable trayscale once added to home-manager
@@ -168,7 +168,9 @@
     vimAlias = true;
   };
 
-  environment.variables.EDITOR = "nvim";
+  environment.variables = {
+    EDITOR = "nvim";
+  };
   programs.zsh.enable = true;
 
 

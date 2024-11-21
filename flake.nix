@@ -23,7 +23,6 @@
     venus_system = "x86_64-linux";
     almagest_system = "x86_64-linux";
     jupiter_system = "x86_64-linux";
-    saturn_system = "x86_64-linux";
     singularity_system = "x86_64-linux";
     titan_system = "x86_64-linux";
   in
@@ -59,7 +58,24 @@
           }
         ];
       };
+
+      "saturn" = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        modules = [
+          ./programs/nixos/common-configuration.nix
+            ./hosts/saturn/configuration.nix
+            ./hosts/saturn/hardware-configuration.nix
+            home-manager.nixosModules.home-manager
+            {
+              home-manager.users.yokley = import ./hosts/saturn/saturn.nix;
+              home-manager.extraSpecialArgs = { inherit nixvim picom; };
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+            }
+        ];
+      };
     };
+
 
     homeConfigurations = {
       "dioxygen" = home-manager.lib.homeManagerConfiguration {
@@ -109,17 +125,6 @@
           {
             home.packages = [
               nixvim.packages.${jupiter_system}.default
-            ];
-          }
-        ];
-      };
-      "saturn" = home-manager.lib.homeManagerConfiguration {
-        pkgs = nixpkgs.legacyPackages.${saturn_system};
-        modules = [
-          ./hosts/saturn.nix
-          {
-            home.packages = [
-              nixvim.packages.${saturn_system}.dos
             ];
           }
         ];

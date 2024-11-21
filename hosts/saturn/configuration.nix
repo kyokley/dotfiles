@@ -12,14 +12,7 @@
   boot.supportedFilesystems = [ "bcachefs" ];
   boot.kernelPackages = pkgs.linuxPackages_latest;
 
-  # Not sure if these are needed to fix docker networking issues when tailscale
-  # exit nodes are active
-  # boot.kernel.sysctl = {
-  #   "net.ipv4.ip_forward" = true;
-  #   "net.ipv6.conf.all.forwarding" = true;
-  # };
-
-  networking.hostName = "mars"; # Define your hostname.
+  networking.hostName = "saturn"; # Define your hostname.
 
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
@@ -28,11 +21,11 @@
   sound.enable = true;
 
   environment.systemPackages = with pkgs; [
-    protonvpn-gui
     gnome.gnome-keyring
   ];
 
   services = {
+    tailscale.enable = false;
     logind = {
       lidSwitch = "ignore";
       extraConfig = ''
