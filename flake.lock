@@ -411,16 +411,16 @@
         ]
       },
       "locked": {
-        "lastModified": 1728919535,
-        "narHash": "sha256-FwjMlHP8xNJikkPpz+8BORrqqKYvRpkqm9GbExCoLAU=",
+        "lastModified": 1731480518,
+        "narHash": "sha256-H8IbzzrzF1c63MXbw5mqoll3H+vgcSVpijrlSDNkc+o=",
         "owner": "yshui",
         "repo": "picom",
-        "rev": "1b27f3e5f10a6a4646cbe9b296ecf72a6d3ff41e",
+        "rev": "a456d438d0a681365d90a8adbf0941cede41aaa9",
         "type": "github"
       },
       "original": {
         "owner": "yshui",
-        "ref": "v12.3",
+        "ref": "v12.5",
         "repo": "picom",
         "type": "github"
       }
