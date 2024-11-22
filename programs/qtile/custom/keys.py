@@ -1,4 +1,3 @@
-import os
 from libqtile.config import Key
 try:
     from libqtile.lazy import lazy
@@ -14,6 +13,19 @@ from custom.constants import (MOD,
                               )
 
 QTILE_CONFIG_DIRECTORY = '~/.config/qtile'
+
+@lazy.function
+def to_screen(qtile, index):
+    screens = sorted(qtile.get_screens(), key=lambda x: x['x'])
+    screens = [x['index'] for x in screens]
+    if len(screens) == 1:
+        screen_positions = 0, 0, 0
+    elif len(screens) == 2:
+        screen_positions = screens[0], screens[1], screens[1]
+    else:
+        screen_positions = screens[0], screens[2], screens[1]
+
+    qtile.to_screen(screen_positions[index])
 
 KEYS = [
     # Switch between windows in current stack pane
@@ -41,8 +53,9 @@ KEYS = [
     Key([MOD], ENTER, lazy.layout.swap_main()),
 
     # Multi-monitor support
-    Key([MOD], "w", lazy.to_screen(1)),
-    Key([MOD], "e", lazy.to_screen(0)),
+    Key([MOD], "w", to_screen(0)),
+    Key([MOD], "e", to_screen(1)),
+    Key([MOD], "r", to_screen(2)),
 
     # Swap main pane
     Key([MOD], "f", lazy.layout.flip()),
