@@ -14,6 +14,7 @@ from custom.constants import (MOD,
 
 QTILE_CONFIG_DIRECTORY = '~/.config/qtile'
 
+
 @lazy.function
 def to_screen(qtile, index):
     screens = sorted(qtile.get_screens(), key=lambda x: x['x'])
@@ -27,14 +28,8 @@ def to_screen(qtile, index):
 
     qtile.to_screen(screen_positions[index])
 
-KEYS = [
-    # Switch between windows in current stack pane
-    # Key([MOD], "j", lazy.layout.next()),
-    # Key([MOD], "k", lazy.layout.previous()),
 
-    # lazy.layout.next and layout.lazy.previous don't cycle through
-    # floating windows. next_window and prev_window do but they may break
-    # for setups with multiple screens. I'm leaving this until I can test.
+KEYS = [
     Key([MOD], "j", lazy.group.next_window()),
     Key([MOD], "k", lazy.group.prev_window()),
 
@@ -74,7 +69,7 @@ KEYS = [
     Key([MOD, CONTROL], "r", lazy.spawn("qtile cmd-obj -o cmd -f reload_config")),
     Key([MOD, CONTROL], "l", lazy.spawn(
         "force-lock-screen"
-)),
+        )),
     # Key([MOD, CONTROL], "d", lazy.spawn(
     #     [os.path.expanduser(f'{QTILE_CONFIG_DIRECTORY}/toggle_autolock.sh')])),
     # Key([MOD, CONTROL], "c", lazy.spawn(
