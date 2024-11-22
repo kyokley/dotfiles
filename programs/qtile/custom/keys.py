@@ -51,6 +51,8 @@ KEYS = [
     Key([MOD], "w", to_screen(0)),
     Key([MOD], "e", to_screen(1)),
     Key([MOD], "r", to_screen(2)),
+    Key([MOD, CONTROL], "2", lazy.spawn("qtile-two-screen")),
+    Key([MOD, CONTROL], "3", lazy.spawn("qtile-three-screen")),
 
     # Swap main pane
     Key([MOD], "f", lazy.layout.flip()),
