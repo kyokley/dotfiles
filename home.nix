@@ -28,8 +28,6 @@
     pkgs.fzf
     pkgs.gnumake
     pkgs.ripgrep
-    pkgs.ruff
-    pkgs.bandit
     pkgs.tig
     pkgs.unzip
     pkgs.zsh
