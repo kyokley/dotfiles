@@ -18,10 +18,8 @@
     autoStart = true;
   };
 
-  sound.enable = true;
-
   environment.systemPackages = with pkgs; [
-    gnome.gnome-keyring
+    gnome-keyring
   ];
 
   services = {

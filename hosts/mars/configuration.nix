@@ -4,7 +4,7 @@
       ../../programs/openconnect.nix
   ];
 
-  networking.openconnect.interfaces.openconnect0.passwordFile = /var/lib/secrets/openconnect-passwd;
+  networking.openconnect.interfaces.openconnect0.passwordFile = "/var/lib/secrets/openconnect-passwd";
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -25,11 +25,9 @@
   # networking.proxy.default = "http://user:password@proxy:port/";
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
-  sound.enable = true;
-
   environment.systemPackages = with pkgs; [
     protonvpn-gui
-    gnome.gnome-keyring
+    gnome-keyring
   ];
 
   services = {
