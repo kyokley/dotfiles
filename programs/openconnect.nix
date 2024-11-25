@@ -1,4 +1,18 @@
 { pkgs, lib, ... }:
+let
+  domains = lib.concatStringsSep " " [
+          "oim.oraclecorp.com"
+          "global-ebusiness.oraclecorp.com"
+          "badge.oraclecorp.com"
+          "printers.oraclecorp.com"
+          "gbuconfluence.oraclecorp.com"
+          "confluence.oraclecorp.com"
+          "cegbu.oraclecorp.com"
+          "gbujira.oraclecorp.com"
+          "cloudlab.us.oracle.com"
+          "hrservices.oraclecorp.com"
+  ];
+in
 {
   environment.systemPackages = with pkgs; [
     vpn-slice
@@ -11,11 +25,13 @@
       disable-ipv6 = true;
       no-proxy = true;
       useragent = "AnyConnect Linux_64 4.10.999999";
-      script = "${pkgs.vpn-slice}/bin/vpn-slice --no-host-names --no-ns-hosts oim.oraclecorp.com global-ebusiness.oraclecorp.com badge.oraclecorp.com gbuconfluence.oraclecorp.com confluence.oraclecorp.com cegbu.oraclecorp.com gbujira.oraclecorp.com cloudlab.us.oracle.com hrservices.oraclecorp.com";
+      script = ''
+        ${pkgs.vpn-slice}/bin/vpn-slice --no-host-names --no-ns-hosts ${domains}
+      '';
       # Use below when attempting to find additional host IPs. After rebuilding, run the following commands:
       # sudo mv /etc/hosts{,_bak} && sudo cp /etc/static/hosts /etc/hosts && sudo systemctl restart openconnect-openconnect0 && sleep 5 && cat /etc/hosts
       # After determining the host IP, be sure to modify the script abov and the extraHosts below
-      # script = "${pkgs.vpn-slice}/bin/vpn-slice oim.oraclecorp.com global-ebusiness.oraclecorp.com badge.oraclecorp.com gbuconfluence.oraclecorp.com confluence.oraclecorp.com cegbu.oraclecorp.com gbujira.oraclecorp.com cloudlab.us.oracle.com hrservices.oraclecorp.com";
+      # script = "${pkgs.vpn-slice}/bin/vpn-slice ${domains};
     };
     protocol = "anyconnect";
     gateway = "myaccess.oraclevpn.com/exc";
