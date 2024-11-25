@@ -1,10 +1,18 @@
 { pkgs, lib, ... }:
 let
   reboot-kexec = pkgs.writeScriptBin "reboot-kexec" ''
-  #!${pkgs.stdenv.shell}
-  cmdline="init=$(readlink -f /nix/var/nix/profiles/system/init) $(cat /nix/var/nix/profiles/system/kernel-params)"
-  sudo kexec -l /nix/var/nix/profiles/system/kernel --initrd=/nix/var/nix/profiles/system/initrd --append="$cmdline"
-  sudo systemctl kexec
+    #!${pkgs.stdenv.shell}
+    cmdline="init=$(readlink -f /nix/var/nix/profiles/system/init) $(cat /nix/var/nix/profiles/system/kernel-params)"
+    sudo kexec -l /nix/var/nix/profiles/system/kernel --initrd=/nix/var/nix/profiles/system/initrd --append="$cmdline"
+    sudo systemctl kexec
+  '';
+  toggle-picom = pkgs.writeScriptBin "toggle-picom" ''
+    #!${pkgs.stdenv.shell}
+    if systemctl --user status picom | grep 'running'; then
+      systemctl --user stop picom
+    else
+      systemctl --user start picom
+    fi
   '';
 in
 {
@@ -25,6 +33,7 @@ in
         (pkgs.nerdfonts.override { fonts = [ "Hack" ]; })
         pkgs.vlc
         reboot-kexec
+        toggle-picom
     ];
 
   home.file = {

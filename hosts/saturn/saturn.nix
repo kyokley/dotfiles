@@ -1,4 +1,4 @@
-{ pkgs, nixvim, picom, lib, ... }:
+{ pkgs, nixvim, picom, ... }:
 let
     home_dir = "/home/yokley";
     qtile-two-screen = pkgs.writeShellScriptBin "qtile-two-screen" ''

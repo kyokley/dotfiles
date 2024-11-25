@@ -72,10 +72,7 @@ KEYS = [
     Key([MOD, CONTROL], "l", lazy.spawn(
         "force-lock-screen"
         )),
-    # Key([MOD, CONTROL], "d", lazy.spawn(
-    #     [os.path.expanduser(f'{QTILE_CONFIG_DIRECTORY}/toggle_autolock.sh')])),
-    # Key([MOD, CONTROL], "c", lazy.spawn(
-    #     [os.path.expanduser(f'{QTILE_CONFIG_DIRECTORY}/toggle_picom.sh')])),
+    Key([MOD, CONTROL], "p", lazy.spawn("toggle-picom")),
     Key([MOD], "p", lazy.spawn(
         "rofi -show drun -modi drun,calc,emoji -no-history"
     )),
