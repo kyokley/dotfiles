@@ -15,6 +15,7 @@
 # Enable networking
   networking.networkmanager.enable = true;
   systemd.network.wait-online.enable = false;
+  boot.initrd.systemd.network.wait-online.enable = false;
 
 # Set your time zone.
   time.timeZone = "America/Chicago";
