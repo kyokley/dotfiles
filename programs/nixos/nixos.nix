@@ -8,7 +8,7 @@ let
   '';
   toggle-picom = pkgs.writeScriptBin "toggle-picom" ''
     #!${pkgs.stdenv.shell}
-    if [ $(systemctl --user status picom | grep 'running') ]; then
+    if systemctl --user status picom | grep 'running'; then
       systemctl --user stop picom
     else
       systemctl --user start picom
