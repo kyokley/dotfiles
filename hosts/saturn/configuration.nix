@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 {
   imports = [
       ../../programs/openconnect.nix
@@ -35,6 +35,18 @@
     };
     acpid = {
       enable = true;
+      lidEventCommands =
+      ''
+        export PATH=$PATH:${lib.makeBinPath [ pkgs.nix ]}
+
+        if [ $(xrandr | grep connected | wc -l) -eq 1 ]; then
+          lid_state=$(cat /proc/acpi/button/lid/LID0/state | ${pkgs.gawk}/bin/awk '{print $NF}')
+          if [ $lid_state = "closed" ]; then
+            systemctl suspend
+            DISPLAY=:0 ${pkgs.sudo}/bin/sudo -u yokley ${pkgs.betterlockscreen}/bin/betterlockscreen --lock -- --nofork
+          fi
+        fi
+      '';
       powerEventCommands =
       ''
         systemctl suspend
