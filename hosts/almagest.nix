@@ -1,6 +1,6 @@
 { pkgs, lib, ... }:
 let
-  mv_path = "/home/yokley/workspace/MediaViewerProd";
+  mv_path = "${builtins.getEnv "HOME"}/workspace/MediaViewerProd";
 in
 {
   imports = [

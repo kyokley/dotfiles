@@ -1,7 +1,4 @@
-{ pkgs, nixvim, ... }:
-let
-    home_dir = "/home/yokley";
-in
+{ nixvim, ... }:
 {
     imports = [
         ../../programs/nixos/nixos.nix
@@ -10,7 +7,6 @@ in
 
     programs.systemd-services.environment = "mercury";
 
-    home.homeDirectory = "${home_dir}";
     programs.git.userEmail = "kyokley@mercury";
 
     home.sessionVariables = {
@@ -18,7 +14,7 @@ in
     };
 
     home.packages = [
-        nixvim.packages.${pkgs.stdenv.hostPlatform.system}.default
+        nixvim.packages.${builtins.currentSystem}.default
     ];
 
     home.stateVersion = "24.05"; # Don't touch me!

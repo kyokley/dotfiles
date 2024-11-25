@@ -90,7 +90,7 @@
     zsh.prezto.extraConfig = lib.mkAfter
           ''
           function mc-run() {
-              cd ~/workspace/MediaConverterProd
+              cd ${builtins.getEnv "HOME"}/workspace/MediaConverterProd
               make run
               cd -
           }

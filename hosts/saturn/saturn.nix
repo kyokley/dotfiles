@@ -1,6 +1,5 @@
 { pkgs, nixvim, ... }:
 let
-    home_dir = "/home/yokley";
     qtile-one-screen = pkgs.writeShellScriptBin "qtile-one-screen" ''
         xrandr --output eDP-1 --primary --mode 1920x1200 --pos 0x0 --rotate normal --output HDMI-1 --off --output DP-1 --off --output DP-2 --off
     '';
@@ -34,7 +33,6 @@ in
         QTILE_NET_INTERFACE = "wlp113s0f0";
     };
 
-    home.homeDirectory = "${home_dir}";
     programs.git.userEmail = "kevin.yokley@oracle.com";
 
     home.stateVersion = "24.05"; # Don't touch me!
