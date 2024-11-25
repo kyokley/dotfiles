@@ -4,8 +4,6 @@
       ../../programs/openconnect.nix
   ];
 
-  networking.openconnect.interfaces.openconnect0.passwordFile = /var/lib/secrets/openconnect-passwd;
-
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
