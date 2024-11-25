@@ -99,7 +99,7 @@ in
               ExecStart = toString (
                       pkgs.writeShellScript "betterlockscreen-update-script" ''
                       PATH=$PATH:${lib.makeBinPath [ pkgs.nix pkgs.coreutils pkgs.busybox pkgs.xorg.xrdb ]}
-                      ${pkgs.betterlockscreen}/bin/betterlockscreen -u /home/yokley/Pictures/wallpapers --fx ""
+                      ${pkgs.betterlockscreen}/bin/betterlockscreen -u ${builtins.getEnv "HOME"}/Pictures/wallpapers --fx ""
                       ''
                       );
           };
@@ -124,7 +124,7 @@ in
   services = {
     picom = {
         enable = true;
-        extraArgs = [ "--config=/home/yokley/.config/picom/picom-custom.conf" ];
+        extraArgs = [ "--config=${builtins.getEnv "HOME"}/.config/picom/picom-custom.conf" ];
     };
   };
 
