@@ -14,6 +14,8 @@ in
 
   programs.systemd-services.enable = false;
 
+  home.homeDirectory = "/Users/yokley";
+
   home.packages = [
     pkgs.devenv
     nix-update
