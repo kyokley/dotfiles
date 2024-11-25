@@ -14,6 +14,10 @@
   };
 
   outputs = { nixpkgs, home-manager, nixvim, ... }:
+  let
+    aarch64_darwin = "aarch64-darwin";
+    x86_linux = "x86_64-linux";
+  in
   {
     nixosConfigurations = {
       mars = nixpkgs.lib.nixosSystem {
@@ -64,69 +68,64 @@
 
     homeConfigurations = {
       "dioxygen" = home-manager.lib.homeManagerConfiguration {
-        pkgs = nixpkgs.legacyPackages.${builtins.currentSystem};
+        pkgs = nixpkgs.legacyPackages.${aarch64_darwin};
         modules = [
           ./hosts/dioxygen.nix
           {
             home.packages = [
-              nixvim.packages.${builtins.currentSystem}.default
+              nixvim.packages.${aarch64_darwin}.default
             ];
           }
         ];
       };
 
-      # "docker@dioxygen" = home-manager.lib.homeManagerConfiguration {
-      #   pkgs = nixpkgs.legacyPackages.aarch64-linux;
-      #   modules = [ ./home.nix ];
-      # };
-
       "venus" = home-manager.lib.homeManagerConfiguration {
-        pkgs = nixpkgs.legacyPackages.${builtins.currentSystem};
+        pkgs = nixpkgs.legacyPackages.${x86_linux};
         modules = [
           ./hosts/venus.nix
           {
             home.packages = [
-              nixvim.packages.${builtins.currentSystem}.minimal
+              nixvim.packages.${x86_linux}.minimal
             ];
           }
         ];
       };
 
       "almagest" = home-manager.lib.homeManagerConfiguration {
-        pkgs = nixpkgs.legacyPackages.${builtins.currentSystem};
+        pkgs = nixpkgs.legacyPackages.${x86_linux};
         modules = [
           ./hosts/almagest.nix
           {
             home.packages = [
-              nixvim.packages.${builtins.currentSystem}.minimal
+              nixvim.packages.${x86_linux}.minimal
             ];
           }
         ];
       };
       "jupiter" = home-manager.lib.homeManagerConfiguration {
-        pkgs = nixpkgs.legacyPackages.${builtins.currentSystem};
+        pkgs = nixpkgs.legacyPackages.${x86_linux};
         modules = [
           ./hosts/jupiter.nix
           {
             home.packages = [
-              nixvim.packages.${builtins.currentSystem}.default
+              nixvim.packages.${x86_linux}.default
             ];
           }
         ];
       };
       "singularity" = home-manager.lib.homeManagerConfiguration {
-        pkgs = nixpkgs.legacyPackages.${builtins.currentSystem};
+        pkgs = nixpkgs.legacyPackages.${x86_linux};
         modules = [
           ./hosts/singularity.nix
           {
             home.packages = [
-              nixvim.packages.${builtins.currentSystem}.minimal
+              nixvim.packages.${x86_linux}.minimal
             ];
           }
         ];
       };
       "titan" = home-manager.lib.homeManagerConfiguration {
-        pkgs = nixpkgs.legacyPackages.${builtins.currentSystem};
+        pkgs = nixpkgs.legacyPackages.${x86_linux};
         modules = [
           ./hosts/titan.nix
         ];

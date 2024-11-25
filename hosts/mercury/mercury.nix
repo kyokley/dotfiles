@@ -1,4 +1,4 @@
-{ nixvim, ... }:
+{ pkgs, nixvim, ... }:
 {
     imports = [
         ../../programs/nixos/nixos.nix
@@ -14,7 +14,7 @@
     };
 
     home.packages = [
-        nixvim.packages.${builtins.currentSystem}.default
+        nixvim.packages.${pkgs.stdenv.hostPlatform.system}.default
     ];
 
     home.stateVersion = "24.05"; # Don't touch me!
