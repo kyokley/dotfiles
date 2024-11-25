@@ -1,4 +1,4 @@
-{ pkgs, nixvim, picom, ... }:
+{ pkgs, nixvim, ... }:
 let
     home_dir = "/home/yokley";
     qtile-one-screen = pkgs.writeShellScriptBin "qtile-one-screen" ''
@@ -36,8 +36,6 @@ in
 
     home.homeDirectory = "${home_dir}";
     programs.git.userEmail = "kevin.yokley@oracle.com";
-
-    services.picom.package = picom.packages.${pkgs.stdenv.hostPlatform.system}.default;
 
     home.stateVersion = "24.05"; # Don't touch me!
 }

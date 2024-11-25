@@ -8,16 +8,12 @@
       url = "github:nix-community/home-manager/release-24.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    picom = {
-      url = "github:yshui/picom/v12.5";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     nixvim = {
       url = "github:kyokley/nixvim";
     };
   };
 
-  outputs = { nixpkgs, home-manager, picom, nixvim, ... }:
+  outputs = { nixpkgs, home-manager, nixvim, ... }:
   let
     dioxygen_system = "aarch64-darwin";
     venus_system = "x86_64-linux";
@@ -37,7 +33,7 @@
           home-manager.nixosModules.home-manager
           {
             home-manager.users.yokley = import ./hosts/mars/mars.nix;
-            home-manager.extraSpecialArgs = { inherit nixvim picom; };
+            home-manager.extraSpecialArgs = { inherit nixvim; };
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
           }
@@ -52,7 +48,7 @@
           home-manager.nixosModules.home-manager
           {
             home-manager.users.yokley = import ./hosts/mercury/mercury.nix;
-            home-manager.extraSpecialArgs = { inherit nixvim picom; };
+            home-manager.extraSpecialArgs = { inherit nixvim; };
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
           }
@@ -68,7 +64,7 @@
             home-manager.nixosModules.home-manager
             {
               home-manager.users.yokley = import ./hosts/saturn/saturn.nix;
-              home-manager.extraSpecialArgs = { inherit nixvim picom; };
+              home-manager.extraSpecialArgs = { inherit nixvim; };
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
             }

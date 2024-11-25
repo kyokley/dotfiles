@@ -1,4 +1,4 @@
-{ pkgs, nixvim, picom, ... }:
+{ pkgs, nixvim, ... }:
 let
     home_dir = "/home/yokley";
 in
@@ -20,8 +20,6 @@ in
     home.packages = [
         nixvim.packages.${pkgs.stdenv.hostPlatform.system}.default
     ];
-
-    services.picom.package = picom.packages.${pkgs.stdenv.hostPlatform.system}.default;
 
     home.stateVersion = "24.05"; # Don't touch me!
 }
