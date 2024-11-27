@@ -14,6 +14,7 @@ let
           "gps.oracle.com"
           "ocp.oraclecorp.com"
           "artifacthub-phx.oci.oraclecorp.com"
+          "artifactory.oci.oraclecorp.com"
           "cegbu-textura-docker-local.dockerhub-phx.oci.oraclecorp.com"
   ];
 in
@@ -57,6 +58,8 @@ in
     100.105.212.136 gps.oracle.com    # vpn-slice-openconnect0 AUTOCREATED
     144.25.81.188 ocp.oraclecorp.com    # vpn-slice-openconnect0 AUTOCREATED
     138.1.117.148 artifacthub-phx.oci.oraclecorp.com    # vpn-slice-openconnect0 AUTOCREATED
-    138.1.117.148 cegbu-textura-docker-local.dockerhub-phx.oci.oraclecorp.com   # vpn-slice-openconnect0 AUTOCREATED
-  '';
+    100.126.5.8 artifactory.oci.oraclecorp.com    # vpn-slice-openconnect0 AUTOCREATED
+    100.126.4.64 artifactory.oci.oraclecorp.com   # vpn-slice-openconnect0 AUTOCREATED
+    138.1.117.148 cegbu-textura-docker-local.dockerhub-phx.oci.oraclecorp.com # vpn-slice-openconnect0 AUTOCREATED
+    '';
 }
