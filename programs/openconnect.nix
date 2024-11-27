@@ -13,6 +13,7 @@ let
           "hrservices.oraclecorp.com"
           "gps.oracle.com"
           "ocp.oraclecorp.com"
+          "artifacthub-phx.oci.oraclecorp.com"
   ];
 in
 {
@@ -29,7 +30,7 @@ in
       useragent = "AnyConnect Linux_64 4.10.999999";
       script = "${pkgs.vpn-slice}/bin/vpn-slice --no-host-names --no-ns-hosts ${domains}";
       # Use below when attempting to find additional host IPs. After rebuilding, run the following commands:
-      # sudo mv /etc/hosts{,_bak} && sudo cp /etc/static/hosts /etc/hosts && sudo systemctl restart openconnect-openconnect0 && sleep 5 && cat /etc/hosts
+      # sudo mv /etc/hosts{,_bak} && sudo cp /etc/static/hosts /etc/hosts && sudo systemctl restart openconnect-openconnect0 && sleep 15 && cat /etc/hosts
       # After determining the host IP, be sure to modify the script abov and the extraHosts below
       # script = "${pkgs.vpn-slice}/bin/vpn-slice ${domains}";
     };
@@ -54,5 +55,6 @@ in
     100.114.94.31 hrservices.oraclecorp.com   # vpn-slice-openconnect0 AUTOCREATED
     100.105.212.136 gps.oracle.com    # vpn-slice-openconnect0 AUTOCREATED
     144.25.81.188 ocp.oraclecorp.com    # vpn-slice-openconnect0 AUTOCREATED
+    138.1.117.148 artifacthub-phx.oci.oraclecorp.com    # vpn-slice-openconnect0 AUTOCREATED
   '';
 }
