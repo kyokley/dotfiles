@@ -8,14 +8,20 @@ in
     openconnect
   ];
 
-  environment.sessionVariables = {
-    HTTP_PROXY = "${proxy}";
-    HTTPS_PROXY = "${proxy}";
-    http_proxy = "${proxy}";
-    https_proxy = "${proxy}";
-    NO_PROXY = "${no_proxy}";
-    no_proxy = "${no_proxy}";
-    CURL_HOME = "/etc/curl";
+  # environment.sessionVariables = {
+  #   HTTP_PROXY = "${proxy}";
+  #   HTTPS_PROXY = "${proxy}";
+  #   http_proxy = "${proxy}";
+  #   https_proxy = "${proxy}";
+  #   NO_PROXY = "${no_proxy}";
+  #   no_proxy = "${no_proxy}";
+  #   CURL_HOME = "/etc/curl";
+  # };
+
+  networking.proxy = {
+    httpProxy = "${proxy}";
+    httpsProxy = "${proxy}";
+    noProxy = "${no_proxy}";
   };
 
   networking.openconnect.interfaces.openconnect0 = {
