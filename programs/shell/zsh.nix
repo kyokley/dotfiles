@@ -134,6 +134,7 @@
         function krill() {
             docker run \
                 --rm -t \
+                --env KRILL_PROXY=$HTTP_PROXY \
                 kyokley/krill \
                 "$@"
         }
