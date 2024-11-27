@@ -27,6 +27,7 @@ class LogLevel(StrEnum):
     EXCEPTION = 'exception'
 
 
+KRILL_PROXY = os.environ.get('HTTP_PROXY', '')
 REQUESTS_TIMEOUT = 30
 
 
@@ -62,7 +63,7 @@ GCAL_CMD = ('docker run --rm '
             f'-v {str(Path.home())}/.gcalcli_oauth:/root/.gcalcli_oauth '
             'kyokley/gcalcli')
 KRILL_CMD = (
-        'docker run --rm -t --cpus=.25 kyokley/krill -S /app/sources.txt --snapshot'
+        f'docker run --rm -t --cpus=.25 --env KRILL_PROXY={KRILL_PROXY} kyokley/krill -S /app/sources.txt --snapshot'
         )
 
 KRILL_BROWSER = determine_browser()
@@ -577,6 +578,7 @@ class Krill(CachedProxyRequest):
 
     def _fetch(self):
         cmd = shlex.split(KRILL_CMD)
+        logger.warning(cmd)
         proc = subprocess.check_output(cmd)
         data = []
 
