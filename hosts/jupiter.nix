@@ -1,4 +1,7 @@
 {pkgs, lib, ...}:
+let
+  homeDir = "/home/yokley";
+in
 {
   imports = [
     ../home.nix
@@ -90,7 +93,7 @@
     zsh.prezto.extraConfig = lib.mkAfter
           ''
           function mc-run() {
-              cd ${builtins.getEnv "HOME"}/workspace/MediaConverterProd
+              cd ${homeDir}/workspace/MediaConverterProd
               make run
               cd -
           }

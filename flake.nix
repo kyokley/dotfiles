@@ -65,7 +65,6 @@
       };
     };
 
-
     homeConfigurations = {
       "dioxygen" = home-manager.lib.homeManagerConfiguration {
         pkgs = nixpkgs.legacyPackages.${aarch64_darwin};
