@@ -1,7 +1,7 @@
 { pkgs, ... }:
 {
   imports = [
-      ../../programs/openconnect.nix
+      ../../programs/openconnect/no-proxy.nix
       ../../programs/nixos/laptop.nix
   ];
 
