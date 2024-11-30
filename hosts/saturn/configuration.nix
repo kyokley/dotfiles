@@ -21,10 +21,6 @@
     gnome-keyring
   ];
 
-  services = {
-    tailscale.enable = false;
-  };
-
   networking.extraHosts = ''
     192.168.50.75 jupiter
   '';
