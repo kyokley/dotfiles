@@ -158,6 +158,8 @@
       zoom-us
   ];
 
+  systemd.tmpfiles.rules = [ "d /tmp 1777 root root 7d" ];
+
 # Some programs need SUID wrappers, can be configured further or are
 # started in user sessions.
 # programs.mtr.enable = true;
