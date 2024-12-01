@@ -12,7 +12,6 @@ in
     pkgs.pass
   ];
 
-  programs.systemd-services.environment = "almagest";
   systemd.user.services = {
       mediaviewer-daily-tasks = {
           Unit.Description = "Run tasks daily";

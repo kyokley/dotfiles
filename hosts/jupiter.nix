@@ -13,8 +13,6 @@ in
     pkgs.borgmatic
   ];
 
-  programs.systemd-services.environment = "jupiter";
-
   systemd.user.services = {
       mediawaiter-daily-tasks = {
           Unit.Description = "Run tasks daily";
