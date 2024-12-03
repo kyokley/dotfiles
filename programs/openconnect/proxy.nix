@@ -15,6 +15,13 @@ in
     openconnect
   ];
 
+  environment.variables = {
+    HTTP_PROXY = "${proxy}";
+    HTTPS_PROXY = "${proxy}";
+    http_proxy = "${proxy}";
+    https_proxy = "${proxy}";
+  };
+
   networking.proxy = {
     default = "${proxy}";
     noProxy = "${no_proxy}";
@@ -53,5 +60,15 @@ in
         noproxy = ${no_proxy}
       '';
     };
+  };
+
+  virtualisation.docker.daemon.settings = {
+    "group" = "docker";
+    "hosts" = [
+      "fd://"
+    ];
+    "live-restore" = true;
+    "log-driver" = "journald";
+    "dns" = nameservers;
   };
 }
