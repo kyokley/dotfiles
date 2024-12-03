@@ -2,25 +2,21 @@
 let
   proxy = "http://www-proxy-sjc.oraclecorp.com:80";
   no_proxy = "localhost,127.0.0.0/8,oraclecorp.com,us.oracle.com,*.us.oracle.com,cegbu.docker.oraclecorp.com,odo-docker-local.artifactory.oci.oraclecorp.com,cegbu-textura-docker-virtual.dockerhub-den.oraclecorp.com,cegbu-textura-docker-virtual.dockerhub-phx.oci.oraclecorp.com,docker-remote.dockerhub-phx.oci.oraclecorp.com,cegbu-textura-docker-local.dockerhub-phx.oci.oraclecorp.com,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16,.oraclevpn.com,*.oraclevpn.com,.oraclevcn.com,*.oraclevcn.com,docker.io";
+  nameservers = [
+    "206.223.27.1"
+    "206.223.27.2"
+    "10.209.76.197"
+    "192.135.82.132"
+    "8.8.8.8"
+  ];
 in
 {
   environment.systemPackages = with pkgs; [
     openconnect
   ];
 
-  # environment.sessionVariables = {
-  #   HTTP_PROXY = "${proxy}";
-  #   HTTPS_PROXY = "${proxy}";
-  #   http_proxy = "${proxy}";
-  #   https_proxy = "${proxy}";
-  #   NO_PROXY = "${no_proxy}";
-  #   no_proxy = "${no_proxy}";
-  #   CURL_HOME = "/etc/curl";
-  # };
-
   networking.proxy = {
-    httpProxy = "${proxy}";
-    httpsProxy = "${proxy}";
+    default = "${proxy}";
     noProxy = "${no_proxy}";
   };
 
@@ -37,13 +33,11 @@ in
     passwordFile = "/var/lib/secrets/openconnect-passwd";
   };
 
-  networking.nameservers = [
-    "206.223.27.1"
-    "206.223.27.2"
-    "10.209.76.197"
-    "192.135.82.132"
-    "8.8.8.8"
-  ];
+  networking.networkmanager = {
+    dns = "systemd-resolved";
+    appendNameservers = nameservers;
+  };
+  services.resolved.fallbackDns = nameservers;
 
   environment.etc = {
     "/etc/wgetrc" = {
