@@ -190,7 +190,7 @@
   networking.useDHCP = lib.mkDefault false;
   networking.firewall.enable = false;
   networking.firewall.checkReversePath = "loose";
-  services.resolved.enable = lib.mkDefault true;
+  services.resolved.enable = true;
   networking.useNetworkd = true;
 
   home-manager = {

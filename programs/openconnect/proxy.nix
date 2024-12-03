@@ -34,10 +34,10 @@ in
   };
 
   networking.networkmanager = {
-    dns = "none";
+    dns = "systemd-resolved";
     appendNameservers = nameservers;
   };
-  services.resolved.enable = false;
+  services.resolved.fallbackDns = nameservers;
 
   environment.etc = {
     "/etc/wgetrc" = {

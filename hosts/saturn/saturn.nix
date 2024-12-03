@@ -1,6 +1,5 @@
 { pkgs, nixvim, ... }:
 let
-    proxy = "http://www-proxy-sjc.oraclecorp.com:80";
     qtile-one-screen = pkgs.writeShellScriptBin "qtile-one-screen" ''
         xrandr --output eDP-1 --primary --mode 1920x1200 --pos 0x0 --rotate normal --output HDMI-1 --off --output DP-1 --off --output DP-2 --off
     '';
@@ -32,8 +31,6 @@ in
 
     home.sessionVariables = {
         QTILE_NET_INTERFACE = "wlp113s0f0";
-        HTTP_PROXY = "${proxy}";
-        HTTPS_PROXY = "${proxy}";
     };
 
     programs.git.userEmail = "kevin.yokley@oracle.com";
