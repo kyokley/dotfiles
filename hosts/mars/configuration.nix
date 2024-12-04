@@ -26,4 +26,16 @@
   ];
 
   system.stateVersion = "24.05"; # Don't touch me!
+
+  virtualisation.docker.daemon.settings = {
+    "group" = "docker";
+    "hosts" = [
+      "fd://"
+    ];
+    "live-restore" = true;
+    "log-driver" = "journald";
+    "dns" = [
+      "8.8.8.8"
+    ];
+  };
 }
