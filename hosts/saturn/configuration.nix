@@ -3,7 +3,12 @@
   imports = [
       ../../programs/openconnect.nix
       ../../programs/nixos/laptop.nix
+
+      # Import SSH
+      ./ssh.nix
   ];
+
+  services.openssh.authorizedKeysFiles
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
