@@ -8,7 +8,11 @@
       ./ssh.nix
   ];
 
-  services.openssh.authorizedKeysFiles
+  users.users.yokley.openssh.authorizedKeys = {
+    keyFiles = [
+      ../mars/mars.pub
+    ];
+  };
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
