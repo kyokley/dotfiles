@@ -36,4 +36,8 @@
       "8.8.8.8"
     ];
   };
+
+  networking.extraHosts = ''
+    192.168.50.96 saturn
+  '';
 }
