@@ -182,7 +182,7 @@
 # networking.firewall.allowedUDPPorts = [ ... ];
 # Or disable the firewall altogether.
   networking.useDHCP = lib.mkDefault false;
-  networking.firewall.enable = false;
+  networking.firewall.enable = lib.mkDefault false;
   networking.firewall.checkReversePath = "loose";
   services.resolved.enable = true;
   networking.useNetworkd = true;
