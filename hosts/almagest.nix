@@ -1,6 +1,6 @@
 { pkgs, lib, ... }:
 let
-  mv_path = "${builtins.getEnv "HOME"}/workspace/MediaViewerProd";
+  mv_path = "/home/yokley/workspace/MediaViewerProd";
 in
 {
   imports = [
@@ -12,7 +12,6 @@ in
     pkgs.pass
   ];
 
-  programs.systemd-services.environment = "almagest";
   systemd.user.services = {
       mediaviewer-daily-tasks = {
           Unit.Description = "Run tasks daily";

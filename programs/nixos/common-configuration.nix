@@ -88,13 +88,6 @@
   xdg.portal.config.common.default = "*";
   services.flatpak.enable = true;
 
-# Enable tailscale
-  services.tailscale.enable = lib.mkDefault true;
-  services.tailscale.useRoutingFeatures = "both";
-
-  # Enable trayscale once added to home-manager
-  # services.trayscale.enable = false;
-
   services.earlyoom.enable = true;
 
 # Enable docker
@@ -143,7 +136,6 @@
       curl
       brave
       terminator
-      tailscale
       pavucontrol
       volctl
       htop
@@ -157,6 +149,8 @@
       slack
       zoom-us
   ];
+
+  systemd.tmpfiles.rules = [ "d /tmp 1777 root root 7d" ];
 
 # Some programs need SUID wrappers, can be configured further or are
 # started in user sessions.

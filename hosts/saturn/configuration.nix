@@ -3,7 +3,16 @@
   imports = [
       ../../programs/openconnect/no-proxy.nix
       ../../programs/nixos/laptop.nix
+
+      # Import SSH
+      ./ssh.nix
   ];
+
+  users.users.yokley.openssh.authorizedKeys = {
+    keyFiles = [
+      ../mars/mars.pub
+    ];
+  };
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -20,10 +29,6 @@
   environment.systemPackages = with pkgs; [
     gnome-keyring
   ];
-
-  services = {
-    tailscale.enable = false;
-  };
 
   networking.extraHosts = ''
     192.168.50.75 jupiter

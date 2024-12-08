@@ -17,8 +17,6 @@ in
         ../../home.nix
     ];
 
-    programs.systemd-services.environment = "saturn";
-
     home.packages = [
         pkgs.devenv
         pkgs.brightnessctl

@@ -5,8 +5,6 @@
         ../../home.nix
     ];
 
-    programs.systemd-services.environment = "mercury";
-
     programs.git.userEmail = "kyokley@mercury";
 
     home.sessionVariables = {

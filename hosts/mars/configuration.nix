@@ -2,6 +2,7 @@
 {
   imports = [
       ../../programs/openconnect/no-proxy.nix
+      ../../programs/tailscale.nix
       ../../programs/nixos/laptop.nix
   ];
 
@@ -10,13 +11,6 @@
   boot.loader.efi.canTouchEfiVariables = true;
   boot.supportedFilesystems = [ "bcachefs" ];
   boot.kernelPackages = pkgs.linuxPackages_latest;
-
-  # Not sure if these are needed to fix docker networking issues when tailscale
-  # exit nodes are active
-  # boot.kernel.sysctl = {
-  #   "net.ipv4.ip_forward" = true;
-  #   "net.ipv6.conf.all.forwarding" = true;
-  # };
 
   networking.hostName = "mars"; # Define your hostname.
 
@@ -30,4 +24,16 @@
   ];
 
   system.stateVersion = "24.05"; # Don't touch me!
+
+  virtualisation.docker.daemon.settings = {
+    "group" = "docker";
+    "hosts" = [
+      "fd://"
+    ];
+    "live-restore" = true;
+    "log-driver" = "journald";
+    "dns" = [
+      "8.8.8.8"
+    ];
+  };
 }
