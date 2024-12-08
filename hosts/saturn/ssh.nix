@@ -1,7 +1,12 @@
 {
   services.openssh = {
     enable = true;
-    # listenAddesses = [ "10101" ];
+    listenAddesses = [
+      {
+        addr = "0.0.0.0";
+        port = 10101;
+      }
+    ];
     settings = {
       PermitRootLogin = "no";
       PasswordAuthentication = false;
