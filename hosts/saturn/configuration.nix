@@ -11,6 +11,7 @@
   users.users.yokley.openssh.authorizedKeys = {
     keyFiles = [
       ../mars/mars.pub
+      ../dioxygen/dioxygen.pub
     ];
   };
 

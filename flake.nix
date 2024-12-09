@@ -69,7 +69,7 @@
       "dioxygen" = home-manager.lib.homeManagerConfiguration {
         pkgs = nixpkgs.legacyPackages.${aarch64_darwin};
         modules = [
-          ./hosts/dioxygen.nix
+          ./hosts/dioxygen/dioxygen.nix
           {
             home.packages = [
               nixvim.packages.${aarch64_darwin}.default

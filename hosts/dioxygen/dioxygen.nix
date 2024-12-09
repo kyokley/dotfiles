@@ -9,7 +9,7 @@ let
 in
 {
   imports = [
-    ../home.nix
+    ../../home.nix
   ];
 
   programs.systemd-services.enable = false;

@@ -4,9 +4,6 @@ in
 {
   services.openssh = {
     enable = true;
-    # ports = [
-        # 10101
-    # ];
     listenAddresses = [
       {
         addr = "192.168.50.96";
