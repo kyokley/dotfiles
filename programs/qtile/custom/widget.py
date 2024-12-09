@@ -547,8 +547,7 @@ class GCal(CachedProxyRequest):
 
 
 class Krill(CachedProxyRequest):
-    defaults = [('sources_file', None, 'File containing sources'),
-                ('markup', False, 'Do not use pango markup'),
+    defaults = [('markup', False, 'Do not use pango markup'),
                 ('debug', False, 'Enable additional debugging'),
                 ]
 
@@ -560,9 +559,6 @@ class Krill(CachedProxyRequest):
         self._last_item_change_time = None
 
     def get_krill(self):
-        if not self.sources_file:
-            return 'No sources provided'
-
         self._data = self.cached_fetch()
         if not self._data:
             return 'Could not load data from sources'
