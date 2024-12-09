@@ -1,9 +1,18 @@
 { pkgs, ... }:
 {
   imports = [
-      ../../programs/openconnect.nix
+      ../../programs/openconnect/no-proxy.nix
       ../../programs/nixos/laptop.nix
+
+      # Import SSH
+      ./ssh.nix
   ];
+
+  users.users.yokley.openssh.authorizedKeys = {
+    keyFiles = [
+      ../mars/mars.pub
+    ];
+  };
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
