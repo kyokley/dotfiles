@@ -18,6 +18,7 @@ in
                         Type = "oneshot";
                         ExecStart = toString (
                             pkgs.writeShellScript "nix-gc-script" ''
+                            nix-collect-garbage --delete-older-than 7d
                             ${pkgs.nix}/bin/nix store gc
                         ''
                         );
