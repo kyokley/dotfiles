@@ -25,11 +25,11 @@ in
         qtile-one-screen
         qtile-two-screen
         qtile-three-screen
+        pkgs.rclone
     ];
 
     home.sessionVariables = {
         QTILE_NET_INTERFACE = "wlp113s0f0";
-        # HTTP_PROXY = "http://www-proxy-sjc.oraclecorp.com:80";
     };
 
     programs.git.userEmail = "kevin.yokley@oracle.com";
