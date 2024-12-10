@@ -35,6 +35,7 @@
     pkgs.lftp
     pkgs.home-manager
     pkgs.jq
+    pkgs.zsh-wd
   ];
 
   programs.home-manager.enable = false;
