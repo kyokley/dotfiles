@@ -30,6 +30,7 @@ in
 
     home.sessionVariables = {
         QTILE_NET_INTERFACE = "wlp113s0f0";
+        CDPATH = "/home/yokley/workspace/compost/tpmcore";
     };
 
     programs.git.userEmail = "kevin.yokley@oracle.com";
