@@ -29,6 +29,9 @@ let
           "www-proxy-sjc.oraclecorp.com"
           "exchange.oraclecorp.com"
           "oci-ssp.oracle-ocna.com"
+          "permissions.oci.oraclecorp.com"
+          "phx-c-csec-awp-01.us5.oraclecloud.com"
+          "u2f-validator.idp.mc1.oracleiaas.com"
   ];
 in
 {
@@ -87,5 +90,8 @@ in
     10.255.48.38 www-proxy-sjc.oraclecorp.com               # vpn-slice-openconnect0 AUTOCREATED
     144.25.106.166 exchange.oraclecorp.com          # vpn-slice-openconnect0 AUTOCREATED
     147.154.5.156 oci-ssp.oracle-ocna.com           # vpn-slice-openconnect0 AUTOCREATED
+    100.125.5.67 permissions.oci.oraclecorp.com             # vpn-slice-openconnect0 AUTOCREATED
+    192.18.204.201 phx-c-csec-awp-01.us5.oraclecloud.com            # vpn-slice-openconnect0 AUTOCREATED
+    100.125.5.163 u2f-validator.idp.mc1.oracleiaas.com              # vpn-slice-openconnect0 AUTOCREATED
     '';
 }
