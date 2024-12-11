@@ -3,7 +3,6 @@ from pathlib import Path
 from libqtile import bar, widget, qtile
 from custom.widget import (WallpaperDir,
                            Weather,
-                           VT,
                            Krill,
                            MaxCPUGraph,
                            )
@@ -22,6 +21,7 @@ ROOT_DIR = '/'
 TERM = 'terminator'
 
 top_widgets = [
+    widget.Spacer(length=10),
     widget.WindowName(
         for_current_screen=True,
         font=extension_defaults.font,
@@ -193,6 +193,7 @@ top_widgets.extend([
     #     font=extension_defaults.font,
     #     fontsize=extension_defaults.fontsize,
     # )
+    widget.Spacer(length=10),
 ])
 
 SCREENS = [
@@ -204,6 +205,7 @@ SCREENS = [
         ),
         bottom=bar.Bar(
             [
+                widget.Spacer(length=10),
                 widget.GroupBox(
                     this_current_screen_border=extension_defaults.foreground,
                     this_screen_border=extension_defaults.inactive_foreground,
@@ -229,15 +231,16 @@ SCREENS = [
                       fontsize=extension_defaults.fontsize,
                       debug=False,
                       ),
-                widget.TextBox('VT:',
-                               font=extension_defaults.font,
-                               fontsize=extension_defaults.fontsize,
-                               ),
-                VT(update_interval=10,
-                   foreground=extension_defaults.foreground,
-                   font=extension_defaults.font,
-                   fontsize=extension_defaults.fontsize,
-                   ),
+                # widget.TextBox('VT:',
+                #                font=extension_defaults.font,
+                #                fontsize=extension_defaults.fontsize,
+                #                ),
+                # VT(update_interval=10,
+                #    foreground=extension_defaults.foreground,
+                #    font=extension_defaults.font,
+                #    fontsize=extension_defaults.fontsize,
+                #    ),
+                widget.Spacer(length=10),
             ],
             extension_defaults.bar_thickness,
             margin=extension_defaults.bar_margin,
