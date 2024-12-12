@@ -32,6 +32,7 @@ let
           "permissions.oci.oraclecorp.com"
           "phx-c-csec-awp-01.us5.oraclecloud.com"
           "u2f-validator.idp.mc1.oracleiaas.com"
+          "testrail.us.oracle.com"
   ];
 in
 {
@@ -93,5 +94,6 @@ in
     100.125.5.67 permissions.oci.oraclecorp.com             # vpn-slice-openconnect0 AUTOCREATED
     192.18.204.201 phx-c-csec-awp-01.us5.oraclecloud.com            # vpn-slice-openconnect0 AUTOCREATED
     100.125.5.163 u2f-validator.idp.mc1.oracleiaas.com              # vpn-slice-openconnect0 AUTOCREATED
+    100.77.63.149 testrail.us.oracle.com testrail           # vpn-slice-openconnect0 AUTOCREATE
     '';
 }
