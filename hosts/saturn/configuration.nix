@@ -35,5 +35,7 @@
     192.168.50.75 jupiter
   '';
 
+  services.pcscd.enable = true;
+
   system.stateVersion = "24.05"; # Don't touch me!
 }

@@ -26,6 +26,8 @@ in
         qtile-two-screen
         qtile-three-screen
         pkgs.rclone
+        pkgs.opensc
+        pkgs.yubico-piv-tool
     ];
 
     home.sessionVariables = {
