@@ -15,7 +15,7 @@ in
       PasswordAuthentication = false;
     };
   };
-  systemd.services.sshd.after = [ "network-interfaces.target" ];
+  systemd.services.sshd.after = [ "network.target" ];
 
   services.fail2ban = {
     enable = true;
