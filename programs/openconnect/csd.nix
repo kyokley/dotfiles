@@ -26,7 +26,7 @@ Options = UnsafeLegacyRenegotiation
 # server's security policy with lies. This script exists as an example
 # to work from.
 
-set -x
+# set -x
 
 if ! ${pkgs.xmlstarlet}/bin/xmlstarlet --version > /dev/null 2>&1; then
     echo "************************************************************************" >&2
