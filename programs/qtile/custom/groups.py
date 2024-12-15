@@ -40,7 +40,7 @@ GROUPS = [
 ]
 GROUPS.extend([Group(i) for i in "1234"])
 GROUPS.extend([Group('5',
-                     matches=[Match(wm_class='Zoom')],
+                     matches=[Match(wm_class='zoom')],
                      label='5:Zoom',
                      ),
                Group('6',
