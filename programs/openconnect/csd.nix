@@ -103,15 +103,15 @@ done
 
 URL="https://$CSD_HOSTNAME/+CSCOE+/sdesktop/token.xml?ticket=$TICKET&stub=$STUB"
 if [ -n "$XMLSTARLET" ]; then
-    TOKEN=$(OPENSSL_CONF=${csd-openssl-conf} ${pkgs.curl}/bin/curl -v $PINNEDPUBKEY -s "$URL"  | ${pkgs.xmlstarlet}/bin/xmlstarlet sel -t -v /hostscan/token)
+    TOKEN=$(OPENSSL_CONF=${csd-openssl-conf} ${pkgs.curl}/bin/curl $PINNEDPUBKEY -s "$URL"  | ${pkgs.xmlstarlet}/bin/xmlstarlet sel -t -v /hostscan/token)
 else
-    TOKEN=$(OPENSSL_CONF=${csd-openssl-conf} ${pkgs.curl}/bin/curl -v $PINNEDPUBKEY -s "$URL" | sed -n '/<token>/s^.*<token>\(.*\)</token>^\1^p' )
+    TOKEN=$(OPENSSL_CONF=${csd-openssl-conf} ${pkgs.curl}/bin/curl $PINNEDPUBKEY -s "$URL" | sed -n '/<token>/s^.*<token>\(.*\)</token>^\1^p' )
 fi
 
 if [ -n "$XMLSTARLET" ]; then
     URL="https://$CSD_HOSTNAME/CACHE/sdesktop/data.xml"
 
-    OPENSSL_CONF=${csd-openssl-conf} ${pkgs.curl}/bin/curl -v $PINNEDPUBKEY -s "$URL" | ${pkgs.xmlstarlet}/bin/xmlstarlet sel -t -v '/data/hostscan/field/@value' -n | while read -r ENTRY; do
+    OPENSSL_CONF=${csd-openssl-conf} ${pkgs.curl}/bin/curl $PINNEDPUBKEY -s "$URL" | ${pkgs.xmlstarlet}/bin/xmlstarlet sel -t -v '/data/hostscan/field/@value' -n | while read -r ENTRY; do
 	# XX: How are ' and , characters escaped in this?
 	TYPE="$(sed "s/^'\(.*\)','\(.*\)','\(.*\)'$/\1/" <<< "$ENTRY")"
 	NAME="$(sed "s/^'\(.*\)','\(.*\)','\(.*\)'$/\2/" <<< "$ENTRY")"
@@ -178,7 +178,7 @@ fi
 COOKIE_HEADER="Cookie: sdesktop=$TOKEN"
 CONTENT_HEADER="Content-Type: text/xml"
 URL="https://$CSD_HOSTNAME/+CSCOE+/sdesktop/scan.xml?reusebrowser=1"
-OPENSSL_CONF=${csd-openssl-conf} ${pkgs.curl}/bin/curl -v $PINNEDPUBKEY -s -H "$CONTENT_HEADER" -H "$COOKIE_HEADER" -H 'Expect: ' --data-binary @$RESPONSE "$URL" > $RESULT
+OPENSSL_CONF=${csd-openssl-conf} ${pkgs.curl}/bin/curl $PINNEDPUBKEY -s -H "$CONTENT_HEADER" -H "$COOKIE_HEADER" -H 'Expect: ' --data-binary @$RESPONSE "$URL" > $RESULT
 
 cat $RESULT || :
 
@@ -188,6 +188,7 @@ in
 {
   environment.systemPackages = [
     pkgs.xmlstarlet
+    pkgs.curl
   ];
 
   networking.openconnect.interfaces.openconnect0.extraOptions = {

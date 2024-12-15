@@ -51,7 +51,6 @@ in
       disable-ipv6 = true;
       no-proxy = true;
       useragent = "AnyConnect Linux_64 4.10.999999";
-      verbose = true;
       script = "${pkgs.vpn-slice}/bin/vpn-slice --no-host-names --no-ns-hosts ${domains}";
       # Use below when attempting to find additional host IPs. After rebuilding, run the following commands:
       # sudo mv /etc/hosts{,_bak} && sudo cp /etc/static/hosts /etc/hosts && sudo systemctl restart openconnect-openconnect0 && sleep 15 && cat /etc/hosts
