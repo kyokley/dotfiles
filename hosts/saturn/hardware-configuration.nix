@@ -41,4 +41,5 @@
     enable = false;
     platform = "ipu6epmtl";
   };
+  boot.blacklistedKernelModules = [ "intel_ipu6" "intel_ipu6_isys" "intel_ipu6_isys.isys" ];  # not sure if all of them are required
 }
