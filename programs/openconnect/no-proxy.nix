@@ -38,6 +38,10 @@ let
   ];
 in
 {
+  imports = [
+    ./csd.nix
+  ];
+
   environment.systemPackages = with pkgs; [
     vpn-slice
     openconnect
@@ -56,7 +60,7 @@ in
       # script = "${pkgs.vpn-slice}/bin/vpn-slice ${domains}";
     };
     protocol = "anyconnect";
-    gateway = "myaccess.oraclevpn.com/exc";
+    gateway = "myaccess.oraclevpn.com";
     user = "kyokley_us";
     passwordFile = "/var/lib/secrets/openconnect-passwd";
   };

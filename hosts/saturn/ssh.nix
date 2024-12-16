@@ -15,6 +15,10 @@ in
       PasswordAuthentication = false;
     };
   };
+  systemd.services.sshd = {
+    after = [ "network-online.target" ];
+    wants = [ "network-online.target" ];
+  };
 
   services.fail2ban = {
     enable = true;
