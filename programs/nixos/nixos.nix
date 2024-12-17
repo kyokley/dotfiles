@@ -63,6 +63,8 @@ in
 
   home.shellAliases = {
     open = "xdg-open";
+    nixos-switch = "nixos-rebuild switch --use-remote-sudo --flake 'git+ssh://git@venus.ftpaccess.cc:10022/kyokley/dotfiles.git?ref=main'";
+    nixos-test = "nixos-rebuild test --use-remote-sudo --flake 'git+ssh://git@venus.ftpaccess.cc:10022/kyokley/dotfiles.git?ref=main'";
   };
 
   services.blueman-applet.enable = true;
