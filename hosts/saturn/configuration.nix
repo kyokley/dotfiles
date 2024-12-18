@@ -31,6 +31,14 @@
     gnome-keyring
   ];
 
+  virtualisation.virtualbox.host = {
+    enable = true;
+    enableKvm = true;
+    enableExtensionPack = true;
+    addNetworkInterface = false;
+  };
+  users.extraGroups.vboxusers.members = [ "yokley" ];
+
   networking.extraHosts = ''
     192.168.50.75 jupiter
   '';
