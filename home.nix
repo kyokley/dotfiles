@@ -1,4 +1,4 @@
-{ pkgs, lib, extraSpecialArgs, ... }:
+{ pkgs, lib, vars, ... }:
 
 {
   imports = [
@@ -39,8 +39,8 @@
   ];
 
   home.shellAliases = {
-    home-manager-switch = "home-manager switch --flake 'git+ssh://git@venus.ftpaccess.cc:10022/kyokley/dotfiles.git?ref=main#${extraSpecialArgs.userConf.vars.hostname}'";
-    home-manager-test = "home-manager test --flake 'git+ssh://git@venus.ftpaccess.cc:10022/kyokley/dotfiles.git?ref=main#${extraSpecialArgs.userConf.vars.hostname}'";
+    home-manager-switch = "home-manager switch --flake 'git+ssh://git@venus.ftpaccess.cc:10022/kyokley/dotfiles.git?ref=main#${vars.hostname}'";
+    home-manager-test = "home-manager test --flake 'git+ssh://git@venus.ftpaccess.cc:10022/kyokley/dotfiles.git?ref=main#${vars.hostname}'";
   };
 
   programs.home-manager.enable = false;
