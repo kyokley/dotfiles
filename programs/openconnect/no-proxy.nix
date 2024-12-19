@@ -36,6 +36,7 @@ let
           "www-proxy-ash7.us.oracle.com"
           "www-proxy-hqdc.us.oracle.com"
           "www-proxy-sjc.oraclecorp.com"
+          "yum-internal.oracle.com"
   ];
 in
 {
@@ -86,6 +87,7 @@ in
     100.112.22.206 global-ebusiness.oraclecorp.com          # vpn-slice-openconnect0 AUTOCREATED
     100.105.212.136 gps.oracle.com          # vpn-slice-openconnect0 AUTOCREATED
     100.114.94.31 hrservices.oraclecorp.com         # vpn-slice-openconnect0 AUTOCREATED
+    100.112.124.74 mydesktop.oraclecorp.com         # vpn-slice-openconnect0 AUTOCREATED
     147.154.5.156 oci-ssp.oracle-ocna.com           # vpn-slice-openconnect0 AUTOCREATED
     100.77.25.241 ociautojenkins01.snphxprshared1.gbucdsint02phx.oraclevcn.com              # vpn-slice-openconnect0 AUTOCREATED
     100.77.38.58 ocitpmpypi.us.oracle.com ocitpmpypi                # vpn-slice-openconnect0 AUTOCREATED
@@ -104,6 +106,6 @@ in
     10.23.226.53 www-proxy-ash7.us.oracle.com www-proxy-ash7                # vpn-slice-openconnect0 AUTOCREATED
     10.68.69.53 www-proxy-hqdc.us.oracle.com www-proxy-hqdc         # vpn-slice-openconnect0 AUTOCREATED
     10.255.48.38 www-proxy-sjc.oraclecorp.com               # vpn-slice-openconnect0 AUTOCREATED
-    100.112.124.74 mydesktop.oraclecorp.com         # vpn-slice-openconnect0 AUTOCREATED
+    138.1.51.46 yum-internal.oracle.com             # vpn-slice-openconnect0 AUTOCREATED
     '';
 }
