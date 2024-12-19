@@ -1,6 +1,6 @@
 {
   imports = [
-    ../home.nix
+    ../../home.nix
   ];
 
   programs.git.userEmail = "kyokley@venus";

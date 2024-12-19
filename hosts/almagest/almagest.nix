@@ -4,7 +4,7 @@ let
 in
 {
   imports = [
-    ../home.nix
+    ../../home.nix
   ];
 
   home.packages = [
