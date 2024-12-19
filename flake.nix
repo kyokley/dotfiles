@@ -97,7 +97,6 @@
         };
         modules = [
           ./hosts/venus/venus.nix
-          ./hosts/venus/vars.nix
           {
             home.packages = [
               nixvim.packages.${x86_linux}.minimal
@@ -113,7 +112,6 @@
         };
         modules = [
           ./hosts/almagest/almagest.nix
-          ./hosts/almagest/vars.nix
           {
             home.packages = [
               nixvim.packages.${x86_linux}.minimal
@@ -128,7 +126,6 @@
         };
         modules = [
           ./hosts/jupiter/jupiter.nix
-          ./hosts/jupiter/vars.nix
           {
             home.packages = [
               nixvim.packages.${x86_linux}.default
@@ -143,7 +140,6 @@
         };
         modules = [
           ./hosts/singularity/singularity.nix
-          ./hosts/singularity/vars.nix
           {
             home.packages = [
               nixvim.packages.${x86_linux}.minimal
