@@ -152,15 +152,6 @@ top_widgets.extend([
         font=extension_defaults.font,
         fontsize=extension_defaults.fontsize,
     ),
-    widget.TextBox('Vol:',
-                   font=extension_defaults.font,
-                   fontsize=extension_defaults.fontsize,
-                   ),
-    widget.Volume(
-        foreground=extension_defaults.foreground,
-        font=extension_defaults.font,
-        fontsize=extension_defaults.fontsize,
-    ),
 ])
 
 if any([path.exists()
@@ -178,13 +169,20 @@ if any([path.exists()
                        format='{char}{percent:2.0%}',
                        font=extension_defaults.font,
                        fontsize=extension_defaults.fontsize,
-                       full_char='Full',
-                       not_charging_char='*',
                        discharge_char='v',
                        ),
     ])
 
 top_widgets.extend([
+    widget.TextBox('Vol:',
+                   font=extension_defaults.font,
+                   fontsize=extension_defaults.fontsize,
+                   ),
+    widget.Volume(
+        foreground=extension_defaults.foreground,
+        font=extension_defaults.font,
+        fontsize=extension_defaults.fontsize,
+    ),
     widget.Systray(icon_size=extension_defaults.iconsize),
     widget.Clock(
         foreground='FFDE3B',
