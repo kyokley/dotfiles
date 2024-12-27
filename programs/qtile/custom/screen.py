@@ -23,30 +23,22 @@ TERM = 'terminator'
 top_widgets = [
     widget.Spacer(length=10),
     widget.WindowName(
-        for_current_screen=True,
-        font=extension_defaults.font,
-        fontsize=extension_defaults.fontsize,
-    ),
+            width=bar.STRETCH,
+            for_current_screen=True,
+            font=extension_defaults.font,
+            fontsize=extension_defaults.fontsize,
+            ),
     widget.TextBox('WP:',
                    font=extension_defaults.font,
                    fontsize=extension_defaults.fontsize,
                    ),
     widget.Spacer(length=10),
     WallpaperDir(
-        directory=WALLPAPER_DIR.expanduser(),
-        foreground=extension_defaults.foreground,
-        font=extension_defaults.font,
-        fontsize=extension_defaults.fontsize,
-    ),
-    widget.TextBox('Vol:',
-                   font=extension_defaults.font,
-                   fontsize=extension_defaults.fontsize,
-                   ),
-    widget.Volume(
-        foreground=extension_defaults.foreground,
-        font=extension_defaults.font,
-        fontsize=extension_defaults.fontsize,
-    ),
+            directory=WALLPAPER_DIR.expanduser(),
+            foreground=extension_defaults.foreground,
+            font=extension_defaults.font,
+            fontsize=extension_defaults.fontsize,
+            ),
     widget.TextBox('Disk:',
                    font=extension_defaults.font,
                    fontsize=extension_defaults.fontsize,
@@ -59,7 +51,7 @@ top_widgets = [
               partition=ROOT_DIR,
               mouse_callbacks={'Button1': lambda: qtile.cmd_spawn(f'{TERM} -bx ncdu {ROOT_DIR}')},
               ),
-]
+    ]
 
 if mount_exists(HOME_DIR):
     top_widgets.append(
@@ -160,25 +152,36 @@ top_widgets.extend([
         font=extension_defaults.font,
         fontsize=extension_defaults.fontsize,
     ),
+    widget.TextBox('Vol:',
+                   font=extension_defaults.font,
+                   fontsize=extension_defaults.fontsize,
+                   ),
+    widget.Volume(
+        foreground=extension_defaults.foreground,
+        font=extension_defaults.font,
+        fontsize=extension_defaults.fontsize,
+    ),
 ])
 
 if any([path.exists()
         for path in BATTERY_PATHS]):
     top_widgets.extend([
-        widget.TextBox('Bat:',
-                       font=extension_defaults.font,
-                       fontsize=extension_defaults.fontsize,
-                       ),
+    widget.TextBox('Bat:',
+                   font=extension_defaults.font,
+                   fontsize=extension_defaults.fontsize,
+                   ),
         widget.Battery(energy_now_file='charge_now',
                        energy_full_file='charge_full',
                        power_now_file='current_now',
                        low_percentage=.3,
                        foreground=extension_defaults.foreground,
-                       format='{percent:2.0%}',
+                       format='{char}{percent:2.0%}',
                        font=extension_defaults.font,
                        fontsize=extension_defaults.fontsize,
+                       full_char='Full',
+                       not_charging_char='*',
+                       discharge_char='v',
                        ),
-        widget.BatteryIcon(),
     ])
 
 top_widgets.extend([
