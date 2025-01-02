@@ -1,6 +1,7 @@
 { pkgs, ... }:
 {
   imports = [
+      ../../programs/openconnect/ocna.nix
       ../../programs/openconnect/no-proxy.nix
       ../../programs/nixos/laptop.nix
       ../../programs/clamav.nix
@@ -32,6 +33,7 @@
     iptables -N log443
     iptables -A INPUT -p tcp --dport 10443 -j REJECT
     iptables -A log443 -j ACCEPT
+    iptables-save
   '';
 
   environment.systemPackages = with pkgs; [

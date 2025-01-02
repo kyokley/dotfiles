@@ -49,7 +49,7 @@ in
     openconnect
   ];
 
-  networking.openconnect.interfaces.openconnect0 = {
+  networking.openconnect.interfaces.ocna = {
     autoStart = lib.mkDefault false;
     extraOptions = {
       disable-ipv6 = true;
