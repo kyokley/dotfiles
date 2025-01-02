@@ -4,6 +4,7 @@ in
 {
   services.openssh = {
     enable = true;
+    openFirewall = false;
     listenAddresses = [
       {
         addr = "192.168.50.96";

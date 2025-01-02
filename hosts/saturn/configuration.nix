@@ -3,6 +3,7 @@
   imports = [
       ../../programs/openconnect/no-proxy.nix
       ../../programs/nixos/laptop.nix
+      ../../programs/clamav.nix
 
       # Import SSH
       ./ssh.nix
@@ -26,6 +27,12 @@
   networking.openconnect.interfaces.openconnect0 = {
     autoStart = true;
   };
+  networking.firewall.extraCommands = ''
+    iptables -A INPUT -p tcp --dport 10443 -j REJECT
+    iptables -N log443
+    iptables -A INPUT -p tcp --dport 10443 -j REJECT
+    iptables -A log443 -j ACCEPT
+  '';
 
   environment.systemPackages = with pkgs; [
     gnome-keyring
