@@ -25,7 +25,7 @@
   networking.hostName = "saturn"; # Define your hostname.
 
   networking.openconnect.interfaces.openconnect0 = {
-    autoStart = true;
+    autoStart = false;
   };
   networking.firewall.extraCommands = ''
     iptables -A INPUT -p tcp --dport 10443 -j REJECT
