@@ -9,6 +9,8 @@ in
             extraConfig = ''
                 HandlePowerKey=ignore
                 HandleLidSwitch=ignore
+                IdleAction=suspend
+                IdleActionSec=1m
             '';
         };
         acpid = {
