@@ -86,7 +86,7 @@
 
     ### Text ###
 
-    font = Hack 16
+    font = Hack 20
 
     # The spacing between lines.  If the height is smaller than the
     # font height, it will get raised to the font height.
@@ -189,10 +189,10 @@
     ### Misc/Advanced ###
 
     # dmenu path.
-    dmenu = /usr/bin/dmenu -p dunst:
+    dmenu = /etc/profiles/per-user/yokley/bin/rofi -dmenu
 
     # Browser for opening urls in context menu.
-    browser = /usr/bin/brave
+    browser = /run/current-system/sw/bin/brave
 
     # Always run rule-defined scripts, even if the notification is suppressed
     always_run_script = true
