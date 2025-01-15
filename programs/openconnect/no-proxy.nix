@@ -1,6 +1,7 @@
 { pkgs, lib, ... }:
 let
   domains = lib.concatStringsSep " " [
+          "apex.oraclecorp.com"
           "artifacthub-phx.oci.oraclecorp.com"
           "artifactory.oci.oraclecorp.com"
           "badge.oraclecorp.com"
@@ -31,6 +32,7 @@ let
           "printers.oraclecorp.com"
           "testrail.us.oracle.com"
           "u2f-validator.idp.mc1.oracleiaas.com"
+          "utilus.us.oracle.com"
           "www-proxy-adcq7-new.us.oracle.com"
           "www-proxy-adcq7.us.oracle.com"
           "www-proxy-ash7.us.oracle.com"
@@ -70,9 +72,10 @@ in
   networking.extraHosts = ''
     206.223.27.1 dns0.openconnect0          # vpn-slice-openconnect0 AUTOCREATED
     206.223.27.2 dns1.openconnect0          # vpn-slice-openconnect0 AUTOCREATED
+    100.115.65.230 apex.oraclecorp.com              # vpn-slice-openconnect0 AUTOCREATED
     138.1.117.148 artifacthub-phx.oci.oraclecorp.com                # vpn-slice-openconnect0 AUTOCREATED
-    100.126.4.64 artifactory.oci.oraclecorp.com             # vpn-slice-openconnect0 AUTOCREATED
     100.126.5.8 artifactory.oci.oraclecorp.com              # vpn-slice-openconnect0 AUTOCREATED
+    100.126.4.64 artifactory.oci.oraclecorp.com             # vpn-slice-openconnect0 AUTOCREATED
     100.112.102.5 badge.oraclecorp.com              # vpn-slice-openconnect0 AUTOCREATED
     138.1.117.148 cegbu-textura-docker-local.dockerhub-phx.oci.oraclecorp.com               # vpn-slice-openconnect0 AUTOCREATED
     138.1.117.148 cegbu-textura-docker-virtual.dockerhub-phx.oci.oraclecorp.com             # vpn-slice-openconnect0 AUTOCREATED
@@ -92,8 +95,8 @@ in
     100.77.25.241 ociautojenkins01.snphxprshared1.gbucdsint02phx.oraclevcn.com              # vpn-slice-openconnect0 AUTOCREATED
     100.77.38.58 ocitpmpypi.us.oracle.com ocitpmpypi                # vpn-slice-openconnect0 AUTOCREATED
     144.25.81.188 ocp.oraclecorp.com                # vpn-slice-openconnect0 AUTOCREATED
-    100.126.4.64 odo-docker-local.artifactory.oci.oraclecorp.com            # vpn-slice-openconnect0 AUTOCREATED
     100.126.5.8 odo-docker-local.artifactory.oci.oraclecorp.com             # vpn-slice-openconnect0 AUTOCREATED
+    100.126.4.64 odo-docker-local.artifactory.oci.oraclecorp.com            # vpn-slice-openconnect0 AUTOCREATED
     100.112.14.9 oim.oraclecorp.com         # vpn-slice-openconnect0 AUTOCREATED
     100.125.5.67 permissions.oci.oraclecorp.com             # vpn-slice-openconnect0 AUTOCREATED
     192.18.204.201 phx-c-csec-awp-01.us5.oraclecloud.com            # vpn-slice-openconnect0 AUTOCREATED
@@ -101,6 +104,7 @@ in
     100.112.125.102 printers.oraclecorp.com         # vpn-slice-openconnect0 AUTOCREATED
     100.77.63.149 testrail.us.oracle.com testrail           # vpn-slice-openconnect0 AUTOCREATED
     100.125.5.163 u2f-validator.idp.mc1.oracleiaas.com              # vpn-slice-openconnect0 AUTOCREATED
+    10.209.64.99 utilus.us.oracle.com utilus                # vpn-slice-openconnect0 AUTOCREATED
     10.23.226.53 www-proxy-adcq7-new.us.oracle.com www-proxy-adcq7-new              # vpn-slice-openconnect0 AUTOCREATED
     10.23.226.53 www-proxy-adcq7.us.oracle.com www-proxy-adcq7              # vpn-slice-openconnect0 AUTOCREATED
     10.23.226.53 www-proxy-ash7.us.oracle.com www-proxy-ash7                # vpn-slice-openconnect0 AUTOCREATED
