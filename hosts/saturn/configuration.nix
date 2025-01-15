@@ -46,6 +46,10 @@
     enableExtensionPack = true;
     addNetworkInterface = false;
   };
+  virtualisation.virtualbox.guest = {
+    enable = true;
+    dragAndDrop = true;
+  };
   users.extraGroups.vboxusers.members = [ "yokley" ];
 
   networking.extraHosts = ''
