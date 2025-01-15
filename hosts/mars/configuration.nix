@@ -40,4 +40,6 @@
   networking.extraHosts = ''
     192.168.50.96 saturn
   '';
+
+  services.xserver.videoDrivers = [ "amdgpu" ];
 }
