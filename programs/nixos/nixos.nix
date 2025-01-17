@@ -76,7 +76,7 @@ in
     timers = [
       {
         delay = 590;
-        command = "${pkgs.dunst}/bin/dunstify '' 'Locking screen in 10 secs' -t 10";
+        command = "${pkgs.dunst}/bin/dunstify 'Locking screen in 10 secs' -t 10";
       }
       {
         delay = 10;
