@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }:
+{ pkgs, pkgs-unstable, lib, ... }:
 
 {
   nix = {
@@ -146,7 +146,7 @@
       xclip
       feh
       alsa-utils
-      mattermost-desktop
+      pkgs-unstable.mattermost-desktop
       slack
       zoom-us
   ];
