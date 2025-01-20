@@ -30,30 +30,27 @@
   systemd = {
     services = {
       renew-mattermost-cert = {
-        Unit.Description = "Renew Mattermost Cert";
-        Service = {
-          Type = "oneshot";
-          ExecStart = toString (
-              pkgs.writeShellScript "renew-mattermost-cert" ''
-              PATH=$PATH:${lib.makeBinPath [ pkgs.gnumake pkgs.sudo ]}
-              cd /home/yokley/workspace/mattermost && make renew-cert
-              ''
-              );
-        };
+        description = "Renew Mattermost Cert";
+        serviceConfig.Type = "oneshot";
+        script = toString (
+          pkgs.writeShellScript "renew-mattermost-cert" ''
+          PATH=$PATH:${lib.makeBinPath [ pkgs.gnumake pkgs.sudo ]}
+          cd /home/yokley/workspace/mattermost && make renew-cert
+          ''
+        );
       };
     };
+
     timers = {
       renew-mattermost-cert = {
-        Unit = {
-            Description = "Renew Mattermost Cert";
-            After = [ "network.target" ];
-        };
-        Timer = {
+        description = "Renew Mattermost Cert";
+        after = [ "network.target" ];
+        timerConfig = {
             OnCalendar = "monthly";
             Persistent = true;
             Unit = "renew-mattermost-cert.service";
         };
-        Install.WantedBy = ["timers.target"];
+        wantedBy = ["timers.target"];
       };
     };
   };
