@@ -29,6 +29,7 @@ let
           "permissions.oci.oraclecorp.com"
           "phx-c-csec-awp-01.us5.oraclecloud.com"
           "phxtpmae791.snphxprshared1.gbucdsint02phx.oraclevcn.com"
+          "pls.appoci.oraclecorp.com"
           "printers.oraclecorp.com"
           "testrail.us.oracle.com"
           "u2f-validator.idp.mc1.oracleiaas.com"
@@ -74,8 +75,8 @@ in
     206.223.27.2 dns1.openconnect0          # vpn-slice-openconnect0 AUTOCREATED
     100.115.65.230 apex.oraclecorp.com              # vpn-slice-openconnect0 AUTOCREATED
     138.1.117.148 artifacthub-phx.oci.oraclecorp.com                # vpn-slice-openconnect0 AUTOCREATED
-    100.126.5.8 artifactory.oci.oraclecorp.com              # vpn-slice-openconnect0 AUTOCREATED
     100.126.4.64 artifactory.oci.oraclecorp.com             # vpn-slice-openconnect0 AUTOCREATED
+    100.126.5.8 artifactory.oci.oraclecorp.com              # vpn-slice-openconnect0 AUTOCREATED
     100.112.102.5 badge.oraclecorp.com              # vpn-slice-openconnect0 AUTOCREATED
     138.1.117.148 cegbu-textura-docker-local.dockerhub-phx.oci.oraclecorp.com               # vpn-slice-openconnect0 AUTOCREATED
     138.1.117.148 cegbu-textura-docker-virtual.dockerhub-phx.oci.oraclecorp.com             # vpn-slice-openconnect0 AUTOCREATED
@@ -95,12 +96,13 @@ in
     100.77.25.241 ociautojenkins01.snphxprshared1.gbucdsint02phx.oraclevcn.com              # vpn-slice-openconnect0 AUTOCREATED
     100.77.38.58 ocitpmpypi.us.oracle.com ocitpmpypi                # vpn-slice-openconnect0 AUTOCREATED
     144.25.81.188 ocp.oraclecorp.com                # vpn-slice-openconnect0 AUTOCREATED
-    100.126.5.8 odo-docker-local.artifactory.oci.oraclecorp.com             # vpn-slice-openconnect0 AUTOCREATED
     100.126.4.64 odo-docker-local.artifactory.oci.oraclecorp.com            # vpn-slice-openconnect0 AUTOCREATED
+    100.126.5.8 odo-docker-local.artifactory.oci.oraclecorp.com             # vpn-slice-openconnect0 AUTOCREATED
     100.112.14.9 oim.oraclecorp.com         # vpn-slice-openconnect0 AUTOCREATED
     100.125.5.67 permissions.oci.oraclecorp.com             # vpn-slice-openconnect0 AUTOCREATED
     192.18.204.201 phx-c-csec-awp-01.us5.oraclecloud.com            # vpn-slice-openconnect0 AUTOCREATED
     100.77.34.87 phxtpmae791.snphxprshared1.gbucdsint02phx.oraclevcn.com            # vpn-slice-openconnect0 AUTOCREATED
+    100.114.94.139 pls.appoci.oraclecorp.com                # vpn-slice-openconnect0 AUTOCREATED
     100.112.125.102 printers.oraclecorp.com         # vpn-slice-openconnect0 AUTOCREATED
     100.77.63.149 testrail.us.oracle.com testrail           # vpn-slice-openconnect0 AUTOCREATED
     100.125.5.163 u2f-validator.idp.mc1.oracleiaas.com              # vpn-slice-openconnect0 AUTOCREATED
