@@ -4,6 +4,7 @@
   inputs = {
     # Specify the source of Home Manager and Nixpkgs.
     nixpkgs.url = "github:nixos/nixpkgs/nixos-24.11";
+    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     home-manager = {
       url = "github:nix-community/home-manager/release-24.11";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -13,7 +14,7 @@
     };
   };
 
-  outputs = { nixpkgs, home-manager, nixvim, ... }:
+  outputs = { nixpkgs, nixpkgs-unstable, home-manager, nixvim, ... }:
   let
     aarch64_darwin = "aarch64-darwin";
     x86_linux = "x86_64-linux";
@@ -21,6 +22,12 @@
   {
     nixosConfigurations = {
       mars = nixpkgs.lib.nixosSystem {
+        specialArgs = {
+          pkgs-unstable = import nixpkgs-unstable {
+            config.allowUnfree = true;
+            system = x86_linux;
+          };
+        };
         modules = [
           ./programs/nixos/common-configuration.nix
           ./hosts/mars/configuration.nix
@@ -38,6 +45,12 @@
         ];
       };
       mercury = nixpkgs.lib.nixosSystem {
+        specialArgs = {
+          pkgs-unstable = import nixpkgs-unstable {
+            config.allowUnfree = true;
+            system = x86_linux;
+          };
+        };
         modules = [
           ./programs/nixos/common-configuration.nix
           ./hosts/mercury/configuration.nix
@@ -56,6 +69,12 @@
       };
 
       "saturn" = nixpkgs.lib.nixosSystem {
+        specialArgs = {
+          pkgs-unstable = import nixpkgs-unstable {
+            config.allowUnfree = true;
+            system = x86_linux;
+          };
+        };
         modules = [
           ./programs/nixos/common-configuration.nix
             ./hosts/saturn/configuration.nix
