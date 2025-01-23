@@ -32,7 +32,7 @@ GROUPS = [
                  height=.5,
                  ),
 
-        DropDown("browser", "firefox",
+        DropDown("browser", "brave",
                  opacity=0.9,
                  on_focus_lost_hide=True,
                  height=.5,
