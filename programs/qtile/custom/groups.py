@@ -26,7 +26,7 @@ GROUPS = [
         # define a drop down terminal.
         # it is placed in the upper third of screen by default.
         DropDown("term",
-                 "kitty --directory \"~\"",
+                 "terminator",
                  opacity=0.9,
                  on_focus_lost_hide=True,
                  height=.5,
