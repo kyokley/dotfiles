@@ -1,5 +1,4 @@
-{ lib, ... }:
-{
+{lib, ...}: {
   programs.git = {
     enable = true;
     userName = "Kevin Yokley";
@@ -13,6 +12,16 @@
     extraConfig = {
       init = {
         defaultBranch = "main";
+      };
+      merge = {
+        tool = "diffview";
+      };
+      mergetool = {
+        prompt = false;
+        keepBackup = false;
+      };
+      mergetool."diffview" = {
+        cmd = ''nvim -n -c "DiffviewOpen" "$MERGE"'';
       };
     };
     aliases = {
