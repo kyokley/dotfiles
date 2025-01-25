@@ -5,7 +5,10 @@
       name = "Hack Nerd Font Mono";
       size = 16;
     };
-    shellIntegration.enableZshIntegration = true;
+    shellIntegration = {
+      enableZshIntegration = true;
+      mode = "no-cursor";
+    };
     themeFile = "Dark_Pastel";
     settings = {
       cursor_shape = "block";
