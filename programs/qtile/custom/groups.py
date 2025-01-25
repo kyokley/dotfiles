@@ -26,13 +26,13 @@ GROUPS = [
         # define a drop down terminal.
         # it is placed in the upper third of screen by default.
         DropDown("term",
-                 "terminator",
+                 "kitty",
                  opacity=0.9,
                  on_focus_lost_hide=True,
                  height=.5,
                  ),
 
-        DropDown("browser", "brave",
+        DropDown("browser", "firefox",
                  opacity=0.9,
                  on_focus_lost_hide=True,
                  height=.5,
