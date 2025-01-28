@@ -38,7 +38,7 @@
   };
 
   networking.extraHosts = ''
-    192.168.50.96 saturn
+    192.168.50.126 saturn
   '';
 
   services.xserver.videoDrivers = [ "amdgpu" ];

@@ -6,7 +6,7 @@ in
     enable = true;
     listenAddresses = [
       {
-        addr = "192.168.50.96";
+        addr = "192.168.50.126";
         port = sshd_port;
       }
     ];
