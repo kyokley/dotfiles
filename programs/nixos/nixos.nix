@@ -22,6 +22,7 @@ in
         ../../programs/dunst/dunst.nix
         ../../programs/rofi/rofi.nix
         ../../programs/qtile/qtile.nix
+        ../../programs/kitty.nix
     ];
 
     home.packages = [
