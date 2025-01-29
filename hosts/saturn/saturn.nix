@@ -31,7 +31,7 @@ in
     ];
 
     home.sessionVariables = {
-        QTILE_NET_INTERFACE = "wlp113s0f0";
+        QTILE_NET_INTERFACE = "enp0s13f0u3u1";
         CDPATH = "/home/yokley/workspace/compost/tpmcore";
     };
 
