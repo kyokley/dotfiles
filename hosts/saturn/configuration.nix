@@ -1,7 +1,6 @@
 { pkgs, ... }:
 {
   imports = [
-      ../../programs/openconnect/ocna.nix
       ../../programs/openconnect/no-proxy.nix
       ../../programs/nixos/laptop.nix
       ../../programs/clamav.nix
@@ -26,7 +25,7 @@
   networking.hostName = "saturn"; # Define your hostname.
 
   networking.openconnect.interfaces.openconnect0 = {
-    autoStart = false;
+    autoStart = true;
   };
   networking.firewall.extraCommands = ''
     iptables -A INPUT -p tcp --dport 10443 -j REJECT
