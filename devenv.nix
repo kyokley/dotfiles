@@ -1,6 +1,10 @@
-{ pkgs, lib, config, inputs, ... }:
-
 {
+  pkgs,
+  lib,
+  config,
+  inputs,
+  ...
+}: {
   # https://devenv.sh/basics/
   # env.GREET = "devenv";
 
@@ -49,7 +53,7 @@
     check-shebang-scripts-are-executable.enable = true;
     # check-yaml.enable = true;
     detect-private-keys.enable = true;
-    end-on-file-fixer.enable = true;
+    # end-on-file-fixer.enable = true;
     flake-checker.enable = true;
     ripsecrets.enable = true;
     ruff.enable = true;
