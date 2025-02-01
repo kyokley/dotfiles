@@ -1,5 +1,4 @@
-{ pkgs, ... }:
-{
+{pkgs, ...}: {
   # Enable tailscale
   services.tailscale.enable = true;
   services.tailscale.useRoutingFeatures = "both";
@@ -10,7 +9,6 @@
   # Enable trayscale once added to home-manager
   # services.trayscale.enable = false;
   environment.systemPackages = with pkgs; [
-      tailscale
+    tailscale
   ];
-
 }

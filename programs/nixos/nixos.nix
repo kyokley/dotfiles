@@ -1,5 +1,8 @@
-{ pkgs, lib, ... }:
-let
+{
+  pkgs,
+  lib,
+  ...
+}: let
   homeDir = "/home/yokley";
   reboot-kexec = pkgs.writeScriptBin "reboot-kexec" ''
     #!${pkgs.stdenv.shell}
@@ -15,28 +18,27 @@ let
       systemctl --user start picom
     fi
   '';
-in
-{
-    imports = [
-        ../../programs/terminator.nix
-        ../../programs/dunst/dunst.nix
-        ../../programs/rofi/rofi.nix
-        ../../programs/qtile/qtile.nix
-        ../../programs/kitty.nix
-    ];
+in {
+  imports = [
+    ../../programs/terminator.nix
+    ../../programs/dunst/dunst.nix
+    ../../programs/rofi/rofi.nix
+    ../../programs/qtile/qtile.nix
+    ../../programs/kitty.nix
+  ];
 
-    home.packages = [
-        pkgs.arandr
-        pkgs.dunst
-        pkgs.libreoffice
-        pkgs.nitrogen
-        pkgs.python311Packages.bpython
-        pkgs.thunderbird
-        (pkgs.nerdfonts.override { fonts = [ "Hack" ]; })
-        pkgs.vlc
-        reboot-kexec
-        toggle-picom
-    ];
+  home.packages = [
+    pkgs.arandr
+    pkgs.dunst
+    pkgs.libreoffice
+    pkgs.nitrogen
+    pkgs.python311Packages.bpython
+    pkgs.thunderbird
+    (pkgs.nerdfonts.override {fonts = ["Hack"];})
+    pkgs.vlc
+    reboot-kexec
+    toggle-picom
+  ];
 
   home.file = {
     ".config/qtile" = {
@@ -48,17 +50,17 @@ in
       source = ./picom.conf;
     };
     ".config/nixpkgs/config.nix" = {
-        text = "{ allowUnfree = true; }";
+      text = "{ allowUnfree = true; }";
     };
   };
 
   xdg.mimeApps = {
     enable = true;
     defaultApplications = {
-      "application/pdf" = [ "brave-browser.desktop" ];
-      "text/html" = [ "brave-browser.desktop" ];
-      "x-scheme-handler/http" = [ "brave-browser.desktop" ];
-      "x-scheme-handler/https" = [ "brave-browser.desktop" ];
+      "application/pdf" = ["brave-browser.desktop"];
+      "text/html" = ["brave-browser.desktop"];
+      "x-scheme-handler/http" = ["brave-browser.desktop"];
+      "x-scheme-handler/https" = ["brave-browser.desktop"];
     };
   };
 
@@ -86,49 +88,48 @@ in
     ];
   };
 
-
   services.network-manager-applet.enable = true;
   systemd.user.targets.tray = {
-      Unit = {
-          Description = "Home Manager System Tray";
-          Requires = [ "graphical-session-pre.target" ];
-      };
+    Unit = {
+      Description = "Home Manager System Tray";
+      Requires = ["graphical-session-pre.target"];
+    };
   };
 
   systemd.user.services = {
-      update-lockscreen = {
-          Unit.Description = "Update lockscreen background image";
-          Service = {
-              Type = "oneshot";
-              ExecStart = toString (
-                      pkgs.writeShellScript "betterlockscreen-update-script" ''
-                      PATH=$PATH:${lib.makeBinPath [ pkgs.nix pkgs.coreutils pkgs.busybox pkgs.xorg.xrdb ]}
-                      ${pkgs.betterlockscreen}/bin/betterlockscreen -u ${homeDir}/Pictures/wallpapers --fx ""
-                      ''
-                      );
-          };
+    update-lockscreen = {
+      Unit.Description = "Update lockscreen background image";
+      Service = {
+        Type = "oneshot";
+        ExecStart = toString (
+          pkgs.writeShellScript "betterlockscreen-update-script" ''
+            PATH=$PATH:${lib.makeBinPath [pkgs.nix pkgs.coreutils pkgs.busybox pkgs.xorg.xrdb]}
+            ${pkgs.betterlockscreen}/bin/betterlockscreen -u ${homeDir}/Pictures/wallpapers --fx ""
+          ''
+        );
       };
+    };
   };
 
   systemd.user.timers = {
-      update-lockscreen = {
-          Unit = {
-              Description = "Update betterlockscreen";
-              After = [ "network.target" ];
-          };
-          Timer = {
-              OnCalendar = "*-*-* *:0/5:00";
-              Persistent = true;
-              Unit = "update-lockscreen.service";
-          };
-          Install.WantedBy = ["timers.target"];
+    update-lockscreen = {
+      Unit = {
+        Description = "Update betterlockscreen";
+        After = ["network.target"];
       };
+      Timer = {
+        OnCalendar = "*-*-* *:0/5:00";
+        Persistent = true;
+        Unit = "update-lockscreen.service";
+      };
+      Install.WantedBy = ["timers.target"];
+    };
   };
 
   services = {
     picom = {
-        enable = true;
-        extraArgs = [ "--config=${homeDir}/.config/picom/picom-custom.conf" ];
+      enable = true;
+      extraArgs = ["--config=${homeDir}/.config/picom/picom-custom.conf"];
     };
   };
 

@@ -14,12 +14,16 @@
     };
   };
 
-  outputs = { nixpkgs, nixpkgs-unstable, home-manager, nixvim, ... }:
-  let
+  outputs = {
+    nixpkgs,
+    nixpkgs-unstable,
+    home-manager,
+    nixvim,
+    ...
+  }: let
     aarch64_darwin = "aarch64-darwin";
     x86_linux = "x86_64-linux";
-  in
-  {
+  in {
     nixosConfigurations = {
       mars = nixpkgs.lib.nixosSystem {
         specialArgs = {
@@ -77,18 +81,18 @@
         };
         modules = [
           ./programs/nixos/common-configuration.nix
-            ./hosts/saturn/configuration.nix
-            ./hosts/saturn/hardware-configuration.nix
-            home-manager.nixosModules.home-manager
-            {
-              home-manager.users.yokley = import ./hosts/saturn/saturn.nix;
-              home-manager.extraSpecialArgs = {
-                vars = import ./hosts/saturn/vars.nix;
-                inherit nixvim;
-              };
-              home-manager.useGlobalPkgs = true;
-              home-manager.useUserPackages = true;
-            }
+          ./hosts/saturn/configuration.nix
+          ./hosts/saturn/hardware-configuration.nix
+          home-manager.nixosModules.home-manager
+          {
+            home-manager.users.yokley = import ./hosts/saturn/saturn.nix;
+            home-manager.extraSpecialArgs = {
+              vars = import ./hosts/saturn/vars.nix;
+              inherit nixvim;
+            };
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+          }
         ];
       };
     };
@@ -97,7 +101,7 @@
       "dioxygen" = home-manager.lib.homeManagerConfiguration {
         pkgs = nixpkgs.legacyPackages.${aarch64_darwin};
         extraSpecialArgs = {
-            vars = import ./hosts/dioxygen/vars.nix;
+          vars = import ./hosts/dioxygen/vars.nix;
         };
         modules = [
           ./hosts/dioxygen/dioxygen.nix
@@ -112,7 +116,7 @@
       "venus" = home-manager.lib.homeManagerConfiguration {
         pkgs = nixpkgs.legacyPackages.${x86_linux};
         extraSpecialArgs = {
-            vars = import ./hosts/venus/vars.nix;
+          vars = import ./hosts/venus/vars.nix;
         };
         modules = [
           ./hosts/venus/venus.nix
@@ -127,7 +131,7 @@
       "almagest" = home-manager.lib.homeManagerConfiguration {
         pkgs = nixpkgs.legacyPackages.${x86_linux};
         extraSpecialArgs = {
-            vars = import ./hosts/almagest/vars.nix;
+          vars = import ./hosts/almagest/vars.nix;
         };
         modules = [
           ./hosts/almagest/almagest.nix
@@ -141,7 +145,7 @@
       "jupiter" = home-manager.lib.homeManagerConfiguration {
         pkgs = nixpkgs.legacyPackages.${x86_linux};
         extraSpecialArgs = {
-            vars = import ./hosts/jupiter/vars.nix;
+          vars = import ./hosts/jupiter/vars.nix;
         };
         modules = [
           ./hosts/jupiter/jupiter.nix
@@ -155,7 +159,7 @@
       "singularity" = home-manager.lib.homeManagerConfiguration {
         pkgs = nixpkgs.legacyPackages.${x86_linux};
         extraSpecialArgs = {
-            vars = import ./hosts/singularity/vars.nix;
+          vars = import ./hosts/singularity/vars.nix;
         };
         modules = [
           ./hosts/singularity/singularity.nix

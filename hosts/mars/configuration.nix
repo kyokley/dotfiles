@@ -1,15 +1,14 @@
-{ pkgs, ... }:
-{
+{pkgs, ...}: {
   imports = [
-      ../../programs/openconnect/no-proxy.nix
-      ../../programs/tailscale.nix
-      ../../programs/nixos/laptop.nix
+    ../../programs/openconnect/no-proxy.nix
+    ../../programs/tailscale.nix
+    ../../programs/nixos/laptop.nix
   ];
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-  boot.supportedFilesystems = [ "bcachefs" ];
+  boot.supportedFilesystems = ["bcachefs"];
   boot.kernelPackages = pkgs.linuxPackages_latest;
 
   networking.hostName = "mars"; # Define your hostname.
@@ -41,5 +40,5 @@
     192.168.50.126 saturn
   '';
 
-  services.xserver.videoDrivers = [ "amdgpu" ];
+  services.xserver.videoDrivers = ["amdgpu"];
 }

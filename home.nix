@@ -1,6 +1,9 @@
-{ pkgs, lib, vars, ... }:
-
 {
+  pkgs,
+  lib,
+  vars,
+  ...
+}: {
   imports = [
     ./programs/shell/zsh.nix
     ./programs/git/git.nix
@@ -16,7 +19,7 @@
 
   nix = {
     package = lib.mkDefault pkgs.nix;
-    settings.experimental-features = [ "nix-command" "flakes" ];
+    settings.experimental-features = ["nix-command" "flakes"];
   };
 
   programs.systemd-services.enable = lib.mkDefault true;

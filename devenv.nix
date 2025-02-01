@@ -54,7 +54,7 @@
     # check-yaml.enable = true;
     detect-private-keys.enable = true;
     # end-on-file-fixer.enable = true;
-    flake-checker.enable = true;
+    flake-checker.enable = false;
     ripsecrets.enable = true;
     ruff.enable = true;
     ruff-format.enable = true;

@@ -22,12 +22,13 @@ from libqtile.log_utils import logger
 
 rand = random.SystemRandom()
 
+
 class LogLevel(StrEnum):
-    WARNING = 'warning'
-    EXCEPTION = 'exception'
+    WARNING = "warning"
+    EXCEPTION = "exception"
 
 
-KRILL_PROXY = os.environ.get('HTTP_PROXY', '')
+KRILL_PROXY = os.environ.get("HTTP_PROXY", "")
 REQUESTS_TIMEOUT = 30
 
 
@@ -37,60 +38,62 @@ BUTTON_LEFT = 1
 BUTTON_MIDDLE = 2
 BUTTON_RIGHT = 3
 
-VT_USERNAME = 'yokley'
+VT_USERNAME = "yokley"
 
 VT_PRIVATE_KEYS = (
-    'id_vt',
-    'id_ed25519',
-    'id_rsa',
+    "id_vt",
+    "id_ed25519",
+    "id_rsa",
 )
 for key in VT_PRIVATE_KEYS:
     if (Path.home() / ".ssh" / key).exists():
-        VT_PRIVATE_KEY = Path('/root') / '.ssh' / key
+        VT_PRIVATE_KEY = Path("/root") / ".ssh" / key
         break
 else:
-    VT_PRIVATE_KEY = ''
+    VT_PRIVATE_KEY = ""
 
-VT_CMD = (f'docker run --rm -v {str(Path.home())}/.ssh:/root/.ssh '
-          '--env VT_URL=https://almagest.dyndns.org:7001/vittlify/ '
-          f'--env VT_USERNAME={VT_USERNAME} '
-          '--env VT_DEFAULT_LIST=personal '
-          '--env VT_PROXY= '
-          f'--env VT_PRIVATE_KEY={VT_PRIVATE_KEY} '
-          '--net=host '
-          'kyokley/vt list -quW')
-GCAL_CMD = ('docker run --rm '
-            f'-v {str(Path.home())}/.gcalcli_oauth:/root/.gcalcli_oauth '
-            'kyokley/gcalcli')
-KRILL_CMD = (
-        f'docker run --rm -t --cpus=.25 --net=host --env KRILL_PROXY={KRILL_PROXY} kyokley/krill -S /app/sources.txt --snapshot'
-        )
+VT_CMD = (
+    f"docker run --rm -v {str(Path.home())}/.ssh:/root/.ssh "
+    "--env VT_URL=https://almagest.dyndns.org:7001/vittlify/ "
+    f"--env VT_USERNAME={VT_USERNAME} "
+    "--env VT_DEFAULT_LIST=personal "
+    "--env VT_PROXY= "
+    f"--env VT_PRIVATE_KEY={VT_PRIVATE_KEY} "
+    "--net=host "
+    "kyokley/vt list -quW"
+)
+GCAL_CMD = (
+    "docker run --rm "
+    f"-v {str(Path.home())}/.gcalcli_oauth:/root/.gcalcli_oauth "
+    "kyokley/gcalcli"
+)
+KRILL_CMD = f"docker run --rm -t --cpus=.25 --net=host --env KRILL_PROXY={KRILL_PROXY} kyokley/krill -S /app/sources.txt --snapshot"
 
 KRILL_BROWSER = determine_browser()
 MAX_KRILL_LENGTH = 100
 
-XAUTOLOCK_STATUS_PATH = Path('/tmp/xautolock.status')  # nosec
+XAUTOLOCK_STATUS_PATH = Path("/tmp/xautolock.status")  # nosec
 
 
 class ScheduledWidget(GenPollText):
     defaults = [
-        ('interval', .5, 'Run every interval minutes'),
+        ("interval", 0.5, "Run every interval minutes"),
     ]
 
     def __init__(self, **config):
-        config['func'] = self._poll_func
-        config['update_interval'] = 1
+        config["func"] = self._poll_func
+        config["update_interval"] = 1
         super().__init__(**config)
         self.add_defaults(ScheduledWidget.defaults)
 
         self._schedule_job(self.interval)
-        self.text = ''
+        self.text = ""
 
     def _job(self):
         return lambda: None
 
     def _schedule_job(self, interval):
-        schedule.every(interval).minutes.at(':00').do(self._job())
+        schedule.every(interval).minutes.at(":00").do(self._job())
 
     def _poll_func(self):
         schedule.run_pending()
@@ -123,7 +126,7 @@ class WallpaperDir(ScheduledWidget):
     ]
 
     def __init__(self, **config):
-        config['interval'] = 15
+        config["interval"] = 15
         super().__init__(**config)
         self.add_defaults(WallpaperDir.defaults)
 
@@ -132,7 +135,7 @@ class WallpaperDir(ScheduledWidget):
         self._image_index = 0
         self._cur_image = None
 
-        self.text = 'N/A'
+        self.text = "N/A"
         self.set_wallpaper()
 
     def _job(self):
@@ -140,7 +143,7 @@ class WallpaperDir(ScheduledWidget):
 
     @staticmethod
     def _is_image(path):
-        if path.is_file() and path.suffix.lower() in ('.jpg', '.jpeg', '.png'):
+        if path.is_file() and path.suffix.lower() in (".jpg", ".jpeg", ".png"):
             return True
         return False
 
@@ -154,8 +157,9 @@ class WallpaperDir(ScheduledWidget):
                 if not self._is_image(file_path):
                     continue
 
-                self._directories.setdefault(
-                    self.all_images_label, []).append(file_path)
+                self._directories.setdefault(self.all_images_label, []).append(
+                    file_path
+                )
 
             for dir in sorted(dirs):
                 dir_path = root_path / dir
@@ -163,10 +167,12 @@ class WallpaperDir(ScheduledWidget):
                 for file in sorted(os.listdir(dir_path)):
                     file_path = dir_path / file
                     if file_path.is_file() and self._is_image(file_path):
-                        self._directories.setdefault(
-                            dir_path.name, []).append(file_path)
-                        self._directories.setdefault(
-                            self.all_images_label, []).append(file_path)
+                        self._directories.setdefault(dir_path.name, []).append(
+                            file_path
+                        )
+                        self._directories.setdefault(self.all_images_label, []).append(
+                            file_path
+                        )
 
     def set_wallpaper(self, use_random=True):
         self.get_wallpapers()
@@ -179,7 +185,7 @@ class WallpaperDir(ScheduledWidget):
         images = self._directories[directory]
 
         if not images:
-            self.update('Empty')
+            self.update("Empty")
             return
 
         try:
@@ -196,14 +202,19 @@ class WallpaperDir(ScheduledWidget):
         if self.label is None:
             cur_image_basename = os.path.basename(self._cur_image)
             cur_image_basename = (
-                f'{cur_image_basename[:7]}...'
-                if len(cur_image_basename) > 7 else cur_image_basename)
-            text = f'{directory}: {cur_image_basename}'
+                f"{cur_image_basename[:7]}..."
+                if len(cur_image_basename) > 7
+                else cur_image_basename
+            )
+            text = f"{directory}: {cur_image_basename}"
         else:
             text = self.label
 
-        num_displays = int(subprocess.check_output(
-            'xrandr | grep connected -w | wc -l', shell=True).strip())
+        num_displays = int(
+            subprocess.check_output(
+                "xrandr | grep connected -w | wc -l", shell=True
+            ).strip()
+        )
 
         if self.wallpaper_command:
             self.wallpaper_command.append(self._cur_image)
@@ -211,10 +222,10 @@ class WallpaperDir(ScheduledWidget):
             self.wallpaper_command.pop()
         else:
             command = [
-                'nitrogen',
-                '--head=0',
-                '--set-scaled',
-                '--save',
+                "nitrogen",
+                "--head=0",
+                "--set-scaled",
+                "--save",
                 self._cur_image,
             ]
             subprocess.call(command)
@@ -222,16 +233,16 @@ class WallpaperDir(ScheduledWidget):
             if num_displays > 1:
                 for i in range(1, num_displays):
                     command = [
-                        'nitrogen',
-                        f'--head={i}',
-                        '--random',
-                        '--set-scaled',
-                        '--save',
+                        "nitrogen",
+                        f"--head={i}",
+                        "--random",
+                        "--set-scaled",
+                        "--save",
                         os.path.dirname(self._cur_image),
                     ]
                     subprocess.call(command)
 
-        print(f'Update text to {text}')
+        print(f"Update text to {text}")
         self.update(text)
 
     def button_press(self, x, y, button):
@@ -244,8 +255,7 @@ class WallpaperDir(ScheduledWidget):
             self.set_wallpaper(use_random=False)
         elif button == BUTTON_MIDDLE:
             if self.middle_click_command:
-                command = shlex.split(
-                    self.middle_click_command)
+                command = shlex.split(self.middle_click_command)
                 command.append(self._cur_image)
                 subprocess.call(command)
             else:
@@ -260,38 +270,36 @@ class WallpaperDir(ScheduledWidget):
 
 class ScreenLockIndicator(GenPollText):
     defaults = [
-        ('update_interval', 10, 'Update interval'),
+        ("update_interval", 10, "Update interval"),
     ]
 
     def __init__(self, **config):
-        config['func'] = self.check_autolock
+        config["func"] = self.check_autolock
         super().__init__(**config)
         self.add_defaults(ScreenLockIndicator.defaults)
 
     def check_autolock(self):
         try:
-            with open(XAUTOLOCK_STATUS_PATH, 'r') as f:
+            with open(XAUTOLOCK_STATUS_PATH, "r") as f:
                 output = f.read().strip()
 
-            if output == 'disabled':
-                return 'SL Disabled'
-            elif output == 'enabled':
-                return ''
+            if output == "disabled":
+                return "SL Disabled"
+            elif output == "enabled":
+                return ""
         except FileNotFoundError:
             pass
-        return 'SL Status Unknown'
+        return "SL Status Unknown"
 
 
 class CachedProxyRequest(GenPollText):
     defaults = [
-        ('http_proxy', None, 'HTTP proxy to use for requests'),
-        ('https_proxy', None, 'HTTPS proxy to use for requests'),
-        ('socks_proxy', None, 'SOCKS proxy to use for requests'),
-        ('cache_expiration',
-         5,
-         'Length of time in minutes that cache is valid for'),
-        ('debug', False, 'Enable additional debugging'),
-        ]
+        ("http_proxy", None, "HTTP proxy to use for requests"),
+        ("https_proxy", None, "HTTPS proxy to use for requests"),
+        ("socks_proxy", None, "SOCKS proxy to use for requests"),
+        ("cache_expiration", 5, "Length of time in minutes that cache is valid for"),
+        ("debug", False, "Enable additional debugging"),
+    ]
 
     def __init__(self, **config):
         super().__init__(**config)
@@ -303,37 +311,40 @@ class CachedProxyRequest(GenPollText):
     def _print(self, msg, level=LogLevel.WARNING):
         log_cmd = logger.warning if level == LogLevel.WARNING else logger.exception
         if self.debug:
-            log_cmd('{}: {}'.format(str(self.__class__), msg))
+            log_cmd("{}: {}".format(str(self.__class__), msg))
 
     def cached_fetch(self):
         if self._locked:
-            self._print('Instance locked. Returning cached data')
+            self._print("Instance locked. Returning cached data")
             return self._cached_data
 
         try:
-            self._print('Setting lock')
+            self._print("Setting lock")
             self._locked = True
-            if (not self._cached_data or
-                    not self._last_update or
-                    self._last_update + timedelta(
-                        minutes=self.cache_expiration) < datetime.now()):
-                self._print('Getting data')
+            if (
+                not self._cached_data
+                or not self._last_update
+                or self._last_update + timedelta(minutes=self.cache_expiration)
+                < datetime.now()
+            ):
+                self._print("Getting data")
                 self._cached_data = self._fetch()
-                self._print('Got:')
+                self._print("Got:")
                 self._print(self._cached_data)
                 self._last_update = datetime.now()
         except Exception as e:
-            self._print('Got error', level=LogLevel.EXCEPTION)
+            self._print("Got error", level=LogLevel.EXCEPTION)
             self._print(str(e), level=LogLevel.EXCEPTION)
         finally:
-            self._print('Releasing lock')
+            self._print("Releasing lock")
             self._locked = False
             return self._cached_data
 
     def _fetch(self):
-        proxies = {'http': self.http_proxy,
-                   'https': self.https_proxy,
-                   }
+        proxies = {
+            "http": self.http_proxy,
+            "https": self.https_proxy,
+        }
         resp = requests.get(self.URL, proxies=proxies, timeout=REQUESTS_TIMEOUT)
         resp.raise_for_status()
 
@@ -344,32 +355,34 @@ class CachedProxyRequest(GenPollText):
         self._cached_data = None
 
 
-WeatherTuple = namedtuple('WeatherTuple', 'temp conditions')
+WeatherTuple = namedtuple("WeatherTuple", "temp conditions")
 
 
 class Weather(CachedProxyRequest):
-    URL = ('http://api.openweathermap.org/data/2.5/weather?'
-           'id=4887398&units=imperial&appid=c4f4551816bd45b67708bea102d93522')
+    URL = (
+        "http://api.openweathermap.org/data/2.5/weather?"
+        "id=4887398&units=imperial&appid=c4f4551816bd45b67708bea102d93522"
+    )
     defaults = [
-        ('low_temp_threshold', 45, 'Temp to trigger low foreground'),
-        ('high_temp_threshold', 80, 'Temp to trigger high foreground'),
-        ('low_foreground', '18BAEB', 'Low foreground'),
-        ('normal_foreground', 'FFDE3B', 'Normal foreground'),
-        ('high_foreground', 'FF000D', 'High foreground'),
-        ('markup', False, 'Do not use pango markup'),
-        ]
+        ("low_temp_threshold", 45, "Temp to trigger low foreground"),
+        ("high_temp_threshold", 80, "Temp to trigger high foreground"),
+        ("low_foreground", "18BAEB", "Low foreground"),
+        ("normal_foreground", "FFDE3B", "Normal foreground"),
+        ("high_foreground", "FF000D", "High foreground"),
+        ("markup", False, "Do not use pango markup"),
+    ]
 
     def __init__(self, **config):
-        config['func'] = self.get_weather
+        config["func"] = self.get_weather
         super().__init__(**config)
         self.add_defaults(Weather.defaults)
 
     def get_weather(self):
         data = self.cached_fetch()
         if data:
-            conditions = rand.choice(data['weather'])['description']
+            conditions = rand.choice(data["weather"])["description"]
 
-            tup = WeatherTuple(data['main']['temp'], conditions)
+            tup = WeatherTuple(data["main"]["temp"], conditions)
 
             if tup.temp > self.high_temp_threshold:
                 self.foreground = self.high_foreground
@@ -378,9 +391,10 @@ class Weather(CachedProxyRequest):
             else:
                 self.foreground = self.normal_foreground
 
-            return '{temp:.2g}F {conditions}'.format(temp=tup.temp,
-                                                     conditions=tup.conditions)
-        return 'N/A'
+            return "{temp:.2g}F {conditions}".format(
+                temp=tup.temp, conditions=tup.conditions
+            )
+        return "N/A"
 
     def button_press(self, x, y, button):
         if button == BUTTON_LEFT:
@@ -391,23 +405,23 @@ class Weather(CachedProxyRequest):
 
 
 class VT(CachedProxyRequest):
-    REGEX = re.compile(b'(?<=\x1b\[95m).*?(?=\x1b\[39m)') # noqa
+    REGEX = re.compile(b"(?<=\x1b\[95m).*?(?=\x1b\[39m)")  # noqa
 
-    defaults = [('markup', False, 'Do not use pango markup'),
-                ('debug', False, 'Enable additional debugging'),
-                ]
+    defaults = [
+        ("markup", False, "Do not use pango markup"),
+        ("debug", False, "Enable additional debugging"),
+    ]
 
     def __init__(self, **config):
-        config['func'] = self.get_vt
+        config["func"] = self.get_vt
         super().__init__(**config)
         self.add_defaults(VT.defaults)
         self._current_item = None
 
     def get_vt(self):
         self._data = self.cached_fetch()
-        self._current_item = rand.choice(
-            self._data) if self._data else b'No items'
-        return self._current_item.decode('utf-8')
+        self._current_item = rand.choice(self._data) if self._data else b"No items"
+        return self._current_item.decode("utf-8")
 
     def _fetch(self):
         cmd = shlex.split(VT_CMD)
@@ -416,15 +430,17 @@ class VT(CachedProxyRequest):
             proc = subprocess.check_output(cmd)
         except subprocess.CalledProcessError as e:
             self._print(str(e))
-            return [b'Failed to load']
+            return [b"Failed to load"]
 
         if proc:
-            lines = [b' '.join(x.strip().split()[1:])
-                     for x in proc.splitlines()
-                     if x and x.strip()]
+            lines = [
+                b" ".join(x.strip().split()[1:])
+                for x in proc.splitlines()
+                if x and x.strip()
+            ]
             self._print(lines)
             return lines
-        return [b'Failed to load']
+        return [b"Failed to load"]
 
     def button_press(self, x, y, button):
         if button == BUTTON_LEFT:
@@ -437,25 +453,26 @@ class VT(CachedProxyRequest):
                     idx = self._data.index(self._current_item) - 1
                 self._current_item = self._data[idx % len(self._data)]
                 self._last_update = datetime.now() + timedelta(
-                    seconds=self.update_interval)
+                    seconds=self.update_interval
+                )
             else:
                 return
 
-        self.update(self._current_item.decode('utf-8'))
+        self.update(self._current_item.decode("utf-8"))
 
 
 class GCal(CachedProxyRequest):
-    DATE_FORMAT = '%a %b %d %H:%M:%S %Z %Y'
-    SPACE_REGEX = re.compile(b'\s+') # noqa
+    DATE_FORMAT = "%a %b %d %H:%M:%S %Z %Y"
+    SPACE_REGEX = re.compile(b"\s+")  # noqa
 
     defaults = [
-        ('default_foreground', 'FFDE3B', 'Default foreground color'),
-        ('soon_foreground', 'FF000D', 'Color used for events occuring soon'),
-        ('markup', False, 'Do not use pango markup'),
-        ]
+        ("default_foreground", "FFDE3B", "Default foreground color"),
+        ("soon_foreground", "FF000D", "Color used for events occuring soon"),
+        ("markup", False, "Do not use pango markup"),
+    ]
 
     def __init__(self, **config):
-        config['func'] = self.get_cal
+        config["func"] = self.get_cal
         super().__init__(**config)
         self.add_defaults(GCal.defaults)
         self._current_item = None
@@ -465,7 +482,7 @@ class GCal(CachedProxyRequest):
         self._data = self.cached_fetch()
 
         if not self._data:
-            return 'No Events'
+            return "No Events"
 
         self._current_item = rand.choice(self._data)
         if self._current_item[0]:
@@ -476,51 +493,63 @@ class GCal(CachedProxyRequest):
         return self._format_line(self._current_item[1])
 
     def _format_line(self, line):
-        line = line.decode('utf-8').split()
-        return '{event} ({date})'.format(event=' '.join(line[3:]),
-                                         date=' '.join(line[:3]))
+        line = line.decode("utf-8").split()
+        return "{event} ({date})".format(
+            event=" ".join(line[3:]), date=" ".join(line[:3])
+        )
 
     def _fetch(self):
-        now = datetime.now(tz=tz.gettz('America/Chicago'))
+        now = datetime.now(tz=tz.gettz("America/Chicago"))
         past_dt = now - timedelta(hours=1)
         short_dt = now + timedelta(hours=1)
         future_dt = now + timedelta(hours=120)
 
         short_cmd = shlex.split(GCAL_CMD)
         if self.https_proxy:
-            short_cmd.extend(['--proxy', self.https_proxy])
+            short_cmd.extend(["--proxy", self.https_proxy])
 
-        short_cmd.extend(['--nocolor',
-                          'agenda',
-                          past_dt.strftime(GCal.DATE_FORMAT),
-                          short_dt.strftime(GCal.DATE_FORMAT),
-                          ])
+        short_cmd.extend(
+            [
+                "--nocolor",
+                "agenda",
+                past_dt.strftime(GCal.DATE_FORMAT),
+                short_dt.strftime(GCal.DATE_FORMAT),
+            ]
+        )
 
         proc = subprocess.check_output(short_cmd)
 
         if proc:
-            lines = [(True, GCal.SPACE_REGEX.sub(b' ', x))
-                     for x in proc.splitlines()
-                     if x and not x.startswith(b'No Events Found')]
+            lines = [
+                (True, GCal.SPACE_REGEX.sub(b" ", x))
+                for x in proc.splitlines()
+                if x and not x.startswith(b"No Events Found")
+            ]
 
         long_cmd = shlex.split(GCAL_CMD)
         if self.https_proxy:
-            long_cmd.extend(['--proxy', self.https_proxy])
+            long_cmd.extend(["--proxy", self.https_proxy])
 
-        long_cmd.extend(['--nocolor',
-                         'agenda',
-                         short_dt.strftime(GCal.DATE_FORMAT),
-                         future_dt.strftime(GCal.DATE_FORMAT),
-                         ])
+        long_cmd.extend(
+            [
+                "--nocolor",
+                "agenda",
+                short_dt.strftime(GCal.DATE_FORMAT),
+                future_dt.strftime(GCal.DATE_FORMAT),
+            ]
+        )
 
         proc = subprocess.check_output(long_cmd)
 
         if proc:
             lines.extend(
-               [(False, GCal.SPACE_REGEX.sub(b' ', x))
-                   for x in proc.splitlines()
-                if x and GCal.SPACE_REGEX.sub(b' ', x) not in map(
-                    lambda x: x[1], lines)])
+                [
+                    (False, GCal.SPACE_REGEX.sub(b" ", x))
+                    for x in proc.splitlines()
+                    if x
+                    and GCal.SPACE_REGEX.sub(b" ", x) not in map(lambda x: x[1], lines)
+                ]
+            )
         return lines
 
     def button_press(self, x, y, button):
@@ -536,23 +565,25 @@ class GCal(CachedProxyRequest):
                     idx = self._data.index(self._current_item) - 1
                 self._current_item = self._data[idx % len(self._data)]
                 self._last_update = datetime.now() + timedelta(
-                        seconds=self.update_interval)
+                    seconds=self.update_interval
+                )
             else:
                 return
 
         self.foreground = (
-                self.soon_foreground
-                if self._current_item[0] else self.default_foreground)
+            self.soon_foreground if self._current_item[0] else self.default_foreground
+        )
         self.update(self._format_line(self._current_item[1]))
 
 
 class Krill(CachedProxyRequest):
-    defaults = [('markup', False, 'Do not use pango markup'),
-                ('debug', False, 'Enable additional debugging'),
-                ]
+    defaults = [
+        ("markup", False, "Do not use pango markup"),
+        ("debug", False, "Enable additional debugging"),
+    ]
 
     def __init__(self, **config):
-        config['func'] = self.get_krill
+        config["func"] = self.get_krill
         super().__init__(**config)
         self.add_defaults(Krill.defaults)
         self._current_item = None
@@ -561,16 +592,20 @@ class Krill(CachedProxyRequest):
     def get_krill(self):
         self._data = self.cached_fetch()
         if not self._data:
-            return 'Could not load data from sources'
+            return "Could not load data from sources"
 
-        if (not self._last_item_change_time or
-                self._last_item_change_time + timedelta(
-                    seconds=self.update_interval) < datetime.now()):
+        if (
+            not self._last_item_change_time
+            or self._last_item_change_time + timedelta(seconds=self.update_interval)
+            < datetime.now()
+        ):
             self._current_item = rand.choice(self._data)
             self._last_item_change_time = datetime.now()
-        return (self._current_item['title']
-                if isinstance(self._current_item, dict)
-                else self._current_item)
+        return (
+            self._current_item["title"]
+            if isinstance(self._current_item, dict)
+            else self._current_item
+        )
 
     def _fetch(self):
         cmd = shlex.split(KRILL_CMD)
@@ -580,7 +615,7 @@ class Krill(CachedProxyRequest):
 
         if proc:
             for raw_item in proc.splitlines():
-                item = raw_item.decode('utf-8').strip()
+                item = raw_item.decode("utf-8").strip()
                 self._print(item)
                 if not item:
                     continue
@@ -596,11 +631,11 @@ class Krill(CachedProxyRequest):
             if data:
                 return data
 
-        return ['Failed to load']
+        return ["Failed to load"]
 
     def button_press(self, x, y, button):
         if button == BUTTON_LEFT:
-            if self._current_item and self._current_item.get('link'):
+            if self._current_item and self._current_item.get("link"):
                 self.qtile.cmd_spawn(f'{KRILL_BROWSER} {self._current_item["link"]}')
         elif button in (BUTTON_UP, BUTTON_DOWN):
             if self._data:
@@ -609,13 +644,14 @@ class Krill(CachedProxyRequest):
                 else:
                     idx = self._data.index(self._current_item) - 1
                 self._current_item = self._data[idx % len(self._data)]
-                self.update(self._current_item['title'])
+                self.update(self._current_item["title"])
                 self._last_item_change_time = datetime.now() + timedelta(
-                        seconds=self.update_interval)
+                    seconds=self.update_interval
+                )
 
     def update(self, text):
         if len(text) > MAX_KRILL_LENGTH:
-            truncated_text = f'{text[:MAX_KRILL_LENGTH]}...'
+            truncated_text = f"{text[:MAX_KRILL_LENGTH]}..."
         else:
             truncated_text = text
 
@@ -629,13 +665,13 @@ class MaxCPUGraph(CPUGraph):
         self.oldvalues = self._getvalues()
 
     def _getvalues(self):
-        proc = '/proc/stat'
+        proc = "/proc/stat"
 
         with open(proc) as file:
             file.readline()
             lines = file.readlines()
 
-        vals = [line.split(None, 6)[1:5] for line in lines[:self._num_cores]]
+        vals = [line.split(None, 6)[1:5] for line in lines[: self._num_cores]]
         return [map(int, val) for val in vals]
 
     def update_graph(self):
@@ -652,8 +688,7 @@ class MaxCPUGraph(CPUGraph):
             except StopIteration:
                 continue
 
-            busy = (
-                new_user + new_nice + new_sys - old_user - old_nice - old_sys)
+            busy = new_user + new_nice + new_sys - old_user - old_nice - old_sys
             total = busy + new_idle - old_idle
 
             if total:

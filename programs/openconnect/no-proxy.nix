@@ -1,48 +1,50 @@
-{ pkgs, lib, ... }:
-let
-  domains = lib.concatStringsSep " " [
-          "apex.oraclecorp.com"
-          "artifacthub-phx.oci.oraclecorp.com"
-          "artifactory.oci.oraclecorp.com"
-          "badge.oraclecorp.com"
-          "cegbu-textura-docker-local.dockerhub-phx.oci.oraclecorp.com"
-          "cegbu-textura-docker-virtual.dockerhub-den.oraclecorp.com"
-          "cegbu-textura-docker-virtual.dockerhub-phx.oci.oraclecorp.com"
-          "cegbu.docker.oraclecorp.com"
-          "cegbu.oraclecorp.com"
-          "cloudlab.us.oracle.com"
-          "confluence.oraclecorp.com"
-          "docker-remote.dockerhub-phx.oci.oraclecorp.com"
-          "exchange.oraclecorp.com"
-          "gbuconfluence.oraclecorp.com"
-          "gbujira.oraclecorp.com"
-          "global-ebusiness.oraclecorp.com"
-          "gps.oracle.com"
-          "hrservices.oraclecorp.com"
-          "mydesktop.oraclecorp.com"
-          "oci-ssp.oracle-ocna.com"
-          "ociautojenkins01.snphxprshared1.gbucdsint02phx.oraclevcn.com"
-          "ocitpmpypi.us.oracle.com"
-          "ocp.oraclecorp.com"
-          "odo-docker-local.artifactory.oci.oraclecorp.com"
-          "oim.oraclecorp.com"
-          "permissions.oci.oraclecorp.com"
-          "phx-c-csec-awp-01.us5.oraclecloud.com"
-          "phxtpmae791.snphxprshared1.gbucdsint02phx.oraclevcn.com"
-          "pls.appoci.oraclecorp.com"
-          "printers.oraclecorp.com"
-          "testrail.us.oracle.com"
-          "u2f-validator.idp.mc1.oracleiaas.com"
-          "utilus.us.oracle.com"
-          "www-proxy-adcq7-new.us.oracle.com"
-          "www-proxy-adcq7.us.oracle.com"
-          "www-proxy-ash7.us.oracle.com"
-          "www-proxy-hqdc.us.oracle.com"
-          "www-proxy-sjc.oraclecorp.com"
-          "yum-internal.oracle.com"
-  ];
-in
 {
+  pkgs,
+  lib,
+  ...
+}: let
+  domains = lib.concatStringsSep " " [
+    "apex.oraclecorp.com"
+    "artifacthub-phx.oci.oraclecorp.com"
+    "artifactory.oci.oraclecorp.com"
+    "badge.oraclecorp.com"
+    "cegbu-textura-docker-local.dockerhub-phx.oci.oraclecorp.com"
+    "cegbu-textura-docker-virtual.dockerhub-den.oraclecorp.com"
+    "cegbu-textura-docker-virtual.dockerhub-phx.oci.oraclecorp.com"
+    "cegbu.docker.oraclecorp.com"
+    "cegbu.oraclecorp.com"
+    "cloudlab.us.oracle.com"
+    "confluence.oraclecorp.com"
+    "docker-remote.dockerhub-phx.oci.oraclecorp.com"
+    "exchange.oraclecorp.com"
+    "gbuconfluence.oraclecorp.com"
+    "gbujira.oraclecorp.com"
+    "global-ebusiness.oraclecorp.com"
+    "gps.oracle.com"
+    "hrservices.oraclecorp.com"
+    "mydesktop.oraclecorp.com"
+    "oci-ssp.oracle-ocna.com"
+    "ociautojenkins01.snphxprshared1.gbucdsint02phx.oraclevcn.com"
+    "ocitpmpypi.us.oracle.com"
+    "ocp.oraclecorp.com"
+    "odo-docker-local.artifactory.oci.oraclecorp.com"
+    "oim.oraclecorp.com"
+    "permissions.oci.oraclecorp.com"
+    "phx-c-csec-awp-01.us5.oraclecloud.com"
+    "phxtpmae791.snphxprshared1.gbucdsint02phx.oraclevcn.com"
+    "pls.appoci.oraclecorp.com"
+    "printers.oraclecorp.com"
+    "testrail.us.oracle.com"
+    "u2f-validator.idp.mc1.oracleiaas.com"
+    "utilus.us.oracle.com"
+    "www-proxy-adcq7-new.us.oracle.com"
+    "www-proxy-adcq7.us.oracle.com"
+    "www-proxy-ash7.us.oracle.com"
+    "www-proxy-hqdc.us.oracle.com"
+    "www-proxy-sjc.oraclecorp.com"
+    "yum-internal.oracle.com"
+  ];
+in {
   imports = [
     ./csd.nix
   ];
@@ -113,5 +115,5 @@ in
     10.68.69.53 www-proxy-hqdc.us.oracle.com www-proxy-hqdc         # vpn-slice-openconnect0 AUTOCREATED
     10.255.48.38 www-proxy-sjc.oraclecorp.com               # vpn-slice-openconnect0 AUTOCREATED
     138.1.51.46 yum-internal.oracle.com             # vpn-slice-openconnect0 AUTOCREATED
-    '';
+  '';
 }

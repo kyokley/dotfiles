@@ -1,14 +1,16 @@
-{ pkgs, lib, ... }:
-
 {
+  pkgs,
+  lib,
+  ...
+}: {
   imports = [
-      ../../programs/tailscale.nix
+    ../../programs/tailscale.nix
   ];
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-  boot.supportedFilesystems = [ "bcachefs" ];
+  boot.supportedFilesystems = ["bcachefs"];
   boot.kernelPackages = pkgs.linuxPackages_latest;
 
   networking.hostName = "mercury"; # Define your hostname.
@@ -34,8 +36,8 @@
         serviceConfig.Type = "oneshot";
         script = toString (
           pkgs.writeShellScript "renew-mattermost-cert" ''
-          PATH=$PATH:${lib.makeBinPath [ pkgs.gnumake pkgs.sudo ]}
-          cd /home/yokley/workspace/mattermost && make renew-cert
+            PATH=$PATH:${lib.makeBinPath [pkgs.gnumake pkgs.sudo]}
+            cd /home/yokley/workspace/mattermost && make renew-cert
           ''
         );
       };
@@ -44,11 +46,11 @@
     timers = {
       renew-mattermost-cert = {
         description = "Renew Mattermost Cert";
-        after = [ "network.target" ];
+        after = ["network.target"];
         timerConfig = {
-            OnCalendar = "monthly";
-            Persistent = true;
-            Unit = "renew-mattermost-cert.service";
+          OnCalendar = "monthly";
+          Persistent = true;
+          Unit = "renew-mattermost-cert.service";
         };
         wantedBy = ["timers.target"];
       };

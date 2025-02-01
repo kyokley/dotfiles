@@ -1,19 +1,22 @@
-{ pkgs, nixvim, ... }:
 {
-    imports = [
-        ../../programs/nixos/nixos.nix
-        ../../home.nix
-    ];
+  pkgs,
+  nixvim,
+  ...
+}: {
+  imports = [
+    ../../programs/nixos/nixos.nix
+    ../../home.nix
+  ];
 
-    programs.git.userEmail = "kyokley@mercury";
+  programs.git.userEmail = "kyokley@mercury";
 
-    home.sessionVariables = {
-        QTILE_NET_INTERFACE = "enp14s0";
-    };
+  home.sessionVariables = {
+    QTILE_NET_INTERFACE = "enp14s0";
+  };
 
-    home.packages = [
-        nixvim.packages.${pkgs.stdenv.hostPlatform.system}.default
-    ];
+  home.packages = [
+    nixvim.packages.${pkgs.stdenv.hostPlatform.system}.default
+  ];
 
-    home.stateVersion = "24.05"; # Don't touch me!
+  home.stateVersion = "24.05"; # Don't touch me!
 }

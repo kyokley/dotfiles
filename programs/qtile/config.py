@@ -26,15 +26,16 @@
 
 
 from itertools import chain
-from libqtile.config import (Drag,
-                             Click,
-                             Match,
-                             )
+from libqtile.config import (
+    Drag,
+    Click,
+    Match,
+)
 
 try:
     from libqtile.lazy import lazy
 except ImportError:
-    from libqtile.command import lazy # Soon to be deprecated
+    from libqtile.command import lazy  # Soon to be deprecated
 
 from libqtile import layout, hook
 from custom.screen import SCREENS
@@ -57,11 +58,16 @@ screens = SCREENS
 
 # Drag floating layouts.
 mouse = [
-    Drag([MOD], "Button1", lazy.window.set_position_floating(),
-         start=lazy.window.get_position()),
-    Drag([MOD], "Button3", lazy.window.set_size_floating(),
-         start=lazy.window.get_size()),
-    Click([MOD], "Button2", lazy.window.bring_to_front())
+    Drag(
+        [MOD],
+        "Button1",
+        lazy.window.set_position_floating(),
+        start=lazy.window.get_position(),
+    ),
+    Drag(
+        [MOD], "Button3", lazy.window.set_size_floating(), start=lazy.window.get_size()
+    ),
+    Click([MOD], "Button2", lazy.window.bring_to_front()),
 ]
 
 dgroups_key_binder = None
@@ -71,31 +77,35 @@ follow_mouse_focus = False
 bring_front_click = False
 cursor_warp = False
 float_rule_strs = [
-        'confirm',
-        'dialog',
-        'download',
-        'error',
-        'file_progress',
-        'notification',
-        'splash',
-        'toolbar',
-        'confirmreset',  # gitk
-        'makebranch',  # gitk
-        'maketag',  # gitk
-        'branchdialog',  # gitk
-        'pinentry-gtk-2',  # GPG key password entry
-        'ssh-askpass',  # ssh-askpass
-        'Conky',  # Conky
+    "confirm",
+    "dialog",
+    "download",
+    "error",
+    "file_progress",
+    "notification",
+    "splash",
+    "toolbar",
+    "confirmreset",  # gitk
+    "makebranch",  # gitk
+    "maketag",  # gitk
+    "branchdialog",  # gitk
+    "pinentry-gtk-2",  # GPG key password entry
+    "ssh-askpass",  # ssh-askpass
+    "Conky",  # Conky
 ]
 
 floating_layout = layout.Floating(
-    float_rules=chain([Match(wm_class=rule) for rule in float_rule_strs],
-                      [Match(wm_type=rule) for rule in float_rule_strs],
-                      [Match(func=lambda c: c.has_fixed_size()),
-                       Match(func=lambda c: c.has_fixed_ratio())],
-                      ),
+    float_rules=chain(
+        [Match(wm_class=rule) for rule in float_rule_strs],
+        [Match(wm_type=rule) for rule in float_rule_strs],
+        [
+            Match(func=lambda c: c.has_fixed_size()),
+            Match(func=lambda c: c.has_fixed_ratio()),
+        ],
+    ),
     border_width=1,
-    border_focus='FF0000')
+    border_focus="FF0000",
+)
 auto_fullscreen = True
 focus_on_window_activation = "smart"
 bring_front_click = True
@@ -113,7 +123,7 @@ wmname = "LG3D"
 
 @hook.subscribe.startup_once
 def autostart():
-    run_command('nitrogen --restore')
+    run_command("nitrogen --restore")
     # run_command('nm-applet')
     # run_command('dunst', raise_called_process_exception=False)
     # run_command('blueman-applet', raise_called_process_exception=False)

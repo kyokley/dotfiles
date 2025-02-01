@@ -1,7 +1,6 @@
 let
   sshd_port = 10101;
-in
-{
+in {
   services.openssh = {
     enable = true;
     openFirewall = false;
@@ -17,8 +16,8 @@ in
     };
   };
   systemd.services.sshd = {
-    after = [ "network-online.target" ];
-    wants = [ "network-online.target" ];
+    after = ["network-online.target"];
+    wants = ["network-online.target"];
   };
 
   services.fail2ban = {

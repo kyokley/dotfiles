@@ -1,12 +1,11 @@
-{ pkgs, ... }:
-{
+{pkgs, ...}: {
   imports = [
-      ../../programs/openconnect/no-proxy.nix
-      ../../programs/nixos/laptop.nix
-      ../../programs/clamav.nix
+    ../../programs/openconnect/no-proxy.nix
+    ../../programs/nixos/laptop.nix
+    ../../programs/clamav.nix
 
-      # Import SSH
-      ./ssh.nix
+    # Import SSH
+    ./ssh.nix
   ];
 
   users.users.yokley.openssh.authorizedKeys = {
@@ -19,7 +18,7 @@
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-  boot.supportedFilesystems = [ "bcachefs" ];
+  boot.supportedFilesystems = ["bcachefs"];
   boot.kernelPackages = pkgs.linuxPackages_latest;
 
   networking.hostName = "saturn"; # Define your hostname.
@@ -49,7 +48,7 @@
     enable = true;
     dragAndDrop = true;
   };
-  users.extraGroups.vboxusers.members = [ "yokley" ];
+  users.extraGroups.vboxusers.members = ["yokley"];
 
   networking.extraHosts = ''
     192.168.50.75 jupiter

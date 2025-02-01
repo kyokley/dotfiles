@@ -4,14 +4,14 @@ import subprocess
 from enum import Enum, auto
 
 
-FLATPAK_EXECUTABLE = 'flatpak'
+FLATPAK_EXECUTABLE = "flatpak"
 POSSIBLE_BROWSERS = (
-    f'{FLATPAK_EXECUTABLE} run com.brave.Browser',
-    'brave',
-    'brave-browser',
-    'vivaldi',
-    'google-chrome',
-    'firefox',
+    f"{FLATPAK_EXECUTABLE} run com.brave.Browser",
+    "brave",
+    "brave-browser",
+    "vivaldi",
+    "google-chrome",
+    "firefox",
 )
 
 
@@ -26,33 +26,33 @@ class OS(Enum):
 
 def determine_os():
     try:
-        lsb_info = subprocess.check_output(shlex.split('lsb_release -d'))
+        lsb_info = subprocess.check_output(shlex.split("lsb_release -d"))
         lsb_info = str(lsb_info).lower()
     except Exception:
-        lsb_info = ''
+        lsb_info = ""
 
-    if 'debian' in lsb_info:
+    if "debian" in lsb_info:
         return OS.Debian
-    elif 'ubuntu' in lsb_info:
+    elif "ubuntu" in lsb_info:
         return OS.Ubuntu
-    elif 'arch' in lsb_info:
+    elif "arch" in lsb_info:
         return OS.Arch
-    elif 'manjaro' in lsb_info:
+    elif "manjaro" in lsb_info:
         return OS.Manjaro
-    elif 'garuda' in lsb_info:
+    elif "garuda" in lsb_info:
         return OS.Garuda
 
     platform_description = platform.platform().lower()
 
-    if 'debian' in platform_description:
+    if "debian" in platform_description:
         return OS.Debian
-    elif 'ubuntu' in platform_description:
+    elif "ubuntu" in platform_description:
         return OS.Ubuntu
-    elif 'arch' in platform_description:
+    elif "arch" in platform_description:
         return OS.Arch
-    elif 'manjaro' in platform_description:
+    elif "manjaro" in platform_description:
         return OS.Manjaro
-    elif 'garuda' in platform_description:
+    elif "garuda" in platform_description:
         return OS.Garuda
     else:
         return OS.Other
@@ -60,13 +60,17 @@ def determine_os():
 
 def _which_browser(browser):
     try:
-
         if FLATPAK_EXECUTABLE not in browser:
-            return subprocess.check_output(shlex.split(f'which {browser}')).strip().decode()
+            return (
+                subprocess.check_output(shlex.split(f"which {browser}"))
+                .strip()
+                .decode()
+            )
         else:
             browser_id = browser.split()[-1]
-            subprocess.check_output(f'{FLATPAK_EXECUTABLE} list | grep {browser_id}',
-                                    shell=True).strip().decode()
+            subprocess.check_output(
+                f"{FLATPAK_EXECUTABLE} list | grep {browser_id}", shell=True
+            ).strip().decode()
             return browser
     except subprocess.CalledProcessError:
         pass
@@ -78,7 +82,7 @@ def determine_browser():
         exe_path = _which_browser(browser)
         if exe_path:
             return exe_path
-    return 'firefox'
+    return "firefox"
 
 
 def mount_exists(mount_point):

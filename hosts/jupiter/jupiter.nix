@@ -1,8 +1,10 @@
-{pkgs, lib, ...}:
-let
-  homeDir = "/home/yokley";
-in
 {
+  pkgs,
+  lib,
+  ...
+}: let
+  homeDir = "/home/yokley";
+in {
   imports = [
     ../../home.nix
   ];
@@ -14,35 +16,35 @@ in
   ];
 
   systemd.user.services = {
-      mediawaiter-daily-tasks = {
-          Unit.Description = "Run tasks daily";
-          Service = {
-              Type = "oneshot";
-              ExecStart = toString (
-                  pkgs.writeShellScript "mediawaiter-daily-tasks" ''
-                  ${pkgs.rsync}/bin/rsync -av --rsh=ssh --delete yokley@almagest.dyndns.org:/home/yokley/workspace/MediaViewerProd/backups /home/yokley/db_backups 2>&1 > /home/yokley/db_backup.log
-              ''
-              );
-          };
+    mediawaiter-daily-tasks = {
+      Unit.Description = "Run tasks daily";
+      Service = {
+        Type = "oneshot";
+        ExecStart = toString (
+          pkgs.writeShellScript "mediawaiter-daily-tasks" ''
+            ${pkgs.rsync}/bin/rsync -av --rsh=ssh --delete yokley@almagest.dyndns.org:/home/yokley/workspace/MediaViewerProd/backups /home/yokley/db_backups 2>&1 > /home/yokley/db_backup.log
+          ''
+        );
       };
-      mediawaiter-weekly-tasks = {
-          Unit.Description = "Run tasks weekly";
-          Service = {
-              Type = "oneshot";
-              ExecStart = toString (
-                  pkgs.writeShellScript "mediawaiter-weekly-tasks" ''
-                  ${pkgs.bash}/bin/bash /mnt/external/backup.sh 2>&1 > /home/yokley/file_backup.log
-              ''
-              );
-          };
+    };
+    mediawaiter-weekly-tasks = {
+      Unit.Description = "Run tasks weekly";
+      Service = {
+        Type = "oneshot";
+        ExecStart = toString (
+          pkgs.writeShellScript "mediawaiter-weekly-tasks" ''
+            ${pkgs.bash}/bin/bash /mnt/external/backup.sh 2>&1 > /home/yokley/file_backup.log
+          ''
+        );
       };
+    };
   };
 
   systemd.user.timers = {
     mediawaiter-daily-tasks = {
       Unit = {
         Description = "Run tasks daily";
-        After = [ "network.target" ];
+        After = ["network.target"];
       };
       Timer = {
         OnCalendar = "daily";
@@ -55,7 +57,7 @@ in
     mediawaiter-weekly-tasks = {
       Unit = {
         Description = "Run tasks weekly";
-        After = [ "network.target" ];
+        After = ["network.target"];
       };
       Timer = {
         OnCalendar = "weekly";
@@ -79,7 +81,7 @@ in
               "/mnt/hd"
               "/mnt/hd2"
             ];
-            repositories = [ "ssh://u415868@u415868.your-storagebox.de:23/./mw-repo" ];
+            repositories = ["ssh://u415868@u415868.your-storagebox.de:23/./mw-repo"];
           };
           storage = {
             encryptionPasscommand = "${pkgs.pass}/bin/pass borg/mediawaiter";
@@ -88,14 +90,15 @@ in
       };
     };
 
-    zsh.prezto.extraConfig = lib.mkAfter
-          ''
-          function mc-run() {
-              cd ${homeDir}/workspace/MediaConverterProd
-              make run
-              cd -
-          }
-          '';
+    zsh.prezto.extraConfig =
+      lib.mkAfter
+      ''
+        function mc-run() {
+            cd ${homeDir}/workspace/MediaConverterProd
+            make run
+            cd -
+        }
+      '';
   };
 
   systemd.user.services = {
@@ -104,29 +107,29 @@ in
       Service = {
         Type = "oneshot";
         ExecStart = toString (
-            pkgs.writeShellScript "borg-update-script" ''
-            PATH=$PATH:${lib.makeBinPath [ pkgs.nix pkgs.coreutils pkgs.busybox ]}
+          pkgs.writeShellScript "borg-update-script" ''
+            PATH=$PATH:${lib.makeBinPath [pkgs.nix pkgs.coreutils pkgs.busybox]}
             ${pkgs.borgmatic}/bin/borgmatic create --stats
-            ''
-            );
+          ''
+        );
       };
     };
   };
 
   systemd.user.timers = {
-      borg-update = {
-          Unit = {
-              Description = "Update borg backup";
-              After = [ "network.target" ];
-          };
-          Timer = {
-              OnCalendar = "*-*-* 2:00:00";
-              RandomizedDelaySec = 3600;
-              Persistent = true;
-              Unit = "borg-update.service";
-          };
-          Install.WantedBy = ["timers.target"];
+    borg-update = {
+      Unit = {
+        Description = "Update borg backup";
+        After = ["network.target"];
       };
+      Timer = {
+        OnCalendar = "*-*-* 2:00:00";
+        RandomizedDelaySec = 3600;
+        Persistent = true;
+        Unit = "borg-update.service";
+      };
+      Install.WantedBy = ["timers.target"];
+    };
   };
 
   home.stateVersion = "23.11"; # Please read the comment before changing.

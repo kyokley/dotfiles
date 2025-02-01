@@ -1,5 +1,8 @@
-{ pkgs, lib, ... }:
-let
+{
+  pkgs,
+  lib,
+  ...
+}: let
   proxy = "http://www-proxy-sjc.oraclecorp.com:80";
   no_proxy = "localhost,127.0.0.0/8,oraclecorp.com,us.oracle.com,*.us.oracle.com,cegbu.docker.oraclecorp.com,odo-docker-local.artifactory.oci.oraclecorp.com,cegbu-textura-docker-virtual.dockerhub-den.oraclecorp.com,cegbu-textura-docker-virtual.dockerhub-phx.oci.oraclecorp.com,docker-remote.dockerhub-phx.oci.oraclecorp.com,cegbu-textura-docker-local.dockerhub-phx.oci.oraclecorp.com,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16,.oraclevpn.com,*.oraclevpn.com,.oraclevcn.com,*.oraclevcn.com,docker.io";
   nameservers = [
@@ -9,8 +12,7 @@ let
     "192.135.82.132"
     "8.8.8.8"
   ];
-in
-{
+in {
   environment.systemPackages = with pkgs; [
     openconnect
   ];

@@ -1,6 +1,9 @@
-{ pkgs, pkgs-unstable, lib, ... }:
-
 {
+  pkgs,
+  pkgs-unstable,
+  lib,
+  ...
+}: {
   nix = {
     gc = {
       automatic = true;
@@ -9,19 +12,19 @@
     };
     extraOptions = ''
       trusted-users = root yokley
-      '';
+    '';
   };
 
-# Enable networking
+  # Enable networking
   networking.networkmanager.enable = true;
   systemd.services.NetworkManager-wait-online.enable = false;
   systemd.network.wait-online.enable = false;
   boot.initrd.systemd.network.wait-online.enable = false;
 
-# Set your time zone.
+  # Set your time zone.
   time.timeZone = "America/Chicago";
 
-# Select internationalisation properties.
+  # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
 
   i18n.extraLocaleSettings = {
@@ -36,35 +39,36 @@
     LC_TIME = "en_US.UTF-8";
   };
 
-# Enable the XFCE Desktop Environment.
+  # Enable the XFCE Desktop Environment.
   services.xserver.displayManager.lightdm.enable = true;
   services.xserver.windowManager.qtile = {
     enable = true;
-    extraPackages = python3Packages: with python3Packages; [
-      requests
+    extraPackages = python3Packages:
+      with python3Packages; [
+        requests
         schedule
         pillow
         pywal
         dateutil
-    ];
+      ];
   };
 
-# Configure keymap in X11
+  # Configure keymap in X11
   services.xserver = {
     enable = true;
     xkb.layout = "us";
     xkb.variant = "";
   };
 
-# Enable CUPS to print documents.
+  # Enable CUPS to print documents.
   services.printing.enable = true;
 
-# Enable bluetooth
+  # Enable bluetooth
   hardware.bluetooth.enable = true;
   hardware.bluetooth.powerOnBoot = true;
   services.blueman.enable = true;
 
-# Enable sound with pipewire.
+  # Enable sound with pipewire.
   hardware.pulseaudio.enable = false;
   security.rtkit.enable = true;
   services.pipewire = {
@@ -72,26 +76,26 @@
     alsa.enable = true;
     alsa.support32Bit = true;
     pulse.enable = true;
-# If you want to use JACK applications, uncomment this
-#jack.enable = true;
+    # If you want to use JACK applications, uncomment this
+    #jack.enable = true;
 
-# use the example session manager (no others are packaged yet so this is enabled by default,
-# no need to redefine it in your config for now)
-#media-session.enable = true;
+    # use the example session manager (no others are packaged yet so this is enabled by default,
+    # no need to redefine it in your config for now)
+    #media-session.enable = true;
   };
 
-# Enable touchpad support (enabled default in most desktopManager).
-# services.xserver.libinput.enable = true;
+  # Enable touchpad support (enabled default in most desktopManager).
+  # services.xserver.libinput.enable = true;
 
-# Enable flatpaks
+  # Enable flatpaks
   xdg.portal.enable = true;
-  xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+  xdg.portal.extraPortals = [pkgs.xdg-desktop-portal-gtk];
   xdg.portal.config.common.default = "*";
   services.flatpak.enable = true;
 
   services.earlyoom.enable = true;
 
-# Enable docker
+  # Enable docker
   virtualisation.docker = {
     enable = true;
   };
@@ -101,66 +105,66 @@
     enableGhostscriptFonts = true;
     packages = with pkgs; [
       corefonts
-        dejavu_fonts
-        inconsolata
-# liberation_ttf
-# terminus_font
-# ttf_bitstream_vera
-# vistafonts
+      dejavu_fonts
+      inconsolata
+      # liberation_ttf
+      # terminus_font
+      # ttf_bitstream_vera
+      # vistafonts
     ];
   };
 
-# Define a user account. Don't forget to set a password with ‘passwd’.
+  # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.yokley = {
     shell = pkgs.zsh;
     isNormalUser = true;
     description = "Kevin Yokley";
     extraGroups = [
       "networkmanager"
-        "wheel"
-        "docker"
-        "vboxusers"
+      "wheel"
+      "docker"
+      "vboxusers"
     ];
     packages = with pkgs; [
       firefox
     ];
   };
 
-# Allow unfree packages
+  # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
-# List packages installed in system profile. To search, run:
-# $ nix search wget
+  # List packages installed in system profile. To search, run:
+  # $ nix search wget
   environment.systemPackages = with pkgs; [
     nano # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-      neovim
-      wget
-      curl
-      brave
-      terminator
-      pavucontrol
-      volctl
-      htop
-      git
-      docker
-      rofi
-      xclip
-      feh
-      alsa-utils
-      pkgs-unstable.mattermost-desktop
-      slack
-      zoom-us
+    neovim
+    wget
+    curl
+    brave
+    terminator
+    pavucontrol
+    volctl
+    htop
+    git
+    docker
+    rofi
+    xclip
+    feh
+    alsa-utils
+    pkgs-unstable.mattermost-desktop
+    slack
+    zoom-us
   ];
 
-  systemd.tmpfiles.rules = [ "d /tmp 1777 root root 7d" ];
+  systemd.tmpfiles.rules = ["d /tmp 1777 root root 7d"];
 
-# Some programs need SUID wrappers, can be configured further or are
-# started in user sessions.
-# programs.mtr.enable = true;
-# programs.gnupg.agent = {
-#   enable = true;
-#   enableSSHSupport = true;
-# };
+  # Some programs need SUID wrappers, can be configured further or are
+  # started in user sessions.
+  # programs.mtr.enable = true;
+  # programs.gnupg.agent = {
+  #   enable = true;
+  #   enableSSHSupport = true;
+  # };
   programs.neovim = {
     enable = false;
     defaultEditor = true;
@@ -173,16 +177,15 @@
   };
   programs.zsh.enable = true;
 
+  # List services that you want to enable:
 
-# List services that you want to enable:
+  # Enable the OpenSSH daemon.
+  # services.openssh.enable = true;
 
-# Enable the OpenSSH daemon.
-# services.openssh.enable = true;
-
-# Open ports in the firewall.
-# networking.firewall.allowedTCPPorts = [ ... ];
-# networking.firewall.allowedUDPPorts = [ ... ];
-# Or disable the firewall altogether.
+  # Open ports in the firewall.
+  # networking.firewall.allowedTCPPorts = [ ... ];
+  # networking.firewall.allowedUDPPorts = [ ... ];
+  # Or disable the firewall altogether.
   networking.useDHCP = lib.mkDefault false;
   networking.firewall.enable = lib.mkDefault false;
   networking.firewall.checkReversePath = "loose";
