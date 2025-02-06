@@ -23,14 +23,6 @@
 
   networking.hostName = "saturn"; # Define your hostname.
 
-  networking.firewall.extraCommands = ''
-    iptables -A INPUT -p tcp --dport 10443 -j REJECT
-    iptables -N log443
-    iptables -A INPUT -p tcp --dport 10443 -j REJECT
-    iptables -A log443 -j ACCEPT
-    iptables-save
-  '';
-
   environment.systemPackages = with pkgs; [
     gnome-keyring
   ];
