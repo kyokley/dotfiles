@@ -121,7 +121,7 @@
       "240.168.0.0/4"
     ];
   in
-    pkgs.writeShellScriptBin "use-oracle-tunnel" (
+    pkgs.writeShellScriptBin "start-oracle-tunnel" (
       lib.concatStringsSep
       "\n"
       (
