@@ -27,6 +27,21 @@
     gnome-keyring
   ];
 
+  virtualisation.docker.daemon.settings = {
+    "group" = "docker";
+    "hosts" = [
+      "fd://"
+    ];
+    "live-restore" = true;
+    "log-driver" = "journald";
+    # "dns" = [
+    #   "206.223.27.1"
+    #   "206.223.27.2"
+    #   "8.8.8.8"
+    #   "8.8.4.4"
+    # ];
+  };
+
   virtualisation.virtualbox.host = {
     enable = true;
     enableKvm = true;
