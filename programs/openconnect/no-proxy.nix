@@ -88,7 +88,7 @@
     "10.255.48.38"
     "138.1.51.46"
   ];
-  redsocks-listen-port = 12345;
+  redsocks-listen-port = "12345";
   redsocks-config = pkgs.writeText "redsocks.conf" ''
     base {
         log_debug = on;
@@ -105,7 +105,7 @@
         type = socks5;
     }
   '';
-  start-redsocks = pkgs.writeShellScript "start-redsocks" ''
+  start-redsocks = pkgs.writeShellScriptBin "start-redsocks" ''
     ${pkgs.sudo}/bin/sudo ${pkgs.redsocks}/bin/redsocks -c ${redsocks-config}
   '';
   start-oracle-tunnel = let
@@ -121,7 +121,7 @@
       "240.168.0.0/4"
     ];
   in
-    pkgs.writeShellScript "use-oracle-tunnel" (
+    pkgs.writeShellScriptBin "use-oracle-tunnel" (
       lib.concatStringsSep
       "\n"
       (
@@ -135,7 +135,7 @@
         ++ map (x: "${pkgs.sudo}/bin/sudo iptables -t nat -A OUTPUT -p tcp -d " + x + "/32 -j REDSOCKS") proxied_ips
       )
     );
-  stop-oracle-tunnel = pkgs.writeShellScript "stop-oracle-tunnel" ''
+  stop-oracle-tunnel = pkgs.writeShellScriptBin "stop-oracle-tunnel" ''
     ${pkgs.sudo}/bin/sudo iptables -t nat -F OUTPUT
     ${pkgs.sudo}/bin/sudo iptables -t nat -X REDSOCKS
   '';
