@@ -98,15 +98,15 @@
     }
 
     redsocks {
-        local_ip = 127.0.0.1;    # Interface redsocks listens on
-        local_port = ${redsocks-listen-port};      # Port that redsocks will use
-        ip = 127.0.0.1;          # Address of the SOCKS5 proxy (set by ssh)
-        port = 8081;             # Port of the SOCKS5 proxy
+        local_ip = 127.0.0.1;
+        local_port = ${redsocks-listen-port};
+        ip = 127.0.0.1;
+        port = 8081;
         type = socks5;
     }
   '';
   start-redsocks = pkgs.writeShellScriptBin "start-redsocks" ''
-    ${pkgs.sudo}/bin/sudo ${pkgs.redsocks}/bin/redsocks -c ${redsocks-config}
+    ${pkgs.redsocks}/bin/redsocks -c ${redsocks-config}
   '';
   start-oracle-tunnel = let
     reserved-ips = [
@@ -126,18 +126,18 @@
       "\n"
       (
         [
-          "${pkgs.sudo}/bin/sudo iptables -t nat -N REDSOCKS"
+          "iptables -t nat -N REDSOCKS"
         ]
-        ++ map (x: "${pkgs.sudo}/bin/sudo iptables -t nat -A REDSOCKS -d " + x + " -j RETURN") reserved-ips
+        ++ map (x: "iptables -t nat -A REDSOCKS -d " + x + " -j RETURN") reserved-ips
         ++ [
-          "${pkgs.sudo}/bin/sudo iptables -t -A REDSOCKS -p tcp -j REDIRECT --to-ports ${redsocks-listen-port}"
+          "iptables -t nat -A REDSOCKS -p tcp -j REDIRECT --to-ports ${redsocks-listen-port}"
         ]
-        ++ map (x: "${pkgs.sudo}/bin/sudo iptables -t nat -A OUTPUT -p tcp -d " + x + "/32 -j REDSOCKS") proxied_ips
+        ++ map (x: "iptables -t nat -A OUTPUT -p tcp -d " + x + "/32 -j REDSOCKS") proxied_ips
       )
     );
   stop-oracle-tunnel = pkgs.writeShellScriptBin "stop-oracle-tunnel" ''
-    ${pkgs.sudo}/bin/sudo iptables -t nat -F OUTPUT
-    ${pkgs.sudo}/bin/sudo iptables -t nat -X REDSOCKS
+    iptables -t nat -F OUTPUT
+    iptables -t nat -X REDSOCKS
   '';
 in {
   environment.systemPackages = [
