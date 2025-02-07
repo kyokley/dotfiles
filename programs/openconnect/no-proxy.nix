@@ -89,26 +89,32 @@
     "138.1.51.46"
   ];
 in {
-  networking.firewall.extraCommands = (
-    lib.concatStringsSep
-    "\n"
-    (
-      [
-        "iptables -t nat -N REDSOCKS"
-        "iptables -t nat -A REDSOCKS -d 127.0.0.0/8 -j RETURN"
-        "iptables -t -A REDSOCKS -p tcp -j REDIRECT --to-ports 12345"
-      ]
-      ++ map (x: "iptables -t nat -A OUTPUT -p tcp -d " + x + "/32 -j REDSOCKS") proxied_ips
-    )
-  );
+  # networking.firewall.extraCommands = (
+  #   lib.concatStringsSep
+  #   "\n"
+  #   (
+  #     [
+  #       "iptables -t nat -N REDSOCKS"
+  #       "iptables -t nat -A REDSOCKS -d 127.0.0.0/8 -j RETURN"
+  #       "iptables -t -A REDSOCKS -p tcp -j REDIRECT --to-ports 12345"
+  #     ]
+  #     ++ map (x: "iptables -t nat -A OUTPUT -p tcp -d " + x + "/32 -j REDSOCKS") proxied_ips
+  #   )
+  # );
 
   services.redsocks = {
     enable = true;
+    log_debug = true;
     redsocks = [{
       ip = "127.0.0.1";
       port = 12345;
       type = "socks5";
       proxy = "127.0.0.1:8081";
+      redirectCondition = true;
+      redirectInternetOnly = true;
+      doNotRedirect = [
+        (lib.concatStrings [ "! -d " (lib.concatStringsSep "," proxied_ips)])
+      ];
     }];
   };
 
