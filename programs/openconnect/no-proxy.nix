@@ -3,47 +3,47 @@
   lib,
   ...
 }: let
-  domains = lib.concatStringsSep " " [
-    "apex.oraclecorp.com"
-    "artifacthub-phx.oci.oraclecorp.com"
-    "artifactory.oci.oraclecorp.com"
-    "badge.oraclecorp.com"
-    "cegbu-textura-docker-local.dockerhub-phx.oci.oraclecorp.com"
-    "cegbu-textura-docker-virtual.dockerhub-den.oraclecorp.com"
-    "cegbu-textura-docker-virtual.dockerhub-phx.oci.oraclecorp.com"
-    "cegbu.docker.oraclecorp.com"
-    "cegbu.oraclecorp.com"
-    "cloudlab.us.oracle.com"
-    "confluence.oraclecorp.com"
-    "docker-remote.dockerhub-phx.oci.oraclecorp.com"
-    "exchange.oraclecorp.com"
-    "gbuconfluence.oraclecorp.com"
-    "gbujira.oraclecorp.com"
-    "global-ebusiness.oraclecorp.com"
-    "gps.oracle.com"
-    "hrservices.oraclecorp.com"
-    "mydesktop.oraclecorp.com"
-    "oci-ssp.oracle-ocna.com"
-    "ociautojenkins01.snphxprshared1.gbucdsint02phx.oraclevcn.com"
-    "ocitpmpypi.us.oracle.com"
-    "ocp.oraclecorp.com"
-    "odo-docker-local.artifactory.oci.oraclecorp.com"
-    "oim.oraclecorp.com"
-    "permissions.oci.oraclecorp.com"
-    "phx-c-csec-awp-01.us5.oraclecloud.com"
-    "phxtpmae791.snphxprshared1.gbucdsint02phx.oraclevcn.com"
-    "pls.appoci.oraclecorp.com"
-    "printers.oraclecorp.com"
-    "testrail.us.oracle.com"
-    "u2f-validator.idp.mc1.oracleiaas.com"
-    "utilus.us.oracle.com"
-    "www-proxy-adcq7-new.us.oracle.com"
-    "www-proxy-adcq7.us.oracle.com"
-    "www-proxy-ash7.us.oracle.com"
-    "www-proxy-hqdc.us.oracle.com"
-    "www-proxy-sjc.oraclecorp.com"
-    "yum-internal.oracle.com"
-  ];
+  # domains = lib.concatStringsSep " " [
+  #   "apex.oraclecorp.com"
+  #   "artifacthub-phx.oci.oraclecorp.com"
+  #   "artifactory.oci.oraclecorp.com"
+  #   "badge.oraclecorp.com"
+  #   "cegbu-textura-docker-local.dockerhub-phx.oci.oraclecorp.com"
+  #   "cegbu-textura-docker-virtual.dockerhub-den.oraclecorp.com"
+  #   "cegbu-textura-docker-virtual.dockerhub-phx.oci.oraclecorp.com"
+  #   "cegbu.docker.oraclecorp.com"
+  #   "cegbu.oraclecorp.com"
+  #   "cloudlab.us.oracle.com"
+  #   "confluence.oraclecorp.com"
+  #   "docker-remote.dockerhub-phx.oci.oraclecorp.com"
+  #   "exchange.oraclecorp.com"
+  #   "gbuconfluence.oraclecorp.com"
+  #   "gbujira.oraclecorp.com"
+  #   "global-ebusiness.oraclecorp.com"
+  #   "gps.oracle.com"
+  #   "hrservices.oraclecorp.com"
+  #   "mydesktop.oraclecorp.com"
+  #   "oci-ssp.oracle-ocna.com"
+  #   "ociautojenkins01.snphxprshared1.gbucdsint02phx.oraclevcn.com"
+  #   "ocitpmpypi.us.oracle.com"
+  #   "ocp.oraclecorp.com"
+  #   "odo-docker-local.artifactory.oci.oraclecorp.com"
+  #   "oim.oraclecorp.com"
+  #   "permissions.oci.oraclecorp.com"
+  #   "phx-c-csec-awp-01.us5.oraclecloud.com"
+  #   "phxtpmae791.snphxprshared1.gbucdsint02phx.oraclevcn.com"
+  #   "pls.appoci.oraclecorp.com"
+  #   "printers.oraclecorp.com"
+  #   "testrail.us.oracle.com"
+  #   "u2f-validator.idp.mc1.oracleiaas.com"
+  #   "utilus.us.oracle.com"
+  #   "www-proxy-adcq7-new.us.oracle.com"
+  #   "www-proxy-adcq7.us.oracle.com"
+  #   "www-proxy-ash7.us.oracle.com"
+  #   "www-proxy-hqdc.us.oracle.com"
+  #   "www-proxy-sjc.oraclecorp.com"
+  #   "yum-internal.oracle.com"
+  # ];
   proxied_ips = [
     "206.223.27.1"
     "206.223.27.2"
@@ -88,35 +88,63 @@
     "10.255.48.38"
     "138.1.51.46"
   ];
-in {
-  # networking.firewall.extraCommands = (
-  #   lib.concatStringsSep
-  #   "\n"
-  #   (
-  #     [
-  #       "iptables -t nat -N REDSOCKS"
-  #       "iptables -t nat -A REDSOCKS -d 127.0.0.0/8 -j RETURN"
-  #       "iptables -t -A REDSOCKS -p tcp -j REDIRECT --to-ports 12345"
-  #     ]
-  #     ++ map (x: "iptables -t nat -A OUTPUT -p tcp -d " + x + "/32 -j REDSOCKS") proxied_ips
-  #   )
-  # );
+  redsocks-listen-port = 12345;
+  redsocks-config = pkgs.writeText "redsocks.conf" ''
+    base {
+        log_debug = on;
+        log_info = on;
+        daemon = off;
+        redirector = iptables;
+    }
 
-  services.redsocks = {
-    enable = true;
-    log_debug = true;
-    redsocks = [{
-      ip = "127.0.0.1";
-      port = 12345;
-      type = "socks5";
-      proxy = "127.0.0.1:8081";
-      redirectCondition = true;
-      redirectInternetOnly = true;
-      doNotRedirect = [
-        (lib.concatStrings [ "! -d " (lib.concatStringsSep "," proxied_ips)])
-      ];
-    }];
-  };
+    redsocks {
+        local_ip = 127.0.0.1;    # Interface redsocks listens on
+        local_port = ${redsocks-listen-port};      # Port that redsocks will use
+        ip = 127.0.0.1;          # Address of the SOCKS5 proxy (set by ssh)
+        port = 8081;             # Port of the SOCKS5 proxy
+        type = socks5;
+    }
+  '';
+  start-redsocks = pkgs.writeShellScript "start-redsocks" ''
+    ${pkgs.sudo}/bin/sudo ${pkgs.redsocks}/bin/redsocks -c ${redsocks-config}
+  '';
+  start-oracle-tunnel = let
+    reserved-ips = [
+      # TODO: add ipv6-equivalent
+      "0.0.0.0/8"
+      "10.0.0.0/8"
+      "127.0.0.0/8"
+      "169.254.0.0/16"
+      "172.16.0.0/12"
+      "192.168.0.0/16"
+      "224.168.0.0/4"
+      "240.168.0.0/4"
+    ];
+  in
+    pkgs.writeShellScript "use-oracle-tunnel" (
+      lib.concatStringsSep
+      "\n"
+      (
+        [
+          "${pkgs.sudo}/bin/sudo iptables -t nat -N REDSOCKS"
+        ]
+        ++ map (x: "${pkgs.sudo}/bin/sudo iptables -t nat -A REDSOCKS -d " + x + " -j RETURN") reserved-ips
+        ++ [
+          "${pkgs.sudo}/bin/sudo iptables -t -A REDSOCKS -p tcp -j REDIRECT --to-ports ${redsocks-listen-port}"
+        ]
+        ++ map (x: "${pkgs.sudo}/bin/sudo iptables -t nat -A OUTPUT -p tcp -d " + x + "/32 -j REDSOCKS") proxied_ips
+      )
+    );
+  stop-oracle-tunnel = pkgs.writeShellScript "stop-oracle-tunnel" ''
+    ${pkgs.sudo}/bin/sudo iptables -t nat -F OUTPUT
+    ${pkgs.sudo}/bin/sudo iptables -t nat -X REDSOCKS
+  '';
+in {
+  environment.systemPackages = [
+    start-redsocks
+    start-oracle-tunnel
+    stop-oracle-tunnel
+  ];
 
   networking.extraHosts = ''
     206.223.27.1 dns0.openconnect0          # vpn-slice-openconnect0 AUTOCREATED
