@@ -48,51 +48,6 @@
     "yum-internal.oracle.com 138.1.51.46"
     "yum.oracle.com 23.40.145.197"
   ];
-  proxied_ips = [
-    "206.223.27.1"
-    "206.223.27.2"
-    "100.115.65.230"
-    "138.1.117.148"
-    "100.126.4.64"
-    "100.126.5.8"
-    "100.112.102.5"
-    "138.1.117.148"
-    "138.1.117.148"
-    "10.242.12.81"
-    "100.77.53.69"
-    "100.105.153.4"
-    "100.114.94.55"
-    "138.1.117.148"
-    "144.25.106.166"
-    "100.77.216.173"
-    "100.77.216.177"
-    "100.112.22.206"
-    "100.105.212.136"
-    "100.114.94.31"
-    "100.112.124.74"
-    "147.154.5.156"
-    "100.77.25.241"
-    "100.77.38.58"
-    "144.25.81.188"
-    "100.126.4.64"
-    "100.126.5.8"
-    "100.112.14.9"
-    "100.125.5.67"
-    "192.18.204.201"
-    "100.77.34.87"
-    "100.114.94.139"
-    "100.112.125.102"
-    "100.77.63.149"
-    "100.125.5.163"
-    "10.209.64.99"
-    "10.23.226.53"
-    "10.23.226.53"
-    "10.23.226.53"
-    "10.68.69.53"
-    "10.255.48.38"
-    "138.1.51.46"
-    "23.40.145.197"
-  ];
   redsocks-listen-port = "12345";
   redsocks-config = pkgs.writeText "redsocks.conf" ''
     base {
@@ -138,7 +93,10 @@
           "iptables -t nat -A REDSOCKS -p tcp -j REDIRECT --to-ports ${redsocks-listen-port} || true"
           ''iptables -t nat -A PREROUTING -i docker0 -p tcp -j DNAT --to-destination 127.0.0.1:${redsocks-listen-port} -m comment --comment "REDSOCKS docker rule" || true''
         ]
-        ++ map (x: "iptables -t nat -A OUTPUT -p tcp -d " + x + "/32 -j REDSOCKS || true") proxied_ips
+        ++ map (host_record: let
+          host = lib.splitString " " host_record;
+        in "iptables -t nat -A OUTPUT -p tcp -d ${lib.elemAt host 1}/32 -j REDSOCKS || true")
+        domains
       )
     );
   stop-oracle-tunnel = pkgs.writeShellScriptBin "stop-oracle-tunnel" ''
