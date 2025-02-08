@@ -70,7 +70,7 @@
       then echo Please run this script as root or using sudo!
       exit
     fi
-    iptables-save | grep REDSOCKS || start-oracle-tunnel
+    iptables-save | grep REDSOCKS >/dev/null 2>&1 || start-oracle-tunnel
     ${pkgs.redsocks}/bin/redsocks -c ${redsocks-config}
   '';
   start-oracle-tunnel = let
