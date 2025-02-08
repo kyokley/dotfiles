@@ -42,6 +42,22 @@
   #   git --version | grep --color=auto "${pkgs.git.version}"
   # '';
 
+  processes = {
+    start-ssh-tunnel.exec = "ssh -p 3022 yokley@127.0.0.1 -D 8081 -Nv";
+    start-redsocks = {
+      exec = "sudo start-redsocks";
+      process-compose.depends_on = {
+        start-ssh-tunnel.condition = "process_healthy";
+      };
+    };
+    start-oracle-tunnel = {
+      exec = "sudo start-oracle-tunnel";
+      process-compose.depends_on = {
+        start-redsocks.condition = "process_healthy";
+      };
+    };
+  };
+
   # https://devenv.sh/pre-commit-hooks/
   # pre-commit.hooks.shellcheck.enable = true;
   pre-commit.hooks = {
