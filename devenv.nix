@@ -31,10 +31,15 @@
   # '';
 
   # https://devenv.sh/tasks/
-  # tasks = {
-  #   "myproj:setup".exec = "mytool build";
-  #   "devenv:enterShell".after = [ "myproj:setup" ];
-  # };
+  tasks = {
+    "vpn:start" = {
+      exec = "sudo start-redsocks 2>&1";
+    };
+    "vpn:init-firewall" = {
+      exec = "sudo iptables-save | grep REDSOCKS && exit 0 || sudo start-oracle-tunnel";
+      before = ["vpn:start"];
+    };
+  };
 
   # https://devenv.sh/tests/
   # enterTest = ''
@@ -43,18 +48,11 @@
   # '';
 
   processes = {
-    start-ssh-tunnel.exec = "ssh -p 3022 yokley@127.0.0.1 -D 8081 -Nv";
     start-redsocks = {
       exec = "sudo start-redsocks";
-      process-compose.depends_on = {
-        start-ssh-tunnel.condition = "process_healthy";
-      };
     };
     start-oracle-tunnel = {
       exec = "sudo start-oracle-tunnel";
-      process-compose.depends_on = {
-        start-redsocks.condition = "process_healthy";
-      };
     };
   };
 
