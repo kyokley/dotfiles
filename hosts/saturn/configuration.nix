@@ -12,6 +12,7 @@
     keyFiles = [
       ../mars/mars.pub
       ../dioxygen/dioxygen.pub
+      ./saturn.pub
     ];
   };
 

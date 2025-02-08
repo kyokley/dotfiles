@@ -100,7 +100,7 @@
     }
 
     redsocks {
-        local_ip = 127.0.0.1;
+        local_ip = 0.0.0.0;
         local_port = ${redsocks-listen-port};
         ip = 127.0.0.1;
         port = 8081;
@@ -133,7 +133,7 @@
         ++ map (x: "iptables -t nat -A REDSOCKS -d " + x + " -j RETURN || true") reserved-ips
         ++ [
           "iptables -t nat -A REDSOCKS -p tcp -j REDIRECT --to-ports ${redsocks-listen-port} || true"
-          # "iptables -t nat -A PREROUTING -i docker0 -p tcp -j REDSOCKS --to-ports ${redsocks-listen-port} || true"
+          "iptables -t nat -A PREROUTING -i docker0 -p tcp -j REDSOCKS --to-ports ${redsocks-listen-port} || true"
         ]
         ++ map (x: "iptables -t nat -A OUTPUT -p tcp -d " + x + "/32 -j REDSOCKS || true") proxied_ips
       )
