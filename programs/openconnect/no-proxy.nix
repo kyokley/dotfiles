@@ -66,6 +66,11 @@
     }
   '';
   start-redsocks = pkgs.writeShellScriptBin "start-redsocks" ''
+    if [ $(id -u) -ne 0 ]
+      then echo Please run this script as root or using sudo!
+      exit
+    fi
+    iptables-save | grep REDSOCKS || start-oracle-tunnel
     ${pkgs.redsocks}/bin/redsocks -c ${redsocks-config}
   '';
   start-oracle-tunnel = let
