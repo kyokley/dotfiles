@@ -1,4 +1,8 @@
-{pkgs, ...}: {
+{
+  pkgs,
+  pkgs-unstable,
+  ...
+}: {
   imports = [
     ../../programs/openconnect/no-proxy.nix
     ../../programs/nixos/laptop.nix
@@ -44,6 +48,7 @@
   };
 
   virtualisation.virtualbox.host = {
+    package = pkgs-unstable.virtualbox;
     enable = true;
     enableKvm = true;
     enableExtensionPack = true;
