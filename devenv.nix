@@ -32,13 +32,8 @@
 
   # https://devenv.sh/tasks/
   # tasks = {
-  #   "vpn:start" = {
-  #     exec = "sudo start-redsocks 2>&1";
-  #   };
-  #   "vpn:init-firewall" = {
-  #     exec = "sudo iptables-save | grep REDSOCKS && exit 0 || sudo start-oracle-tunnel";
-  #     before = ["vpn:start"];
-  #   };
+  #   "myproj:setup".exec = "mytool build";
+  #   "devenv:enterShell".after = [ "myproj:setup" ];
   # };
 
   # https://devenv.sh/tests/
@@ -46,15 +41,6 @@
   #   echo "Running tests"
   #   git --version | grep --color=auto "${pkgs.git.version}"
   # '';
-
-  # processes = {
-  #   start-redsocks = {
-  #     exec = "sudo start-redsocks";
-  #   };
-  #   start-oracle-tunnel = {
-  #     exec = "sudo start-oracle-tunnel";
-  #   };
-  # };
 
   # https://devenv.sh/pre-commit-hooks/
   # pre-commit.hooks.shellcheck.enable = true;
