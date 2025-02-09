@@ -1,6 +1,10 @@
-{pkgs, ...}: {
+{
+  pkgs,
+  pkgs-unstable,
+  ...
+}: {
   imports = [
-    ../../programs/openconnect/no-proxy.nix
+    ../../programs/ovpn.nix
     ../../programs/nixos/laptop.nix
     ../../programs/clamav.nix
 
@@ -12,6 +16,7 @@
     keyFiles = [
       ../mars/mars.pub
       ../dioxygen/dioxygen.pub
+      ./saturn.pub
     ];
   };
 
@@ -23,22 +28,12 @@
 
   networking.hostName = "saturn"; # Define your hostname.
 
-  networking.openconnect.interfaces.openconnect0 = {
-    autoStart = true;
-  };
-  networking.firewall.extraCommands = ''
-    iptables -A INPUT -p tcp --dport 10443 -j REJECT
-    iptables -N log443
-    iptables -A INPUT -p tcp --dport 10443 -j REJECT
-    iptables -A log443 -j ACCEPT
-    iptables-save
-  '';
-
   environment.systemPackages = with pkgs; [
     gnome-keyring
   ];
 
   virtualisation.virtualbox.host = {
+    package = pkgs-unstable.virtualbox;
     enable = true;
     enableKvm = true;
     enableExtensionPack = true;
