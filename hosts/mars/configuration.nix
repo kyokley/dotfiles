@@ -1,6 +1,6 @@
 {pkgs, ...}: {
   imports = [
-    ../../programs/openconnect/no-proxy.nix
+    ../../programs/ovpn.nix
     ../../programs/tailscale.nix
     ../../programs/nixos/laptop.nix
   ];

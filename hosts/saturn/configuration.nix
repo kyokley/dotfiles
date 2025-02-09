@@ -4,7 +4,7 @@
   ...
 }: {
   imports = [
-    ../../programs/openconnect/no-proxy.nix
+    ../../programs/ovpn.nix
     ../../programs/nixos/laptop.nix
     ../../programs/clamav.nix
 
