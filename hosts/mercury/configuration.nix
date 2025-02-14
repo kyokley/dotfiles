@@ -28,32 +28,4 @@
   ];
 
   system.stateVersion = "24.05"; # Don't touch me!
-
-  systemd = {
-    services = {
-      renew-mattermost-cert = {
-        description = "Renew Mattermost Cert";
-        serviceConfig.Type = "oneshot";
-        script = toString (
-          pkgs.writeShellScript "renew-mattermost-cert" ''
-            PATH=$PATH:${lib.makeBinPath [pkgs.gnumake pkgs.sudo]}
-            cd /home/yokley/workspace/mattermost && make renew-cert
-          ''
-        );
-      };
-    };
-
-    timers = {
-      renew-mattermost-cert = {
-        description = "Renew Mattermost Cert";
-        after = ["network.target"];
-        timerConfig = {
-          OnCalendar = "monthly";
-          Persistent = true;
-          Unit = "renew-mattermost-cert.service";
-        };
-        wantedBy = ["timers.target"];
-      };
-    };
-  };
 }
