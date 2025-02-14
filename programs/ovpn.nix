@@ -55,6 +55,7 @@
         log_info = on;
         daemon = off;
         redirector = iptables;
+        redsocks_conn_max = 4096;
     }
 
     redsocks {
