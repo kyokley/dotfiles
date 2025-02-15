@@ -51,5 +51,14 @@
 
   services.pcscd.enable = true;
 
+  security.pam.loginLimits = [
+    {
+      domain = "*";
+      type = "soft";
+      item = "nofile";
+      value = "4096";
+    }
+  ];
+
   system.stateVersion = "24.05"; # Don't touch me!
 }
