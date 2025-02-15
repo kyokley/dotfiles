@@ -104,18 +104,19 @@ GROUPS.extend(
             "minus",
             matches=[
                 Match(wm_class="protonmail-bridge"),
-                Match(wm_class="protonvpn"),
-                Match(wm_class="pritunl"),
+                Match(title="Oracle VirtualBox Manager"),
             ],
-            label="VPN",
+            label="VBox",
         ),
         Group(
             "equal",
             matches=[
                 Match(wm_class="Microsoft Teams - Preview"),
                 Match(wm_class="crx_cifhbcnohmdccbgoicgdjpfamggdegmo"),
+                Match(wm_class="protonvpn"),
+                Match(wm_class="pritunl"),
             ],
-            label="Exile",
+            label="VPN",
         ),
     ]
 )
