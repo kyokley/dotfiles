@@ -221,7 +221,7 @@ top_widgets.extend(
         ),
         widget.Systray(icon_size=extension_defaults.iconsize),
         widget.Clock(
-            foreground="FFDE3B",
+            foreground=extension_defaults.foreground_yellow,
             format="%a %b %d %H:%M:%S",
             font=extension_defaults.font,
             fontsize=extension_defaults.fontsize,
@@ -257,6 +257,7 @@ SCREENS = [
                 widget.Spacer(length=10),
                 ScreenLayout(
                     width=bar.STRETCH,
+                    foreground=extension_defaults.foreground_yellow,
                     font=extension_defaults.font,
                     fontsize=extension_defaults.fontsize,
                 ),
