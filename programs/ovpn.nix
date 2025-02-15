@@ -66,15 +66,15 @@
         type = socks5;
     }
   '';
-  start-redsocks = pkgs.writeShellScriptBin "start-redsocks" ''
+  start-oracle-tunnel = pkgs.writeShellScriptBin "start-oracle-tunnel" ''
     if [ $(id -u) -ne 0 ]
       then echo Please run this script as root or using sudo!
       exit
     fi
-    iptables-save | grep REDSOCKS >/dev/null 2>&1 || start-oracle-tunnel
+    iptables-save | grep REDSOCKS >/dev/null 2>&1 || configure-oracle-tunnel
     ${pkgs.redsocks}/bin/redsocks -c ${redsocks-config}
   '';
-  start-oracle-tunnel = let
+  configure-oracle-tunnel = let
     reserved-ips = [
       # TODO: add ipv6-equivalent
       "0.0.0.0/8"
@@ -87,7 +87,7 @@
       "240.168.0.0/4"
     ];
   in
-    pkgs.writeShellScriptBin "start-oracle-tunnel" (
+    pkgs.writeShellScriptBin "configure-oracle-tunnel" (
       lib.concatStringsSep
       "\n"
       (
@@ -110,8 +110,8 @@
   '';
 in {
   environment.systemPackages = [
-    start-redsocks
     start-oracle-tunnel
+    configure-oracle-tunnel
     stop-oracle-tunnel
   ];
 
