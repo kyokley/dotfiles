@@ -1,4 +1,8 @@
-{pkgs, ...}: {
+{
+  pkgs,
+  pkgs-unstable,
+  ...
+}: {
   imports = [
     ../../programs/ovpn.nix
     ../../programs/tailscale.nix
@@ -20,6 +24,7 @@
   environment.systemPackages = with pkgs; [
     protonvpn-gui
     gnome-keyring
+    pkgs-unstable.devenv
   ];
 
   system.stateVersion = "24.05"; # Don't touch me!

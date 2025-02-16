@@ -15,7 +15,6 @@
   };
 
   home.packages = [
-    pkgs.devenv
     pkgs.brightnessctl
     nixvim.packages.${pkgs.stdenv.hostPlatform.system}.default
   ];
