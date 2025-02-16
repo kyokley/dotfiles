@@ -6,7 +6,7 @@
   imports = [
     ../../programs/ovpn.nix
     ../../programs/tailscale.nix
-    ../../programs/nixos/laptop.nix
+    ../../misc/laptop.nix
   ];
 
   # Bootloader.

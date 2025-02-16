@@ -5,7 +5,7 @@
 }: {
   imports = [
     ../../programs/ovpn.nix
-    ../../programs/nixos/laptop.nix
+    ../../misc/laptop.nix
     ../../programs/clamav.nix
 
     # Import SSH
