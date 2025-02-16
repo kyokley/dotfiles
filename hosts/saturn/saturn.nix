@@ -19,7 +19,6 @@ in {
   ];
 
   home.packages = [
-    pkgs.devenv
     pkgs.brightnessctl
     pkgs.scrot
     nixvim.packages.${pkgs.stdenv.hostPlatform.system}.default

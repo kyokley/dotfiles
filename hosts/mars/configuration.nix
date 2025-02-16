@@ -1,12 +1,9 @@
-{
-  pkgs,
-  pkgs-unstable,
-  ...
-}: {
+{pkgs, ...}: {
   imports = [
     ../../programs/ovpn.nix
     ../../programs/tailscale.nix
     ../../misc/laptop.nix
+    ../../misc/dev/configuration.nix
   ];
 
   # Bootloader.
@@ -24,7 +21,6 @@
   environment.systemPackages = with pkgs; [
     protonvpn-gui
     gnome-keyring
-    pkgs-unstable.devenv
   ];
 
   system.stateVersion = "24.05"; # Don't touch me!
