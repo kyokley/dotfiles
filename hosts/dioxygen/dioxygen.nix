@@ -12,6 +12,7 @@
 in {
   imports = [
     ../../home.nix
+    ../../misc/dev.nix
   ];
 
   programs.systemd-services.enable = false;
@@ -19,7 +20,6 @@ in {
   home.homeDirectory = "/Users/yokley";
 
   home.packages = [
-    pkgs.devenv
     nix-update
   ];
 

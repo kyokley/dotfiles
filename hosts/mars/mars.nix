@@ -1,11 +1,8 @@
-{
-  pkgs,
-  nixvim,
-  ...
-}: {
+{pkgs, ...}: {
   imports = [
     ../../programs/nixos/nixos.nix
     ../../home.nix
+    ../../misc/dev.nix
   ];
 
   programs.git.userEmail = "kyokley@mars";
@@ -16,7 +13,6 @@
 
   home.packages = [
     pkgs.brightnessctl
-    nixvim.packages.${pkgs.stdenv.hostPlatform.system}.default
   ];
 
   home.stateVersion = "24.05"; # Don't touch me!

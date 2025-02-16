@@ -29,15 +29,11 @@
   home.packages = [
     pkgs.fd
     pkgs.fzf
-    pkgs.gnumake
-    pkgs.ripgrep
-    pkgs.tig
     pkgs.unzip
     pkgs.zsh
     pkgs.nix-search-cli
     pkgs.lftp
     pkgs.home-manager
-    pkgs.jq
     pkgs.zsh-wd
   ];
 

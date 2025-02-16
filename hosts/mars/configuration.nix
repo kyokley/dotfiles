@@ -3,7 +3,6 @@
     ../../programs/ovpn.nix
     ../../programs/tailscale.nix
     ../../misc/laptop.nix
-    ../../misc/dev/configuration.nix
   ];
 
   # Bootloader.

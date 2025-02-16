@@ -42,6 +42,10 @@
             home-manager.extraSpecialArgs = {
               vars = import ./hosts/mars/vars.nix;
               inherit nixvim;
+              pkgs-unstable = import nixpkgs-unstable {
+                config.allowUnfree = true;
+                system = x86_linux;
+              };
             };
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
@@ -65,6 +69,10 @@
             home-manager.extraSpecialArgs = {
               vars = import ./hosts/mercury/vars.nix;
               inherit nixvim;
+              pkgs-unstable = import nixpkgs-unstable {
+                config.allowUnfree = true;
+                system = x86_linux;
+              };
             };
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
@@ -89,6 +97,10 @@
             home-manager.extraSpecialArgs = {
               vars = import ./hosts/saturn/vars.nix;
               inherit nixvim;
+              pkgs-unstable = import nixpkgs-unstable {
+                config.allowUnfree = true;
+                system = x86_linux;
+              };
             };
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
@@ -102,14 +114,14 @@
         pkgs = nixpkgs.legacyPackages.${aarch64_darwin};
         extraSpecialArgs = {
           vars = import ./hosts/dioxygen/vars.nix;
+          pkgs-unstable = import nixpkgs-unstable {
+            config.allowUnfree = true;
+            system = aarch64_darwin;
+          };
+          inherit nixvim;
         };
         modules = [
           ./hosts/dioxygen/dioxygen.nix
-          {
-            home.packages = [
-              nixvim.packages.${aarch64_darwin}.default
-            ];
-          }
         ];
       };
 
@@ -117,6 +129,10 @@
         pkgs = nixpkgs.legacyPackages.${x86_linux};
         extraSpecialArgs = {
           vars = import ./hosts/venus/vars.nix;
+          pkgs-unstable = import nixpkgs-unstable {
+            config.allowUnfree = true;
+            system = x86_linux;
+          };
         };
         modules = [
           ./hosts/venus/venus.nix
@@ -132,6 +148,10 @@
         pkgs = nixpkgs.legacyPackages.${x86_linux};
         extraSpecialArgs = {
           vars = import ./hosts/almagest/vars.nix;
+          pkgs-unstable = import nixpkgs-unstable {
+            config.allowUnfree = true;
+            system = x86_linux;
+          };
         };
         modules = [
           ./hosts/almagest/almagest.nix
@@ -146,6 +166,10 @@
         pkgs = nixpkgs.legacyPackages.${x86_linux};
         extraSpecialArgs = {
           vars = import ./hosts/jupiter/vars.nix;
+          pkgs-unstable = import nixpkgs-unstable {
+            config.allowUnfree = true;
+            system = x86_linux;
+          };
         };
         modules = [
           ./hosts/jupiter/jupiter.nix
@@ -160,6 +184,10 @@
         pkgs = nixpkgs.legacyPackages.${x86_linux};
         extraSpecialArgs = {
           vars = import ./hosts/singularity/vars.nix;
+          pkgs-unstable = import nixpkgs-unstable {
+            config.allowUnfree = true;
+            system = x86_linux;
+          };
         };
         modules = [
           ./hosts/singularity/singularity.nix

@@ -7,7 +7,6 @@
     ../../programs/ovpn.nix
     ../../misc/laptop.nix
     ../../programs/clamav.nix
-    ../../misc/dev/configuration.nix
 
     # Import SSH
     ./ssh.nix
