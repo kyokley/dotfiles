@@ -4,8 +4,6 @@
   ...
 }: let
   domains = [
-    "dns0.openconnect0 206.223.27.1"
-    "dns1.openconnect0 206.223.27.2"
     "apex.oraclecorp.com 100.115.65.230"
     "artifacthub-phx.oci.oraclecorp.com 138.1.117.148"
     "artifactory.oci.oraclecorp.com 100.126.4.64"
@@ -18,6 +16,8 @@
     "cegbu.oraclecorp.com 100.77.53.69"
     "cloudlab.us.oracle.com 100.105.153.4"
     "confluence.oraclecorp.com 100.114.94.55"
+    "dns0.openconnect0 206.223.27.1"
+    "dns1.openconnect0 206.223.27.2"
     "docker-remote.dockerhub-phx.oci.oraclecorp.com 138.1.117.148"
     "exchange.oraclecorp.com 144.25.106.166"
     "gbuconfluence.oraclecorp.com 100.77.216.173"
@@ -33,6 +33,7 @@
     "odo-docker-local.artifactory.oci.oraclecorp.com 100.126.4.64"
     "odo-docker-local.artifactory.oci.oraclecorp.com 100.126.5.8"
     "oim.oraclecorp.com 100.112.14.9"
+    "oscs.appoci.oraclecorp.com 100.107.234.80"
     "permissions.oci.oraclecorp.com 100.125.5.67"
     "phx-c-csec-awp-01.us5.oraclecloud.com 192.18.204.201"
     "phxtpmae791.snphxprshared1.gbucdsint02phx.oraclevcn.com 100.77.34.87"
