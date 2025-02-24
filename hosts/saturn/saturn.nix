@@ -1,4 +1,8 @@
-{pkgs, ...}: let
+{
+  pkgs,
+  lib,
+  ...
+}: let
   qtile-one-screen = pkgs.writeShellScriptBin "qtile-one-screen" ''
     xrandr --output eDP-1 --mode 1920x1200 --pos 0x0 --rotate normal --output HDMI-1 --off --output DP-1 --off --output DP-2 --off --output DP-1-1 --off --output DP-1-2 --off --output DP-1-3 --off
   '';
@@ -8,6 +12,11 @@
   qtile-three-screen = pkgs.writeShellScriptBin "qtile-three-screen" ''
     xrandr --output eDP-1 --primary --mode 1920x1200 --pos 1553x1440 --rotate normal --output HDMI-1 --off --output DP-1 --off --output DP-2 --off --output DP-1-1 --off --output DP-1-2 --mode 2560x1440 --pos 0x0 --rotate normal --output DP-1-3 --mode 1920x1080 --pos 2560x360 --rotate normal
   '';
+  cd_paths = [
+    "/home/yokley/workspace/compost/foyr"
+    "/home/yokley/workspace/compost/tpmcore"
+    "/home/yokley/workspace"
+  ];
 in {
   imports = [
     ../../programs/nixos/nixos.nix
@@ -28,7 +37,7 @@ in {
 
   home.sessionVariables = {
     QTILE_NET_INTERFACE = "enp0s13f0u3u1";
-    CDPATH = "/home/yokley/workspace/compost/tpmcore:/home/yokley/workspace";
+    CDPATH = lib.concatStringsSep ":" cd_paths;
   };
 
   programs.git.userEmail = "kevin.yokley@oracle.com";

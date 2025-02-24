@@ -11,6 +11,7 @@
     "artifactory.oci.oraclecorp.com 100.126.4.64"
     "artifactory.oci.oraclecorp.com 100.126.5.8"
     "badge.oraclecorp.com 100.112.102.5"
+    "bug.oraclecorp.com 100.114.94.166"
     "cegbu-textura-docker-local.dockerhub-phx.oci.oraclecorp.com 138.1.117.148"
     "cegbu-textura-docker-virtual.dockerhub-phx.oci.oraclecorp.com 138.1.117.148"
     "cegbu.docker.oraclecorp.com 10.242.12.81"
