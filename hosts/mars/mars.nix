@@ -13,14 +13,7 @@
 
   home.packages = [
     pkgs.brightnessctl
-    pkgs.direnv
   ];
-
-  programs.zsh = {
-    initExtra = ''
-      eval "$(direnv hook zsh)"
-    '';
-  };
 
   home.stateVersion = "24.05"; # Don't touch me!
 }
