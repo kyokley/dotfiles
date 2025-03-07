@@ -1,4 +1,12 @@
-{pkgs, ...}: {
+{
+  pkgs,
+  lib,
+  ...
+}: let
+  cd_paths = [
+    "/home/yokley/workspace"
+  ];
+in {
   imports = [
     ../../programs/nixos/nixos.nix
     ../../home.nix
@@ -9,6 +17,7 @@
 
   home.sessionVariables = {
     QTILE_NET_INTERFACE = "wlp1s0";
+    CDPATH = lib.concatStringsSep ":" cd_paths;
   };
 
   home.packages = [
