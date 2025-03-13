@@ -19,7 +19,7 @@ BATTERY_PATHS = [
 WALLPAPER_DIR = Path("~/Pictures/wallpapers")
 HOME_DIR = "/home"
 ROOT_DIR = "/"
-TERM = "terminator"
+TERM = "kitty"
 
 top_widgets = [
     widget.Spacer(length=10),

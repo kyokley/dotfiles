@@ -31,7 +31,7 @@ GROUPS = [
             # it is placed in the upper third of screen by default.
             DropDown(
                 "term",
-                "kitty",
+                "kitty --single-instance",
                 opacity=0.9,
                 on_focus_lost_hide=True,
                 height=0.5,

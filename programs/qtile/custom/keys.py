@@ -57,7 +57,7 @@ KEYS = [
     # Floating
     Key([MOD], "t", lazy.window.toggle_floating()),
     # Open a new terminal
-    Key([MOD, SHIFT], ENTER, lazy.spawn("terminator")),
+    Key([MOD, SHIFT], ENTER, lazy.spawn("kitty --single-instance")),
     # Toggle between different layouts as defined below
     Key([MOD], SPACE, lazy.next_layout()),
     Key([MOD, SHIFT], "c", lazy.window.kill()),
