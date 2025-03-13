@@ -26,6 +26,7 @@
     "global-ebusiness.oraclecorp.com 100.112.22.206"
     "gps.oracle.com 100.105.212.136"
     "hrservices.oraclecorp.com 100.114.94.31"
+    "login.us-phoenix-1.idp.mc1.oracleiaas.com 138.3.108.158"
     "mydesktop.oraclecorp.com 100.112.124.74"
     "oci-ssp.oracle-ocna.com 147.154.5.156"
     "ociautojenkins01.snphxprshared1.gbucdsint02phx.oraclevcn.com 100.77.25.241"
