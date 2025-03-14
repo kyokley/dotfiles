@@ -24,6 +24,12 @@
       tab_bar_min_tabs = 1;
       tab_bar_align = "center";
       notify_on_cmd_finish = ''invisible 10.0 command dunstify "job finished => %s" "%c"'';
+      active_tab_foreground = "#2c7dff";
+      active_tab_background = "#000";
+      active_tab_font_style = "bold-italic";
+      inactive_tab_foreground = "#eee";
+      inactive_tab_background = "#000";
+      inactive_tab_font_style = "normal";
     };
     extraConfig = ''
       cursor_trail_decay 0.1 0.4
@@ -39,6 +45,7 @@
       map ctrl+7 seventh_window
       map ctrl+8 eigth_window
       map ctrl+9 ninth_window
+      tab_title_template "{fmt.fg.red}{bell_symbol}{activity_symbol}{fmt.fg.tab}{tab.last_focused_progress_percent}{index}:{title}"
     '';
   };
 }
