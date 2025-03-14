@@ -20,6 +20,7 @@
       visual_bell_duration = "0.25 linear";
       tab_bar_edge = "top";
       tab_bar_style = "separator";
+      tab_separator = ''" ┇ "'';
       tab_bar_min_tabs = 1;
       tab_bar_align = "center";
       notify_on_cmd_finish = ''invisible 10.0 command dunstify "job finished => %s" "%c"'';
