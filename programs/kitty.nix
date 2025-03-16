@@ -24,7 +24,9 @@
       tab_bar_min_tabs = 1;
       tab_bar_align = "center";
       tab_title_template = " {index} : {title} ";
-      notify_on_cmd_finish = ''invisible 10.0 command dunstify "job finished => %s" "%c"'';
+      # Zsh doesn't seem to set the cmdline var correctly for Kitty
+      # Re-enable notifications once this functionality is fixed
+      # notify_on_cmd_finish = ''invisible 10.0 command dunstify "job finished => %s" "%c"'';
       # notify_on_cmd_finish = ''unfocused 5.0 command dunstify "%c job finished with status: %s"'';
       active_tab_foreground = "#2c7dff";
       active_tab_background = "#000";
