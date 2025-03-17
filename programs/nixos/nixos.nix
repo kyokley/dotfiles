@@ -32,7 +32,7 @@ in {
     pkgs.dunst
     pkgs.libreoffice
     pkgs.nitrogen
-    pkgs.python311Packages.bpython
+    pkgs.python312Packages.bpython
     pkgs.thunderbird
     (pkgs.nerdfonts.override {fonts = ["Hack"];})
     pkgs.vlc
