@@ -9,6 +9,10 @@ in {
         addr = "192.168.50.126";
         port = sshd_port;
       }
+      {
+        addr = "192.168.50.96";
+        port = sshd_port;
+      }
     ];
     settings = {
       PermitRootLogin = "no";
