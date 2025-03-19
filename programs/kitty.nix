@@ -20,10 +20,14 @@
       visual_bell_duration = "0.25 linear";
       tab_bar_edge = "top";
       tab_bar_style = "separator";
-      tab_separator = ''" ┇ "'';
+      tab_separator = ''" | "'';
       tab_bar_min_tabs = 1;
       tab_bar_align = "center";
-      notify_on_cmd_finish = ''invisible 10.0 command dunstify "job finished => %s" "%c"'';
+      tab_title_template = " {index} : {title} ";
+      # Zsh doesn't seem to set the cmdline var correctly for Kitty
+      # Re-enable notifications once this functionality is fixed
+      # notify_on_cmd_finish = ''invisible 10.0 command dunstify "job finished => %s" "%c"'';
+      # notify_on_cmd_finish = ''unfocused 5.0 command dunstify "%c job finished with status: %s"'';
       active_tab_foreground = "#2c7dff";
       active_tab_background = "#000";
       active_tab_font_style = "bold-italic";
@@ -36,16 +40,15 @@
       map ctrl+t new_tab
       map ctrl+tab next_tab
       map ctrl+shift+tab previous_tab
-      map ctrl+1 first_window
-      map ctrl+2 second_window
-      map ctrl+3 third_window
-      map ctrl+4 fourth_window
-      map ctrl+5 fifth_window
-      map ctrl+6 sixth_window
-      map ctrl+7 seventh_window
-      map ctrl+8 eigth_window
-      map ctrl+9 ninth_window
-      tab_title_template "{fmt.fg.red}{bell_symbol}{activity_symbol}{fmt.fg.tab}{tab.last_focused_progress_percent}{index}:{title}"
+      map ctrl+1 goto_tab 1
+      map ctrl+2 goto_tab 2
+      map ctrl+3 goto_tab 3
+      map ctrl+4 goto_tab 4
+      map ctrl+5 goto_tab 5
+      map ctrl+6 goto_tab 6
+      map ctrl+7 goto_tab 7
+      map ctrl+8 goto_tab 8
+      map ctrl+9 goto_tab 9
     '';
   };
 }
