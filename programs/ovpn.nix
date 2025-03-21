@@ -70,48 +70,57 @@
         type = socks5;
     }
   '';
-  configure-oracle-tunnel = let
-    reserved-ips = [
-      # TODO: add ipv6-equivalent
-      "0.0.0.0/8"
-      "10.0.0.0/8"
-      "127.0.0.0/8"
-      "169.254.0.0/16"
-      "172.16.0.0/12"
-      "192.168.0.0/16"
-      "224.168.0.0/4"
-      "240.168.0.0/4"
-    ];
-  in
-    pkgs.writeShellScriptBin "configure-oracle-tunnel" (
-      lib.concatStringsSep
-      "\n"
-      (
-        [
-          "iptables -t nat -N REDSOCKS || true"
-        ]
-        ++ map (x: "iptables -t nat -A REDSOCKS -d " + x + " -j RETURN || true") reserved-ips
-        ++ [
-          "iptables -t nat -A REDSOCKS -p tcp -j REDIRECT --to-ports ${redsocks-listen-port} || true"
-          ''iptables -t nat -A PREROUTING -i docker0 -p tcp -j DNAT --to-destination 127.0.0.1:${redsocks-listen-port} -m comment --comment "REDSOCKS docker rule" || true''
-        ]
-        ++ map (host_record: let
-          host = lib.splitString " " host_record;
-        in "iptables -t nat -A OUTPUT -p tcp -d ${lib.elemAt host 1}/32 -j REDSOCKS || true")
-        domains
-      )
-    );
   stop-oracle-tunnel = pkgs.writeShellScriptBin "stop-oracle-tunnel" ''
-    iptables-save | grep -v REDSOCKS | iptables-restore
+    ${pkgs.iptables}/bin/iptables-save | grep -v REDSOCKS | ${pkgs.iptables}/bin/iptables-restore
   '';
-  start-oracle-tunnel = pkgs.writeShellScriptBin "start-oracle-tunnel" ''
-    if [ $(id -u) -ne 0 ]
-      then echo Please run this script as root or using sudo!
-      exit
-    fi
-    iptables-save | grep REDSOCKS >/dev/null 2>&1 || configure-oracle-tunnel
-    ${pkgs.redsocks}/bin/redsocks -c ${redsocks-config}
-  '';
+  start-oracle-tunnel = (
+    pkgs.writeShellScriptBin
+    "start-oracle-tunnel"
+    (
+      let
+        configure-oracle-tunnel = (
+          let
+            reserved-ips = [
+              # TODO: add ipv6-equivalent
+              "0.0.0.0/8"
+              "10.0.0.0/8"
+              "127.0.0.0/8"
+              "169.254.0.0/16"
+              "172.16.0.0/12"
+              "192.168.0.0/16"
+              "224.168.0.0/4"
+              "240.168.0.0/4"
+            ];
+          in
+            pkgs.writeShellScriptBin "configure-oracle-tunnel" (
+              lib.concatStringsSep
+              "\n"
+              (
+                [
+                  "${pkgs.iptables}/bin/iptables -t nat -N REDSOCKS || true"
+                ]
+                ++ map (x: "${pkgs.iptables}/bin/iptables -t nat -A REDSOCKS -d " + x + " -j RETURN || true") reserved-ips
+                ++ [
+                  "${pkgs.iptables}/bin/iptables -t nat -A REDSOCKS -p tcp -j REDIRECT --to-ports ${redsocks-listen-port} || true"
+                  ''${pkgs.iptables}/bin/iptables -t nat -A PREROUTING -i docker0 -p tcp -j DNAT --to-destination 127.0.0.1:${redsocks-listen-port} -m comment --comment "REDSOCKS docker rule" || true''
+                ]
+                ++ map (host_record: let
+                  host = lib.splitString " " host_record;
+                in "${pkgs.iptables}/bin/iptables -t nat -A OUTPUT -p tcp -d ${lib.elemAt host 1}/32 -j REDSOCKS || true")
+                domains
+              )
+            )
+        );
+      in ''
+        if [ $(id -u) -ne 0 ]
+          then echo Please run this script as root or using sudo!
+          exit
+        fi
+        ${pkgs.iptables}/bin/iptables-save | grep REDSOCKS >/dev/null 2>&1 || ${configure-oracle-tunnel}/bin/configure-oracle-tunnel
+        ${pkgs.redsocks}/bin/redsocks -c ${redsocks-config}
+      ''
+    )
+  );
   user = "yokley";
   vm-ip = "127.0.0.1";
   vm-port = "3022";
@@ -119,7 +128,6 @@
 in {
   environment.systemPackages = [
     start-oracle-tunnel
-    configure-oracle-tunnel
     stop-oracle-tunnel
   ];
 
@@ -135,15 +143,15 @@ in {
   );
 
   systemd.services = {
-    oracle-tunneling = {
+    oracle-ssh-tunnel = {
       enable = true;
-      description = "Create tunnels for Oracle VPN";
+      description = "Tunnels for Oracle VPN";
       serviceConfig = {
         Type = "simple";
         User = "${user}";
       };
       script = toString (
-        pkgs.writeShellScript "oracle-tunneling" ''
+        pkgs.writeShellScript "oracle-ssh-tunnel" ''
           ${pkgs.wait4x}/bin/wait4x tcp ${vm-ip}:${vm-port} --timeout 0 --interval 10s
           ${pkgs.openssh}/bin/ssh -p ${vm-port} ${user}@${vm-ip} -D ${vm-socks-port} -Nv
         ''
@@ -155,7 +163,7 @@ in {
 
     redirect-oracle-traffic = {
       enable = true;
-      description = "Start redsocks to redirect Oracle traffic";
+      description = "Redsocks redirect Oracle traffic";
       serviceConfig = {
         Type = "simple";
       };
