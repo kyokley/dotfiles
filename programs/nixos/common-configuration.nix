@@ -153,7 +153,7 @@
     alsa-utils
     pkgs-unstable.mattermost-desktop
     slack
-    zoom-us
+    pkgs-unstable.zoom-us
   ];
 
   systemd.tmpfiles.rules = ["d /tmp 1777 root root 7d"];
