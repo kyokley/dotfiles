@@ -112,10 +112,10 @@
     iptables-save | grep REDSOCKS >/dev/null 2>&1 || configure-oracle-tunnel
     ${pkgs.redsocks}/bin/redsocks -c ${redsocks-config}
   '';
-  vm-user = "yokley";
+  user = "yokley";
   vm-ip = "127.0.0.1";
-  vm-port = 3022;
-  vm-socks-port = 8081;
+  vm-port = "3022";
+  vm-socks-port = "8081";
 in {
   environment.systemPackages = [
     start-oracle-tunnel
@@ -134,25 +134,36 @@ in {
     )
   );
 
-  systemd.user.services = {
+  systemd.services = {
     oracle-tunneling = {
-      Unit.Description = "Create tunnels for Oracle VPN";
-      Service = {
+      enable = true;
+      description = "Create tunnels for Oracle VPN";
+      serviceConfig = {
         Type = "simple";
-        ExecStart = toString (
-          pkgs.writeShellScript "oracle-tunneling" ''
-            ${pkgs.wait4x}/bin/wait4x tcp ${vm-ip}:${vm-port} --timeout 0 --interval 10s
-            ${pkgs.openssh}/bin/ssh -p ${vm-port} ${vm-user}@${vm-ip} -D ${vm-socks-port} -Nv
-          ''
-        );
+        User = "${user}";
       };
+      script = toString (
+        pkgs.writeShellScript "oracle-tunneling" ''
+          ${pkgs.wait4x}/bin/wait4x tcp ${vm-ip}:${vm-port} --timeout 0 --interval 10s
+          ${pkgs.openssh}/bin/ssh -p ${vm-port} ${user}@${vm-ip} -D ${vm-socks-port} -Nv
+        ''
+      );
+      wants = ["network-online.target"];
+      after = ["network-online.target"];
+      wantedBy = ["multi-user.target"];
     };
+
     redirect-oracle-traffic = {
-      Unit.Description = "Start redsocks to redirect Oracle traffic";
-      Service = {
+      enable = true;
+      description = "Start redsocks to redirect Oracle traffic";
+      serviceConfig = {
         Type = "simple";
-        ExecStart = start-oracle-tunnel;
       };
+      script = "${start-oracle-tunnel}/bin/start-oracle-tunnel";
+      postStop = "${stop-oracle-tunnel}/bin/stop-oracle-tunnel";
+      wants = ["network-online.target"];
+      after = ["network-online.target"];
+      wantedBy = ["multi-user.target"];
     };
   };
 }
