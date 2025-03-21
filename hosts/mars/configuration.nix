@@ -1,6 +1,5 @@
 {pkgs, ...}: {
   imports = [
-    ../../programs/ovpn.nix
     ../../programs/tailscale.nix
     ../../misc/laptop.nix
   ];
