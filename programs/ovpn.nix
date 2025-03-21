@@ -66,17 +66,9 @@
         local_ip = 127.0.0.1;
         local_port = ${redsocks-listen-port};
         ip = 127.0.0.1;
-        port = 8081;
+        port = ${vm-socks-port};
         type = socks5;
     }
-  '';
-  start-oracle-tunnel = pkgs.writeShellScriptBin "start-oracle-tunnel" ''
-    if [ $(id -u) -ne 0 ]
-      then echo Please run this script as root or using sudo!
-      exit
-    fi
-    iptables-save | grep REDSOCKS >/dev/null 2>&1 || configure-oracle-tunnel
-    ${pkgs.redsocks}/bin/redsocks -c ${redsocks-config}
   '';
   configure-oracle-tunnel = let
     reserved-ips = [
@@ -112,6 +104,18 @@
   stop-oracle-tunnel = pkgs.writeShellScriptBin "stop-oracle-tunnel" ''
     iptables-save | grep -v REDSOCKS | iptables-restore
   '';
+  start-oracle-tunnel = pkgs.writeShellScriptBin "start-oracle-tunnel" ''
+    if [ $(id -u) -ne 0 ]
+      then echo Please run this script as root or using sudo!
+      exit
+    fi
+    iptables-save | grep REDSOCKS >/dev/null 2>&1 || configure-oracle-tunnel
+    ${pkgs.redsocks}/bin/redsocks -c ${redsocks-config}
+  '';
+  vm-user = "yokley";
+  vm-ip = "127.0.0.1";
+  vm-port = 3022;
+  vm-socks-port = 8081;
 in {
   environment.systemPackages = [
     start-oracle-tunnel
@@ -129,4 +133,26 @@ in {
       domains
     )
   );
+
+  systemd.user.services = {
+    oracle-tunneling = {
+      Unit.Description = "Create tunnels for Oracle VPN";
+      Service = {
+        Type = "simple";
+        ExecStart = toString (
+          pkgs.writeShellScript "oracle-tunneling" ''
+            ${pkgs.wait4x}/bin/wait4x tcp ${vm-ip}:${vm-port} --timeout 0 --interval 10s
+            ${pkgs.openssh}/bin/ssh -p ${vm-port} ${vm-user}@${vm-ip} -D ${vm-socks-port} -Nv
+          ''
+        );
+      };
+    };
+    redirect-oracle-traffic = {
+      Unit.Description = "Start redsocks to redirect Oracle traffic";
+      Service = {
+        Type = "simple";
+        ExecStart = start-oracle-tunnel;
+      };
+    };
+  };
 }
