@@ -197,12 +197,13 @@ if any([path.exists() for path in BATTERY_PATHS]):
                 energy_now_file="charge_now",
                 energy_full_file="charge_full",
                 power_now_file="current_now",
+                charge_char="↗",
+                discharge_char="↘",
                 low_percentage=0.3,
                 foreground=extension_defaults.foreground,
                 format="{char}{percent:2.0%}",
                 font=extension_defaults.font,
                 fontsize=extension_defaults.fontsize,
-                discharge_char="v",
             ),
         ]
     )
