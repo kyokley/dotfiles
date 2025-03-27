@@ -43,6 +43,7 @@
   services.xserver.displayManager.lightdm.enable = true;
   services.xserver.windowManager.qtile = {
     enable = true;
+    package = pkgs-unstable.qtile-unwrapped;
     extraPackages = python3Packages:
       with python3Packages; [
         requests

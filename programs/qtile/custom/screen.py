@@ -200,6 +200,7 @@ if any([path.exists() for path in BATTERY_PATHS]):
                 charge_char="↗",
                 discharge_char="↘",
                 low_percentage=0.3,
+                charging_foreground="00FF00",
                 foreground=extension_defaults.foreground,
                 format="{char}{percent:2.0%}",
                 font=extension_defaults.font,
