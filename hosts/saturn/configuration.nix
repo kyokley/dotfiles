@@ -46,14 +46,15 @@
   ];
 
   virtualisation.virtualbox.host = {
-    package = pkgs-unstable.virtualbox;
+    package = pkgs.virtualbox;
     enable = true;
     enableKvm = true;
     enableExtensionPack = true;
     addNetworkInterface = false;
   };
   virtualisation.virtualbox.guest = {
-    enable = true;
+    # Try re-enabling this at some point to see if it build successfully
+    enable = false;
     dragAndDrop = true;
   };
   users.extraGroups.vboxusers.members = ["yokley"];
