@@ -16,6 +16,7 @@
 
   home.packages = [
     nixvim.packages.${pkgs.stdenv.hostPlatform.system}.default
+    pkgs.mattermost-desktop
   ];
 
   home.stateVersion = "24.05"; # Don't touch me!

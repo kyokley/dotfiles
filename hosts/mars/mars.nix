@@ -22,6 +22,7 @@ in {
 
   home.packages = [
     pkgs.brightnessctl
+    pkgs.mattermost-desktop
   ];
 
   home.stateVersion = "24.05"; # Don't touch me!

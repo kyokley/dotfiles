@@ -151,7 +151,6 @@
     xclip
     feh
     alsa-utils
-    pkgs-unstable.mattermost-desktop
     slack
     pkgs-unstable.zoom-us
   ];
