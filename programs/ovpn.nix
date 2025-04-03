@@ -16,6 +16,7 @@
     "cegbu.oraclecorp.com 100.77.53.69"
     "cloudlab.us.oracle.com 100.105.153.4"
     "confluence.oraclecorp.com 100.114.94.55"
+    "crepitus3.us.oracle.com 100.77.15.121"
     "dns0.openconnect0 206.223.27.1"
     "dns1.openconnect0 206.223.27.2"
     "docker-remote.dockerhub-phx.oci.oraclecorp.com 138.1.117.148"
