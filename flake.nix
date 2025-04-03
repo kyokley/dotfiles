@@ -12,6 +12,10 @@
     nixvim = {
       url = "github:kyokley/nixvim";
     };
+    qtile-flake = {
+      url = "github:qtile/qtile";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = {
@@ -19,6 +23,7 @@
     nixpkgs-unstable,
     home-manager,
     nixvim,
+    qtile-flake,
     ...
   }: let
     aarch64_darwin = "aarch64-darwin";
@@ -33,6 +38,7 @@
           };
         };
         modules = [
+          (_: {nixpkgs.overlays = [qtile-flake.overlays.default];})
           ./programs/nixos/common-configuration.nix
           ./hosts/mars/configuration.nix
           ./hosts/mars/hardware-configuration.nix
@@ -60,6 +66,7 @@
           };
         };
         modules = [
+          (_: {nixpkgs.overlays = [qtile-flake.overlays.default];})
           ./programs/nixos/common-configuration.nix
           ./hosts/mercury/configuration.nix
           ./hosts/mercury/hardware-configuration.nix
@@ -88,6 +95,7 @@
           };
         };
         modules = [
+          (_: {nixpkgs.overlays = [qtile-flake.overlays.default];})
           ./programs/nixos/common-configuration.nix
           ./hosts/saturn/configuration.nix
           ./hosts/saturn/hardware-configuration.nix
