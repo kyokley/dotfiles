@@ -57,6 +57,15 @@
     enable = false;
     dragAndDrop = true;
   };
+
+  virtualisation.containers.enable = true;
+  virtualisation = {
+    podman = {
+      enable = true;
+      dockerCompat = false;
+      defaultNetwork.settings.dns_enabled = true;
+    };
+  };
   users.extraGroups.vboxusers.members = ["yokley"];
 
   networking.extraHosts = ''
