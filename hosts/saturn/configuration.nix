@@ -24,6 +24,9 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.supportedFilesystems = ["bcachefs"];
+  boot.kernel.sysctl = {
+    "net.ipv4.ip_unprivileged_port_start" = 80;
+  };
   boot.kernelPackages = pkgs.linuxPackages_latest.extend (self: super: {
     ipu6-drivers = super.ipu6-drivers.overrideAttrs (
       final: previous: rec {

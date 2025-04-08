@@ -71,6 +71,14 @@
         port = ${vm-socks-port};
         type = socks5;
     }
+
+    redsocks {
+        local_ip = 172.17.0.1;
+        local_port = ${redsocks-listen-port};
+        ip = 127.0.0.1;
+        port = ${vm-socks-port};
+        type = socks5;
+    }
   '';
   stop-oracle-tunnel = pkgs.writeShellScriptBin "stop-oracle-tunnel" ''
     ${pkgs.iptables}/bin/iptables-save | grep -v REDSOCKS | ${pkgs.iptables}/bin/iptables-restore
@@ -101,15 +109,21 @@
                 [
                   "${pkgs.iptables}/bin/iptables -t nat -N REDSOCKS || true"
                 ]
-                ++ map (x: "${pkgs.iptables}/bin/iptables -t nat -A REDSOCKS -d " + x + " -j RETURN || true") reserved-ips
+                ++ (map (x: "${pkgs.iptables}/bin/iptables -t nat -A REDSOCKS -d " + x + " -j RETURN || true") reserved-ips)
+                ++ [
+                  "${pkgs.iptables}/bin/iptables -t nat -A REDSOCKS -p tcp --dport ${redsocks-listen-port} -j RETURN || true"
+                ]
+                ++ (map (host_record: let
+                    host = lib.splitString " " host_record;
+                  in ''
+                    ${pkgs.iptables}/bin/iptables -t nat -A OUTPUT -p tcp -d ${lib.elemAt host 1}/32 -j REDSOCKS || true
+                    ${pkgs.iptables}/bin/iptables -t nat -A PREROUTING -i docker0 -p tcp -d ${lib.elemAt host 1}/32 -j REDSOCKS || true
+                    ${pkgs.iptables}/bin/iptables -t nat -A PREROUTING -i br+ -p tcp -d ${lib.elemAt host 1}/32 -j REDSOCKS || true
+                  '')
+                  domains)
                 ++ [
                   "${pkgs.iptables}/bin/iptables -t nat -A REDSOCKS -p tcp -j REDIRECT --to-ports ${redsocks-listen-port} || true"
-                  ''${pkgs.iptables}/bin/iptables -t nat -A PREROUTING -i docker0 -p tcp -j DNAT --to-destination 127.0.0.1:${redsocks-listen-port} -m comment --comment "REDSOCKS docker rule" || true''
                 ]
-                ++ map (host_record: let
-                  host = lib.splitString " " host_record;
-                in "${pkgs.iptables}/bin/iptables -t nat -A OUTPUT -p tcp -d ${lib.elemAt host 1}/32 -j REDSOCKS || true")
-                domains
               )
             )
         );
@@ -133,16 +147,21 @@ in {
     stop-oracle-tunnel
   ];
 
-  networking.extraHosts = (
-    lib.concatStringsSep "\n" (
-      map (
-        host_record: let
-          host = lib.splitString " " host_record;
-        in "${lib.elemAt host 1} ${lib.elemAt host 0}"
+  networking = {
+    extraHosts = (
+      lib.concatStringsSep "\n" (
+        map (
+          host_record: let
+            host = lib.splitString " " host_record;
+          in "${lib.elemAt host 1} ${lib.elemAt host 0}"
+        )
+        domains
       )
-      domains
-    )
-  );
+    );
+    firewall.allowedTCPPorts = [
+      12345
+    ];
+  };
 
   systemd.services = {
     oracle-ssh-tunnel = {
