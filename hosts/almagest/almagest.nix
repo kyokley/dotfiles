@@ -25,6 +25,7 @@ in {
             cd ${mv_path}
             TTY=-T ${pkgs.gnumake}/bin/make backup-db
             TTY=-T ${pkgs.gnumake}/bin/make expiretokens
+            TTY=-T ${pkgs.gnumake}/bin/make expirewaiterstatus
           ''
         );
       };
