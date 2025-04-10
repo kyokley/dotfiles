@@ -40,7 +40,11 @@
     "oscs.appoci.oraclecorp.com 100.107.234.80"
     "permissions.oci.oraclecorp.com 100.125.5.67"
     "phx-c-csec-awp-01.us5.oraclecloud.com 192.18.204.201"
+    "phxproddb2.snphxprshared1.gbucdsint02phx.oraclevcn.com 100.77.52.130"
+    "phxproddb3.snphxprshared1.gbucdsint02phx.oraclevcn.com 100.77.51.131"
     "phxtpmae791.snphxprshared1.gbucdsint02phx.oraclevcn.com 100.77.34.87"
+    "phxtpmman1.snphxprshared1.gbucdsint02phx.oraclevcn.com 100.77.33.152"
+    "phxtpmman3.snphxprshared1.gbucdsint02phx.oraclevcn.com 100.77.40.180"
     "pls.appoci.oraclecorp.com 100.114.94.139"
     "printers.oraclecorp.com 100.112.125.102"
     "testrail.us.oracle.com 100.77.63.149"
@@ -55,31 +59,43 @@
     "yum.oracle.com 23.40.145.197"
   ];
   redsocks-listen-port = "12345";
-  redsocks-config = pkgs.writeText "redsocks.conf" ''
-    base {
-        log_debug = on;
-        log_info = on;
-        daemon = off;
-        redirector = iptables;
-        redsocks_conn_max = 4096;
-    }
-
-    redsocks {
-        local_ip = 127.0.0.1;
-        local_port = ${redsocks-listen-port};
-        ip = 127.0.0.1;
-        port = ${vm-socks-port};
-        type = socks5;
-    }
-
-    redsocks {
-        local_ip = 172.17.0.1;
-        local_port = ${redsocks-listen-port};
-        ip = 127.0.0.1;
-        port = ${vm-socks-port};
-        type = socks5;
-    }
-  '';
+  local_ips = [
+    "127.0.0.1"
+    "172.17.0.1"
+    "172.18.0.1"
+    # "172.19.0.1"
+    # "172.20.0.1"
+    # "172.21.0.1"
+    # or specify 0.0.0.0 to bind on all interfaces
+  ];
+  redsocks-config = pkgs.writeText "redsocks.conf" (
+    lib.concatStringsSep "\n"
+    (
+      [
+        ''
+          base {
+              log_debug = on;
+              log_info = on;
+              daemon = off;
+              redirector = iptables;
+              redsocks_conn_max = 4096;
+          }
+        ''
+      ]
+      ++ (
+        map (local_ip: ''
+          redsocks {
+              local_ip = ${local_ip};
+              local_port = ${redsocks-listen-port};
+              ip = 127.0.0.1;
+              port = ${vm-socks-port};
+              type = socks5;
+          }
+        '')
+        local_ips
+      )
+    )
+  );
   stop-oracle-tunnel = pkgs.writeShellScriptBin "stop-oracle-tunnel" ''
     ${pkgs.iptables}/bin/iptables-save | grep -v REDSOCKS | ${pkgs.iptables}/bin/iptables-restore
   '';
@@ -123,6 +139,7 @@
                   domains)
                 ++ [
                   "${pkgs.iptables}/bin/iptables -t nat -A REDSOCKS -p tcp -j REDIRECT --to-ports ${redsocks-listen-port} || true"
+                  ''${pkgs.iptables}/bin/iptables -A OUTPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT -m comment --comment "REDSOCKS ESTABLISHED" || true''
                 ]
               )
             )
@@ -172,10 +189,23 @@ in {
         User = "${user}";
       };
       script = toString (
-        pkgs.writeShellScript "oracle-ssh-tunnel" ''
-          ${pkgs.wait4x}/bin/wait4x tcp ${vm-ip}:${vm-port} --timeout 0 --interval 10s
-          ${pkgs.openssh}/bin/ssh -p ${vm-port} ${user}@${vm-ip} -D ${vm-socks-port} -Nv
-        ''
+        pkgs.writeShellScript "oracle-ssh-tunnel" (
+          let
+            ssh_cmd = lib.concatStringsSep " " [
+              "${pkgs.openssh}/bin/ssh -Nv -p ${vm-port} ${user}@${vm-ip}"
+              (
+                lib.concatStringsSep " " (
+                  map
+                  (local_ip: "-D ${local_ip}:${vm-socks-port}")
+                  local_ips
+                )
+              )
+            ];
+          in ''
+            ${pkgs.wait4x}/bin/wait4x tcp ${vm-ip}:${vm-port} --timeout 0 --interval 10s
+            ${ssh_cmd}
+          ''
+        )
       );
       wants = ["network-online.target"];
       after = ["network-online.target"];
