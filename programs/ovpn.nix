@@ -4,6 +4,7 @@
   ...
 }: let
   domains = [
+    "auth-csec.oraclecloud.com 134.65.215.86"
     "apex.oraclecorp.com 100.115.65.230"
     "artifacthub-phx.oci.oraclecorp.com 138.1.117.148"
     "artifactory.oci.oraclecorp.com 100.126.4.64"
@@ -177,6 +178,7 @@ in {
     );
     firewall.allowedTCPPorts = [
       12345
+      8081
     ];
   };
 
