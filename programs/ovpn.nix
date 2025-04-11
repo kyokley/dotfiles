@@ -218,7 +218,10 @@ in {
       serviceConfig = {
         Type = "simple";
       };
-      script = "${start-oracle-tunnel}/bin/start-oracle-tunnel";
+      script = ''
+        ${pkgs.wait4x}/bin/wait4x tcp ${vm-ip}:${vm-port} --timeout 0 --interval 10s
+        ${start-oracle-tunnel}/bin/start-oracle-tunnel
+      '';
       postStop = "${stop-oracle-tunnel}/bin/stop-oracle-tunnel";
       wants = ["network-online.target"];
       after = ["network-online.target"];
