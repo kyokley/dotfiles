@@ -14,6 +14,18 @@
     pkgs.direnv
   ];
 
+  home.file = {
+    pdbpp = {
+      enable = true;
+      target = ".pdbrc.py";
+      text = ''
+        import pdb
+        class Config(pdb.DefaultConfig):
+            sticky_by_default = True
+      '';
+    };
+  };
+
   programs.zsh = {
     initExtra = ''
       eval "$(direnv hook zsh)"
