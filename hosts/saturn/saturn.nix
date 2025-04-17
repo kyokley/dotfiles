@@ -43,4 +43,15 @@ in {
   programs.git.userEmail = "kevin.yokley@oracle.com";
 
   home.stateVersion = "24.05"; # Don't touch me!
+
+  programs.ssh = {
+    enable = true;
+    matchBlocks = {
+      "phxtpmdev17" = {
+        host = "phxtpmdev17";
+        hostname = "phxtpmdev17.snphxprshared1.gbucdsint02phx.oraclevcn.com";
+        user = "kevin.yokley";
+      };
+    };
+  };
 }

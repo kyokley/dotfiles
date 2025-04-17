@@ -46,6 +46,7 @@
     "phxtpmae791.snphxprshared1.gbucdsint02phx.oraclevcn.com 100.77.34.87"
     "phxtpmman1.snphxprshared1.gbucdsint02phx.oraclevcn.com 100.77.33.152"
     "phxtpmman3.snphxprshared1.gbucdsint02phx.oraclevcn.com 100.77.40.180"
+    "phxtpmdev17.snphxprshared1.gbucdsint02phx.oraclevcn.com 100.77.4.50"
     "pls.appoci.oraclecorp.com 100.114.94.139"
     "printers.oraclecorp.com 100.112.125.102"
     "testrail.us.oracle.com 100.77.63.149"
