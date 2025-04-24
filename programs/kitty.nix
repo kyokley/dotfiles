@@ -37,7 +37,7 @@
     };
     extraConfig = ''
       cursor_trail_decay 0.1 0.4
-      map ctrl+t new_tab
+      map ctrl+t new_tab_with_cwd
       map ctrl+tab next_tab
       map ctrl+shift+tab previous_tab
       map ctrl+1 goto_tab 1
