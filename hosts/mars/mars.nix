@@ -12,6 +12,7 @@ in {
     ../../programs/nixos/nixos.nix
     ../../home.nix
     ../../misc/dev.nix
+    ../../misc/login.nix
   ];
 
   programs.git.userEmail = "kyokley@mars";
