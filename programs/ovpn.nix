@@ -4,11 +4,11 @@
   ...
 }: let
   domains = [
-    "auth-csec.oraclecloud.com 134.65.215.86"
     "apex.oraclecorp.com 100.115.65.230"
     "artifacthub-phx.oci.oraclecorp.com 138.1.117.148"
     "artifactory.oci.oraclecorp.com 100.126.4.64"
     "artifactory.oci.oraclecorp.com 100.126.5.8"
+    "auth-csec.oraclecloud.com 134.65.215.86"
     "badge.oraclecorp.com 100.112.102.5"
     "bug.oraclecorp.com 100.114.94.166"
     "cegbu-textura-docker-local.dockerhub-phx.oci.oraclecorp.com 138.1.117.148"
@@ -19,6 +19,7 @@
     "confluence.oraclecorp.com 100.114.94.55"
     "crepitus.oraclecorp.com 100.77.253.242"
     "crepitus3.us.oracle.com 100.77.15.121"
+    "devops.oci.oraclecorp.com 100.92.5.71"
     "dns0.openconnect0 206.223.27.1"
     "dns1.openconnect0 206.223.27.2"
     "docker-remote.dockerhub-phx.oci.oraclecorp.com 138.1.117.148"
@@ -44,9 +45,9 @@
     "phxproddb2.snphxprshared1.gbucdsint02phx.oraclevcn.com 100.77.52.130"
     "phxproddb3.snphxprshared1.gbucdsint02phx.oraclevcn.com 100.77.51.131"
     "phxtpmae791.snphxprshared1.gbucdsint02phx.oraclevcn.com 100.77.34.87"
+    "phxtpmdev17.snphxprshared1.gbucdsint02phx.oraclevcn.com 100.77.4.50"
     "phxtpmman1.snphxprshared1.gbucdsint02phx.oraclevcn.com 100.77.33.152"
     "phxtpmman3.snphxprshared1.gbucdsint02phx.oraclevcn.com 100.77.40.180"
-    "phxtpmdev17.snphxprshared1.gbucdsint02phx.oraclevcn.com 100.77.4.50"
     "pls.appoci.oraclecorp.com 100.114.94.139"
     "printers.oraclecorp.com 100.112.125.102"
     "testrail.us.oracle.com 100.77.63.149"
@@ -64,7 +65,7 @@
   local_ips = [
     "127.0.0.1"
     "172.17.0.1"
-    "172.18.0.1"
+    # "172.18.0.1"
     # "172.19.0.1"
     # "172.20.0.1"
     # "172.21.0.1"
@@ -179,6 +180,7 @@ in {
     );
     firewall.allowedTCPPorts = [
       12345
+      1235
       8081
     ];
   };
