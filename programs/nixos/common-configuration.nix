@@ -43,8 +43,6 @@
   # Enable the XFCE Desktop Environment.
   services.xserver.displayManager.lightdm = {
     enable = true;
-    background = "/home/yokley/Pictures/wallpapers/nature/felix-tchverkin-1fTJtDXY18U-unsplash.jpg";
-    greeters.slick.enable = true;
   };
   services.xserver.windowManager.qtile = {
     enable = true;

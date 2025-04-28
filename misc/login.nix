@@ -1,32 +1,41 @@
 {pkgs, ...}: let
-  homeDir = "/home/yokley";
+  background_dir = "/usr/share/backgrounds";
 in {
-  systemd.user.services = {
-    update-login-background = {
-      Unit.Description = "Update login screen image";
-      Service = {
-        Type = "oneshot";
-        ExecStart = toString (
-          pkgs.writeShellScript "login-screen-update-script" ''
-            ln -sf $(find ${homeDir}/Pictures -name '*.jpg' | shuf | head -n 1) ${homeDir}/Pictures/login.jpg
-          ''
-        );
-      };
+  services.xserver.displayManager.lightdm = {
+    background = "${background_dir}/login.jpg";
+    greeters.enso = {
+      enable = true;
     };
   };
 
-  systemd.user.timers = {
+  systemd.services = {
     update-login-background = {
-      Unit = {
-        Description = "Update login screen";
-        After = ["network.target"];
+      enable = true;
+      description = "Update login screen image";
+      serviceConfig = {
+        Type = "oneshot";
+        User = "root";
       };
-      Timer = {
-        OnCalendar = "*-*-* *:0/5:00";
-        Persistent = true;
+      script = toString (
+        pkgs.writeShellScript "login-screen-update-script" ''
+          cp -fv $(${pkgs.busybox}/bin/find ${background_dir}/wallpapers -name '*.jpg' | ${pkgs.busybox}/bin/shuf | ${pkgs.busybox}/bin/head -n 1) ${background_dir}/login.jpg
+          chmod 755 ${background_dir}/login.jpg
+        ''
+      );
+      wants = ["network-online.target"];
+      after = ["network-online.target"];
+      wantedBy = ["multi-user.target"];
+    };
+  };
+
+  systemd.timers = {
+    update-login-background = {
+      timerConfig = {
+        OnBootSec = "5m";
+        OnUnitActiveSec = "5m";
         Unit = "update-login-background.service";
       };
-      Install.WantedBy = ["timers.target"];
+      wantedBy = ["timers.target"];
     };
   };
 }
