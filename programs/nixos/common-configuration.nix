@@ -2,6 +2,7 @@
   pkgs,
   pkgs-unstable,
   lib,
+  config,
   ...
 }: {
   nix = {
@@ -40,7 +41,9 @@
   };
 
   # Enable the XFCE Desktop Environment.
-  services.xserver.displayManager.lightdm.enable = true;
+  services.xserver.displayManager.lightdm = {
+    enable = true;
+  };
   services.xserver.windowManager.qtile = {
     enable = true;
     extraPackages = python3Packages:

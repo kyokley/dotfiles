@@ -2,6 +2,7 @@
   imports = [
     ../../programs/tailscale.nix
     ../../misc/laptop.nix
+    ../../misc/login.nix
   ];
 
   # Bootloader.
