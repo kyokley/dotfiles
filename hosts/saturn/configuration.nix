@@ -7,6 +7,7 @@
     ../../programs/ovpn.nix
     ../../misc/laptop.nix
     ../../programs/clamav.nix
+    ../../misc/login.nix
 
     # Import SSH
     ./ssh.nix
@@ -24,6 +25,9 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.supportedFilesystems = ["bcachefs"];
+  boot.kernel.sysctl = {
+    "net.ipv4.ip_unprivileged_port_start" = 80;
+  };
   boot.kernelPackages = pkgs.linuxPackages_latest.extend (self: super: {
     ipu6-drivers = super.ipu6-drivers.overrideAttrs (
       final: previous: rec {
@@ -56,6 +60,15 @@
     # Try re-enabling this at some point to see if it build successfully
     enable = false;
     dragAndDrop = true;
+  };
+
+  virtualisation.containers.enable = true;
+  virtualisation = {
+    podman = {
+      enable = true;
+      dockerCompat = false;
+      defaultNetwork.settings.dns_enabled = true;
+    };
   };
   users.extraGroups.vboxusers.members = ["yokley"];
 

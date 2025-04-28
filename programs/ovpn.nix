@@ -8,6 +8,7 @@
     "artifacthub-phx.oci.oraclecorp.com 138.1.117.148"
     "artifactory.oci.oraclecorp.com 100.126.4.64"
     "artifactory.oci.oraclecorp.com 100.126.5.8"
+    "auth-csec.oraclecloud.com 134.65.215.86"
     "badge.oraclecorp.com 100.112.102.5"
     "bug.oraclecorp.com 100.114.94.166"
     "cegbu-textura-docker-local.dockerhub-phx.oci.oraclecorp.com 138.1.117.148"
@@ -18,6 +19,7 @@
     "confluence.oraclecorp.com 100.114.94.55"
     "crepitus.oraclecorp.com 100.77.253.242"
     "crepitus3.us.oracle.com 100.77.15.121"
+    "devops.oci.oraclecorp.com 100.92.5.71"
     "dns0.openconnect0 206.223.27.1"
     "dns1.openconnect0 206.223.27.2"
     "docker-remote.dockerhub-phx.oci.oraclecorp.com 138.1.117.148"
@@ -40,7 +42,12 @@
     "oscs.appoci.oraclecorp.com 100.107.234.80"
     "permissions.oci.oraclecorp.com 100.125.5.67"
     "phx-c-csec-awp-01.us5.oraclecloud.com 192.18.204.201"
+    "phxproddb2.snphxprshared1.gbucdsint02phx.oraclevcn.com 100.77.52.130"
+    "phxproddb3.snphxprshared1.gbucdsint02phx.oraclevcn.com 100.77.51.131"
     "phxtpmae791.snphxprshared1.gbucdsint02phx.oraclevcn.com 100.77.34.87"
+    "phxtpmdev17.snphxprshared1.gbucdsint02phx.oraclevcn.com 100.77.4.50"
+    "phxtpmman1.snphxprshared1.gbucdsint02phx.oraclevcn.com 100.77.33.152"
+    "phxtpmman3.snphxprshared1.gbucdsint02phx.oraclevcn.com 100.77.40.180"
     "pls.appoci.oraclecorp.com 100.114.94.139"
     "printers.oraclecorp.com 100.112.125.102"
     "testrail.us.oracle.com 100.77.63.149"
@@ -55,23 +62,43 @@
     "yum.oracle.com 23.40.145.197"
   ];
   redsocks-listen-port = "12345";
-  redsocks-config = pkgs.writeText "redsocks.conf" ''
-    base {
-        log_debug = on;
-        log_info = on;
-        daemon = off;
-        redirector = iptables;
-        redsocks_conn_max = 4096;
-    }
-
-    redsocks {
-        local_ip = 127.0.0.1;
-        local_port = ${redsocks-listen-port};
-        ip = 127.0.0.1;
-        port = ${vm-socks-port};
-        type = socks5;
-    }
-  '';
+  local_ips = [
+    "127.0.0.1"
+    "172.17.0.1"
+    # "172.18.0.1"
+    # "172.19.0.1"
+    # "172.20.0.1"
+    # "172.21.0.1"
+    # or specify 0.0.0.0 to bind on all interfaces
+  ];
+  redsocks-config = pkgs.writeText "redsocks.conf" (
+    lib.concatStringsSep "\n"
+    (
+      [
+        ''
+          base {
+              log_debug = on;
+              log_info = on;
+              daemon = off;
+              redirector = iptables;
+              redsocks_conn_max = 4096;
+          }
+        ''
+      ]
+      ++ (
+        map (local_ip: ''
+          redsocks {
+              local_ip = ${local_ip};
+              local_port = ${redsocks-listen-port};
+              ip = 127.0.0.1;
+              port = ${vm-socks-port};
+              type = socks5;
+          }
+        '')
+        local_ips
+      )
+    )
+  );
   stop-oracle-tunnel = pkgs.writeShellScriptBin "stop-oracle-tunnel" ''
     ${pkgs.iptables}/bin/iptables-save | grep -v REDSOCKS | ${pkgs.iptables}/bin/iptables-restore
   '';
@@ -101,15 +128,22 @@
                 [
                   "${pkgs.iptables}/bin/iptables -t nat -N REDSOCKS || true"
                 ]
-                ++ map (x: "${pkgs.iptables}/bin/iptables -t nat -A REDSOCKS -d " + x + " -j RETURN || true") reserved-ips
+                ++ (map (x: "${pkgs.iptables}/bin/iptables -t nat -A REDSOCKS -d " + x + " -j RETURN || true") reserved-ips)
+                ++ [
+                  "${pkgs.iptables}/bin/iptables -t nat -A REDSOCKS -p tcp --dport ${redsocks-listen-port} -j RETURN || true"
+                ]
+                ++ (map (host_record: let
+                    host = lib.splitString " " host_record;
+                  in ''
+                    ${pkgs.iptables}/bin/iptables -t nat -A OUTPUT -p tcp -d ${lib.elemAt host 1}/32 -j REDSOCKS || true
+                    ${pkgs.iptables}/bin/iptables -t nat -A PREROUTING -i docker0 -p tcp -d ${lib.elemAt host 1}/32 -j REDSOCKS || true
+                    ${pkgs.iptables}/bin/iptables -t nat -A PREROUTING -i br+ -p tcp -d ${lib.elemAt host 1}/32 -j REDSOCKS || true
+                  '')
+                  domains)
                 ++ [
                   "${pkgs.iptables}/bin/iptables -t nat -A REDSOCKS -p tcp -j REDIRECT --to-ports ${redsocks-listen-port} || true"
-                  ''${pkgs.iptables}/bin/iptables -t nat -A PREROUTING -i docker0 -p tcp -j DNAT --to-destination 127.0.0.1:${redsocks-listen-port} -m comment --comment "REDSOCKS docker rule" || true''
+                  ''${pkgs.iptables}/bin/iptables -A OUTPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT -m comment --comment "REDSOCKS ESTABLISHED" || true''
                 ]
-                ++ map (host_record: let
-                  host = lib.splitString " " host_record;
-                in "${pkgs.iptables}/bin/iptables -t nat -A OUTPUT -p tcp -d ${lib.elemAt host 1}/32 -j REDSOCKS || true")
-                domains
               )
             )
         );
@@ -133,16 +167,23 @@ in {
     stop-oracle-tunnel
   ];
 
-  networking.extraHosts = (
-    lib.concatStringsSep "\n" (
-      map (
-        host_record: let
-          host = lib.splitString " " host_record;
-        in "${lib.elemAt host 1} ${lib.elemAt host 0}"
+  networking = {
+    extraHosts = (
+      lib.concatStringsSep "\n" (
+        map (
+          host_record: let
+            host = lib.splitString " " host_record;
+          in "${lib.elemAt host 1} ${lib.elemAt host 0}"
+        )
+        domains
       )
-      domains
-    )
-  );
+    );
+    firewall.allowedTCPPorts = [
+      12345
+      1235
+      8081
+    ];
+  };
 
   systemd.services = {
     oracle-ssh-tunnel = {
@@ -153,10 +194,23 @@ in {
         User = "${user}";
       };
       script = toString (
-        pkgs.writeShellScript "oracle-ssh-tunnel" ''
-          ${pkgs.wait4x}/bin/wait4x tcp ${vm-ip}:${vm-port} --timeout 0 --interval 10s
-          ${pkgs.openssh}/bin/ssh -p ${vm-port} ${user}@${vm-ip} -D ${vm-socks-port} -Nv
-        ''
+        pkgs.writeShellScript "oracle-ssh-tunnel" (
+          let
+            ssh_cmd = lib.concatStringsSep " " [
+              "${pkgs.openssh}/bin/ssh -Nv -p ${vm-port} ${user}@${vm-ip}"
+              (
+                lib.concatStringsSep " " (
+                  map
+                  (local_ip: "-D ${local_ip}:${vm-socks-port}")
+                  local_ips
+                )
+              )
+            ];
+          in ''
+            ${pkgs.wait4x}/bin/wait4x tcp ${vm-ip}:${vm-port} --timeout 0 --interval 10s
+            ${ssh_cmd}
+          ''
+        )
       );
       wants = ["network-online.target"];
       after = ["network-online.target"];
@@ -169,7 +223,10 @@ in {
       serviceConfig = {
         Type = "simple";
       };
-      script = "${start-oracle-tunnel}/bin/start-oracle-tunnel";
+      script = ''
+        ${pkgs.wait4x}/bin/wait4x tcp ${vm-ip}:${vm-port} --timeout 0 --interval 10s
+        ${start-oracle-tunnel}/bin/start-oracle-tunnel
+      '';
       postStop = "${stop-oracle-tunnel}/bin/stop-oracle-tunnel";
       wants = ["network-online.target"];
       after = ["network-online.target"];

@@ -190,7 +190,7 @@
   # Or disable the firewall altogether.
   networking.useDHCP = lib.mkDefault false;
   networking.firewall.enable = lib.mkDefault false;
-  networking.firewall.checkReversePath = "loose";
+  networking.firewall.checkReversePath = false;
   services.resolved.enable = true;
   networking.useNetworkd = true;
 
