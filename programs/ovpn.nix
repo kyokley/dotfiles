@@ -34,6 +34,7 @@
     "mydesktop.oraclecorp.com 100.112.124.74"
     "oci-ssp.oracle-ocna.com 147.154.5.156"
     "ociautojenkins01.snphxprshared1.gbucdsint02phx.oraclevcn.com 100.77.25.241"
+    "ocitpmjenkins01.snphxprshared1.gbucdsint02phx.oraclevcn.com 100.77.24.133"
     "ocitpmpypi.us.oracle.com 100.77.38.58"
     "ocp.oraclecorp.com 144.25.81.188"
     "odo-docker-local.artifactory.oci.oraclecorp.com 100.126.4.64"
