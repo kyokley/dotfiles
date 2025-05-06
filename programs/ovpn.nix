@@ -16,6 +16,7 @@
     "cegbu.docker.oraclecorp.com 10.242.12.81"
     "cegbu.oraclecorp.com 100.77.53.69"
     "cloudlab.us.oracle.com 100.105.153.4"
+    "confluence.oci.oraclecorp.com 130.35.100.146"
     "confluence.oraclecorp.com 100.114.94.55"
     "crepitus.oraclecorp.com 100.77.253.242"
     "crepitus3.us.oracle.com 100.77.15.121"
