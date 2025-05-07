@@ -10,6 +10,7 @@
     "artifactory.oci.oraclecorp.com 100.126.5.8"
     "auth-csec.oraclecloud.com 134.65.215.86"
     "badge.oraclecorp.com 100.112.102.5"
+    "bitbucket.oci.oraclecorp.com 100.126.6.163"
     "bug.oraclecorp.com 100.114.94.166"
     "cegbu-textura-docker-local.dockerhub-phx.oci.oraclecorp.com 138.1.117.148"
     "cegbu-textura-docker-virtual.dockerhub-phx.oci.oraclecorp.com 138.1.117.148"
