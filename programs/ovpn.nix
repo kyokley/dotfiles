@@ -54,6 +54,7 @@
     "phxtpmman3.snphxprshared1.gbucdsint02phx.oraclevcn.com 100.77.40.180"
     "pls.appoci.oraclecorp.com 100.114.94.139"
     "printers.oraclecorp.com 100.112.125.102"
+    "recruit.oraclecorp.com 100.112.123.124"
     "slaps.oci.oraclecorp.com 100.125.7.58"
     "testrail.us.oracle.com 100.77.63.149"
     "u2f-validator.idp.mc1.oracleiaas.com 100.125.5.163"
