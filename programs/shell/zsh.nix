@@ -140,6 +140,13 @@
                   "$@"
           }
 
+          function qw() {
+              docker run \
+                  --rm -t \
+                  kyokley/quick-word \
+                  "$@"
+          }
+
           if [ -f "$HOME/.zpriv" ]; then
               source "$HOME/.zpriv"
           fi
