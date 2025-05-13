@@ -1,12 +1,44 @@
 {
   programs.zsh = {
     enable = true;
-    enableCompletion = true;
-    syntaxHighlighting.enable = true;
+    # enableCompletion = true;
+    # syntaxHighlighting.enable = true;
+    # zprof.enable = true;
     prezto = {
       enable = true;
       caseSensitive = false;
+      syntaxHighlighting.highlighters = [
+        "main"
+        "brackets"
+        "pattern"
+        "line"
+        "cursor"
+        "root"
+      ];
       prompt.theme = "powerlevel10k";
+      pmodules = [
+        "environment"
+        "terminal"
+        "editor"
+        "history"
+        "directory"
+        "spectrum"
+        "utility"
+        # "completion"
+        "syntax-highlighting"
+        "history-substring-search"
+        "ssh"
+        "tmux"
+        "git"
+        "autosuggestions"
+        "prompt"
+      ];
+      utility.safeOps = false;
+      prompt.showReturnVal = true;
+      ssh.identities = [
+        "id_ed25519"
+      ];
+      tmux.autoStartRemote = true;
       extraConfig = builtins.concatStringsSep "\n" [
         (builtins.readFile ./powerlevel10k_config.zsh)
         ''
@@ -152,29 +184,6 @@
           fi
         ''
       ];
-      pmodules = [
-        "environment"
-        "autosuggestions"
-        "terminal"
-        "editor"
-        "history"
-        "history-substring-search"
-        "directory"
-        "spectrum"
-        "utility"
-        "completion"
-        "ssh"
-        "tmux"
-        "git"
-        "syntax-highlighting"
-        "prompt"
-      ];
-      utility.safeOps = false;
-      prompt.showReturnVal = true;
-      ssh.identities = [
-        "id_ed25519"
-      ];
-      tmux.autoStartRemote = true;
     };
   };
 }
