@@ -67,6 +67,10 @@
     "yum-internal.oracle.com 138.1.51.46"
     "yum.oracle.com 23.40.145.197"
   ];
+  user = "yokley";
+  vm-ip = "127.0.0.1";
+  vm-port = "3022";
+  vm-socks-port = "8081";
   redsocks-listen-port = "12345";
   local_ips = [
     "127.0.0.1"
@@ -159,14 +163,11 @@
           exit
         fi
         ${pkgs.iptables}/bin/iptables-save | grep REDSOCKS >/dev/null 2>&1 || ${configure-oracle-tunnel}/bin/configure-oracle-tunnel
+        ${pkgs.wait4x}/bin/wait4x tcp 127.0.0.1:${vm-socks-port} --timeout 0 --interval 10s
         ${pkgs.redsocks}/bin/redsocks -c ${redsocks-config}
       ''
     )
   );
-  user = "yokley";
-  vm-ip = "127.0.0.1";
-  vm-port = "3022";
-  vm-socks-port = "8081";
 in {
   environment.systemPackages = [
     start-oracle-tunnel
