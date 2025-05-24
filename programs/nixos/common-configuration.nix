@@ -56,6 +56,9 @@
       ];
   };
 
+  # Needed to make screen locker work
+  programs.i3lock.enable = true;
+
   # Configure keymap in X11
   services.xserver = {
     enable = true;
