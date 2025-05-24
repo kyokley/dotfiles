@@ -19,7 +19,7 @@ ExtensionDefault = namedtuple(
     ],
 )
 extension_defaults = ExtensionDefault(
-    font="Inconsolata",
+    font="Hack Nerd Font Mono",
     fontsize=18,
     iconsize=30,
     padding=3,
