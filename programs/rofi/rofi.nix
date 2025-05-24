@@ -12,7 +12,7 @@
   };
   programs.rofi.extraConfig = {
     show-icons = true;
-    kb-cancel = "Escape,Control+c,Control+bracketleft";
+    kb-cancel = "Escape,Control+bracketleft";
     drun-match-fields = "name";
   };
   programs.rofi.theme = ./fancy.rasi;
