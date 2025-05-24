@@ -72,7 +72,7 @@
   services.blueman.enable = true;
 
   # Enable sound with pipewire.
-  hardware.pulseaudio.enable = false;
+  services.pulseaudio.enable = false;
   security.rtkit.enable = true;
   services.pipewire = {
     enable = true;
@@ -107,9 +107,9 @@
     fontDir.enable = true;
     enableGhostscriptFonts = true;
     packages = with pkgs; [
-      corefonts
-      dejavu_fonts
-      inconsolata
+      # nerd-fonts.corefonts
+      nerd-fonts.dejavu-sans-mono
+      nerd-fonts.inconsolata
       # liberation_ttf
       # terminus_font
       # ttf_bitstream_vera

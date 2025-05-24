@@ -34,7 +34,7 @@ in {
     pkgs.nitrogen
     pkgs.python312Packages.bpython
     pkgs.thunderbird
-    (pkgs.nerdfonts.override {fonts = ["Hack"];})
+    pkgs.nerd-fonts.hack
     pkgs.vlc
     reboot-kexec
     toggle-picom
