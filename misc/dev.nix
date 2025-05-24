@@ -27,7 +27,7 @@
   };
 
   programs.zsh = {
-    initContent = ''
+    initExtra = ''
       eval "$(direnv hook zsh)"
     '';
   };
