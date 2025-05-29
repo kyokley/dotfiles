@@ -44,7 +44,7 @@
 
   # https://devenv.sh/pre-commit-hooks/
   # pre-commit.hooks.shellcheck.enable = true;
-  pre-commit.hooks = {
+  git-hooks.hooks = {
     alejandra.enable = true;
     check-added-large-files.enable = true;
     check-case-conflicts.enable = true;
