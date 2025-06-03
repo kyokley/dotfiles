@@ -37,7 +37,7 @@
   };
 
   networking.extraHosts = ''
-    192.168.50.126 saturn-eth # ethernet
+    192.168.50.126 saturn # ethernet
     192.168.50.96 saturn-wifi # wifi
   '';
 
