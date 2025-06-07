@@ -159,6 +159,7 @@
     alsa-utils
     slack
     pkgs-unstable.zoom-us
+    pulsemixer
   ];
 
   systemd.tmpfiles.rules = ["d /tmp 1777 root root 7d"];
