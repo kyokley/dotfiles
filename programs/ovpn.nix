@@ -65,7 +65,7 @@
     "www-proxy-hqdc.us.oracle.com 10.68.69.53"
     "www-proxy-sjc.oraclecorp.com 10.255.48.38"
     "yum-internal.oracle.com 138.1.51.46"
-    "yum.oracle.com 23.40.145.197"
+    # "yum.oracle.com 23.40.145.197"
   ];
   user = "yokley";
   vm-ip = "127.0.0.1";
