@@ -17,7 +17,7 @@ def toscreen(qtile, group_name):
     if group_name == qtile.current_screen.group.name:
         qtile.current_screen.set_group(qtile.current_screen.previous_group)
     else:
-        for idx, group in enumerate(qtile.groups):
+        for group in qtile.groups:
             if group_name == group.name:
                 qtile.current_screen.set_group(group)
                 break
