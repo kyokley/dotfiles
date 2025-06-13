@@ -25,6 +25,7 @@
     "dns0.openconnect0 206.223.27.1"
     "dns1.openconnect0 206.223.27.2"
     "docker-remote.dockerhub-phx.oci.oraclecorp.com 138.1.117.148"
+    "ensemble.oraclecorp.com 100.77.212.203"
     "exchange.oraclecorp.com 144.25.106.166"
     "fido-login-int.identity.oraclecloud.com 131.186.9.131"
     "gbuconfluence.oraclecorp.com 100.77.216.173"
