@@ -24,7 +24,7 @@
         "directory"
         "spectrum"
         "utility"
-        # "completion"
+        "completion" # completion module can lead to slow terminal start times
         "syntax-highlighting"
         "history-substring-search"
         "ssh"
