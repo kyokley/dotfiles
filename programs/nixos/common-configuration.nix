@@ -19,17 +19,20 @@
   networking.networkmanager.enable = true;
   systemd.services.NetworkManager-wait-online.enable = true;
   systemd.network.wait-online.enable = false;
-  boot.initrd.systemd.network.wait-online.enable = false;
-  boot.kernelPackages = lib.mkForce (pkgs.linuxPackagesFor (pkgs.linux_6_14.override {
-    argsOverride = {
-      src = pkgs.fetchurl {
-        url = "https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.14.9.tar.xz";
-        sha256 = "sha256-OQzd4DJxmSWghCcnAZfvVdtOkMCdRU6cNVQVcpLJ82E=";
+  boot = {
+    initrd.systemd.network.wait-online.enable = false;
+    kernelPackages = lib.mkForce (pkgs.linuxPackagesFor (pkgs.linux_6_14.override {
+      argsOverride = {
+        src = pkgs.fetchurl {
+          url = "https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.14.9.tar.xz";
+          sha256 = "sha256-OQzd4DJxmSWghCcnAZfvVdtOkMCdRU6cNVQVcpLJ82E=";
+        };
+        version = "6.14.9";
+        modDirVersion = "6.14.9";
       };
-      version = "6.14.9";
-      modDirVersion = "6.14.9";
-    };
-  }));
+    }));
+    tmp.cleanOnBoot = true;
+  };
 
   # Set your time zone.
   time.timeZone = "America/Chicago";
