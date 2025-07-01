@@ -594,6 +594,8 @@ class Krill(CachedProxyRequest):
         if not self._data:
             return "Could not load data from sources"
 
+        self._data = [x for x in self._data if "title" in x]
+
         if (
             not self._last_item_change_time
             or self._last_item_change_time + timedelta(seconds=self.update_interval)
@@ -636,7 +638,7 @@ class Krill(CachedProxyRequest):
     def button_press(self, x, y, button):
         if button == BUTTON_LEFT:
             if self._current_item and self._current_item.get("link"):
-                self.qtile.cmd_spawn(f'{KRILL_BROWSER} {self._current_item["link"]}')
+                self.qtile.cmd_spawn(f"{KRILL_BROWSER} {self._current_item['link']}")
         elif button in (BUTTON_UP, BUTTON_DOWN):
             if self._data:
                 if button == BUTTON_UP:
