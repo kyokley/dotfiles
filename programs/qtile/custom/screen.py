@@ -53,9 +53,7 @@ top_widgets = [
         foreground=extension_defaults.foreground,
         format="{p}: {r:.0f}%",
         partition=ROOT_DIR,
-        mouse_callbacks={
-            "Button1": lambda: qtile.cmd_spawn(f"{TERM} -bx ncdu {ROOT_DIR}")
-        },
+        mouse_callbacks={"Button1": lambda: qtile.spawn(f"{TERM} -bx ncdu {ROOT_DIR}")},
     ),
 ]
 
@@ -67,7 +65,7 @@ if mount_exists(HOME_DIR):
             format="{p}: {r:.0f}%",
             partition=HOME_DIR,
             mouse_callbacks={
-                "Button1": lambda: qtile.cmd_spawn(f"{TERM} -bx ncdu {HOME_DIR}")
+                "Button1": lambda: qtile.spawn(f"{TERM} -bx ncdu {HOME_DIR}")
             },
         )
     )
@@ -81,7 +79,7 @@ top_widgets.extend(
         ),
         widget.MemoryGraph(
             graph_color=extension_defaults.foreground,
-            mouse_callbacks={"Button1": lambda: qtile.cmd_spawn(f"{TERM} -bx htop")},
+            mouse_callbacks={"Button1": lambda: qtile.spawn(f"{TERM} -bx htop")},
             samples=40,  # FIX: Weird graph issue where only drawing on left
             border_width=2,
             border_color="000000",
@@ -95,7 +93,7 @@ top_widgets.extend(
         ),
         MaxCPUGraph(
             graph_color=extension_defaults.foreground,
-            mouse_callbacks={"Button1": lambda: qtile.cmd_spawn(f"{TERM} -bx htop")},
+            mouse_callbacks={"Button1": lambda: qtile.spawn(f"{TERM} -bx htop")},
             samples=40,  # FIX: Weird graph issue where only drawing on left
             border_width=2,
             border_color="000000",
