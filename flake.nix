@@ -40,6 +40,7 @@
         modules = [
           (_: {nixpkgs.overlays = [qtile-flake.overlays.default];})
           ./programs/nixos/common-configuration.nix
+          ./programs/nixos/hardware-configuration.nix
           ./hosts/mars/configuration.nix
           ./hosts/mars/hardware-configuration.nix
           home-manager.nixosModules.home-manager
@@ -68,6 +69,7 @@
         modules = [
           (_: {nixpkgs.overlays = [qtile-flake.overlays.default];})
           ./programs/nixos/common-configuration.nix
+          ./programs/nixos/hardware-configuration.nix
           ./hosts/mercury/configuration.nix
           ./hosts/mercury/hardware-configuration.nix
           home-manager.nixosModules.home-manager
@@ -97,6 +99,7 @@
         modules = [
           (_: {nixpkgs.overlays = [qtile-flake.overlays.default];})
           ./programs/nixos/common-configuration.nix
+          ./programs/nixos/hardware-configuration.nix
           ./hosts/saturn/configuration.nix
           ./hosts/saturn/hardware-configuration.nix
           home-manager.nixosModules.home-manager

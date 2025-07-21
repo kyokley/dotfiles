@@ -18,7 +18,6 @@
 
   fileSystems."/" = {
     device = "UUID=75f8e791-7457-4ae2-b6a1-dbcda9aed60b";
-    fsType = "bcachefs";
   };
 
   fileSystems."/boot" = {
