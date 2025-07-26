@@ -15,7 +15,10 @@
         "cursor"
         "root"
       ];
-      prompt.theme = "powerlevel10k";
+      prompt = {
+        theme = "powerlevel10k";
+        showReturnVal = true;
+      };
       pmodules = [
         "environment"
         "terminal"
@@ -34,7 +37,6 @@
         "prompt"
       ];
       utility.safeOps = false;
-      prompt.showReturnVal = true;
       ssh.identities = [
         "id_ed25519"
       ];
