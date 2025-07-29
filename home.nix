@@ -39,7 +39,7 @@
 
   home.shellAliases = {
     home-manager-switch = "home-manager switch --refresh --flake 'git+ssh://git@venus.ftpaccess.cc:10022/kyokley/dotfiles.git?ref=main#${vars.hostname}'";
-    home-manager-test = "home-manager test --refresh --flake 'git+ssh://git@venus.ftpaccess.cc:10022/kyokley/dotfiles.git?ref=main#${vars.hostname}'";
+    ls = "ls --color=auto";
   };
 
   programs.home-manager.enable = false;
