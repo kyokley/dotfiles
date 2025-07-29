@@ -21,7 +21,7 @@
   systemd.network.wait-online.enable = false;
   boot = {
     initrd.systemd.network.wait-online.enable = false;
-    kernelPackages = lib.mkForce (pkgs.linuxPackagesFor (pkgs.linux_6_14.override {
+    kernelPackages = lib.mkForce (pkgs.linuxPackagesFor (pkgs.linux_6_15.override {
       argsOverride = {
         src = pkgs.fetchurl {
           url = "https://git.kernel.org/torvalds/t/linux-6.16-rc6.tar.gz";
