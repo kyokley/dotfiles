@@ -11,6 +11,11 @@
   boot.supportedFilesystems = ["bcachefs"];
   boot.kernelPackages = pkgs.linuxPackages_latest;
 
+  powerManagement.enable = true;
+  services.udev.extraRules = ''
+    ACTION=="add", SUBSYSTEM=="pci", DRIVER=="pcieport", ATTR{power/wakeup}="disabled"
+  '';
+
   networking.hostName = "mars"; # Define your hostname.
 
   # Configure network proxy if necessary
