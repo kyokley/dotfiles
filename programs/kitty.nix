@@ -31,7 +31,7 @@
       active_tab_foreground = "#2c7dff";
       active_tab_background = "#000";
       active_tab_font_style = "bold-italic";
-      inactive_tab_foreground = "#eee";
+      inactive_tab_foreground = "#3e3e4a";
       inactive_tab_background = "#000";
       inactive_tab_font_style = "normal";
     };
