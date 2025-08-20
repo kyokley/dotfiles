@@ -25,6 +25,7 @@ in {
     ../../programs/rofi/rofi.nix
     ../../programs/qtile/qtile.nix
     ../../programs/kitty.nix
+    ./wallpapers.nix
   ];
 
   home.packages = [
@@ -132,6 +133,4 @@ in {
       extraArgs = ["--config=${homeDir}/.config/picom/picom-custom.conf"];
     };
   };
-
-  programs.poetry.enable = true;
 }

@@ -16,6 +16,10 @@
       url = "github:kyokley/qtile/develop";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    clonix = {
+      url = "github:benvansleen/clonix"; # github:tulilirockz/clonix/?ref=<tag> to target specific releases.
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = {
@@ -24,6 +28,7 @@
     home-manager,
     nixvim,
     qtile-flake,
+    clonix,
     ...
   }: let
     aarch64_darwin = "aarch64-darwin";
@@ -48,6 +53,7 @@
             home-manager.users.yokley = import ./hosts/mars/mars.nix;
             home-manager.extraSpecialArgs = {
               vars = import ./hosts/mars/vars.nix;
+              inherit clonix;
               inherit nixvim;
               pkgs-unstable = import nixpkgs-unstable {
                 config.allowUnfree = true;
@@ -78,6 +84,7 @@
             home-manager.extraSpecialArgs = {
               vars = import ./hosts/mercury/vars.nix;
               inherit nixvim;
+              inherit clonix;
               pkgs-unstable = import nixpkgs-unstable {
                 config.allowUnfree = true;
                 system = x86_linux;
@@ -108,6 +115,7 @@
             home-manager.extraSpecialArgs = {
               vars = import ./hosts/saturn/vars.nix;
               inherit nixvim;
+              inherit clonix;
               pkgs-unstable = import nixpkgs-unstable {
                 config.allowUnfree = true;
                 system = x86_linux;
