@@ -10,6 +10,7 @@
 in {
   imports = [
     ../../programs/nixos/nixos.nix
+    ../../programs/nixos/wallpapers.nix
     ../../home.nix
     ../../misc/dev.nix
   ];
