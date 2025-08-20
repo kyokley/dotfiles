@@ -17,7 +17,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     clonix = {
-      url = "github:benvansleen/clonix"; # github:tulilirockz/clonix/?ref=<tag> to target specific releases.
+      url = "github:kyokley/clonix"; # github:kyokley/clonix/?ref=<tag> to target specific releases.
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };

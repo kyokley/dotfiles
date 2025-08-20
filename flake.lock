@@ -7,15 +7,15 @@
         ]
       },
       "locked": {
-        "lastModified": 1750026674,
-        "narHash": "sha256-DjKVk5S98SEpXIJc7eOvotFG0cSW5FPE7IlNddsfNac=",
-        "owner": "benvansleen",
+        "lastModified": 1755728672,
+        "narHash": "sha256-uCtw6y1qL8cYElgakVYv7/PRbMDaApv5z5ncKoZekF8=",
+        "owner": "kyokley",
         "repo": "clonix",
-        "rev": "49bb2c06d5da1bb3d5102c3f71683d8945c53a5f",
+        "rev": "8aa1de4c2dc33b3ccb796241767f22816fc31ba2",
         "type": "github"
       },
       "original": {
-        "owner": "benvansleen",
+        "owner": "kyokley",
         "repo": "clonix",
         "type": "github"
       }
