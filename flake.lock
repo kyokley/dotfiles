@@ -7,11 +7,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1755728672,
-        "narHash": "sha256-uCtw6y1qL8cYElgakVYv7/PRbMDaApv5z5ncKoZekF8=",
+        "lastModified": 1755735391,
+        "narHash": "sha256-+/GmIq8U8QyiApq9Nz8cfP6+e6gefucaNOd383QZkf4=",
         "owner": "kyokley",
         "repo": "clonix",
-        "rev": "8aa1de4c2dc33b3ccb796241767f22816fc31ba2",
+        "rev": "0e8c2f61017616082994a089cf5b43b707375569",
         "type": "github"
       },
       "original": {
