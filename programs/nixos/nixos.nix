@@ -88,7 +88,7 @@ in {
         command = "${pkgs.dunst}/bin/dunstify 'Locking screen in 10 secs' -t 10";
       }
       {
-        delay = 10;
+        delay = 20; # Add an extra 10 secs to allow waking up after screen blank
         command = "${pkgs.betterlockscreen}/bin/betterlockscreen --lock";
       }
     ];
