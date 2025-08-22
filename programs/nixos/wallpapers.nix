@@ -31,7 +31,7 @@ in {
         remote.ipOrHostname = remoteWallpaperHost;
         timer.enable = true;
         timer.Persistent = true;
-        timer.OnCalendar = "daily";
+        timer.OnCalendar = "*:0";
         extraOptions = "--timeout=10 --rsh=\"${pkgs.openssh}/bin/ssh -o 'StrictHostKeyChecking=no'\"";
       }
     ];
