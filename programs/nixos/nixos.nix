@@ -18,6 +18,12 @@
       systemctl --user start picom
     fi
   '';
+  open-all = pkgs.writeScriptBin "open" ''
+    for file in $@
+    do
+      xdg-open "$file"
+    done
+  '';
 in {
   imports = [
     ../../programs/terminator.nix
@@ -38,6 +44,7 @@ in {
     pkgs.vlc
     reboot-kexec
     toggle-picom
+    open-all
   ];
 
   home.file = {
@@ -65,7 +72,6 @@ in {
   };
 
   home.shellAliases = {
-    open = "xdg-open";
     nixos-switch = "nixos-rebuild switch --refresh --use-remote-sudo --flake 'git+ssh://git@venus.ftpaccess.cc:10022/kyokley/dotfiles.git?ref=main'";
     nixos-test = "nixos-rebuild test --refresh --use-remote-sudo --flake 'git+ssh://git@venus.ftpaccess.cc:10022/kyokley/dotfiles.git?ref=main'";
   };
