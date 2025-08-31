@@ -38,30 +38,6 @@ BUTTON_LEFT = 1
 BUTTON_MIDDLE = 2
 BUTTON_RIGHT = 3
 
-VT_USERNAME = "yokley"
-
-VT_PRIVATE_KEYS = (
-    "id_vt",
-    "id_ed25519",
-    "id_rsa",
-)
-for key in VT_PRIVATE_KEYS:
-    if (Path.home() / ".ssh" / key).exists():
-        VT_PRIVATE_KEY = Path("/root") / ".ssh" / key
-        break
-else:
-    VT_PRIVATE_KEY = ""
-
-VT_CMD = (
-    f"docker run --rm -v {str(Path.home())}/.ssh:/root/.ssh "
-    "--env VT_URL=https://almagest.dyndns.org:7001/vittlify/ "
-    f"--env VT_USERNAME={VT_USERNAME} "
-    "--env VT_DEFAULT_LIST=personal "
-    "--env VT_PROXY= "
-    f"--env VT_PRIVATE_KEY={VT_PRIVATE_KEY} "
-    "--net=host "
-    "kyokley/vt list -quW"
-)
 GCAL_CMD = (
     "docker run --rm "
     f"-v {str(Path.home())}/.gcalcli_oauth:/root/.gcalcli_oauth "
@@ -402,63 +378,6 @@ class Weather(CachedProxyRequest):
             weather = self.get_weather()
 
             self.update(weather)
-
-
-class VT(CachedProxyRequest):
-    REGEX = re.compile(b"(?<=\x1b\[95m).*?(?=\x1b\[39m)")  # noqa
-
-    defaults = [
-        ("markup", False, "Do not use pango markup"),
-        ("debug", False, "Enable additional debugging"),
-    ]
-
-    def __init__(self, **config):
-        config["func"] = self.get_vt
-        super().__init__(**config)
-        self.add_defaults(VT.defaults)
-        self._current_item = None
-
-    def get_vt(self):
-        self._data = self.cached_fetch()
-        self._current_item = rand.choice(self._data) if self._data else b"No items"
-        return self._current_item.decode("utf-8")
-
-    def _fetch(self):
-        cmd = shlex.split(VT_CMD)
-
-        try:
-            proc = subprocess.check_output(cmd)
-        except subprocess.CalledProcessError as e:
-            self._print(str(e))
-            return [b"Failed to load"]
-
-        if proc:
-            lines = [
-                b" ".join(x.strip().split()[1:])
-                for x in proc.splitlines()
-                if x and x.strip()
-            ]
-            self._print(lines)
-            return lines
-        return [b"Failed to load"]
-
-    def button_press(self, x, y, button):
-        if button == BUTTON_LEFT:
-            self.get_vt()
-        elif button in (BUTTON_UP, BUTTON_DOWN):
-            if self._data and self._current_item in self._data:
-                if button == BUTTON_UP:
-                    idx = self._data.index(self._current_item) + 1
-                else:
-                    idx = self._data.index(self._current_item) - 1
-                self._current_item = self._data[idx % len(self._data)]
-                self._last_update = datetime.now() + timedelta(
-                    seconds=self.update_interval
-                )
-            else:
-                return
-
-        self.update(self._current_item.decode("utf-8"))
 
 
 class GCal(CachedProxyRequest):
