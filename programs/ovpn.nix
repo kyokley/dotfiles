@@ -58,6 +58,7 @@
     "recruit.oraclecorp.com 100.112.123.124"
     "slaps.oci.oraclecorp.com 100.125.7.58"
     "testrail.us.oracle.com 100.77.63.149"
+    "texturacorp.com 23.213.191.243"
     "u2f-validator.idp.mc1.oracleiaas.com 100.125.5.163"
     "utilus.us.oracle.com 10.209.64.99"
     "www-proxy-adcq7-new.us.oracle.com 10.23.226.53"
