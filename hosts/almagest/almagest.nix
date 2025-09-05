@@ -11,7 +11,6 @@ in {
 
   home.packages = [
     pkgs.docker-compose
-    pkgs.pass
   ];
 
   systemd.user.services = {
@@ -75,27 +74,6 @@ in {
 
   programs = {
     git.userEmail = "kyokley@almagest";
-
-    borgmatic = {
-      enable = false;
-      backups = {
-        test = {
-          location = {
-            sourceDirectories = ["/tmp/foo"];
-            repositories = ["ssh://u415868@u415868.your-storagebox.de:23/./test-repo"];
-          };
-          storage = {
-            encryptionPasscommand = "${pkgs.pass}/bin/pass Backup/hetzner.com";
-          };
-        };
-        # mediawaiter = {
-        #   location = {
-        #     sourceDirectories = [ "/tmp/foo" ];
-        #     repositories = [ "ssh://u415868@u415868.your-storagebox.de/./mw-repo" ];
-        #   };
-        # };
-      };
-    };
   };
 
   home.stateVersion = "23.11"; # Please read the comment before changing.

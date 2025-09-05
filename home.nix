@@ -34,7 +34,6 @@
     pkgs.nix-search-cli
     pkgs.lftp
     pkgs.home-manager
-    pkgs.zsh-wd
   ];
 
   home.shellAliases = {
