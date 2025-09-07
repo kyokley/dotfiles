@@ -1,25 +1,5 @@
 {
   "nodes": {
-    "clonix": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1755735391,
-        "narHash": "sha256-+/GmIq8U8QyiApq9Nz8cfP6+e6gefucaNOd383QZkf4=",
-        "owner": "kyokley",
-        "repo": "clonix",
-        "rev": "0e8c2f61017616082994a089cf5b43b707375569",
-        "type": "github"
-      },
-      "original": {
-        "owner": "kyokley",
-        "repo": "clonix",
-        "type": "github"
-      }
-    },
     "flake-parts": {
       "inputs": {
         "nixpkgs-lib": "nixpkgs-lib"
@@ -283,7 +263,6 @@
     },
     "root": {
       "inputs": {
-        "clonix": "clonix",
         "home-manager": "home-manager",
         "nixpkgs": "nixpkgs",
         "nixpkgs-unstable": "nixpkgs-unstable",
