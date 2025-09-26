@@ -13,6 +13,7 @@
     extraOptions = ''
       trusted-users = root yokley
     '';
+    settings.download-buffer-size = 524288000;
   };
 
   # Enable networking
