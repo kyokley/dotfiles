@@ -25,6 +25,7 @@
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     ollama
+    sshfs
   ];
 
   system.stateVersion = "24.05"; # Don't touch me!
