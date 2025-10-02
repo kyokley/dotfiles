@@ -88,4 +88,6 @@
   ];
 
   system.stateVersion = "24.05"; # Don't touch me!
+
+  programs.nix-ld.enable = true;
 }

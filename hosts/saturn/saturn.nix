@@ -17,6 +17,7 @@
     "/home/yokley/workspace/compost/tpmcore"
     "/home/yokley/workspace"
   ];
+  helperbot-dir = "/home/yokley/workspace/helperbot";
 in {
   imports = [
     ../../programs/nixos/nixos.nix
@@ -51,6 +52,40 @@ in {
         host = "phxtpmdev17";
         hostname = "phxtpmdev17.snphxprshared1.gbucdsint02phx.oraclevcn.com";
         user = "kevin.yokley";
+      };
+    };
+  };
+
+  systemd.user = {
+    services = {
+      helperbot = {
+        Unit.Description = "Run HelperBot";
+        Service = {
+          Type = "oneshot";
+          ExecStart = toString (
+            pkgs.writeShellScript "helperbot-script" ''
+              PATH=$PATH:${lib.makeBinPath [pkgs.git]}
+              cd ${helperbot-dir}
+              ${pkgs.python312Packages.uv}/bin/uv run helperbot -rq
+            ''
+          );
+        };
+      };
+    };
+
+    timers = {
+      helperbot = {
+        Unit = {
+          Description = "Run helperbot";
+          After = ["network.target"];
+        };
+        Timer = {
+          OnCalendar = "hourly";
+          RandomizedDelaySec = 600;
+          Persistent = false;
+          Unit = "helperbot.service";
+        };
+        Install.WantedBy = ["timers.target"];
       };
     };
   };
