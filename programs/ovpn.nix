@@ -56,6 +56,7 @@
     "pls.appoci.oraclecorp.com 100.114.94.139"
     "printers.oraclecorp.com 100.112.125.102"
     "recruit.oraclecorp.com 100.112.123.124"
+    "sidekick-af.oraclecorp.com 144.25.15.184"
     "slaps.oci.oraclecorp.com 100.125.7.58"
     "testrail.us.oracle.com 100.77.63.149"
     "texturacorp.com 23.213.191.243"
