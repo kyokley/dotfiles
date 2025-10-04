@@ -43,7 +43,7 @@ top_widgets = [
         # scroll=False,
         # width=100,
         update_interval=30,
-        debug=True,
+        debug=False,
     ),
     widget.TextBox(
         "Disk:",
