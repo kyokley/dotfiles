@@ -51,7 +51,14 @@ MAX_KRILL_LENGTH = 100
 XAUTOLOCK_STATUS_PATH = Path("/tmp/xautolock.status")  # nosec
 
 
-class ScheduledWidget(GenPollText):
+class DebugMixin:
+    def _print(self, msg, level=LogLevel.WARNING):
+        log_cmd = logger.warning if level == LogLevel.WARNING else logger.exception
+        if self.debug:
+            log_cmd("{}: {}".format(str(self.__class__), msg))
+
+
+class ScheduledWidget(GenPollText, DebugMixin):
     defaults = [
         ("interval", 0.5, "Run every interval minutes"),
     ]
@@ -176,12 +183,7 @@ class WallpaperDir(ScheduledWidget):
             self._cur_image = images[self._image_index]
 
         if self.label is None:
-            cur_image_basename = os.path.basename(self._cur_image)
-            cur_image_basename = (
-                f"{cur_image_basename[:7]}..."
-                if len(cur_image_basename) > 7
-                else cur_image_basename
-            )
+            cur_image_basename = Path(self._cur_image).name
             text = f"{directory}: {cur_image_basename}"
         else:
             text = self.label
@@ -214,15 +216,15 @@ class WallpaperDir(ScheduledWidget):
                         "--random",
                         "--set-scaled",
                         "--save",
-                        os.path.dirname(self._cur_image),
+                        Path(self._cur_image).parent,
                     ]
                     subprocess.call(command)
 
-        print(f"Update text to {text}")
+        self._print(f"Update text to {text}")
         self.update(text)
 
     def button_press(self, x, y, button):
-        print(button)
+        self._print(button)
         if button == BUTTON_LEFT:
             self._image_index += 1
             self.set_wallpaper(use_random=False)
@@ -244,7 +246,7 @@ class WallpaperDir(ScheduledWidget):
             self.set_wallpaper(use_random=False)
 
 
-class ScreenLockIndicator(GenPollText):
+class ScreenLockIndicator(GenPollText, DebugMixin):
     defaults = [
         ("update_interval", 10, "Update interval"),
     ]
@@ -268,7 +270,7 @@ class ScreenLockIndicator(GenPollText):
         return "SL Status Unknown"
 
 
-class CachedProxyRequest(GenPollText):
+class CachedProxyRequest(GenPollText, DebugMixin):
     defaults = [
         ("http_proxy", None, "HTTP proxy to use for requests"),
         ("https_proxy", None, "HTTPS proxy to use for requests"),
@@ -283,11 +285,6 @@ class CachedProxyRequest(GenPollText):
         self._last_update = None
         self._cached_data = None
         self._locked = False
-
-    def _print(self, msg, level=LogLevel.WARNING):
-        log_cmd = logger.warning if level == LogLevel.WARNING else logger.exception
-        if self.debug:
-            log_cmd("{}: {}".format(str(self.__class__), msg))
 
     def cached_fetch(self):
         if self._locked:
@@ -361,15 +358,16 @@ class Weather(CachedProxyRequest):
             tup = WeatherTuple(data["main"]["temp"], conditions)
 
             if tup.temp > self.high_temp_threshold:
-                self.foreground = self.high_foreground
+                self.layout.colour = self.high_foreground
             elif tup.temp < self.low_temp_threshold:
-                self.foreground = self.low_foreground
+                self.layout.colour = self.low_foreground
             else:
-                self.foreground = self.normal_foreground
+                self.layout.colour = self.normal_foreground
 
-            return "{temp:.2g}F {conditions}".format(
-                temp=tup.temp, conditions=tup.conditions
-            )
+            self._print(f"{self.layout.colour=}")
+            self._print(f"Weather is {tup.temp:.2g}F {tup.conditions}")
+
+            return f"{tup.temp:.2g}F {tup.conditions}"
         return "N/A"
 
     def button_press(self, x, y, button):
@@ -395,7 +393,7 @@ class GCal(CachedProxyRequest):
         super().__init__(**config)
         self.add_defaults(GCal.defaults)
         self._current_item = None
-        self.foreground = self.default_foreground
+        self.layout.colour = self.default_foreground
 
     def get_cal(self):
         self._data = self.cached_fetch()
@@ -405,9 +403,9 @@ class GCal(CachedProxyRequest):
 
         self._current_item = rand.choice(self._data)
         if self._current_item[0]:
-            self.foreground = self.soon_foreground
+            self.layout.colour = self.soon_foreground
         else:
-            self.foreground = self.default_foreground
+            self.layout.colour = self.default_foreground
 
         return self._format_line(self._current_item[1])
 
@@ -489,7 +487,7 @@ class GCal(CachedProxyRequest):
             else:
                 return
 
-        self.foreground = (
+        self.layout.colour = (
             self.soon_foreground if self._current_item[0] else self.default_foreground
         )
         self.update(self._format_line(self._current_item[1]))

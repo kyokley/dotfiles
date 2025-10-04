@@ -40,6 +40,8 @@ top_widgets = [
         foreground=extension_defaults.foreground,
         font=extension_defaults.font,
         fontsize=extension_defaults.fontsize,
+        scroll=True,
+        width=100,
     ),
     widget.TextBox(
         "Disk:",
@@ -110,7 +112,7 @@ top_widgets.extend(
             font=extension_defaults.font,
             fontsize=extension_defaults.fontsize,
             interface=os.environ.get("QTILE_NET_INTERFACE"),
-            format="{down:.0f}{down_suffix} ↓↑ {up:.0f}{up_suffix}",
+            format="{down:3.0f}{down_suffix:2} ↓↑ {up:3.0f}{up_suffix:2}",
             update_interval=2,
         ),
     ]
@@ -179,6 +181,7 @@ top_widgets.extend(
             update_interval=3600,  # Update every hour
             font=extension_defaults.font,
             fontsize=extension_defaults.fontsize,
+            debug=True,
         ),
     ]
 )
