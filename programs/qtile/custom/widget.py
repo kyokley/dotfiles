@@ -530,7 +530,6 @@ class Krill(CachedProxyRequest):
 
     def _fetch(self):
         cmd = shlex.split(KRILL_CMD)
-        logger.warning(cmd)
         proc = subprocess.check_output(cmd)
         data = []
 
