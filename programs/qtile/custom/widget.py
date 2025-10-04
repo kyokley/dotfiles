@@ -151,6 +151,12 @@ class WallpaperDir(DebugGenPollText):
 
         if self.label is None:
             cur_image_basename = Path(self._cur_image).name
+            if not self.scroll:
+                cur_image_basename = (
+                    f"{cur_image_basename[:7]}..."
+                    if len(cur_image_basename) > 7
+                    else cur_image_basename
+                )
             text = f"{directory}: {cur_image_basename}"
         else:
             text = self.label
@@ -189,6 +195,7 @@ class WallpaperDir(DebugGenPollText):
                     subprocess.call(command)
 
         self._print(f"Update text to {text}")
+        self.update(text)
         return text
 
     def button_press(self, x, y, button):
