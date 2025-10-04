@@ -2,7 +2,6 @@ import requests
 import json
 import re
 import shlex
-import schedule
 import os
 import random
 import subprocess
@@ -51,58 +50,33 @@ MAX_KRILL_LENGTH = 100
 XAUTOLOCK_STATUS_PATH = Path("/tmp/xautolock.status")  # nosec
 
 
-class ScheduledWidget(GenPollText):
+class DebugGenPollText(GenPollText):
     defaults = [
-        ("interval", 0.5, "Run every interval minutes"),
+        ("debug", False, "Enable additional debugging"),
     ]
 
     def __init__(self, **config):
-        config["func"] = self._poll_func
-        config["update_interval"] = 1
         super().__init__(**config)
-        self.add_defaults(ScheduledWidget.defaults)
+        self.add_defaults(DebugGenPollText.defaults)
 
-        self._schedule_job(self.interval)
-        self.text = ""
-
-    def _job(self):
-        return lambda: None
-
-    def _schedule_job(self, interval):
-        schedule.every(interval).minutes.at(":00").do(self._job())
-
-    def _poll_func(self):
-        schedule.run_pending()
-        return self.text
-
-    def update(self, text):
-        if self.text != text:
-            if self.layout:
-                old_width = self.layout.width
-
-            self.text = text
-
-            # If our width hasn't changed, we just draw ourselves. Otherwise,
-            # we draw the whole bar.
-            if self.layout:
-                old_width = self.layout.width
-                if self.layout.width == old_width:
-                    self.draw()
-                else:
-                    self.bar.draw()
+    def _print(self, msg, level=LogLevel.WARNING):
+        log_cmd = logger.warning if level == LogLevel.WARNING else logger.exception
+        if self.debug:
+            log_cmd("{}: {}".format(str(self.__class__), msg))
 
 
-class WallpaperDir(ScheduledWidget):
+class WallpaperDir(DebugGenPollText):
     defaults = [
         ("directory", "~/Pictures/wallpapers/", "Wallpaper Directory"),
         ("wallpaper_command", None, "Wallpaper command"),
         ("label", None, "Use a fixed label instead of image name."),
         ("all_images_label", "All", "Label to use for all images"),
         ("middle_click_command", None, "Command to run for middle-click"),
+        ("update_interval", 10, "Update interval"),
     ]
 
     def __init__(self, **config):
-        config["interval"] = 15
+        config["func"] = self.set_wallpaper
         super().__init__(**config)
         self.add_defaults(WallpaperDir.defaults)
 
@@ -176,12 +150,13 @@ class WallpaperDir(ScheduledWidget):
             self._cur_image = images[self._image_index]
 
         if self.label is None:
-            cur_image_basename = os.path.basename(self._cur_image)
-            cur_image_basename = (
-                f"{cur_image_basename[:7]}..."
-                if len(cur_image_basename) > 7
-                else cur_image_basename
-            )
+            cur_image_basename = Path(self._cur_image).name
+            if not self.scroll:
+                cur_image_basename = (
+                    f"{cur_image_basename[:7]}..."
+                    if len(cur_image_basename) > 7
+                    else cur_image_basename
+                )
             text = f"{directory}: {cur_image_basename}"
         else:
             text = self.label
@@ -206,6 +181,7 @@ class WallpaperDir(ScheduledWidget):
             ]
             subprocess.call(command)
 
+            self._print(f"{num_displays=}")
             if num_displays > 1:
                 for i in range(1, num_displays):
                     command = [
@@ -214,15 +190,16 @@ class WallpaperDir(ScheduledWidget):
                         "--random",
                         "--set-scaled",
                         "--save",
-                        os.path.dirname(self._cur_image),
+                        Path(self._cur_image).parent,
                     ]
                     subprocess.call(command)
 
-        print(f"Update text to {text}")
+        self._print(f"Update text to {text}")
         self.update(text)
+        return text
 
     def button_press(self, x, y, button):
-        print(button)
+        self._print(button)
         if button == BUTTON_LEFT:
             self._image_index += 1
             self.set_wallpaper(use_random=False)
@@ -244,7 +221,7 @@ class WallpaperDir(ScheduledWidget):
             self.set_wallpaper(use_random=False)
 
 
-class ScreenLockIndicator(GenPollText):
+class ScreenLockIndicator(DebugGenPollText):
     defaults = [
         ("update_interval", 10, "Update interval"),
     ]
@@ -268,13 +245,12 @@ class ScreenLockIndicator(GenPollText):
         return "SL Status Unknown"
 
 
-class CachedProxyRequest(GenPollText):
+class CachedProxyRequest(DebugGenPollText):
     defaults = [
         ("http_proxy", None, "HTTP proxy to use for requests"),
         ("https_proxy", None, "HTTPS proxy to use for requests"),
         ("socks_proxy", None, "SOCKS proxy to use for requests"),
         ("cache_expiration", 5, "Length of time in minutes that cache is valid for"),
-        ("debug", False, "Enable additional debugging"),
     ]
 
     def __init__(self, **config):
@@ -283,11 +259,6 @@ class CachedProxyRequest(GenPollText):
         self._last_update = None
         self._cached_data = None
         self._locked = False
-
-    def _print(self, msg, level=LogLevel.WARNING):
-        log_cmd = logger.warning if level == LogLevel.WARNING else logger.exception
-        if self.debug:
-            log_cmd("{}: {}".format(str(self.__class__), msg))
 
     def cached_fetch(self):
         if self._locked:
@@ -361,15 +332,16 @@ class Weather(CachedProxyRequest):
             tup = WeatherTuple(data["main"]["temp"], conditions)
 
             if tup.temp > self.high_temp_threshold:
-                self.foreground = self.high_foreground
+                self.layout.colour = self.high_foreground
             elif tup.temp < self.low_temp_threshold:
-                self.foreground = self.low_foreground
+                self.layout.colour = self.low_foreground
             else:
-                self.foreground = self.normal_foreground
+                self.layout.colour = self.normal_foreground
 
-            return "{temp:.2g}F {conditions}".format(
-                temp=tup.temp, conditions=tup.conditions
-            )
+            self._print(f"{self.layout.colour=}")
+            self._print(f"Weather is {tup.temp:.2g}F {tup.conditions}")
+
+            return f"{tup.temp:.2g}F {tup.conditions}"
         return "N/A"
 
     def button_press(self, x, y, button):
@@ -395,7 +367,7 @@ class GCal(CachedProxyRequest):
         super().__init__(**config)
         self.add_defaults(GCal.defaults)
         self._current_item = None
-        self.foreground = self.default_foreground
+        self.layout.colour = self.default_foreground
 
     def get_cal(self):
         self._data = self.cached_fetch()
@@ -405,9 +377,9 @@ class GCal(CachedProxyRequest):
 
         self._current_item = rand.choice(self._data)
         if self._current_item[0]:
-            self.foreground = self.soon_foreground
+            self.layout.colour = self.soon_foreground
         else:
-            self.foreground = self.default_foreground
+            self.layout.colour = self.default_foreground
 
         return self._format_line(self._current_item[1])
 
@@ -489,7 +461,7 @@ class GCal(CachedProxyRequest):
             else:
                 return
 
-        self.foreground = (
+        self.layout.colour = (
             self.soon_foreground if self._current_item[0] else self.default_foreground
         )
         self.update(self._format_line(self._current_item[1]))
@@ -498,7 +470,6 @@ class GCal(CachedProxyRequest):
 class Krill(CachedProxyRequest):
     defaults = [
         ("markup", False, "Do not use pango markup"),
-        ("debug", False, "Enable additional debugging"),
     ]
 
     def __init__(self, **config):
@@ -530,7 +501,6 @@ class Krill(CachedProxyRequest):
 
     def _fetch(self):
         cmd = shlex.split(KRILL_CMD)
-        logger.warning(cmd)
         proc = subprocess.check_output(cmd)
         data = []
 

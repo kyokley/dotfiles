@@ -52,7 +52,6 @@
     extraPackages = python3Packages:
       with python3Packages; [
         requests
-        schedule
         pillow
         pywal
         dateutil

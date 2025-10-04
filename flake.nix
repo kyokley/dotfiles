@@ -13,7 +13,7 @@
       url = "github:kyokley/nixvim";
     };
     qtile-flake = {
-      url = "github:kyokley/qtile/develop";
+      url = "github:qtile/qtile/v0.33.0";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
