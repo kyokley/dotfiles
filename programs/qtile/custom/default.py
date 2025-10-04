@@ -1,35 +1,22 @@
-from collections import namedtuple
+from dataclasses import dataclass
 
-ExtensionDefault = namedtuple(
-    "ExtensionDefault",
-    [
-        "font",
-        "fontsize",
-        "iconsize",
-        "padding",
-        "foreground",
-        "background",
-        "inactive_foreground",
-        "foreground_yellow",
-        "border_focus",
-        "border_normal",
-        "layout_margin",
-        "bar_margin",
-        "bar_thickness",
-    ],
-)
-extension_defaults = ExtensionDefault(
-    font="Hack Nerd Font Mono",
-    fontsize=18,
-    iconsize=30,
-    padding=3,
-    foreground="AE4CFF",
-    background=None,
-    inactive_foreground="404040",
-    foreground_yellow="FFDE3B",
-    border_focus="FF0000",
-    border_normal="030303",
-    layout_margin=40,
-    bar_margin=10,
-    bar_thickness=40,
-)
+
+@dataclass
+class ExtensionDefault:
+    font: str = "Hack Nerd Font Mono"
+    fontsize: int = 18
+    iconsize: int = 30
+    padding: int = 3
+    foreground: str = "AE4CFF"
+    background: str = None
+    inactive_foreground: str = "404040"
+    foreground_yellow: str = "FFDE3B"
+    foreground_green: str = "00FF00"
+    border_focus: str = "FF0000"
+    border_normal: str = "030303"
+    layout_margin: int = 40
+    bar_margin: int = 10
+    bar_thickness: int = 40
+
+
+extension_defaults = ExtensionDefault()

@@ -14,7 +14,9 @@ from dateutil import tz
 from pathlib import Path
 from collections import namedtuple
 from custom.utils import determine_browser
+from custom.default import extension_defaults
 
+from libqtile.widget import WidgetBox
 from libqtile.widget.generic_poll_text import GenPollText
 from libqtile.widget.graph import CPUGraph
 from libqtile.log_utils import logger
@@ -593,3 +595,19 @@ class MaxCPUGraph(CPUGraph):
 
         if max_percent:
             self.push(max_percent)
+
+
+class StandardWidgetBox(WidgetBox):
+    def __init__(
+        self,
+        font=extension_defaults.font,
+        fontsize=extension_defaults.fontsize,
+        foreground=extension_defaults.foreground_green,
+        text_closed="",
+        **kwargs,
+    ):
+        super().__init__(**kwargs)
+        self.font = font
+        self.fontsize = fontsize
+        self.foreground = foreground
+        self.text_closed = text_closed
