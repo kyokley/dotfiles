@@ -42,6 +42,8 @@ top_widgets = [
         fontsize=extension_defaults.fontsize,
         scroll=True,
         width=100,
+        update_interval=30,
+        debug=True,
     ),
     widget.TextBox(
         "Disk:",
@@ -181,7 +183,7 @@ top_widgets.extend(
             update_interval=3600,  # Update every hour
             font=extension_defaults.font,
             fontsize=extension_defaults.fontsize,
-            debug=True,
+            debug=False,
         ),
     ]
 )

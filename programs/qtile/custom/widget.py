@@ -2,7 +2,6 @@ import requests
 import json
 import re
 import shlex
-import schedule
 import os
 import random
 import subprocess
@@ -51,65 +50,33 @@ MAX_KRILL_LENGTH = 100
 XAUTOLOCK_STATUS_PATH = Path("/tmp/xautolock.status")  # nosec
 
 
-class DebugMixin:
+class DebugGenPollText(GenPollText):
+    defaults = [
+        ("debug", False, "Enable additional debugging"),
+    ]
+
+    def __init__(self, **config):
+        super().__init__(**config)
+        self.add_defaults(DebugGenPollText.defaults)
+
     def _print(self, msg, level=LogLevel.WARNING):
         log_cmd = logger.warning if level == LogLevel.WARNING else logger.exception
         if self.debug:
             log_cmd("{}: {}".format(str(self.__class__), msg))
 
 
-class ScheduledWidget(GenPollText, DebugMixin):
-    defaults = [
-        ("interval", 0.5, "Run every interval minutes"),
-    ]
-
-    def __init__(self, **config):
-        config["func"] = self._poll_func
-        config["update_interval"] = 1
-        super().__init__(**config)
-        self.add_defaults(ScheduledWidget.defaults)
-
-        self._schedule_job(self.interval)
-        self.text = ""
-
-    def _job(self):
-        return lambda: None
-
-    def _schedule_job(self, interval):
-        schedule.every(interval).minutes.at(":00").do(self._job())
-
-    def _poll_func(self):
-        schedule.run_pending()
-        return self.text
-
-    def update(self, text):
-        if self.text != text:
-            if self.layout:
-                old_width = self.layout.width
-
-            self.text = text
-
-            # If our width hasn't changed, we just draw ourselves. Otherwise,
-            # we draw the whole bar.
-            if self.layout:
-                old_width = self.layout.width
-                if self.layout.width == old_width:
-                    self.draw()
-                else:
-                    self.bar.draw()
-
-
-class WallpaperDir(ScheduledWidget):
+class WallpaperDir(DebugGenPollText):
     defaults = [
         ("directory", "~/Pictures/wallpapers/", "Wallpaper Directory"),
         ("wallpaper_command", None, "Wallpaper command"),
         ("label", None, "Use a fixed label instead of image name."),
         ("all_images_label", "All", "Label to use for all images"),
         ("middle_click_command", None, "Command to run for middle-click"),
+        ("update_interval", 10, "Update interval"),
     ]
 
     def __init__(self, **config):
-        config["interval"] = 15
+        config["func"] = self.set_wallpaper
         super().__init__(**config)
         self.add_defaults(WallpaperDir.defaults)
 
@@ -208,6 +175,7 @@ class WallpaperDir(ScheduledWidget):
             ]
             subprocess.call(command)
 
+            self._print(f"{num_displays=}")
             if num_displays > 1:
                 for i in range(1, num_displays):
                     command = [
@@ -221,7 +189,7 @@ class WallpaperDir(ScheduledWidget):
                     subprocess.call(command)
 
         self._print(f"Update text to {text}")
-        self.update(text)
+        return text
 
     def button_press(self, x, y, button):
         self._print(button)
@@ -246,7 +214,7 @@ class WallpaperDir(ScheduledWidget):
             self.set_wallpaper(use_random=False)
 
 
-class ScreenLockIndicator(GenPollText, DebugMixin):
+class ScreenLockIndicator(DebugGenPollText):
     defaults = [
         ("update_interval", 10, "Update interval"),
     ]
@@ -270,13 +238,12 @@ class ScreenLockIndicator(GenPollText, DebugMixin):
         return "SL Status Unknown"
 
 
-class CachedProxyRequest(GenPollText, DebugMixin):
+class CachedProxyRequest(DebugGenPollText):
     defaults = [
         ("http_proxy", None, "HTTP proxy to use for requests"),
         ("https_proxy", None, "HTTPS proxy to use for requests"),
         ("socks_proxy", None, "SOCKS proxy to use for requests"),
         ("cache_expiration", 5, "Length of time in minutes that cache is valid for"),
-        ("debug", False, "Enable additional debugging"),
     ]
 
     def __init__(self, **config):
@@ -496,7 +463,6 @@ class GCal(CachedProxyRequest):
 class Krill(CachedProxyRequest):
     defaults = [
         ("markup", False, "Do not use pango markup"),
-        ("debug", False, "Enable additional debugging"),
     ]
 
     def __init__(self, **config):
