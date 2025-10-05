@@ -63,11 +63,6 @@ top_widgets = [
     ),
     StandardWidgetBox(
         widgets=(
-            widget.TextBox(
-                "WP:",
-                font=extension_defaults.font,
-                fontsize=extension_defaults.fontsize,
-            ),
             widget.Spacer(length=10),
             WallpaperDir(
                 directory=WALLPAPER_DIR.expanduser(),
@@ -81,6 +76,7 @@ top_widgets = [
             ),
         ),
         text_closed="WP",
+        text_open="WP:",
     ),
     StandardWidgetBox(
         widgets=disk_widgets,
