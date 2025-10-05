@@ -1,25 +1,24 @@
-import requests
 import json
-import re
-import shlex
+import multiprocessing
 import os
 import random
+import re
+import shlex
 import subprocess
-import multiprocessing
-
-from enum import StrEnum
-
-from datetime import datetime, timedelta
-from dateutil import tz
-from pathlib import Path
 from collections import namedtuple
-from custom.utils import determine_browser
-from custom.default import extension_defaults
+from datetime import datetime, timedelta
+from enum import StrEnum
+from pathlib import Path
 
+import requests
+from dateutil import tz
+from libqtile.log_utils import logger
 from libqtile.widget import WidgetBox
 from libqtile.widget.generic_poll_text import GenPollText
 from libqtile.widget.graph import CPUGraph
-from libqtile.log_utils import logger
+
+from custom.default import extension_defaults
+from custom.utils import determine_browser
 
 rand = random.SystemRandom()
 
@@ -603,7 +602,8 @@ class StandardWidgetBox(WidgetBox):
         font=extension_defaults.font,
         fontsize=extension_defaults.fontsize,
         foreground=extension_defaults.foreground_green,
-        text_closed="",
+        text_closed=None,
+        start_opened=True,
         **kwargs,
     ):
         super().__init__(**kwargs)
@@ -611,3 +611,7 @@ class StandardWidgetBox(WidgetBox):
         self.fontsize = fontsize
         self.foreground = foreground
         self.text_closed = text_closed
+        self.start_opened = start_opened
+
+        if "text_open" not in kwargs:
+            self.text_open = f"{text_closed}:" if text_closed is not None else None

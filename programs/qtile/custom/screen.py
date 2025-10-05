@@ -1,17 +1,13 @@
 import os
 from pathlib import Path
-from libqtile import bar, widget, qtile
-from custom.widget import (
-    WallpaperDir,
-    Weather,
-    Krill,
-    MaxCPUGraph,
-    StandardWidgetBox,
-)
-from custom.default import extension_defaults
+
+from libqtile import bar, qtile, widget
 from libqtile.config import Screen
+
+from custom.default import extension_defaults
 from custom.layout import ScreenLayout
 from custom.utils import OS, determine_os, mount_exists
+from custom.widget import Krill, MaxCPUGraph, StandardWidgetBox, WallpaperDir, Weather
 
 BATTERY_PATHS = [
     Path("/sys/class/power_supply/BAT0"),
@@ -23,11 +19,6 @@ ROOT_DIR = "/"
 TERM = "kitty"
 
 disk_widgets = [
-    widget.TextBox(
-        "Disk:",
-        font=extension_defaults.font,
-        fontsize=extension_defaults.fontsize,
-    ),
     widget.DF(
         visible_on_warn=False,
         font=extension_defaults.font,
@@ -75,20 +66,20 @@ top_widgets = [
                 debug=False,
             ),
         ),
+        background=extension_defaults.red,
+        foreground=extension_defaults.black,
         text_closed="WP",
-        text_open="WP:",
     ),
+    widget.Spacer(length=10),
     StandardWidgetBox(
         widgets=disk_widgets,
         text_closed="Disk",
+        background=extension_defaults.orange,
+        foreground=extension_defaults.black,
     ),
+    widget.Spacer(length=10),
     StandardWidgetBox(
         widgets=(
-            widget.TextBox(
-                "Mem:",
-                font=extension_defaults.font,
-                fontsize=extension_defaults.fontsize,
-            ),
             widget.MemoryGraph(
                 graph_color=extension_defaults.foreground,
                 mouse_callbacks={"Button1": lambda: qtile.spawn(f"{TERM} -bx htop")},
@@ -100,14 +91,12 @@ top_widgets = [
             ),
         ),
         text_closed="Mem",
+        background=extension_defaults.yellow,
+        foreground=extension_defaults.black,
     ),
+    widget.Spacer(length=10),
     StandardWidgetBox(
         widgets=(
-            widget.TextBox(
-                "Cpu:",
-                font=extension_defaults.font,
-                fontsize=extension_defaults.fontsize,
-            ),
             MaxCPUGraph(
                 graph_color=extension_defaults.foreground,
                 mouse_callbacks={"Button1": lambda: qtile.spawn(f"{TERM} -bx htop")},
@@ -119,14 +108,12 @@ top_widgets = [
             ),
         ),
         text_closed="Cpu",
+        background=extension_defaults.green,
+        foreground=extension_defaults.black,
     ),
+    widget.Spacer(length=10),
     StandardWidgetBox(
         widgets=(
-            widget.TextBox(
-                "Net:",
-                font=extension_defaults.font,
-                fontsize=extension_defaults.fontsize,
-            ),
             widget.Net(
                 foreground=extension_defaults.foreground,
                 font=extension_defaults.font,
@@ -137,6 +124,8 @@ top_widgets = [
             ),
         ),
         text_closed="Net",
+        background=extension_defaults.blue,
+        foreground=extension_defaults.white,
     ),
 ]
 
@@ -193,13 +182,9 @@ pamac checkupdates | awk 'BEGIN{RS="\n\n";FS=OFS="\n"} NR==1 {print $0}' | awk '
 
 top_widgets.extend(
     [
+        widget.Spacer(length=10),
         StandardWidgetBox(
             widgets=(
-                widget.TextBox(
-                    "W:",
-                    font=extension_defaults.font,
-                    fontsize=extension_defaults.fontsize,
-                ),
                 Weather(
                     normal_foreground=extension_defaults.foreground,
                     update_interval=3600,  # Update every hour
@@ -209,6 +194,8 @@ top_widgets.extend(
                 ),
             ),
             text_closed="Wea",
+            background=extension_defaults.indigo,
+            foreground=extension_defaults.white,
         ),
     ]
 )
@@ -216,13 +203,9 @@ top_widgets.extend(
 if any([path.exists() for path in BATTERY_PATHS]):
     top_widgets.extend(
         [
+            widget.Spacer(length=10),
             StandardWidgetBox(
                 widgets=(
-                    widget.TextBox(
-                        "Bat:",
-                        font=extension_defaults.font,
-                        fontsize=extension_defaults.fontsize,
-                    ),
                     widget.Battery(
                         energy_now_file="charge_now",
                         energy_full_file="charge_full",
@@ -238,21 +221,28 @@ if any([path.exists() for path in BATTERY_PATHS]):
                     ),
                 ),
                 text_closed="Bat",
+                start_opened=True,
+                background=extension_defaults.violet,
+                foreground=extension_defaults.white,
             ),
         ]
     )
 
 top_widgets.extend(
     [
-        widget.TextBox(
-            "Vol:",
-            font=extension_defaults.font,
-            fontsize=extension_defaults.fontsize,
-        ),
-        widget.Volume(
-            foreground=extension_defaults.foreground,
-            font=extension_defaults.font,
-            fontsize=extension_defaults.fontsize,
+        widget.Spacer(length=10),
+        StandardWidgetBox(
+            widgets=(
+                widget.Volume(
+                    foreground=extension_defaults.foreground,
+                    font=extension_defaults.font,
+                    fontsize=extension_defaults.fontsize,
+                ),
+            ),
+            text_closed="Vol",
+            start_opened=True,
+            background=extension_defaults.black,
+            foreground=extension_defaults.white,
         ),
         widget.Systray(icon_size=extension_defaults.iconsize),
         widget.Clock(
