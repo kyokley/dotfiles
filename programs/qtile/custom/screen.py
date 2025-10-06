@@ -1,16 +1,15 @@
 import os
 from pathlib import Path
-from libqtile import bar, widget, qtile
-from custom.widget import (
-    WallpaperDir,
-    Weather,
-    Krill,
-    MaxCPUGraph,
-)
-from custom.default import extension_defaults
+
+from libqtile import bar, qtile, widget
 from libqtile.config import Screen
+
+from custom.default import extension_defaults
+from custom.extras.snake import Snake
+from custom.extras.tetris import Tetris
 from custom.layout import ScreenLayout
 from custom.utils import OS, determine_os, mount_exists
+from custom.widget import Krill, MaxCPUGraph, StandardWidgetBox, WallpaperDir, Weather
 
 BATTERY_PATHS = [
     Path("/sys/class/power_supply/BAT0"),
@@ -21,35 +20,7 @@ HOME_DIR = "/home"
 ROOT_DIR = "/"
 TERM = "kitty"
 
-top_widgets = [
-    widget.Spacer(length=10),
-    widget.WindowName(
-        width=bar.STRETCH,
-        for_current_screen=True,
-        font=extension_defaults.font,
-        fontsize=extension_defaults.fontsize,
-    ),
-    widget.TextBox(
-        "WP:",
-        font=extension_defaults.font,
-        fontsize=extension_defaults.fontsize,
-    ),
-    widget.Spacer(length=10),
-    WallpaperDir(
-        directory=WALLPAPER_DIR.expanduser(),
-        foreground=extension_defaults.foreground,
-        font=extension_defaults.font,
-        fontsize=extension_defaults.fontsize,
-        # scroll=False,
-        # width=100,
-        update_interval=30,
-        debug=False,
-    ),
-    widget.TextBox(
-        "Disk:",
-        font=extension_defaults.font,
-        fontsize=extension_defaults.fontsize,
-    ),
+disk_widgets = [
     widget.DF(
         visible_on_warn=False,
         font=extension_defaults.font,
@@ -62,7 +33,7 @@ top_widgets = [
 ]
 
 if mount_exists(HOME_DIR):
-    top_widgets.append(
+    disk_widgets.append(
         widget.DF(
             visible_on_warn=False,
             foreground=extension_defaults.foreground,
@@ -74,51 +45,92 @@ if mount_exists(HOME_DIR):
         )
     )
 
-top_widgets.extend(
-    [
-        widget.TextBox(
-            "Mem:",
-            font=extension_defaults.font,
-            fontsize=extension_defaults.fontsize,
+
+top_widgets = [
+    widget.Spacer(length=10),
+    widget.WindowName(
+        for_current_screen=True,
+        font=extension_defaults.font,
+        fontsize=extension_defaults.fontsize,
+    ),
+    Snake(
+        size=4,
+    ),
+    widget.Spacer(length=10),
+    StandardWidgetBox(
+        widgets=(
+            widget.Spacer(length=10),
+            WallpaperDir(
+                directory=WALLPAPER_DIR.expanduser(),
+                foreground=extension_defaults.foreground,
+                font=extension_defaults.font,
+                fontsize=extension_defaults.fontsize,
+                update_interval=30,
+                debug=False,
+            ),
         ),
-        widget.MemoryGraph(
-            graph_color=extension_defaults.foreground,
-            mouse_callbacks={"Button1": lambda: qtile.spawn(f"{TERM} -bx htop")},
-            samples=40,  # FIX: Weird graph issue where only drawing on left
-            border_width=2,
-            border_color="000000",
-            font=extension_defaults.font,
-            fontsize=extension_defaults.fontsize,
+        background=extension_defaults.red,
+        foreground=extension_defaults.black,
+        text_closed="WP",
+    ),
+    widget.Spacer(length=10),
+    StandardWidgetBox(
+        widgets=disk_widgets,
+        text_closed="Disk",
+        background=extension_defaults.orange,
+        foreground=extension_defaults.black,
+    ),
+    widget.Spacer(length=10),
+    StandardWidgetBox(
+        widgets=(
+            widget.MemoryGraph(
+                graph_color=extension_defaults.foreground,
+                mouse_callbacks={"Button1": lambda: qtile.spawn(f"{TERM} -bx htop")},
+                samples=40,  # FIX: Weird graph issue where only drawing on left
+                border_width=2,
+                border_color="000000",
+                font=extension_defaults.font,
+                fontsize=extension_defaults.fontsize,
+            ),
         ),
-        widget.TextBox(
-            "Cpu:",
-            font=extension_defaults.font,
-            fontsize=extension_defaults.fontsize,
+        text_closed="Mem",
+        background=extension_defaults.yellow,
+        foreground=extension_defaults.black,
+    ),
+    widget.Spacer(length=10),
+    StandardWidgetBox(
+        widgets=(
+            MaxCPUGraph(
+                graph_color=extension_defaults.foreground,
+                mouse_callbacks={"Button1": lambda: qtile.spawn(f"{TERM} -bx htop")},
+                samples=40,  # FIX: Weird graph issue where only drawing on left
+                border_width=2,
+                border_color="000000",
+                font=extension_defaults.font,
+                fontsize=extension_defaults.fontsize,
+            ),
         ),
-        MaxCPUGraph(
-            graph_color=extension_defaults.foreground,
-            mouse_callbacks={"Button1": lambda: qtile.spawn(f"{TERM} -bx htop")},
-            samples=40,  # FIX: Weird graph issue where only drawing on left
-            border_width=2,
-            border_color="000000",
-            font=extension_defaults.font,
-            fontsize=extension_defaults.fontsize,
+        text_closed="Cpu",
+        background=extension_defaults.green,
+        foreground=extension_defaults.black,
+    ),
+    widget.Spacer(length=10),
+    StandardWidgetBox(
+        widgets=(
+            widget.Net(
+                foreground=extension_defaults.foreground,
+                font=extension_defaults.font,
+                fontsize=extension_defaults.fontsize,
+                interface=os.environ.get("QTILE_NET_INTERFACE"),
+                format="{down:3.0f}{down_suffix:2} ↓↑ {up:3.0f}{up_suffix:2}",
+                update_interval=2,
+            ),
         ),
-        widget.TextBox(
-            "Net:",
-            font=extension_defaults.font,
-            fontsize=extension_defaults.fontsize,
-        ),
-        widget.Net(
-            foreground=extension_defaults.foreground,
-            font=extension_defaults.font,
-            fontsize=extension_defaults.fontsize,
-            interface=os.environ.get("QTILE_NET_INTERFACE"),
-            format="{down:3.0f}{down_suffix:2} ↓↑ {up:3.0f}{up_suffix:2}",
-            update_interval=2,
-        ),
-    ]
-)
+        text_closed="Net",
+        background=extension_defaults.blue,
+        foreground=extension_defaults.white,
+    ),
+]
 
 machine_os = determine_os()
 
@@ -173,17 +185,20 @@ pamac checkupdates | awk 'BEGIN{RS="\n\n";FS=OFS="\n"} NR==1 {print $0}' | awk '
 
 top_widgets.extend(
     [
-        widget.TextBox(
-            "W:",
-            font=extension_defaults.font,
-            fontsize=extension_defaults.fontsize,
-        ),
-        Weather(
-            normal_foreground=extension_defaults.foreground,
-            update_interval=3600,  # Update every hour
-            font=extension_defaults.font,
-            fontsize=extension_defaults.fontsize,
-            debug=False,
+        widget.Spacer(length=10),
+        StandardWidgetBox(
+            widgets=(
+                Weather(
+                    normal_foreground=extension_defaults.foreground,
+                    update_interval=3600,  # Update every hour
+                    font=extension_defaults.font,
+                    fontsize=extension_defaults.fontsize,
+                    debug=False,
+                ),
+            ),
+            text_closed="Wea",
+            background=extension_defaults.indigo,
+            foreground=extension_defaults.white,
         ),
     ]
 )
@@ -191,38 +206,46 @@ top_widgets.extend(
 if any([path.exists() for path in BATTERY_PATHS]):
     top_widgets.extend(
         [
-            widget.TextBox(
-                "Bat:",
-                font=extension_defaults.font,
-                fontsize=extension_defaults.fontsize,
-            ),
-            widget.Battery(
-                energy_now_file="charge_now",
-                energy_full_file="charge_full",
-                power_now_file="current_now",
-                charge_char="↗",
-                discharge_char="↘",
-                low_percentage=0.3,
-                charging_foreground="00FF00",
-                foreground=extension_defaults.foreground,
-                format="{char}{percent:2.0%}",
-                font=extension_defaults.font,
-                fontsize=extension_defaults.fontsize,
+            widget.Spacer(length=10),
+            StandardWidgetBox(
+                widgets=(
+                    widget.Battery(
+                        energy_now_file="charge_now",
+                        energy_full_file="charge_full",
+                        power_now_file="current_now",
+                        charge_char="↗",
+                        discharge_char="↘",
+                        low_percentage=0.3,
+                        charging_foreground=extension_defaults.foreground_green,
+                        foreground=extension_defaults.foreground,
+                        format="{char}{percent:2.0%}",
+                        font=extension_defaults.font,
+                        fontsize=extension_defaults.fontsize,
+                    ),
+                ),
+                text_closed="Bat",
+                start_opened=True,
+                background=extension_defaults.violet,
+                foreground=extension_defaults.white,
             ),
         ]
     )
 
 top_widgets.extend(
     [
-        widget.TextBox(
-            "Vol:",
-            font=extension_defaults.font,
-            fontsize=extension_defaults.fontsize,
-        ),
-        widget.Volume(
-            foreground=extension_defaults.foreground,
-            font=extension_defaults.font,
-            fontsize=extension_defaults.fontsize,
+        widget.Spacer(length=10),
+        StandardWidgetBox(
+            widgets=(
+                widget.Volume(
+                    foreground=extension_defaults.foreground,
+                    font=extension_defaults.font,
+                    fontsize=extension_defaults.fontsize,
+                ),
+            ),
+            text_closed="Vol",
+            start_opened=True,
+            background=extension_defaults.black,
+            foreground=extension_defaults.white,
         ),
         widget.Systray(icon_size=extension_defaults.iconsize),
         widget.Clock(
@@ -261,11 +284,18 @@ SCREENS = [
                 ),
                 widget.Spacer(length=10),
                 ScreenLayout(
-                    width=bar.STRETCH,
+                    # width=bar.STRETCH,
                     foreground=extension_defaults.foreground_yellow,
                     font=extension_defaults.font,
                     fontsize=extension_defaults.fontsize,
                 ),
+                widget.Spacer(length=10),
+                Tetris(
+                    # length=150,
+                    blockify=True,
+                    mouse_callbacks={"Button1": lambda: None},
+                ),
+                widget.Spacer(length=10),
                 widget.TextBox(
                     "Krl:",
                     font=extension_defaults.font,
