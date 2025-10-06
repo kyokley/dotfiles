@@ -5,6 +5,8 @@ from libqtile import bar, qtile, widget
 from libqtile.config import Screen
 
 from custom.default import extension_defaults
+from custom.extras.snake import Snake
+from custom.extras.tetris import Tetris
 from custom.layout import ScreenLayout
 from custom.utils import OS, determine_os, mount_exists
 from custom.widget import Krill, MaxCPUGraph, StandardWidgetBox, WallpaperDir, Weather
@@ -47,11 +49,14 @@ if mount_exists(HOME_DIR):
 top_widgets = [
     widget.Spacer(length=10),
     widget.WindowName(
-        width=bar.STRETCH,
         for_current_screen=True,
         font=extension_defaults.font,
         fontsize=extension_defaults.fontsize,
     ),
+    Snake(
+        size=4,
+    ),
+    widget.Spacer(length=10),
     StandardWidgetBox(
         widgets=(
             widget.Spacer(length=10),
@@ -60,8 +65,6 @@ top_widgets = [
                 foreground=extension_defaults.foreground,
                 font=extension_defaults.font,
                 fontsize=extension_defaults.fontsize,
-                # scroll=False,
-                # width=100,
                 update_interval=30,
                 debug=False,
             ),
@@ -281,11 +284,17 @@ SCREENS = [
                 ),
                 widget.Spacer(length=10),
                 ScreenLayout(
-                    width=bar.STRETCH,
+                    # width=bar.STRETCH,
                     foreground=extension_defaults.foreground_yellow,
                     font=extension_defaults.font,
                     fontsize=extension_defaults.fontsize,
                 ),
+                Tetris(
+                    # length=150,
+                    blockify=True,
+                    mouse_callbacks={"Button1": lambda: None},
+                ),
+                widget.Spacer(length=10),
                 widget.TextBox(
                     "Krl:",
                     font=extension_defaults.font,
