@@ -7,6 +7,7 @@ class ExtensionDefault:
     fontsize: int = 18
     endcap_fontsize: int = 40
     iconsize: int = 30
+    widget_box_iconsize: int = 40
     padding: int = 3
     foreground: str = "AE4CFF"
     background: str = None
