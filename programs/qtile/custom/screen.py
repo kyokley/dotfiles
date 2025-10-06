@@ -373,6 +373,7 @@ SCREENS = [
             top_widgets,
             extension_defaults.bar_thickness,
             margin=extension_defaults.bar_margin,
+            border_width=extension_defaults.bar_border_width,
         ),
         bottom=bar.Bar(
             [
@@ -417,6 +418,7 @@ SCREENS = [
             ],
             extension_defaults.bar_thickness,
             margin=extension_defaults.bar_margin,
+            border_width=extension_defaults.bar_border_width,
         ),
     ),
 ]
