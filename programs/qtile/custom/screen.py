@@ -79,7 +79,7 @@ top_widgets = [
             ),
         ),
         background=extension_defaults.red,
-        foreground=extension_defaults.black,
+        foreground=extension_defaults.white,
         text_closed="WP",
     ),
     widget.TextBox(
@@ -101,7 +101,7 @@ top_widgets = [
         widgets=disk_widgets,
         text_closed="Disk",
         background=extension_defaults.orange,
-        foreground=extension_defaults.black,
+        foreground=extension_defaults.white,
     ),
     widget.TextBox(
         "",
@@ -111,44 +111,82 @@ top_widgets = [
         padding=0,
     ),
     widget.Spacer(length=10),
+    widget.TextBox(
+        "",
+        font=extension_defaults.font,
+        fontsize=extension_defaults.endcap_fontsize,
+        foreground=extension_defaults.yellow,
+        padding=0,
+    ),
     StandardWidgetBox(
         widgets=(
             widget.MemoryGraph(
                 graph_color=extension_defaults.foreground,
                 mouse_callbacks={"Button1": lambda: qtile.spawn(f"{TERM} -bx htop")},
                 samples=40,  # FIX: Weird graph issue where only drawing on left
-                border_width=2,
-                border_color="000000",
+                border_width=0,
+                border_color=extension_defaults.yellow,
                 font=extension_defaults.font,
                 fontsize=extension_defaults.fontsize,
+                background=extension_defaults.yellow,
             ),
         ),
         text_closed="Mem",
         background=extension_defaults.yellow,
         foreground=extension_defaults.black,
     ),
+    widget.TextBox(
+        "",
+        font=extension_defaults.font,
+        fontsize=extension_defaults.endcap_fontsize,
+        foreground=extension_defaults.yellow,
+        padding=0,
+    ),
     widget.Spacer(length=10),
+    widget.TextBox(
+        "",
+        font=extension_defaults.font,
+        fontsize=extension_defaults.endcap_fontsize,
+        foreground=extension_defaults.green,
+        padding=0,
+    ),
     StandardWidgetBox(
         widgets=(
             MaxCPUGraph(
                 graph_color=extension_defaults.foreground,
                 mouse_callbacks={"Button1": lambda: qtile.spawn(f"{TERM} -bx htop")},
                 samples=40,  # FIX: Weird graph issue where only drawing on left
-                border_width=2,
-                border_color="000000",
+                border_width=0,
+                border_color=extension_defaults.green,
                 font=extension_defaults.font,
                 fontsize=extension_defaults.fontsize,
+                background=extension_defaults.green,
             ),
         ),
         text_closed="Cpu",
         background=extension_defaults.green,
         foreground=extension_defaults.black,
     ),
+    widget.TextBox(
+        "",
+        font=extension_defaults.font,
+        fontsize=extension_defaults.endcap_fontsize,
+        foreground=extension_defaults.green,
+        padding=0,
+    ),
     widget.Spacer(length=10),
+    widget.TextBox(
+        "",
+        font=extension_defaults.font,
+        fontsize=extension_defaults.endcap_fontsize,
+        foreground=extension_defaults.blue,
+        padding=0,
+    ),
     StandardWidgetBox(
         widgets=(
             widget.Net(
-                foreground=extension_defaults.foreground,
+                foreground=extension_defaults.white,
+                background=extension_defaults.blue,
                 font=extension_defaults.font,
                 fontsize=extension_defaults.fontsize,
                 interface=os.environ.get("QTILE_NET_INTERFACE"),
@@ -159,6 +197,13 @@ top_widgets = [
         text_closed="Net",
         background=extension_defaults.blue,
         foreground=extension_defaults.white,
+    ),
+    widget.TextBox(
+        "",
+        font=extension_defaults.font,
+        fontsize=extension_defaults.endcap_fontsize,
+        foreground=extension_defaults.blue,
+        padding=0,
     ),
 ]
 
@@ -216,10 +261,18 @@ pamac checkupdates | awk 'BEGIN{RS="\n\n";FS=OFS="\n"} NR==1 {print $0}' | awk '
 top_widgets.extend(
     [
         widget.Spacer(length=10),
+        widget.TextBox(
+            "",
+            font=extension_defaults.font,
+            fontsize=extension_defaults.endcap_fontsize,
+            foreground=extension_defaults.indigo,
+            padding=0,
+        ),
         StandardWidgetBox(
             widgets=(
                 Weather(
-                    normal_foreground=extension_defaults.foreground,
+                    normal_foreground=extension_defaults.white,
+                    background=extension_defaults.indigo,
                     update_interval=3600,  # Update every hour
                     font=extension_defaults.font,
                     fontsize=extension_defaults.fontsize,
@@ -230,6 +283,13 @@ top_widgets.extend(
             background=extension_defaults.indigo,
             foreground=extension_defaults.white,
         ),
+        widget.TextBox(
+            "",
+            font=extension_defaults.font,
+            fontsize=extension_defaults.endcap_fontsize,
+            foreground=extension_defaults.indigo,
+            padding=0,
+        ),
     ]
 )
 
@@ -237,6 +297,13 @@ if any([path.exists() for path in BATTERY_PATHS]):
     top_widgets.extend(
         [
             widget.Spacer(length=10),
+            widget.TextBox(
+                "",
+                font=extension_defaults.font,
+                fontsize=extension_defaults.endcap_fontsize,
+                foreground=extension_defaults.violet,
+                padding=0,
+            ),
             StandardWidgetBox(
                 widgets=(
                     widget.Battery(
@@ -246,8 +313,9 @@ if any([path.exists() for path in BATTERY_PATHS]):
                         charge_char="↗",
                         discharge_char="↘",
                         low_percentage=0.3,
-                        charging_foreground=extension_defaults.foreground_green,
-                        foreground=extension_defaults.foreground,
+                        charging_foreground=extension_defaults.green,
+                        foreground=extension_defaults.white,
+                        background=extension_defaults.violet,
                         format="{char}{percent:2.0%}",
                         font=extension_defaults.font,
                         fontsize=extension_defaults.fontsize,
@@ -257,6 +325,13 @@ if any([path.exists() for path in BATTERY_PATHS]):
                 start_opened=True,
                 background=extension_defaults.violet,
                 foreground=extension_defaults.white,
+            ),
+            widget.TextBox(
+                "",
+                font=extension_defaults.font,
+                fontsize=extension_defaults.endcap_fontsize,
+                foreground=extension_defaults.violet,
+                padding=0,
             ),
         ]
     )

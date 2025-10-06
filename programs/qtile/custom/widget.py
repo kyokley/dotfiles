@@ -614,4 +614,4 @@ class StandardWidgetBox(WidgetBox):
         self.start_opened = start_opened
 
         if "text_open" not in kwargs:
-            self.text_open = f"{text_closed}:" if text_closed is not None else None
+            self.text_open = f"{text_closed}" if text_closed is not None else None
