@@ -289,6 +289,7 @@ SCREENS = [
                     font=extension_defaults.font,
                     fontsize=extension_defaults.fontsize,
                 ),
+                widget.Spacer(length=10),
                 Tetris(
                     # length=150,
                     blockify=True,
