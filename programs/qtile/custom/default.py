@@ -5,6 +5,7 @@ from dataclasses import dataclass
 class ExtensionDefault:
     font: str = "Hack Nerd Font Mono"
     fontsize: int = 18
+    endcap_fontsize: int = 30
     iconsize: int = 30
     padding: int = 3
     foreground: str = "AE4CFF"

@@ -25,7 +25,8 @@ disk_widgets = [
         visible_on_warn=False,
         font=extension_defaults.font,
         fontsize=extension_defaults.fontsize,
-        foreground=extension_defaults.foreground,
+        foreground=extension_defaults.black,
+        background=extension_defaults.orange,
         format="{p}: {r:.0f}%",
         partition=ROOT_DIR,
         mouse_callbacks={"Button1": lambda: qtile.spawn(f"{TERM} -bx ncdu {ROOT_DIR}")},
@@ -36,7 +37,8 @@ if mount_exists(HOME_DIR):
     disk_widgets.append(
         widget.DF(
             visible_on_warn=False,
-            foreground=extension_defaults.foreground,
+            foreground=extension_defaults.black,
+            background=extension_defaults.orange,
             format="{p}: {r:.0f}%",
             partition=HOME_DIR,
             mouse_callbacks={
@@ -57,12 +59,19 @@ top_widgets = [
         size=4,
     ),
     widget.Spacer(length=10),
+    widget.TextBox(
+        "",
+        font=extension_defaults.font,
+        fontsize=extension_defaults.endcap_fontsize,
+        foreground=extension_defaults.red,
+        padding=0,
+    ),
     StandardWidgetBox(
         widgets=(
-            widget.Spacer(length=10),
             WallpaperDir(
                 directory=WALLPAPER_DIR.expanduser(),
-                foreground=extension_defaults.foreground,
+                background=extension_defaults.red,
+                foreground=extension_defaults.black,
                 font=extension_defaults.font,
                 fontsize=extension_defaults.fontsize,
                 update_interval=30,
@@ -73,12 +82,33 @@ top_widgets = [
         foreground=extension_defaults.black,
         text_closed="WP",
     ),
+    widget.TextBox(
+        "",
+        font=extension_defaults.font,
+        fontsize=extension_defaults.endcap_fontsize,
+        foreground=extension_defaults.red,
+        padding=0,
+    ),
     widget.Spacer(length=10),
+    widget.TextBox(
+        "",
+        font=extension_defaults.font,
+        fontsize=extension_defaults.endcap_fontsize,
+        foreground=extension_defaults.orange,
+        padding=0,
+    ),
     StandardWidgetBox(
         widgets=disk_widgets,
         text_closed="Disk",
         background=extension_defaults.orange,
         foreground=extension_defaults.black,
+    ),
+    widget.TextBox(
+        "",
+        font=extension_defaults.font,
+        fontsize=extension_defaults.endcap_fontsize,
+        foreground=extension_defaults.orange,
+        padding=0,
     ),
     widget.Spacer(length=10),
     StandardWidgetBox(

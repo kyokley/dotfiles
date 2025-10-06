@@ -13,7 +13,7 @@ from pathlib import Path
 import requests
 from dateutil import tz
 from libqtile.log_utils import logger
-from libqtile.widget import WidgetBox, TextBox
+from libqtile.widget import WidgetBox
 from libqtile.widget.generic_poll_text import GenPollText
 from libqtile.widget.graph import CPUGraph
 
@@ -599,7 +599,6 @@ class MaxCPUGraph(CPUGraph):
 class StandardWidgetBox(WidgetBox):
     def __init__(
         self,
-        widgets=None,
         font=extension_defaults.font,
         fontsize=extension_defaults.fontsize,
         foreground=extension_defaults.foreground_green,
@@ -611,13 +610,8 @@ class StandardWidgetBox(WidgetBox):
         self.font = font
         self.fontsize = fontsize
         self.foreground = foreground
-        self.text_closed = f"{text_closed}" if text_closed else None
+        self.text_closed = text_closed
         self.start_opened = start_opened
 
-        if widgets is None:
-            self.widgets = []
-        else:
-            self.widgets.append(TextBox(""))
-
         if "text_open" not in kwargs:
-            self.text_open = f"{text_closed}:" if text_closed is not None else None
+            self.text_open = f"{text_closed}:" if text_closed is not None else None
