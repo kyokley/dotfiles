@@ -55,8 +55,9 @@ top_widgets = [
         font=extension_defaults.font,
         fontsize=extension_defaults.fontsize,
     ),
-    Snake(
-        size=4,
+    Tetris(
+        blockify=True,
+        mouse_callbacks={"Button1": lambda: None},
     ),
     widget.Spacer(length=10),
     widget.TextBox(
@@ -407,10 +408,8 @@ SCREENS = [
                     fontsize=extension_defaults.fontsize,
                 ),
                 widget.Spacer(length=10),
-                Tetris(
-                    # length=150,
-                    blockify=True,
-                    mouse_callbacks={"Button1": lambda: None},
+                Snake(
+                    size=4,
                 ),
                 widget.Spacer(length=10),
                 widget.TextBox(
