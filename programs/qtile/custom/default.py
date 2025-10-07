@@ -14,7 +14,7 @@ class ExtensionDefault:
     inactive_foreground: str = "404040"
     border_focus: str = "FF0000"
     border_normal: str = "030303"
-    layout_margin: int = 10
+    layout_margin: int = 40
     bar_margin: int = 10
     bar_thickness: int = 40
     bar_border_width: int = 10
