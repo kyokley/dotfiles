@@ -74,7 +74,7 @@ top_widgets = [
                 foreground=extension_defaults.black,
                 font=extension_defaults.font,
                 fontsize=extension_defaults.fontsize,
-                update_interval=30,
+                update_interval=60,
                 debug=False,
             ),
         ),
@@ -274,6 +274,7 @@ top_widgets.extend(
             padding=0,
         ),
         StandardWidgetBox(
+            name="WeatherWidgetBox",
             widgets=(
                 Weather(
                     normal_foreground=extension_defaults.white,
@@ -411,16 +412,35 @@ SCREENS = [
                 ),
                 widget.Spacer(length=10),
                 widget.TextBox(
-                    "Krl:",
+                    "",
                     font=extension_defaults.font,
-                    fontsize=extension_defaults.fontsize,
+                    fontsize=extension_defaults.endcap_fontsize,
+                    foreground=extension_defaults.violet,
+                    padding=0,
                 ),
-                Krill(
-                    foreground=extension_defaults.foreground,
-                    update_interval=21,
+                StandardWidgetBox(
+                    widgets=(
+                        Krill(
+                            foreground=extension_defaults.white,
+                            background=extension_defaults.violet,
+                            update_interval=21,
+                            font=extension_defaults.font,
+                            fontsize=extension_defaults.fontsize,
+                            debug=False,
+                        ),
+                    ),
+                    text_closed="\uf1ea",
+                    start_opened=True,
+                    background=extension_defaults.violet,
+                    foreground=extension_defaults.white,
+                    fontsize=extension_defaults.widget_box_iconsize,
+                ),
+                widget.TextBox(
+                    "",
                     font=extension_defaults.font,
-                    fontsize=extension_defaults.fontsize,
-                    debug=False,
+                    fontsize=extension_defaults.endcap_fontsize,
+                    foreground=extension_defaults.violet,
+                    padding=0,
                 ),
                 widget.Spacer(length=10),
             ],
