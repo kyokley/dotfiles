@@ -82,6 +82,7 @@ top_widgets = [
         foreground=extension_defaults.white,
         text_closed="󰸉",
         fontsize=extension_defaults.widget_box_iconsize,
+        start_opened=False,
     ),
     widget.TextBox(
         "",
@@ -289,6 +290,7 @@ top_widgets.extend(
             background=extension_defaults.indigo,
             foreground=extension_defaults.white,
             fontsize=extension_defaults.widget_box_iconsize,
+            start_opened=False,
         ),
         widget.TextBox(
             "",
