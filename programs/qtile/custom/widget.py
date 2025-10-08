@@ -361,6 +361,7 @@ class Weather(CachedProxyRequest):
             weather_widget_box.text = weather_widget_box.text_open = (
                 weather_widget_box.text_closed
             ) = weather_widget_box_icon
+            weather_widget_box.layout.colour = self.layout.colour
             weather_widget_box.bar.draw()
 
             return f"{weather_data.temp:.2g}F {weather_data.conditions}"
