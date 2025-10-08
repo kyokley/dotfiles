@@ -5,7 +5,7 @@ import random
 import re
 import shlex
 import subprocess
-from collections import namedtuple
+from dataclasses import dataclass
 from datetime import datetime, timedelta
 from enum import StrEnum
 from pathlib import Path
@@ -16,6 +16,7 @@ from libqtile.log_utils import logger
 from libqtile.widget import WidgetBox
 from libqtile.widget.generic_poll_text import GenPollText
 from libqtile.widget.graph import CPUGraph
+from libqtile.lazy import lazy
 
 from custom.default import extension_defaults
 from custom.utils import determine_browser
@@ -303,7 +304,10 @@ class CachedProxyRequest(DebugGenPollText):
         self._cached_data = None
 
 
-WeatherTuple = namedtuple("WeatherTuple", "temp conditions")
+@dataclass
+class WeatherData:
+    temp: float
+    conditions: str
 
 
 class Weather(CachedProxyRequest):
@@ -320,6 +324,10 @@ class Weather(CachedProxyRequest):
         ("markup", False, "Do not use pango markup"),
     ]
 
+    ICON_LOOKUP = {
+        "scattered clouds": "󰖕",
+    }
+
     def __init__(self, **config):
         config["func"] = self.get_weather
         super().__init__(**config)
@@ -330,19 +338,26 @@ class Weather(CachedProxyRequest):
         if data:
             conditions = rand.choice(data["weather"])["description"]
 
-            tup = WeatherTuple(data["main"]["temp"], conditions)
+            weather_data = WeatherData(data["main"]["temp"], conditions)
 
-            if tup.temp > self.high_temp_threshold:
+            if weather_data.temp > self.high_temp_threshold:
                 self.layout.colour = self.high_foreground
-            elif tup.temp < self.low_temp_threshold:
+            elif weather_data.temp < self.low_temp_threshold:
                 self.layout.colour = self.low_foreground
             else:
                 self.layout.colour = self.normal_foreground
 
             self._print(f"{self.layout.colour=}")
-            self._print(f"Weather is {tup.temp:.2g}F {tup.conditions}")
+            self._print(
+                f"Weather is {weather_data.temp:.2g}F {weather_data.conditions}"
+            )
 
-            return f"{tup.temp:.2g}F {tup.conditions}"
+            foo = lazy.widget["WeatherWidgetBox"].eval(
+                'self.text="W"; self.update("W")'
+            )
+            self._print(f"{foo=}")
+
+            return f"{weather_data.temp:.2g}F {weather_data.conditions}"
         return "N/A"
 
     def button_press(self, x, y, button):
@@ -616,7 +631,8 @@ class StandardWidgetBox(WidgetBox):
         if "text_open" not in kwargs:
             self.text_open = f"{text_closed}" if text_closed is not None else None
 
+
 class WeatherWidgetBox(StandardWidgetBox):
     def __init__(self, **kwargs):
-        kwargs['name'] = 'WeatherWidgetBox'
+        kwargs["name"] = "WeatherWidgetBox"
         super().__init__(**kwargs)

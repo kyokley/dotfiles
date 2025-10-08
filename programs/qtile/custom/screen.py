@@ -9,7 +9,14 @@ from custom.extras.snake import Snake
 from custom.extras.tetris import Tetris
 from custom.layout import ScreenLayout
 from custom.utils import OS, determine_os, mount_exists
-from custom.widget import Krill, MaxCPUGraph, StandardWidgetBox, WallpaperDir, Weather
+from custom.widget import (
+    Krill,
+    MaxCPUGraph,
+    StandardWidgetBox,
+    WallpaperDir,
+    Weather,
+    WeatherWidgetBox,
+)
 
 BATTERY_PATHS = [
     Path("/sys/class/power_supply/BAT0"),
@@ -275,8 +282,7 @@ top_widgets.extend(
             foreground=extension_defaults.indigo,
             padding=0,
         ),
-        StandardWidgetBox(
-            name="WeatherWidgetBox",
+        WeatherWidgetBox(
             widgets=(
                 Weather(
                     normal_foreground=extension_defaults.white,
@@ -284,7 +290,7 @@ top_widgets.extend(
                     update_interval=3600,  # Update every hour
                     font=extension_defaults.font,
                     fontsize=extension_defaults.fontsize,
-                    debug=False,
+                    debug=True,
                 ),
             ),
             text_closed="󰖕",
