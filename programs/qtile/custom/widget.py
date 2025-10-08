@@ -615,3 +615,8 @@ class StandardWidgetBox(WidgetBox):
 
         if "text_open" not in kwargs:
             self.text_open = f"{text_closed}" if text_closed is not None else None
+
+class WeatherWidgetBox(StandardWidgetBox):
+    def __init__(self, **kwargs):
+        kwargs['name'] = 'WeatherWidgetBox'
+        super().__init__(**kwargs)
