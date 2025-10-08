@@ -13,10 +13,11 @@ from pathlib import Path
 import requests
 from dateutil import tz
 from libqtile.log_utils import logger
-from libqtile.widget import WidgetBox
+from libqtile.widget import WidgetBox, Battery
+from libqtile.widget.battery import BatteryState
 from libqtile.widget.generic_poll_text import GenPollText
 from libqtile.widget.graph import CPUGraph
-from libqtile.lazy import lazy
+from libqtile import qtile
 
 from custom.default import extension_defaults
 from custom.utils import determine_browser
@@ -27,6 +28,11 @@ rand = random.SystemRandom()
 class LogLevel(StrEnum):
     WARNING = "warning"
     EXCEPTION = "exception"
+
+
+class DayOrNight(StrEnum):
+    DAY = "day"
+    NIGHT = "night"
 
 
 KRILL_PROXY = os.environ.get("HTTP_PROXY", "")
@@ -52,7 +58,14 @@ MAX_KRILL_LENGTH = 100
 XAUTOLOCK_STATUS_PATH = Path("/tmp/xautolock.status")  # nosec
 
 
-class DebugGenPollText(GenPollText):
+class DebugWidgetMixin:
+    def _print(self, msg, level=LogLevel.WARNING):
+        log_cmd = logger.warning if level == LogLevel.WARNING else logger.exception
+        if self.debug:
+            log_cmd("{}: {}".format(str(self.__class__), msg))
+
+
+class DebugGenPollText(GenPollText, DebugWidgetMixin):
     defaults = [
         ("debug", False, "Enable additional debugging"),
     ]
@@ -60,11 +73,6 @@ class DebugGenPollText(GenPollText):
     def __init__(self, **config):
         super().__init__(**config)
         self.add_defaults(DebugGenPollText.defaults)
-
-    def _print(self, msg, level=LogLevel.WARNING):
-        log_cmd = logger.warning if level == LogLevel.WARNING else logger.exception
-        if self.debug:
-            log_cmd("{}: {}".format(str(self.__class__), msg))
 
 
 class WallpaperDir(DebugGenPollText):
@@ -324,10 +332,6 @@ class Weather(CachedProxyRequest):
         ("markup", False, "Do not use pango markup"),
     ]
 
-    ICON_LOOKUP = {
-        "scattered clouds": "󰖕",
-    }
-
     def __init__(self, **config):
         config["func"] = self.get_weather
         super().__init__(**config)
@@ -352,10 +356,12 @@ class Weather(CachedProxyRequest):
                 f"Weather is {weather_data.temp:.2g}F {weather_data.conditions}"
             )
 
-            foo = lazy.widget["WeatherWidgetBox"].eval(
-                'self.text="W"; self.update("W")'
-            )
-            self._print(f"{foo=}")
+            weather_widget_box_icon = self.weather_icon(weather_data.conditions)
+            weather_widget_box = qtile.widgets_map.get("WeatherWidgetBox")
+            weather_widget_box.text = weather_widget_box.text_open = (
+                weather_widget_box.text_closed
+            ) = weather_widget_box_icon
+            weather_widget_box.bar.draw()
 
             return f"{weather_data.temp:.2g}F {weather_data.conditions}"
         return "N/A"
@@ -366,6 +372,53 @@ class Weather(CachedProxyRequest):
             weather = self.get_weather()
 
             self.update(weather)
+
+    @staticmethod
+    def weather_icon(description: str) -> str:
+        """
+        Returns a Nerd Font weather icon for a given weather description.
+        Includes day/night variants when possible.
+        Icons use the Weather Icons (Nerd Font) set.
+        """
+        desc = description.lower().strip()
+
+        # Detect time of day context
+        now = datetime.now()
+        if 6 < now.hour < 17:
+            is_night = False
+        else:
+            is_night = True
+
+        # Match descriptions to nf-md icons
+        if any(word in desc for word in ["clear", "sunny", "bright"]):
+            return (
+                "󰖙" if not is_night else "󰖔"
+            )  # nf-md-weather_sunny / nf-md-weather_night
+        elif any(word in desc for word in ["partly", "cloud", "overcast"]):
+            if is_night:
+                return "󰼱"  # nf-md-weather_night_partly_cloudy
+            else:
+                return "󰖕"  # nf-md-weather_partly_cloudy
+        elif any(word in desc for word in ["rain", "drizzle", "shower"]):
+            return "󰖖"  # nf-md-weather_rainy
+        elif any(word in desc for word in ["thunder", "storm", "lightning"]):
+            return "󰙾"  # nf-md-weather_lightning_rainy
+        elif any(word in desc for word in ["snow", "sleet", "blizzard", "hail"]):
+            if is_night:
+                return "󰖘"  # nf-md-weather_snowy
+            else:
+                return "󰼴"  # nf-md-weather_night_snowy
+        elif any(word in desc for word in ["fog", "mist", "haze", "smog"]):
+            if is_night:
+                return "󰖑"  # nf-md-weather_fog
+            else:
+                return "󰼲"  # nf-md-weather_night_fog
+        elif any(word in desc for word in ["wind", "breeze", "gust"]):
+            return "󰖝"  # nf-md-weather_windy
+        elif any(word in desc for word in ["tornado", "hurricane", "cyclone"]):
+            return "󰼸"  # nf-md-weather_tornado
+        else:
+            return ""  # nf-md-weather_unknown
 
 
 class GCal(CachedProxyRequest):
@@ -633,6 +686,100 @@ class StandardWidgetBox(WidgetBox):
 
 
 class WeatherWidgetBox(StandardWidgetBox):
-    def __init__(self, **kwargs):
+    def __init__(self, start_opened=False, **kwargs):
         kwargs["name"] = "WeatherWidgetBox"
-        super().__init__(**kwargs)
+        super().__init__(start_opened=start_opened, **kwargs)
+
+
+class BatteryWidgetBox(StandardWidgetBox):
+    def __init__(self, start_opened=False, **kwargs):
+        kwargs["name"] = "BatteryWidgetBox"
+        super().__init__(start_opened=start_opened, **kwargs)
+
+
+class CustomBattery(Battery):
+    def poll(self):
+        return_val = super().poll()
+        self.set_parent_widget()
+        return return_val
+
+    def set_parent_widget(self):
+        try:
+            status = self._battery.update_status()
+        except RuntimeError as e:
+            return f"Error: {e}"
+
+        charging = status.state == BatteryState.CHARGING
+        icon = self.battery_icon(status.percent, charging)
+
+        battery_widget_box = qtile.widgets_map.get("BatteryWidgetBox")
+        battery_widget_box.text = battery_widget_box.text_closed = (
+            battery_widget_box.text_open
+        ) = icon
+        battery_widget_box.layout.colour = self.layout.colour
+        battery_widget_box.bar.draw()
+
+    def battery_icon(self, percent, charging: bool = False) -> str:
+        """
+        Return an nf-md (Nerd Font - Material Design) icon name representing battery level.
+
+        Args:
+            percent: battery percentage (0-100). If None or out of range, returns unknown icon.
+            charging: if True, prefers charging icon variants when available.
+
+        Returns:
+            A string containing an nf-md icon name that you can use in statusbars/terminals
+            (e.g. "nf-md-battery-80" or "nf-md-battery-charging").
+        """
+
+        # Handle explicit unknown / invalid
+        if percent is None or percent < 0:
+            return "󰂑"  # nf-md-battery_unknown
+
+        percent *= 100
+
+        # Clamp to 0..100
+        percent = max(0, min(100, percent))
+
+        # Map ranges to common Material Design battery icons
+        if percent <= 10:
+            if charging:
+                return "󰢜"  # nf-md-battery_charging_10
+            return "󱃍"  # nf-md-battery_alert_variant_outline
+        if percent <= 20:
+            if charging:
+                return "󰂆"
+            return "󰁻"
+        if percent <= 30:
+            if charging:
+                return "󰂇"
+            return "󰁼"
+        if percent <= 40:
+            if charging:
+                return "󰂈"
+            return "󰁽"
+        if percent <= 50:
+            if charging:
+                return "󰢝"
+            return "󰁾"
+        if percent <= 60:
+            if charging:
+                return "󰂉"
+            return "󰁿"
+        if percent <= 70:
+            if charging:
+                return "󰢞"
+            return "󰂀"
+        if percent <= 80:
+            if charging:
+                return "󰂊"
+            return "󰂁"
+        if percent <= 90:
+            if charging:
+                return "󰂋"
+            return "󰂂"
+        else:
+            if charging:
+                return "󰂅"
+            # 91-100
+            return "󰁹"  # full/near-full icon

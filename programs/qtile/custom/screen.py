@@ -16,6 +16,8 @@ from custom.widget import (
     WallpaperDir,
     Weather,
     WeatherWidgetBox,
+    BatteryWidgetBox,
+    CustomBattery,
 )
 
 BATTERY_PATHS = [
@@ -290,10 +292,10 @@ top_widgets.extend(
                     update_interval=3600,  # Update every hour
                     font=extension_defaults.font,
                     fontsize=extension_defaults.fontsize,
-                    debug=True,
+                    debug=False,
                 ),
             ),
-            text_closed="󰖕",
+            text_closed="",
             background=extension_defaults.indigo,
             foreground=extension_defaults.white,
             fontsize=extension_defaults.widget_box_iconsize,
@@ -320,9 +322,9 @@ if any([path.exists() for path in BATTERY_PATHS]):
                 foreground=extension_defaults.violet,
                 padding=0,
             ),
-            StandardWidgetBox(
+            BatteryWidgetBox(
                 widgets=(
-                    widget.Battery(
+                    CustomBattery(
                         energy_now_file="charge_now",
                         energy_full_file="charge_full",
                         power_now_file="current_now",
@@ -337,11 +339,11 @@ if any([path.exists() for path in BATTERY_PATHS]):
                         fontsize=extension_defaults.fontsize,
                     ),
                 ),
-                text_closed="󰂎",
-                start_opened=True,
+                text_closed="",
                 background=extension_defaults.violet,
                 foreground=extension_defaults.white,
                 fontsize=extension_defaults.widget_box_iconsize,
+                start_opened=False,
             ),
             widget.TextBox(
                 "",
