@@ -384,7 +384,7 @@ class Weather(CachedProxyRequest):
 
         # Detect time of day context
         now = datetime.now()
-        if 6 < now.hour < 17:
+        if 6 < now.hour < 18:
             is_night = False
         else:
             is_night = True
