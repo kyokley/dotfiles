@@ -743,44 +743,43 @@ class CustomBattery(Battery):
         percent = max(0, min(100, percent))
 
         # Map ranges to common Material Design battery icons
-        if percent <= 10:
+        if percent <= 15:
             if charging:
                 return "󰢜"  # nf-md-battery_charging_10
             return "󱃍"  # nf-md-battery_alert_variant_outline
-        if percent <= 20:
+        if percent <= 25:
             if charging:
                 return "󰂆"
             return "󰁻"
-        if percent <= 30:
+        if percent <= 35:
             if charging:
                 return "󰂇"
             return "󰁼"
-        if percent <= 40:
+        if percent <= 45:
             if charging:
                 return "󰂈"
             return "󰁽"
-        if percent <= 50:
+        if percent <= 55:
             if charging:
                 return "󰢝"
             return "󰁾"
-        if percent <= 60:
+        if percent <= 65:
             if charging:
                 return "󰂉"
             return "󰁿"
-        if percent <= 70:
+        if percent <= 75:
             if charging:
                 return "󰢞"
             return "󰂀"
-        if percent <= 80:
+        if percent <= 85:
             if charging:
                 return "󰂊"
             return "󰂁"
-        if percent <= 90:
+        if percent <= 95:
             if charging:
                 return "󰂋"
             return "󰂂"
         else:
             if charging:
                 return "󰂅"
-            # 91-100
             return "󰁹"  # full/near-full icon
