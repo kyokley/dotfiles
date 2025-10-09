@@ -372,12 +372,30 @@ top_widgets.extend(
             foreground=extension_defaults.white,
             fontsize=extension_defaults.widget_box_iconsize,
         ),
-        widget.Systray(icon_size=extension_defaults.iconsize),
-        widget.Clock(
-            foreground=extension_defaults.foreground_yellow,
-            format="%a %b %d %H:%M:%S",
-            font=extension_defaults.font,
-            fontsize=extension_defaults.fontsize,
+        widget.Spacer(length=10),
+        StandardWidgetBox(
+            widgets=(widget.Systray(icon_size=extension_defaults.iconsize),),
+            text_closed="󰒔",
+            start_opened=True,
+            background=extension_defaults.black,
+            foreground=extension_defaults.white,
+            fontsize=extension_defaults.widget_box_iconsize,
+        ),
+        widget.Spacer(length=10),
+        StandardWidgetBox(
+            widgets=(
+                widget.Clock(
+                    foreground=extension_defaults.foreground_yellow,
+                    format="%a %b %d %H:%M:%S",
+                    font=extension_defaults.font,
+                    fontsize=extension_defaults.fontsize,
+                ),
+            ),
+            text_closed="󰅐",
+            start_opened=True,
+            background=extension_defaults.black,
+            foreground=extension_defaults.white,
+            fontsize=extension_defaults.widget_box_iconsize,
         ),
         # widget.Notify(
         #     font=extension_defaults.font,
