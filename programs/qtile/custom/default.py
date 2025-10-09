@@ -17,7 +17,7 @@ class ExtensionDefault:
     layout_margin: int = 40
     bar_margin: int = 10
     bar_thickness: int = 40
-    bar_border_width: int = 10
+    bar_border_width: int = 5
     red: str = "#FF0000"
     orange: str = "#FF7F00"
     yellow: str = "#FFFF00"

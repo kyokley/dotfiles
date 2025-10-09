@@ -233,6 +233,7 @@ class Snake(base._Widget):
     @expose_command
     def start(self):
         """Start the game."""
+        self.stop()
         self.restart()
 
     @expose_command

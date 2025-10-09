@@ -65,8 +65,9 @@ top_widgets = [
         fontsize=extension_defaults.fontsize,
     ),
     Tetris(
+        name="Tetris",
         blockify=True,
-        mouse_callbacks={"Button1": lambda: None},
+        mouse_callbacks={"Button1": lambda: qtile.widgets_map.get("Tetris").start()},
     ),
     widget.Spacer(length=10),
     widget.TextBox(
@@ -381,7 +382,11 @@ top_widgets.extend(
             foreground=extension_defaults.white,
             fontsize=extension_defaults.widget_box_iconsize,
         ),
-        widget.Spacer(length=10),
+        widget.TextBox(
+            "|",
+            font=extension_defaults.font,
+            fontsize=extension_defaults.fontsize,
+        ),
         StandardWidgetBox(
             widgets=(
                 widget.Clock(
@@ -394,7 +399,7 @@ top_widgets.extend(
             text_closed="󰅐",
             start_opened=True,
             background=extension_defaults.black,
-            foreground=extension_defaults.white,
+            foreground=extension_defaults.foreground_yellow,
             fontsize=extension_defaults.widget_box_iconsize,
         ),
         # widget.Notify(
@@ -435,7 +440,11 @@ SCREENS = [
                 ),
                 widget.Spacer(length=10),
                 Snake(
+                    name="Snake",
                     size=4,
+                    mouse_callbacks={
+                        "Button1": lambda: qtile.widgets_map.get("Snake").start()
+                    },
                 ),
                 widget.Spacer(length=10),
                 widget.TextBox(

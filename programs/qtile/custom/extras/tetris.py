@@ -40,7 +40,7 @@ SHAPES = [
     [[0, 0, 1], [1, 1, 1]],  # L
     [[0, 1, 1], [1, 1, 0]],  # S
     [[1, 1, 0], [0, 1, 1]],  # Z
-    [[0, 1, 0], [1, 1, 1], [0, 1, 0]],  # +
+    # [[0, 1, 0], [1, 1, 1], [0, 1, 0]],  # +
 ]
 
 
@@ -477,6 +477,7 @@ class Tetris(base._Widget):
     @expose_command
     def start(self):
         """Start game."""
+        self.stop()
         self.restart()
 
     @expose_command
