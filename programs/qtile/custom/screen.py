@@ -69,7 +69,10 @@ top_widgets = [
     Tetris(
         name="Tetris",
         blockify=True,
-        mouse_callbacks={"Button1": lambda: qtile.widgets_map.get("Tetris").start()},
+        mouse_callbacks={
+            "Button1": lambda: qtile.widgets_map.get("Tetris").start(),
+            "Button3": lambda: qtile.widgets_map.get("Tetris").stop(),
+        },
     ),
     widget.Spacer(length=10),
     widget.TextBox(
@@ -445,7 +448,8 @@ SCREENS = [
                     name="Snake",
                     size=4,
                     mouse_callbacks={
-                        "Button1": lambda: qtile.widgets_map.get("Snake").start()
+                        "Button1": lambda: qtile.widgets_map.get("Snake").start(),
+                        "Button3": lambda: qtile.widgets_map.get("Snake").stop(),
                     },
                 ),
                 widget.Spacer(length=10),
