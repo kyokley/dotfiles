@@ -17,6 +17,8 @@ from custom.widget import (
     Weather,
     WeatherWidgetBox,
     BatteryWidgetBox,
+    VolumeWidgetBox,
+    CustomVolume,
     CustomBattery,
 )
 
@@ -359,9 +361,9 @@ if any([path.exists() for path in BATTERY_PATHS]):
 top_widgets.extend(
     [
         widget.Spacer(length=10),
-        StandardWidgetBox(
+        VolumeWidgetBox(
             widgets=(
-                widget.Volume(
+                CustomVolume(
                     foreground=extension_defaults.foreground,
                     font=extension_defaults.font,
                     fontsize=extension_defaults.fontsize,

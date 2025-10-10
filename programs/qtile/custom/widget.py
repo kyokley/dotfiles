@@ -13,7 +13,7 @@ from pathlib import Path
 import requests
 from dateutil import tz
 from libqtile.log_utils import logger
-from libqtile.widget import WidgetBox, Battery
+from libqtile.widget import WidgetBox, Battery, Volume
 from libqtile.widget.battery import BatteryState
 from libqtile.widget.generic_poll_text import GenPollText
 from libqtile.widget.graph import CPUGraph
@@ -696,6 +696,54 @@ class BatteryWidgetBox(StandardWidgetBox):
     def __init__(self, start_opened=False, **kwargs):
         kwargs["name"] = "BatteryWidgetBox"
         super().__init__(start_opened=start_opened, **kwargs)
+
+
+class VolumeWidgetBox(StandardWidgetBox):
+    def __init__(self, start_opened=False, **kwargs):
+        kwargs["name"] = "VolumeWidgetBox"
+        super().__init__(start_opened=start_opened, **kwargs)
+
+
+class CustomVolume(Volume):
+    def update(self):
+        super().update()
+        volume_widget_box_icon = self.parent_widget()
+        volume_widget_box = qtile.widgets_map.get("VolumeWidgetBox")
+        volume_widget_box.text = volume_widget_box.text_open = (
+            volume_widget_box.text_closed
+        ) = volume_widget_box_icon
+        volume_widget_box.bar.draw()
+
+    def parent_widget(self):
+        """
+        Return a Nerd Font (nf-md) icon name representing the given volume percentage.
+
+        Args:
+            percent: volume percentage (expected 0..100). Values outside the range are clamped.
+
+        Returns:
+            A string with an nf-md icon name. Example outputs:
+                'nf-md-volume-off', 'nf-md-volume-mute', 'nf-md-volume-low',
+                'nf-md-volume-medium', 'nf-md-volume-high'
+            If you're not using a matching Nerd Font set, the function falls back to an emoji label.
+        """
+        # clamp input to 0..100 and ensure int
+        p = max(0, min(100, int(self.volume)))
+
+        # exact zero -> fully off
+        if self.is_mute or p == 0:
+            return "󰖁"  # silent / muted
+
+        # very low volumes
+        if p < 10:
+            return "󰕿"
+
+        # low but audible
+        if p < 40:
+            return "󰖀"
+
+        # loud
+        return "󰕾"
 
 
 class CustomBattery(Battery):
