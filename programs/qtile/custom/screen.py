@@ -73,6 +73,7 @@ top_widgets = [
             "Button1": lambda: qtile.widgets_map.get("Tetris").start(),
             "Button3": lambda: qtile.widgets_map.get("Tetris").stop(),
         },
+        autostart=False,
     ),
     widget.Spacer(length=10),
     widget.TextBox(
@@ -451,6 +452,7 @@ SCREENS = [
                         "Button1": lambda: qtile.widgets_map.get("Snake").start(),
                         "Button3": lambda: qtile.widgets_map.get("Snake").stop(),
                     },
+                    autostart=False,
                 ),
                 widget.Spacer(length=10),
                 widget.TextBox(
