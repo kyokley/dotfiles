@@ -21,7 +21,7 @@
   helperbot-script = pkgs.writeShellScriptBin "autohelperbot" ''
     PATH=$PATH:${lib.makeBinPath [pkgs.git]}
     cd ${helperbot-dir}
-    ${pkgs.python312Packages.uv}/bin/uv run helperbot -ad 3600
+    ${pkgs.python312Packages.uv}/bin/uv run helperbot -ad 3000
   '';
 in {
   imports = [
