@@ -82,7 +82,6 @@
                   -e "PGTZ=America/Chicago" \
                   -v "$HOME/.config/pgcli/history:/root/.config/pgcli/history" \
                   -v "/tmp:/tmp" \
-                  -v "$(pwd):/workspace" \
                   -v "$HOME/.pgpass:/root/.pgpass" \
                   -v "$HOME/.pg_service.conf:/root/.pg_service.conf" \
                   kyokley/pgcli \
