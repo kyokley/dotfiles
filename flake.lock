@@ -172,6 +172,22 @@
         "type": "github"
       }
     },
+    "nixpkgs_3": {
+      "locked": {
+        "lastModified": 1760862643,
+        "narHash": "sha256-PXwG0TM7Ek87DNx4LbGWuD93PbFeKAJs4FfALtp7Wo0=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "33c6dca0c0cb31d6addcd34e90a63ad61826b28c",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixos-25.05",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "nixvim": {
       "inputs": {
         "flake-parts": "flake-parts",
@@ -267,7 +283,8 @@
         "nixpkgs": "nixpkgs",
         "nixpkgs-unstable": "nixpkgs-unstable",
         "nixvim": "nixvim",
-        "qtile-flake": "qtile-flake"
+        "qtile-flake": "qtile-flake",
+        "usql": "usql"
       }
     },
     "systems": {
@@ -297,6 +314,25 @@
       "original": {
         "owner": "nix-systems",
         "repo": "default",
+        "type": "github"
+      }
+    },
+    "usql": {
+      "inputs": {
+        "nixpkgs": "nixpkgs_3"
+      },
+      "locked": {
+        "lastModified": 1761012632,
+        "narHash": "sha256-vSf5IHw3KPqCiSyWYUlsmMSJsAdCD+Rir4CFH0s46j8=",
+        "owner": "kyokley",
+        "repo": "psql-pager",
+        "rev": "14ce0e37ec057de698cc58a2c534fcad67745cd4",
+        "type": "github"
+      },
+      "original": {
+        "owner": "kyokley",
+        "ref": "upgrade",
+        "repo": "psql-pager",
         "type": "github"
       }
     }

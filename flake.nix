@@ -16,6 +16,9 @@
       url = "github:qtile/qtile/v0.33.0";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    usql = {
+      url = "github:kyokley/psql-pager/upgrade";
+    };
   };
 
   outputs = {
@@ -24,6 +27,7 @@
     home-manager,
     nixvim,
     qtile-flake,
+    usql,
     ...
   }: let
     aarch64_darwin = "aarch64-darwin";
@@ -49,6 +53,7 @@
             home-manager.extraSpecialArgs = {
               vars = import ./hosts/mars/vars.nix;
               inherit nixvim;
+              inherit usql;
               pkgs-unstable = import nixpkgs-unstable {
                 config.allowUnfree = true;
                 system = x86_linux;
@@ -108,6 +113,7 @@
             home-manager.extraSpecialArgs = {
               vars = import ./hosts/saturn/vars.nix;
               inherit nixvim;
+              inherit usql;
               pkgs-unstable = import nixpkgs-unstable {
                 config.allowUnfree = true;
                 system = x86_linux;
@@ -130,6 +136,7 @@
             system = aarch64_darwin;
           };
           inherit nixvim;
+          inherit usql;
         };
         modules = [
           ./hosts/dioxygen/dioxygen.nix
