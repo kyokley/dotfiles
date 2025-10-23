@@ -322,16 +322,15 @@
         "nixpkgs": "nixpkgs_3"
       },
       "locked": {
-        "lastModified": 1761012632,
-        "narHash": "sha256-vSf5IHw3KPqCiSyWYUlsmMSJsAdCD+Rir4CFH0s46j8=",
+        "lastModified": 1761185330,
+        "narHash": "sha256-Kf2kOfPJOBqtHpSQN1yYTU498G3uuRCgZy0U2119iUk=",
         "owner": "kyokley",
         "repo": "psql-pager",
-        "rev": "14ce0e37ec057de698cc58a2c534fcad67745cd4",
+        "rev": "2807dcd8eefdf815f77556309728027b29a1e465",
         "type": "github"
       },
       "original": {
         "owner": "kyokley",
-        "ref": "upgrade",
         "repo": "psql-pager",
         "type": "github"
       }

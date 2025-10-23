@@ -17,7 +17,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     usql = {
-      url = "github:kyokley/psql-pager/upgrade";
+      url = "github:kyokley/psql-pager";
     };
   };
 
