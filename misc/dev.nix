@@ -13,7 +13,7 @@
     pkgs-unstable.devenv
     nixvim.packages.${pkgs.stdenv.hostPlatform.system}.default
     pkgs.direnv
-    usql.defaultPackage.${pkgs.stdenv.hostPlatform.system}
+    usql.packages.${pkgs.stdenv.hostPlatform.system}.default
   ];
 
   home.file = {
