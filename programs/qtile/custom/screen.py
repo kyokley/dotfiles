@@ -486,6 +486,7 @@ SCREENS = [
                     ],
                     font=extension_defaults.font,
                     fontsize=extension_defaults.fontsize,
+                    fontshadow="#000000",
                 ),
                 widget.Spacer(),
             ],
