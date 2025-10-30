@@ -388,30 +388,6 @@ top_widgets.extend(
             foreground=extension_defaults.white,
             fontsize=extension_defaults.widget_box_iconsize,
         ),
-        widget.TextBox(
-            "|",
-            font=extension_defaults.font,
-            fontsize=extension_defaults.fontsize,
-        ),
-        StandardWidgetBox(
-            widgets=(
-                widget.Clock(
-                    foreground=extension_defaults.foreground_yellow,
-                    format="%a %b %d %H:%M:%S",
-                    font=extension_defaults.font,
-                    fontsize=extension_defaults.fontsize,
-                ),
-            ),
-            text_closed="󰅐",
-            start_opened=True,
-            background=extension_defaults.black,
-            foreground=extension_defaults.foreground_yellow,
-            fontsize=extension_defaults.widget_box_iconsize,
-        ),
-        # widget.Notify(
-        #     font=extension_defaults.font,
-        #     fontsize=extension_defaults.fontsize,
-        # )
         widget.Spacer(length=10),
     ]
 )
@@ -493,6 +469,29 @@ SCREENS = [
             extension_defaults.bar_thickness,
             margin=extension_defaults.bar_margin,
             border_width=extension_defaults.bar_border_width,
+        ),
+        right=bar.Bar(
+            [
+                widget.Spacer(),
+                widget.VerticalClock(
+                    foreground=extension_defaults.foreground_yellow,
+                    format=[
+                        "%a",
+                        "%b",
+                        "%d",
+                        "",
+                        "%H",
+                        "%M",
+                        "%S",
+                    ],
+                    font=extension_defaults.font,
+                    fontsize=extension_defaults.fontsize,
+                ),
+                widget.Spacer(),
+            ],
+            extension_defaults.bar_thickness,
+            background="#00000000",
+            margin=extension_defaults.bar_margin,
         ),
     ),
 ]
