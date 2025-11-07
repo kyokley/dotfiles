@@ -240,27 +240,6 @@
         "type": "github"
       }
     },
-    "ovpnModule": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1762446772,
-        "narHash": "sha256-UG0jbUwi4OnSzBW3qRm0ZfE+APZYDzjJ4TaoSNFyhZQ=",
-        "ref": "main",
-        "rev": "f35356194d4dcb1a1bd6fe7556c060b43725f709",
-        "revCount": 8,
-        "type": "git",
-        "url": "ssh://git@venus.ftpaccess.cc:10022/kyokley/ovpn.git"
-      },
-      "original": {
-        "ref": "main",
-        "type": "git",
-        "url": "ssh://git@venus.ftpaccess.cc:10022/kyokley/ovpn.git"
-      }
-    },
     "qtile-flake": {
       "inputs": {
         "nixpkgs": [
@@ -288,7 +267,6 @@
         "nixpkgs": "nixpkgs",
         "nixpkgs-unstable": "nixpkgs-unstable",
         "nixvim": "nixvim",
-        "ovpnModule": "ovpnModule",
         "qtile-flake": "qtile-flake",
         "usql": "usql"
       }
