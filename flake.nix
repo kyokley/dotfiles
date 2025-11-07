@@ -20,10 +20,6 @@
       url = "github:kyokley/psql-pager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    ovpnModule = {
-      url = "git+ssh://git@venus.ftpaccess.cc:10022/kyokley/ovpn.git?ref=main";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
   };
 
   outputs = {
@@ -33,7 +29,6 @@
     nixvim,
     qtile-flake,
     usql,
-    ovpnModule,
     ...
   }: let
     aarch64_darwin = "aarch64-darwin";
@@ -106,7 +101,6 @@
             config.allowUnfree = true;
             system = x86_linux;
           };
-          inherit ovpnModule;
         };
         modules = [
           (_: {nixpkgs.overlays = [qtile-flake.overlays.default];})
