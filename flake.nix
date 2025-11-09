@@ -94,37 +94,6 @@
           }
         ];
       };
-
-      "saturn" = nixpkgs.lib.nixosSystem {
-        specialArgs = {
-          pkgs-unstable = import nixpkgs-unstable {
-            config.allowUnfree = true;
-            system = x86_linux;
-          };
-        };
-        modules = [
-          (_: {nixpkgs.overlays = [qtile-flake.overlays.default];})
-          ./programs/nixos/common-configuration.nix
-          ./programs/nixos/hardware-configuration.nix
-          ./hosts/saturn/configuration.nix
-          ./hosts/saturn/hardware-configuration.nix
-          home-manager.nixosModules.home-manager
-          {
-            home-manager.users.yokley = import ./hosts/saturn/saturn.nix;
-            home-manager.extraSpecialArgs = {
-              vars = import ./hosts/saturn/vars.nix;
-              inherit nixvim;
-              inherit usql;
-              pkgs-unstable = import nixpkgs-unstable {
-                config.allowUnfree = true;
-                system = x86_linux;
-              };
-            };
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-          }
-        ];
-      };
     };
 
     homeConfigurations = {
