@@ -13,7 +13,7 @@ from pathlib import Path
 import requests
 from dateutil import tz
 from libqtile.log_utils import logger
-from libqtile.widget import WidgetBox, Battery, Volume, TextBox, base
+from libqtile.widget import WidgetBox, Battery, Volume, TextBox, base, Net
 from libqtile.widget.battery import BatteryState
 from libqtile.widget.generic_poll_text import GenPollText
 from libqtile.widget.graph import CPUGraph
@@ -51,6 +51,10 @@ GCAL_CMD = (
     "kyokley/gcalcli"
 )
 KRILL_CMD = f"docker run --rm -t --cpus=.25 --net=host --env KRILL_PROXY={KRILL_PROXY} kyokley/krill -S /app/sources.txt --snapshot"
+TAILSCALE_WHICH_CMD = "which tailscale"
+TAILSCALE_CMD = "tailscale status"
+TAILSCALE_TIMEOUT = 5
+TAILSCALE_FAIL = b"Tailscale is stopped"
 
 KRILL_BROWSER = determine_browser()
 MAX_KRILL_LENGTH = 100
@@ -229,30 +233,6 @@ class WallpaperDir(DebugGenPollText):
         elif button == BUTTON_DOWN:
             self._dir_index -= 1
             self.set_wallpaper(use_random=False)
-
-
-class ScreenLockIndicator(DebugGenPollText):
-    defaults = [
-        ("update_interval", 10, "Update interval"),
-    ]
-
-    def __init__(self, **config):
-        config["func"] = self.check_autolock
-        super().__init__(**config)
-        self.add_defaults(ScreenLockIndicator.defaults)
-
-    def check_autolock(self):
-        try:
-            with open(XAUTOLOCK_STATUS_PATH, "r") as f:
-                output = f.read().strip()
-
-            if output == "disabled":
-                return "SL Disabled"
-            elif output == "enabled":
-                return ""
-        except FileNotFoundError:
-            pass
-        return "SL Status Unknown"
 
 
 class CachedProxyRequest(DebugGenPollText):
@@ -681,6 +661,56 @@ class StandardWidgetBox(WidgetBox):
 
         if "text_open" not in kwargs:
             self.text_open = f"{text_closed}" if text_closed is not None else None
+
+
+class TailscaleNetWidgetBox(StandardWidgetBox):
+    def __init__(self, start_opened=False, **kwargs):
+        kwargs["name"] = "TailscaleNetWidgetBox"
+        super().__init__(start_opened=start_opened, **kwargs)
+
+
+class TailscaleNet(Net, DebugWidgetMixin):
+    def __init__(self, **config):
+        super().__init__(**config)
+        self.default_foreground = self.foreground
+
+    def poll(self):
+        tailscale_net_widget_box = qtile.widgets_map.get("TailscaleNetWidgetBox")
+        if self._check_tailscale():
+            tailscale_net_widget_box.layout.colour = self.default_foreground
+        else:
+            tailscale_net_widget_box.layout.colour = extension_defaults.red
+        tailscale_net_widget_box.bar.draw()
+
+        return super().poll()
+
+    def _has_tailscale(self):
+        cmd = shlex.split(TAILSCALE_WHICH_CMD)
+
+        try:
+            subprocess.run(
+                cmd, check=True, capture_output=False, timeout=TAILSCALE_TIMEOUT
+            )
+            return True
+        except subprocess.CalledProcessError:
+            return False
+
+    def _check_tailscale(self):
+        if self._has_tailscale():
+            cmd = shlex.split(TAILSCALE_CMD)
+
+            try:
+                proc = subprocess.run(
+                    cmd, check=True, capture_output=True, timeout=TAILSCALE_TIMEOUT
+                )
+                self._print(f"{proc=}")
+
+                if TAILSCALE_FAIL in proc.stdout:
+                    return False
+                return True
+            except subprocess.CalledProcessError:
+                return False
+        return True
 
 
 class WeatherWidgetBox(StandardWidgetBox):

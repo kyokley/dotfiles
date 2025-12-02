@@ -21,6 +21,8 @@ from custom.widget import (
     CustomVolume,
     CustomBattery,
     CustomWindowNameEndcap,
+    TailscaleNetWidgetBox,
+    TailscaleNet,
 )
 
 BATTERY_PATHS = [
@@ -243,9 +245,9 @@ top_widgets = [
         foreground=extension_defaults.cyan,
         padding=0,
     ),
-    StandardWidgetBox(
+    TailscaleNetWidgetBox(
         widgets=(
-            widget.Net(
+            TailscaleNet(
                 foreground=extension_defaults.black,
                 background=extension_defaults.cyan,
                 font=extension_defaults.font,
@@ -253,6 +255,7 @@ top_widgets = [
                 interface=os.environ.get("QTILE_NET_INTERFACE"),
                 format="{down:3.0f}{down_suffix:2} ↓↑ {up:3.0f}{up_suffix:2}",
                 update_interval=2,
+                debug=False,
             ),
         ),
         text_closed="\uef09",
