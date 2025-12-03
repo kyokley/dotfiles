@@ -5,6 +5,8 @@ import random
 import re
 import shlex
 import subprocess
+import shutil
+
 from dataclasses import dataclass
 from datetime import datetime, timedelta
 from enum import StrEnum
@@ -51,7 +53,6 @@ GCAL_CMD = (
     "kyokley/gcalcli"
 )
 KRILL_CMD = f"docker run --rm -t --cpus=.25 --net=host --env KRILL_PROXY={KRILL_PROXY} kyokley/krill -S /app/sources.txt --snapshot"
-TAILSCALE_WHICH_CMD = "which tailscale"
 TAILSCALE_CMD = "tailscale status"
 TAILSCALE_TIMEOUT = 5
 TAILSCALE_FAIL = b"Tailscale is stopped"
@@ -684,19 +685,8 @@ class TailscaleNet(Net, DebugWidgetMixin):
 
         return super().poll()
 
-    def _has_tailscale(self):
-        cmd = shlex.split(TAILSCALE_WHICH_CMD)
-
-        try:
-            subprocess.run(
-                cmd, check=True, capture_output=False, timeout=TAILSCALE_TIMEOUT
-            )
-            return True
-        except subprocess.CalledProcessError:
-            return False
-
     def _check_tailscale(self):
-        if self._has_tailscale():
+        if shutil.which("tailscale"):
             cmd = shlex.split(TAILSCALE_CMD)
 
             try:
@@ -708,7 +698,8 @@ class TailscaleNet(Net, DebugWidgetMixin):
                 if TAILSCALE_FAIL in proc.stdout:
                     return False
                 return True
-            except subprocess.CalledProcessError:
+            except (subprocess.CalledProcessError, FileNotFoundError) as e:
+                self._print(f"{e=}")
                 return False
         return True
 
