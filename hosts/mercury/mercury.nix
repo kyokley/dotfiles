@@ -8,7 +8,7 @@
     ../../home.nix
   ];
 
-  programs.git.userEmail = "kyokley@mercury";
+  programs.git.settings.user.email = "kyokley@mercury";
 
   home.sessionVariables = {
     QTILE_NET_INTERFACE = "enp14s0";

@@ -3,12 +3,12 @@
 in {
   services = {
     logind = {
-      lidSwitch = "ignore";
-      powerKey = "ignore";
-      extraConfig = ''
-        IdleAction=suspend
-        IdleActionSec=1m
-      '';
+      settings.Login = {
+        HandleLidSwitch = "ignore";
+        HandlePowerKey = "ignore";
+        IdleAction = "suspend";
+        IdleActionSec = "1m";
+      };
     };
     acpid = {
       enable = true;

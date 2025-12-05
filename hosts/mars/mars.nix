@@ -15,7 +15,7 @@ in {
     ../../misc/dev.nix
   ];
 
-  programs.git.userEmail = "kyokley@mars";
+  programs.git.settings.user.email = "kyokley@mars";
 
   home.sessionVariables = {
     QTILE_NET_INTERFACE = "wlp1s0";

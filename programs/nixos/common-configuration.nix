@@ -54,7 +54,7 @@
         requests
         pillow
         pywal
-        dateutil
+        python-dateutil
       ];
   };
 

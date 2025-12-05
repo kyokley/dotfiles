@@ -70,7 +70,7 @@ in {
   };
 
   programs = {
-    git.userEmail = "kyokley@jupiter";
+    git.settings.user.email = "kyokley@jupiter";
 
     borgmatic = {
       enable = true;

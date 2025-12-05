@@ -2,7 +2,7 @@
   home.packages = [
     pkgs.universal-ctags
   ];
-  programs.git.extraConfig.core.editor = "vim";
+  programs.git.settings.core.editor = "vim";
 
   home.sessionVariables = {
     EDITOR = "vim";
