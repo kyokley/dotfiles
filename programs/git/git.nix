@@ -7,7 +7,7 @@
       };
       user.name = "Kevin Yokley";
       user.email = lib.mkDefault "kyokley2@gmail.com";
-      aliases = {
+      alias = {
         mt = "!nvim -c DiffviewOpen";
         lol = ''log --graph --decorate --pretty=oneline --abbrev-commit --max-count=1000'';
         lola = ''log --graph --decorate --pretty=oneline --abbrev-commit --all --max-count=1000'';
