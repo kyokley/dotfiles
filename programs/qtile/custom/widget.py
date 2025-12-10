@@ -15,7 +15,7 @@ from pathlib import Path
 import requests
 from dateutil import tz
 from libqtile.log_utils import logger
-from libqtile.widget import WidgetBox, Battery, Volume, TextBox, base, Net
+from libqtile.widget import WidgetBox, Battery, Volume, TextBox, base, Net, DF
 from libqtile.widget.battery import BatteryState
 from libqtile.widget.generic_poll_text import GenPollText
 from libqtile.widget.graph import CPUGraph
@@ -668,20 +668,19 @@ class TailscaleNetWidgetBox(StandardWidgetBox):
     def __init__(self, start_opened=False, **kwargs):
         kwargs["name"] = "TailscaleNetWidgetBox"
         super().__init__(start_opened=start_opened, **kwargs)
+        self.default_foreground = self.foreground
 
 
 class TailscaleNet(Net, DebugWidgetMixin):
-    def __init__(self, **config):
-        super().__init__(**config)
-        self.default_foreground = self.foreground
-
     def poll(self):
-        tailscale_net_widget_box = qtile.widgets_map.get("TailscaleNetWidgetBox")
-        if self._check_tailscale():
-            tailscale_net_widget_box.layout.colour = self.default_foreground
-        else:
-            tailscale_net_widget_box.layout.colour = extension_defaults.red
-        tailscale_net_widget_box.bar.draw()
+        if tailscale_net_widget_box := qtile.widgets_map.get("TailscaleNetWidgetBox"):
+            if self._check_tailscale():
+                tailscale_net_widget_box.layout.colour = (
+                    tailscale_net_widget_box.default_foreground
+                )
+            else:
+                tailscale_net_widget_box.layout.colour = extension_defaults.red
+            tailscale_net_widget_box.bar.draw()
 
         return super().poll()
 
@@ -702,6 +701,21 @@ class TailscaleNet(Net, DebugWidgetMixin):
                 self._print(f"{e=}")
                 return False
         return True
+
+
+class DFWidgetBox(StandardWidgetBox):
+    def __init__(self, start_opened=False, **kwargs):
+        kwargs["name"] = "DFWidgetBox"
+        super().__init__(start_opened=start_opened, **kwargs)
+
+
+class WarningDF(DF, DebugWidgetMixin):
+    def draw(self):
+        super().draw()
+
+        if df_widget_box := qtile.widgets_map.get("DFWidgetBox"):
+            df_widget_box.layout.colour = self.layout.colour
+            df_widget_box.bar.draw()
 
 
 class WeatherWidgetBox(StandardWidgetBox):

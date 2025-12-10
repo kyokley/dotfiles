@@ -23,6 +23,8 @@ from custom.widget import (
     CustomWindowNameEndcap,
     TailscaleNetWidgetBox,
     TailscaleNet,
+    DFWidgetBox,
+    WarningDF,
 )
 
 BATTERY_PATHS = [
@@ -35,7 +37,7 @@ ROOT_DIR = "/"
 TERM = "kitty"
 
 disk_widgets = [
-    widget.DF(
+    WarningDF(
         visible_on_warn=False,
         font=extension_defaults.font,
         fontsize=extension_defaults.fontsize,
@@ -44,6 +46,8 @@ disk_widgets = [
         format="{p}: {r:.0f}%",
         partition=ROOT_DIR,
         mouse_callbacks={"Button1": lambda: qtile.spawn(f"{TERM} -bx ncdu {ROOT_DIR}")},
+        warn_space=50,
+        measurement="G",
     ),
 ]
 
@@ -157,7 +161,7 @@ top_widgets = [
         foreground=extension_defaults.orange,
         padding=0,
     ),
-    StandardWidgetBox(
+    DFWidgetBox(
         widgets=disk_widgets,
         text_closed="\uf0c7",
         background=extension_defaults.orange,
