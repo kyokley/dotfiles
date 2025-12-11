@@ -719,12 +719,17 @@ class DFWidgetBox(StandardWidgetBox):
 
 
 class CustomDF(DF, DebugWidgetMixin):
-    def draw(self):
-        super().draw()
+    def poll(self):
+        ret_val = super().poll()
 
         if df_widget_box := qtile.widgets_map.get("DFWidgetBox"):
-            df_widget_box.layout.colour = self.layout.colour
+            if self.user_free <= self.warn_space:
+                df_widget_box.layout.colour = extension_defaults.red
+            else:
+                df_widget_box.layout.colour = extension_defaults.black
             df_widget_box.bar.draw()
+
+        return ret_val
 
 
 class WeatherWidgetBox(StandardWidgetBox):
