@@ -24,7 +24,9 @@ from custom.widget import (
     TailscaleNetWidgetBox,
     TailscaleNet,
     DFWidgetBox,
-    WarningDF,
+    CustomDF,
+    CustomMemoryGraph,
+    MemoryGraphWidgetBox,
 )
 
 BATTERY_PATHS = [
@@ -37,7 +39,7 @@ ROOT_DIR = "/"
 TERM = "kitty"
 
 disk_widgets = [
-    WarningDF(
+    CustomDF(
         visible_on_warn=False,
         font=extension_defaults.font,
         fontsize=extension_defaults.fontsize,
@@ -183,17 +185,18 @@ top_widgets = [
         foreground=extension_defaults.yellow,
         padding=0,
     ),
-    StandardWidgetBox(
+    MemoryGraphWidgetBox(
         widgets=(
-            widget.MemoryGraph(
+            CustomMemoryGraph(
                 graph_color=extension_defaults.foreground,
                 mouse_callbacks={"Button1": lambda: qtile.spawn(f"{TERM} -bx htop")},
-                samples=40,  # FIX: Weird graph issue where only drawing on left
+                samples=40,
                 border_width=0,
                 border_color=extension_defaults.yellow,
                 font=extension_defaults.font,
                 fontsize=extension_defaults.fontsize,
                 background=extension_defaults.yellow,
+                warning_threshold=75,
             ),
         ),
         text_closed="\uefc5",

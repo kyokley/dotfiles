@@ -15,7 +15,16 @@ from pathlib import Path
 import requests
 from dateutil import tz
 from libqtile.log_utils import logger
-from libqtile.widget import WidgetBox, Battery, Volume, TextBox, base, Net, DF
+from libqtile.widget import (
+    WidgetBox,
+    Battery,
+    Volume,
+    TextBox,
+    base,
+    Net,
+    DF,
+    MemoryGraph,
+)
 from libqtile.widget.battery import BatteryState
 from libqtile.widget.generic_poll_text import GenPollText
 from libqtile.widget.graph import CPUGraph
@@ -709,7 +718,7 @@ class DFWidgetBox(StandardWidgetBox):
         super().__init__(start_opened=start_opened, **kwargs)
 
 
-class WarningDF(DF, DebugWidgetMixin):
+class CustomDF(DF, DebugWidgetMixin):
     def draw(self):
         super().draw()
 
@@ -911,3 +920,44 @@ class CustomWindowNameEndcap(TextBox):
     def finalize(self):
         self.remove_hooks()
         base._TextBox.finalize(self)
+
+
+class MemoryGraphWidgetBox(StandardWidgetBox):
+    def __init__(self, start_opened=False, **kwargs):
+        kwargs["name"] = "MemoryGraphWidgetBox"
+        super().__init__(start_opened=start_opened, **kwargs)
+        self.default_foreground = extension_defaults.black
+
+
+class CustomMemoryGraph(MemoryGraph):
+    defaults = [
+        (
+            "warning_threshold",
+            80,
+            "Percentage threshold for displaying warning icon",
+        ),
+    ]
+
+    def __init__(self, **config):
+        super().__init__(**config)
+        self.add_defaults(CustomMemoryGraph.defaults)
+        self.default_foreground = extension_defaults.black
+
+    def _mem_used_percent(self):
+        val = self._getvalues()
+        used = val["MemTotal"] - val["MemFree"] - val["Buffers"] - val["Cached"]
+        percent = 100 * (used / val["MemTotal"])
+        return percent
+
+    def update_graph(self):
+        super().update_graph()
+
+        if memory_graph_widget := qtile.widgets_map.get("MemoryGraphWidgetBox"):
+            percent = self._mem_used_percent()
+            if percent > self.warning_threshold:
+                memory_graph_widget.layout.colour = extension_defaults.red
+            else:
+                memory_graph_widget.layout.colour = (
+                    memory_graph_widget.default_foreground
+                )
+            memory_graph_widget.bar.draw()
