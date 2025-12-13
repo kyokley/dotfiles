@@ -231,7 +231,7 @@ top_widgets = [
                 font=extension_defaults.font,
                 fontsize=extension_defaults.fontsize,
                 background=extension_defaults.green,
-                warning_threshold=10,
+                warning_threshold=80,
             ),
         ),
         text_closed="\uf4bc",
