@@ -993,7 +993,7 @@ class CustomCPUGraph(CPUGraph):
         super().update_graph()
 
         if cpu_graph_widget := qtile.widgets_map.get("CPUGraphWidgetBox"):
-            percent = self._mem_used_percent()
+            percent = self.values[0]
             if percent > self.warning_threshold:
                 cpu_graph_widget.layout.colour = extension_defaults.red
             else:
