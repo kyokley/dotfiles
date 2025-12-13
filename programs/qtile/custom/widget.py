@@ -24,10 +24,10 @@ from libqtile.widget import (
     Net,
     DF,
     MemoryGraph,
+    CPUGraph,
 )
 from libqtile.widget.battery import BatteryState
 from libqtile.widget.generic_poll_text import GenPollText
-from libqtile.widget.graph import CPUGraph
 from libqtile import qtile, hook
 
 from custom.default import extension_defaults
@@ -966,3 +966,36 @@ class CustomMemoryGraph(MemoryGraph):
                     memory_graph_widget.default_foreground
                 )
             memory_graph_widget.bar.draw()
+
+
+class CPUGraphWidgetBox(StandardWidgetBox):
+    def __init__(self, start_opened=False, **kwargs):
+        kwargs["name"] = "CPUGraphWidgetBox"
+        super().__init__(start_opened=start_opened, **kwargs)
+        self.default_foreground = extension_defaults.black
+
+
+class CustomCPUGraph(CPUGraph):
+    defaults = [
+        (
+            "warning_threshold",
+            80,
+            "Percentage threshold for displaying warning icon",
+        ),
+    ]
+
+    def __init__(self, **config):
+        super().__init__(**config)
+        self.add_defaults(CustomMemoryGraph.defaults)
+        self.default_foreground = extension_defaults.black
+
+    def update_graph(self):
+        super().update_graph()
+
+        if cpu_graph_widget := qtile.widgets_map.get("CPUGraphWidgetBox"):
+            percent = self._mem_used_percent()
+            if percent > self.warning_threshold:
+                cpu_graph_widget.layout.colour = extension_defaults.red
+            else:
+                cpu_graph_widget.layout.colour = cpu_graph_widget.default_foreground
+            cpu_graph_widget.bar.draw()

@@ -11,7 +11,6 @@ from custom.layout import ScreenLayout
 from custom.utils import mount_exists
 from custom.widget import (
     Krill,
-    MaxCPUGraph,
     StandardWidgetBox,
     WallpaperDir,
     Weather,
@@ -27,6 +26,8 @@ from custom.widget import (
     CustomDF,
     CustomMemoryGraph,
     MemoryGraphWidgetBox,
+    CustomCPUGraph,
+    CPUGraphWidgetBox,
 )
 
 BATTERY_PATHS = [
@@ -219,9 +220,9 @@ top_widgets = [
         foreground=extension_defaults.green,
         padding=0,
     ),
-    StandardWidgetBox(
+    CPUGraphWidgetBox(
         widgets=(
-            MaxCPUGraph(
+            CustomCPUGraph(
                 graph_color=extension_defaults.foreground,
                 mouse_callbacks={"Button1": lambda: qtile.spawn(f"{TERM} -bx htop")},
                 samples=40,  # FIX: Weird graph issue where only drawing on left
@@ -230,6 +231,7 @@ top_widgets = [
                 font=extension_defaults.font,
                 fontsize=extension_defaults.fontsize,
                 background=extension_defaults.green,
+                warning_threshold=10,
             ),
         ),
         text_closed="\uf4bc",
