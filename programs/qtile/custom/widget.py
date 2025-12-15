@@ -6,6 +6,7 @@ import re
 import shlex
 import subprocess
 import shutil
+import psutil
 
 from dataclasses import dataclass
 from datetime import datetime, timedelta
@@ -975,27 +976,33 @@ class CPUGraphWidgetBox(StandardWidgetBox):
         self.default_foreground = extension_defaults.black
 
 
-class CustomCPUGraph(CPUGraph):
+class CustomCPUGraph(DebugWidgetMixin, CPUGraph):
     defaults = [
         (
             "warning_threshold",
             80,
             "Percentage threshold for displaying warning icon",
         ),
+        ("debug", False, "Enable additional debugging"),
     ]
 
     def __init__(self, **config):
         super().__init__(**config)
-        self.add_defaults(CustomMemoryGraph.defaults)
+        self.add_defaults(CustomCPUGraph.defaults)
         self.default_foreground = extension_defaults.black
 
+    def _getvalues(self):
+        return int(max(psutil.cpu_percent(percpu=True)))
+
     def update_graph(self):
-        super().update_graph()
+        percent = self._getvalues()
+        self.push(percent)
 
         if cpu_graph_widget := qtile.widgets_map.get("CPUGraphWidgetBox"):
-            percent = self.values[0]
             if percent > self.warning_threshold:
                 cpu_graph_widget.layout.colour = extension_defaults.red
+                self._print(f"Display is red {percent=}")
             else:
                 cpu_graph_widget.layout.colour = cpu_graph_widget.default_foreground
+                self._print(f"Display is black {percent=}")
             cpu_graph_widget.bar.draw()
