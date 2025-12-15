@@ -27,6 +27,8 @@
       "pyrightconfig.json"
       ".DS_Store"
       "__pycache__"
+      ".nixos-test-history"
+      "result"
     ];
   };
 
