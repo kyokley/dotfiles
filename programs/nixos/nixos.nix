@@ -72,8 +72,8 @@ in {
   };
 
   home.shellAliases = {
-    nixos-switch = "nixos-rebuild switch --refresh --use-remote-sudo --flake 'github:kyokley/dotfiles'";
-    nixos-test = "nixos-rebuild test --refresh --use-remote-sudo --flake 'github:kyokley/dotfiles'";
+    nixos-switch = "nixos-rebuild switch --refresh --sudo --flake 'github:kyokley/dotfiles'";
+    nixos-test = "nixos-rebuild test --refresh --sudo --flake 'github:kyokley/dotfiles'";
   };
 
   services.blueman-applet.enable = true;
