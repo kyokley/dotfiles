@@ -34,7 +34,7 @@
               delete from posts where createat < extract(epoch from (now() - interval '7 days'))::int8 * 1000;
               delete from reactions where postid not in (select id from posts);
               delete from fileinfo where postid not in (select id from posts);
-              rollback;
+              commit;
               "
           ''
         );
