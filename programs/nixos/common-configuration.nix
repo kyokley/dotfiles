@@ -27,8 +27,8 @@
 
   # Set your time zone.
   # time.timeZone = lib.mkDefault "America/Chicago";
-  services.automatic-timezoned.enable = true;
-  services.geoclue2.geoProviderUrl = "https://api.beacondb.net/v1/geolocate";
+  services.localtimed.enable = true;
+  services.geoclue2.enable = true;
 
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
