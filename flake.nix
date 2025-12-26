@@ -124,11 +124,6 @@
         };
         modules = [
           ./hosts/venus/venus.nix
-          {
-            home.packages = [
-              nixvim.packages.${x86_linux}.minimal
-            ];
-          }
         ];
       };
 
@@ -140,14 +135,10 @@
             config.allowUnfree = true;
             system = x86_linux;
           };
+          inherit nixvim;
         };
         modules = [
           ./hosts/almagest/almagest.nix
-          {
-            home.packages = [
-              nixvim.packages.${x86_linux}.minimal
-            ];
-          }
         ];
       };
       "jupiter" = home-manager.lib.homeManagerConfiguration {
@@ -158,14 +149,10 @@
             config.allowUnfree = true;
             system = x86_linux;
           };
+          inherit nixvim;
         };
         modules = [
           ./hosts/jupiter/jupiter.nix
-          {
-            home.packages = [
-              nixvim.packages.${x86_linux}.default
-            ];
-          }
         ];
       };
       "singularity" = home-manager.lib.homeManagerConfiguration {
@@ -176,14 +163,10 @@
             config.allowUnfree = true;
             system = x86_linux;
           };
+          inherit nixvim;
         };
         modules = [
           ./hosts/singularity/singularity.nix
-          {
-            home.packages = [
-              nixvim.packages.${x86_linux}.minimal
-            ];
-          }
         ];
       };
     };

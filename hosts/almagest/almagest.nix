@@ -1,6 +1,7 @@
 {
   pkgs,
   lib,
+  nixvim,
   ...
 }: let
   mv_path = "/home/yokley/workspace/MediaViewerProd";
@@ -11,6 +12,7 @@ in {
 
   home.packages = [
     pkgs.docker-compose
+    nixvim.packages.${pkgs.stdenv.hostPlatform.system}.minimal
   ];
 
   systemd.user.services = {

@@ -1,6 +1,7 @@
 {
   pkgs,
   lib,
+  nixvim,
   ...
 }: let
   homeDir = "/home/yokley";
@@ -13,6 +14,7 @@ in {
     pkgs.pass
     pkgs.borgbackup
     pkgs.borgmatic
+    nixvim.packages.${pkgs.stdenv.hostPlatform.system}.minimal
   ];
 
   systemd.user.services = {
