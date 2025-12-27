@@ -33,15 +33,17 @@
   }: let
     aarch64_darwin = "aarch64-darwin";
     x86_linux = "x86_64-linux";
+    defaultExtraSpecialArgs = system: {
+      pkgs-unstable = import nixpkgs-unstable {
+        config.allowUnfree = true;
+        inherit system;
+      };
+    };
   in {
     nixosConfigurations = {
       mars = nixpkgs.lib.nixosSystem {
-        specialArgs = {
-          pkgs-unstable = import nixpkgs-unstable {
-            config.allowUnfree = true;
-            system = x86_linux;
-          };
-        };
+        specialArgs =
+          defaultExtraSpecialArgs x86_linux;
         modules = [
           (_: {nixpkgs.overlays = [qtile-flake.overlays.default];})
           ./programs/nixos/common-configuration.nix
@@ -51,27 +53,21 @@
           home-manager.nixosModules.home-manager
           {
             home-manager.users.yokley = import ./hosts/mars/mars.nix;
-            home-manager.extraSpecialArgs = {
-              vars = import ./hosts/mars/vars.nix;
-              inherit nixvim;
-              inherit usql;
-              pkgs-unstable = import nixpkgs-unstable {
-                config.allowUnfree = true;
-                system = x86_linux;
+            home-manager.extraSpecialArgs =
+              (defaultExtraSpecialArgs x86_linux)
+              // {
+                vars = import ./hosts/mars/vars.nix;
+                inherit nixvim;
+                inherit usql;
               };
-            };
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
           }
         ];
       };
       mercury = nixpkgs.lib.nixosSystem {
-        specialArgs = {
-          pkgs-unstable = import nixpkgs-unstable {
-            config.allowUnfree = true;
-            system = x86_linux;
-          };
-        };
+        specialArgs =
+          defaultExtraSpecialArgs x86_linux;
         modules = [
           (_: {nixpkgs.overlays = [qtile-flake.overlays.default];})
           ./programs/nixos/common-configuration.nix
@@ -81,14 +77,12 @@
           home-manager.nixosModules.home-manager
           {
             home-manager.users.yokley = import ./hosts/mercury/mercury.nix;
-            home-manager.extraSpecialArgs = {
-              vars = import ./hosts/mercury/vars.nix;
-              inherit nixvim;
-              pkgs-unstable = import nixpkgs-unstable {
-                config.allowUnfree = true;
-                system = x86_linux;
+            home-manager.extraSpecialArgs =
+              (defaultExtraSpecialArgs x86_linux)
+              // {
+                vars = import ./hosts/mercury/vars.nix;
+                inherit nixvim;
               };
-            };
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
           }
