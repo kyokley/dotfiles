@@ -10,10 +10,13 @@
       dates = "weekly";
       options = "--delete-older-than 7d";
     };
-    extraOptions = ''
-      trusted-users = root yokley
-    '';
-    settings.download-buffer-size = 524288000;
+    settings = {
+      trusted-users = [
+        "root"
+        "yokley"
+      ];
+      download-buffer-size = 524288000;
+    };
   };
 
   # Enable networking
