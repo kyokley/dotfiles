@@ -33,7 +33,7 @@
   }: let
     aarch64_darwin = "aarch64-darwin";
     x86_linux = "x86_64-linux";
-    defaultExtraSpecialArgs = system: {
+    defaultSpecialArgs = system: {
       pkgs-unstable = import nixpkgs-unstable {
         config.allowUnfree = true;
         inherit system;
@@ -43,7 +43,7 @@
     nixosConfigurations = {
       mars = nixpkgs.lib.nixosSystem {
         specialArgs =
-          defaultExtraSpecialArgs x86_linux;
+          defaultSpecialArgs x86_linux;
         modules = [
           (_: {nixpkgs.overlays = [qtile-flake.overlays.default];})
           ./programs/nixos/common-configuration.nix
@@ -54,7 +54,7 @@
           {
             home-manager.users.yokley = import ./hosts/mars/mars.nix;
             home-manager.extraSpecialArgs =
-              (defaultExtraSpecialArgs x86_linux)
+              (defaultSpecialArgs x86_linux)
               // {
                 vars = import ./hosts/mars/vars.nix;
                 inherit nixvim;
@@ -67,7 +67,7 @@
       };
       mercury = nixpkgs.lib.nixosSystem {
         specialArgs =
-          defaultExtraSpecialArgs x86_linux;
+          defaultSpecialArgs x86_linux;
         modules = [
           (_: {nixpkgs.overlays = [qtile-flake.overlays.default];})
           ./programs/nixos/common-configuration.nix
@@ -78,7 +78,7 @@
           {
             home-manager.users.yokley = import ./hosts/mercury/mercury.nix;
             home-manager.extraSpecialArgs =
-              (defaultExtraSpecialArgs x86_linux)
+              (defaultSpecialArgs x86_linux)
               // {
                 vars = import ./hosts/mercury/vars.nix;
                 inherit nixvim;
@@ -93,15 +93,13 @@
     homeConfigurations = {
       "dioxygen" = home-manager.lib.homeManagerConfiguration {
         pkgs = nixpkgs.legacyPackages.${aarch64_darwin};
-        extraSpecialArgs = {
-          vars = import ./hosts/dioxygen/vars.nix;
-          pkgs-unstable = import nixpkgs-unstable {
-            config.allowUnfree = true;
-            system = aarch64_darwin;
+        extraSpecialArgs =
+          (defaultSpecialArgs aarch64_darwin)
+          // {
+            vars = import ./hosts/dioxygen/vars.nix;
+            inherit nixvim;
+            inherit usql;
           };
-          inherit nixvim;
-          inherit usql;
-        };
         modules = [
           ./hosts/dioxygen/dioxygen.nix
         ];
@@ -109,13 +107,11 @@
 
       "venus" = home-manager.lib.homeManagerConfiguration {
         pkgs = nixpkgs.legacyPackages.${x86_linux};
-        extraSpecialArgs = {
-          vars = import ./hosts/venus/vars.nix;
-          pkgs-unstable = import nixpkgs-unstable {
-            config.allowUnfree = true;
-            system = x86_linux;
+        extraSpecialArgs =
+          (defaultSpecialArgs x86_linux)
+          // {
+            vars = import ./hosts/venus/vars.nix;
           };
-        };
         modules = [
           ./hosts/venus/venus.nix
         ];
@@ -123,42 +119,36 @@
 
       "almagest" = home-manager.lib.homeManagerConfiguration {
         pkgs = nixpkgs.legacyPackages.${x86_linux};
-        extraSpecialArgs = {
-          vars = import ./hosts/almagest/vars.nix;
-          pkgs-unstable = import nixpkgs-unstable {
-            config.allowUnfree = true;
-            system = x86_linux;
+        extraSpecialArgs =
+          (defaultSpecialArgs x86_linux)
+          // {
+            vars = import ./hosts/almagest/vars.nix;
+            inherit nixvim;
           };
-          inherit nixvim;
-        };
         modules = [
           ./hosts/almagest/almagest.nix
         ];
       };
       "jupiter" = home-manager.lib.homeManagerConfiguration {
         pkgs = nixpkgs.legacyPackages.${x86_linux};
-        extraSpecialArgs = {
-          vars = import ./hosts/jupiter/vars.nix;
-          pkgs-unstable = import nixpkgs-unstable {
-            config.allowUnfree = true;
-            system = x86_linux;
+        extraSpecialArgs =
+          (defaultSpecialArgs x86_linux)
+          // {
+            vars = import ./hosts/jupiter/vars.nix;
+            inherit nixvim;
           };
-          inherit nixvim;
-        };
         modules = [
           ./hosts/jupiter/jupiter.nix
         ];
       };
       "singularity" = home-manager.lib.homeManagerConfiguration {
         pkgs = nixpkgs.legacyPackages.${x86_linux};
-        extraSpecialArgs = {
-          vars = import ./hosts/singularity/vars.nix;
-          pkgs-unstable = import nixpkgs-unstable {
-            config.allowUnfree = true;
-            system = x86_linux;
+        extraSpecialArgs =
+          (defaultSpecialArgs x86_linux)
+          // {
+            vars = import ./hosts/singularity/vars.nix;
+            inherit nixvim;
           };
-          inherit nixvim;
-        };
         modules = [
           ./hosts/singularity/singularity.nix
         ];
