@@ -66,6 +66,7 @@ KRILL_CMD = f"docker run --rm -t --cpus=.25 --net=host --env KRILL_PROXY={KRILL_
 TAILSCALE_CMD = "tailscale status"
 TAILSCALE_TIMEOUT = 5
 TAILSCALE_FAIL = b"Tailscale is stopped"
+TAILSCALE_LOGGED_OUT = b"You are logged out."
 
 KRILL_BROWSER = determine_browser()
 MAX_KRILL_LENGTH = 100
@@ -704,7 +705,7 @@ class TailscaleNet(Net, DebugWidgetMixin):
                 )
                 self._print(f"{proc=}")
 
-                if TAILSCALE_FAIL in proc.stdout:
+                if TAILSCALE_FAIL in proc.stdout or TAILSCALE_LOGGED_OUT in proc.stdout:
                     return False
                 return True
             except (subprocess.CalledProcessError, FileNotFoundError) as e:

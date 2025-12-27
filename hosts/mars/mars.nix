@@ -5,7 +5,6 @@
 }: let
   cd_paths = [
     "/home/yokley/workspace"
-    "/home/yokley/workspace/neo-tariff"
   ];
 in {
   imports = [
