@@ -46,4 +46,20 @@
   '';
 
   services.xserver.videoDrivers = ["amdgpu"];
+
+  nix.buildMachines = [
+    {
+      hostName = "192.168.50.31";
+      sshUser = "yokley";
+      system = "x86_64-linux";
+      protocol = "ssh-ng";
+      maxJobs = 3;
+      speedFactor = 2;
+      supportedFeatures = ["nixos-test" "benchmark" "big-parallel" "kvm"];
+    }
+  ];
+  nix.distributedBuilds = true;
+  nix.extraOptions = ''
+    builders-use-substitutes = true
+  '';
 }
