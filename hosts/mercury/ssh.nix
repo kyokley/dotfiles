@@ -25,6 +25,7 @@ in {
   users.users.yokley.openssh.authorizedKeys = {
     keyFiles = [
       ./mars.pub
+      ./mars-root.pub
     ];
   };
 }
