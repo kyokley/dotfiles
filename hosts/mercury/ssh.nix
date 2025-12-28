@@ -21,4 +21,10 @@ in {
     after = ["network-online.target"];
     wants = ["network-online.target"];
   };
+
+  users.users.yokley.openssh.authorizedKeys = {
+    keyFiles = [
+      ./mars.pub
+    ];
+  };
 }
