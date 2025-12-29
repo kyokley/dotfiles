@@ -2,9 +2,10 @@
   pkgs,
   lib,
   nixvim,
+  username,
   ...
 }: let
-  mv_path = "/home/yokley/workspace/MediaViewerProd";
+  mv_path = "/home/${username}/workspace/MediaViewerProd";
 in {
   imports = [
     ../../home.nix

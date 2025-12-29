@@ -1,5 +1,5 @@
 {
-  description = "Home Manager configuration of yokley";
+  description = "Nix system configurations";
 
   inputs = {
     # Specify the source of Home Manager and Nixpkgs.
@@ -31,6 +31,7 @@
     usql,
     ...
   }: let
+    username = "yokley";
     aarch64_darwin = "aarch64-darwin";
     x86_linux = "x86_64-linux";
     defaultSpecialArgs = system: {
@@ -38,6 +39,7 @@
         config.allowUnfree = true;
         inherit system;
       };
+      inherit username;
     };
   in {
     nixosConfigurations = {
@@ -52,7 +54,7 @@
           ./hosts/mars/hardware-configuration.nix
           home-manager.nixosModules.home-manager
           {
-            home-manager.users.yokley = import ./hosts/mars/mars.nix;
+            home-manager.users.${username} = import ./hosts/mars/mars.nix;
             home-manager.extraSpecialArgs =
               (defaultSpecialArgs x86_linux)
               // {
@@ -76,7 +78,7 @@
           ./hosts/mercury/hardware-configuration.nix
           home-manager.nixosModules.home-manager
           {
-            home-manager.users.yokley = import ./hosts/mercury/mercury.nix;
+            home-manager.users.${username} = import ./hosts/mercury/mercury.nix;
             home-manager.extraSpecialArgs =
               (defaultSpecialArgs x86_linux)
               // {

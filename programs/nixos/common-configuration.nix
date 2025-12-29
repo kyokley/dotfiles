@@ -2,6 +2,7 @@
   pkgs,
   pkgs-unstable,
   lib,
+  username,
   ...
 }: {
   nix = {
@@ -13,7 +14,7 @@
     settings = {
       trusted-users = [
         "root"
-        "yokley"
+        "${username}"
       ];
       download-buffer-size = 524288000;
     };
@@ -128,7 +129,7 @@
   };
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.yokley = {
+  users.users.${username} = {
     shell = pkgs.zsh;
     isNormalUser = true;
     description = "Kevin Yokley";
@@ -208,6 +209,6 @@
   home-manager = {
     useGlobalPkgs = true;
     useUserPackages = true;
-    users.yokley = import ../../home.nix;
+    users.${username} = import ../../home.nix;
   };
 }

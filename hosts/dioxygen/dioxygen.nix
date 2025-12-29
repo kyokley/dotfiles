@@ -1,6 +1,7 @@
 {
   pkgs,
   lib,
+  username,
   ...
 }: let
   nix-update = pkgs.writeShellScriptBin "nix-update" ''
@@ -17,7 +18,7 @@ in {
 
   programs.systemd-services.enable = false;
 
-  home.homeDirectory = "/Users/yokley";
+  home.homeDirectory = "/Users/${username}";
 
   home.packages = [
     nix-update

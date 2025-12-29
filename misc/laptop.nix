@@ -1,6 +1,8 @@
-{pkgs, ...}: let
-  username = "yokley";
-in {
+{
+  pkgs,
+  username,
+  ...
+}: {
   services = {
     logind = {
       settings.Login = {

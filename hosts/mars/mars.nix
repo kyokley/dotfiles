@@ -1,10 +1,11 @@
 {
   pkgs,
   lib,
+  username,
   ...
 }: let
   cd_paths = [
-    "/home/yokley/workspace"
+    "/home/${username}/workspace"
   ];
 in {
   imports = [
