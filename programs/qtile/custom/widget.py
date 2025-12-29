@@ -753,13 +753,13 @@ class VolumeWidgetBox(StandardWidgetBox):
 
 
 class CustomVolume(Volume):
-    def update(self):
+    def _update_drawer(self):
         volume_widget_box_icon = self.parent_widget()
         volume_widget_box = qtile.widgets_map.get("VolumeWidgetBox")
         volume_widget_box.text = volume_widget_box.text_open = (
             volume_widget_box.text_closed
         ) = volume_widget_box_icon
-        super().update()
+        super()._update_drawer()
 
     def parent_widget(self):
         """
@@ -775,11 +775,11 @@ class CustomVolume(Volume):
             If you're not using a matching Nerd Font set, the function falls back to an emoji label.
         """
         # clamp input to 0..100 and ensure int
-        vol, muted = self.get_volume()
+        vol = self.volume
         p = max(0, min(100, int(vol)))
 
         # exact zero -> fully off
-        if muted or p == 0:
+        if self.is_mute or p == 0:
             return "󰖁"  # silent / muted
 
         # very low volumes

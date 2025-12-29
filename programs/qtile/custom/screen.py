@@ -385,7 +385,7 @@ top_widgets.extend(
                 ),
             ),
             text_closed="󰓃",
-            start_opened=True,
+            start_opened=False,
             background=extension_defaults.violet,
             foreground=extension_defaults.white,
             fontsize=extension_defaults.widget_box_iconsize,
