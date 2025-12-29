@@ -13,7 +13,7 @@
       url = "github:kyokley/nixvim";
     };
     qtile-flake = {
-      url = "github:qtile/qtile/v0.33.0";
+      url = "github:qtile/qtile/v0.34.1";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     usql = {
@@ -40,6 +40,7 @@
         inherit system;
       };
       inherit username;
+      qtile-flake = qtile-flake.packages.${x86_linux};
     };
   in {
     nixosConfigurations = {
@@ -47,7 +48,6 @@
         specialArgs =
           defaultSpecialArgs x86_linux;
         modules = [
-          (_: {nixpkgs.overlays = [qtile-flake.overlays.default];})
           ./programs/nixos/common-configuration.nix
           ./programs/nixos/hardware-configuration.nix
           ./hosts/mars/configuration.nix
@@ -71,7 +71,6 @@
         specialArgs =
           defaultSpecialArgs x86_linux;
         modules = [
-          (_: {nixpkgs.overlays = [qtile-flake.overlays.default];})
           ./programs/nixos/common-configuration.nix
           ./programs/nixos/hardware-configuration.nix
           ./hosts/mercury/configuration.nix

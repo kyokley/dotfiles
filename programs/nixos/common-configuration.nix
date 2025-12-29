@@ -3,6 +3,7 @@
   pkgs-unstable,
   lib,
   username,
+  qtile-flake,
   ...
 }: {
   nix = {
@@ -55,6 +56,7 @@
   };
   services.xserver.windowManager.qtile = {
     enable = true;
+    package = qtile-flake.default;
     extraPackages = python3Packages:
       with python3Packages; [
         requests
