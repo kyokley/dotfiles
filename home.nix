@@ -1,7 +1,7 @@
 {
   pkgs,
   lib,
-  vars,
+  hostname,
   username,
   ...
 }: {
@@ -38,7 +38,7 @@
   ];
 
   home.shellAliases = {
-    home-manager-switch = "home-manager switch --refresh --flake 'git+ssh://git@venus.ftpaccess.cc:10022/kyokley/dotfiles.git?ref=main#${vars.hostname}'";
+    home-manager-switch = "home-manager switch --refresh --flake 'git+ssh://git@venus.ftpaccess.cc:10022/kyokley/dotfiles.git?ref=main#${hostname}'";
     ls = "ls --color=auto";
   };
 

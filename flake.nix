@@ -58,7 +58,7 @@
             home-manager.extraSpecialArgs =
               (defaultSpecialArgs x86_linux)
               // {
-                vars = import ./hosts/mars/vars.nix;
+                hostname = "mars";
                 inherit nixvim;
                 inherit usql;
               };
@@ -82,7 +82,7 @@
             home-manager.extraSpecialArgs =
               (defaultSpecialArgs x86_linux)
               // {
-                vars = import ./hosts/mercury/vars.nix;
+                hostname = "mercury";
                 inherit nixvim;
               };
             home-manager.useGlobalPkgs = true;
@@ -98,7 +98,7 @@
         extraSpecialArgs =
           (defaultSpecialArgs aarch64_darwin)
           // {
-            vars = import ./hosts/dioxygen/vars.nix;
+            hostname = "dioxygen";
             inherit nixvim;
             inherit usql;
           };
@@ -112,7 +112,7 @@
         extraSpecialArgs =
           (defaultSpecialArgs x86_linux)
           // {
-            vars = import ./hosts/venus/vars.nix;
+            hostname = "venus";
           };
         modules = [
           ./hosts/venus/venus.nix
@@ -124,7 +124,7 @@
         extraSpecialArgs =
           (defaultSpecialArgs x86_linux)
           // {
-            vars = import ./hosts/almagest/vars.nix;
+            hostname = "almagest";
             inherit nixvim;
           };
         modules = [
@@ -136,7 +136,7 @@
         extraSpecialArgs =
           (defaultSpecialArgs x86_linux)
           // {
-            vars = import ./hosts/jupiter/vars.nix;
+            hostname = "jupiter";
             inherit nixvim;
           };
         modules = [
@@ -148,7 +148,7 @@
         extraSpecialArgs =
           (defaultSpecialArgs x86_linux)
           // {
-            vars = import ./hosts/singularity/vars.nix;
+            hostname = "singularity";
             inherit nixvim;
           };
         modules = [
