@@ -56,7 +56,7 @@
   };
   services.xserver.windowManager.qtile = {
     enable = true;
-    package = qtile-flake.default;
+    package = qtile-flake.packages.${pkgs.stdenv.hostPlatform.system}.default;
     extraPackages = python3Packages:
       with python3Packages; [
         requests
@@ -65,6 +65,7 @@
         python-dateutil
       ];
   };
+  services.displayManager.defaultSession = lib.mkDefault "qtile";
 
   # Needed to make screen locker work
   programs.i3lock.enable = true;

@@ -40,7 +40,7 @@
         inherit system;
       };
       inherit username;
-      qtile-flake = qtile-flake.packages.${x86_linux};
+      inherit qtile-flake;
     };
   in {
     nixosConfigurations = {
