@@ -24,8 +24,8 @@ in {
 
   users.users.${username}.openssh.authorizedKeys = {
     keyFiles = [
-      ./mars.pub
-      ./mars-root.pub
+      ../mars/mars.pub
+      ../mars/mars-root.pub
     ];
   };
 }
