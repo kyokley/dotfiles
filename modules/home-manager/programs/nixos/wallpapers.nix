@@ -1,9 +1,5 @@
-{
-  pkgs,
-  username,
-  ...
-}: let
-  homeDir = "/home/${username}";
+{pkgs, ...} @ inputs: let
+  homeDir = "/home/${inputs.username}";
   remoteWallpaperHost = "jupiter";
 in {
   home.file.wallpapers = {

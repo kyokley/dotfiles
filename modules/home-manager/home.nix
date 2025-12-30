@@ -1,10 +1,8 @@
 {
   pkgs,
   lib,
-  hostname,
-  username,
   ...
-}: {
+} @ inputs: {
   imports = [
     ./programs/shell/zsh.nix
     ./programs/git.nix
@@ -15,8 +13,8 @@
 
   # Home Manager needs a bit of information about you and the paths it should
   # manage.
-  home.username = lib.mkDefault "${username}";
-  home.homeDirectory = lib.mkDefault "/home/${username}";
+  home.username = lib.mkDefault "${inputs.username}";
+  home.homeDirectory = lib.mkDefault "/home/${inputs.username}";
 
   nix = {
     package = lib.mkDefault pkgs.nix;
@@ -38,7 +36,7 @@
   ];
 
   home.shellAliases = {
-    home-manager-switch = "home-manager switch --refresh --flake 'git+ssh://git@venus.ftpaccess.cc:10022/kyokley/dotfiles.git?ref=main#${hostname}'";
+    home-manager-switch = "home-manager switch --refresh --flake 'git+ssh://git@venus.ftpaccess.cc:10022/kyokley/dotfiles.git?ref=main#${inputs.hostname}'";
     ls = "ls --color=auto";
   };
 

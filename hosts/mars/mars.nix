@@ -1,11 +1,10 @@
 {
   pkgs,
   lib,
-  username,
   ...
-}: let
+} @ inputs: let
   cd_paths = [
-    "/home/${username}/workspace"
+    "/home/${inputs.username}/workspace"
   ];
 in {
   imports = [

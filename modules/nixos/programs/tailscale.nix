@@ -1,8 +1,8 @@
-{pkgs-unstable, ...}: {
+{...} @ inputs: {
   # Enable tailscale
   services.tailscale = {
     enable = true;
-    package = pkgs-unstable.tailscale;
+    package = inputs.pkgs-unstable.tailscale;
     useRoutingFeatures = "both";
   };
   networking.nameservers = [
@@ -12,6 +12,6 @@
   # Enable trayscale once added to home-manager
   # services.trayscale.enable = false;
   environment.systemPackages = [
-    pkgs-unstable.tailscale
+    inputs.pkgs-unstable.tailscale
   ];
 }

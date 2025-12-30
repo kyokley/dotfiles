@@ -1,8 +1,4 @@
-{
-  pkgs,
-  nixvim,
-  ...
-}: {
+{pkgs, ...} @ inputs: {
   imports = [
     ../../modules/home-manager/home.nix
   ];
@@ -10,7 +6,7 @@
   programs.git.settings.user.email = "kyokley@singularity";
 
   home.packages = [
-    nixvim.packages.${pkgs.stdenv.hostPlatform.system}.minimal
+    inputs.nixvim.packages.${pkgs.stdenv.hostPlatform.system}.minimal
   ];
 
   home.stateVersion = "23.11"; # Please read the comment before changing.

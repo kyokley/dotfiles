@@ -1,10 +1,9 @@
 {
   pkgs,
   lib,
-  username,
   ...
-}: let
-  homeDir = "/home/${username}";
+} @ inputs: let
+  homeDir = "/home/${inputs.username}";
   reboot-kexec = pkgs.writeScriptBin "reboot-kexec" ''
     #!${pkgs.stdenv.shell}
     cmdline="init=$(readlink -f /nix/var/nix/profiles/system/init) $(cat /nix/var/nix/profiles/system/kernel-params)"

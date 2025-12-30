@@ -1,4 +1,4 @@
-{username, ...}: let
+{...} @ inputs: let
   # Need to listen on port 22 for Nix remote build
   sshd_port = 22;
 in {
@@ -22,7 +22,7 @@ in {
     wants = ["network-online.target"];
   };
 
-  users.users.${username}.openssh.authorizedKeys = {
+  users.users.${inputs.username}.openssh.authorizedKeys = {
     keyFiles = [
       ../mars/mars.pub
       ../mars/mars-root.pub

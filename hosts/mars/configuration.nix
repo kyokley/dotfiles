@@ -1,8 +1,4 @@
-{
-  pkgs,
-  username,
-  ...
-}: {
+{pkgs, ...} @ inputs: {
   imports = [
     ../../modules/nixos/programs/tailscale.nix
     ../../modules/nixos/laptop.nix
@@ -54,7 +50,7 @@
   nix.buildMachines = [
     {
       hostName = "192.168.50.31";
-      sshUser = username;
+      sshUser = inputs.username;
       system = "x86_64-linux";
       protocol = "ssh";
       maxJobs = 3;

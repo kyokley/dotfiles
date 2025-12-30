@@ -1,11 +1,8 @@
 {
   pkgs,
-  pkgs-unstable,
   lib,
-  username,
-  qtile-flake,
   ...
-}: {
+} @ inputs: {
   nix = {
     gc = {
       automatic = true;
@@ -15,7 +12,7 @@
     settings = {
       trusted-users = [
         "root"
-        "${username}"
+        "${inputs.username}"
       ];
       download-buffer-size = 524288000;
     };
@@ -56,7 +53,7 @@
   };
   services.xserver.windowManager.qtile = {
     enable = true;
-    package = qtile-flake.packages.${pkgs.stdenv.hostPlatform.system}.default;
+    package = inputs.qtile-flake.packages.${pkgs.stdenv.hostPlatform.system}.default;
     extraPackages = python3Packages:
       with python3Packages; [
         requests
@@ -132,7 +129,7 @@
   };
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.${username} = {
+  users.users.${inputs.username} = {
     shell = pkgs.zsh;
     isNormalUser = true;
     description = "Kevin Yokley";
@@ -169,7 +166,7 @@
     feh
     alsa-utils
     slack
-    pkgs-unstable.zoom-us
+    inputs.pkgs-unstable.zoom-us
     pulsemixer
   ];
 
@@ -212,6 +209,6 @@
   home-manager = {
     useGlobalPkgs = true;
     useUserPackages = true;
-    users.${username} = import ../../../home-manager/home.nix;
+    users.${inputs.username} = import ../../../home-manager/home.nix;
   };
 }

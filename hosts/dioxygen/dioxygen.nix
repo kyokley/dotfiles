@@ -1,9 +1,8 @@
 {
   pkgs,
   lib,
-  username,
   ...
-}: let
+} @ inputs: let
   nix-update = pkgs.writeShellScriptBin "nix-update" ''
     PATH=$PATH:${lib.makeBinPath [pkgs.nix]}
     ${pkgs.home-manager}/bin/home-manager switch --flake 'github:kyokley/dotfiles#dioxygen'
@@ -18,7 +17,7 @@ in {
 
   programs.systemd-services.enable = false;
 
-  home.homeDirectory = "/Users/${username}";
+  home.homeDirectory = "/Users/${inputs.username}";
 
   home.packages = [
     nix-update
