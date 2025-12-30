@@ -436,7 +436,7 @@ top_widgets.extend(
                 ),
             ),
             text_closed="󰒔",
-            start_opened=False,
+            start_opened=True,
             foreground=extension_defaults.white,
             fontsize=extension_defaults.widget_box_iconsize,
         ),
