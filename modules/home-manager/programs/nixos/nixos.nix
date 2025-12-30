@@ -27,11 +27,11 @@
   '';
 in {
   imports = [
-    ../../programs/terminator.nix
-    ../../programs/dunst/dunst.nix
-    ../../programs/rofi/rofi.nix
-    ../../programs/qtile/qtile.nix
-    ../../programs/kitty.nix
+    ../terminator.nix
+    ../dunst.nix
+    ../rofi/rofi.nix
+    ../qtile/qtile.nix
+    ../kitty.nix
   ];
 
   home.packages = [

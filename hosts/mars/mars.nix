@@ -9,10 +9,10 @@
   ];
 in {
   imports = [
-    ../../programs/nixos/nixos.nix
-    ../../programs/nixos/wallpapers.nix
-    ../../home.nix
-    ../../misc/dev.nix
+    ../../modules/home-manager/programs/nixos/nixos.nix
+    ../../modules/home-manager/programs/nixos/wallpapers.nix
+    ../../modules/home-manager/home.nix
+    ../../modules/home-manager/dev.nix
   ];
 
   programs.git.settings.user.email = "kyokley@mars";

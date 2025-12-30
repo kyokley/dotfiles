@@ -6,7 +6,7 @@
 }: {
   imports = [
     ../../programs/nixos/nixos.nix
-    ../../home.nix
+    ../../modules/home-manager/home.nix
   ];
 
   programs.git.settings.user.email = "kyokley@mercury";

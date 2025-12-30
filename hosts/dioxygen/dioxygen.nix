@@ -12,8 +12,8 @@
   '';
 in {
   imports = [
-    ../../home.nix
-    ../../misc/dev.nix
+    ../../modules/home-manager/home.nix
+    ../../modules/home-manager/dev.nix
   ];
 
   programs.systemd-services.enable = false;

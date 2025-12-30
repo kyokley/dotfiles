@@ -8,7 +8,7 @@
   mv_path = "/home/${username}/workspace/MediaViewerProd";
 in {
   imports = [
-    ../../home.nix
+    ../../modules/home-manager/home.nix
   ];
 
   home.packages = [

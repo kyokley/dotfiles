@@ -4,7 +4,7 @@
   ...
 }: {
   imports = [
-    ../../home.nix
+    ../../modules/home-manager/home.nix
   ];
 
   programs.git.settings.user.email = "kyokley@venus";

@@ -42,8 +42,8 @@
         specialArgs =
           defaultSpecialArgs x86_linux;
         modules = [
-          ./programs/nixos/common-configuration.nix
-          ./programs/nixos/hardware-configuration.nix
+          ./modules/nixos/programs/nixos/configuration.nix
+          ./modules/nixos/programs/nixos/hardware-configuration.nix
           ./hosts/mars/configuration.nix
           ./hosts/mars/hardware-configuration.nix
           inputs.home-manager.nixosModules.home-manager
@@ -61,8 +61,8 @@
         specialArgs =
           defaultSpecialArgs x86_linux;
         modules = [
-          ./programs/nixos/common-configuration.nix
-          ./programs/nixos/hardware-configuration.nix
+          ./modules/nixos/programs/nixos/configuration.nix
+          ./modules/nixos/programs/nixos/hardware-configuration.nix
           ./hosts/mercury/configuration.nix
           ./hosts/mercury/hardware-configuration.nix
           inputs.home-manager.nixosModules.home-manager

@@ -1,8 +1,4 @@
-{
-  pkgs,
-  pkgs-unstable,
-  ...
-}: {
+{pkgs-unstable, ...}: {
   # Enable tailscale
   services.tailscale = {
     enable = true;

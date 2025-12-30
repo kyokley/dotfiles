@@ -8,7 +8,7 @@
   homeDir = "/home/${username}";
 in {
   imports = [
-    ../../home.nix
+    ../../modules/home-manager/home.nix
   ];
 
   home.packages = [

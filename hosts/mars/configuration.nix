@@ -4,9 +4,9 @@
   ...
 }: {
   imports = [
-    ../../programs/tailscale.nix
-    ../../misc/laptop.nix
-    ../../misc/login.nix
+    ../../modules/nixos/programs/tailscale.nix
+    ../../modules/nixos/laptop.nix
+    ../../modules/nixos/login.nix
   ];
 
   # Bootloader.

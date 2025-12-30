@@ -212,6 +212,6 @@
   home-manager = {
     useGlobalPkgs = true;
     useUserPackages = true;
-    users.${username} = import ../../home.nix;
+    users.${username} = import ../../../home-manager/home.nix;
   };
 }
