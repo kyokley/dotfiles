@@ -22,29 +22,23 @@
     };
   };
 
-  outputs = {
-    nixpkgs,
-    nixpkgs-unstable,
-    home-manager,
-    nixvim,
-    qtile-flake,
-    usql,
-    ...
-  }: let
+  outputs = {...} @ inputs: let
     username = "yokley";
     aarch64_darwin = "aarch64-darwin";
     x86_linux = "x86_64-linux";
     defaultSpecialArgs = system: {
-      pkgs-unstable = import nixpkgs-unstable {
+      pkgs-unstable = import inputs.nixpkgs-unstable {
         config.allowUnfree = true;
         inherit system;
       };
       inherit username;
-      inherit qtile-flake;
+      qtile-flake = inputs.qtile-flake;
+      nixvim = inputs.nixvim;
+      usql = inputs.usql;
     };
   in {
     nixosConfigurations = {
-      mars = nixpkgs.lib.nixosSystem {
+      mars = inputs.nixpkgs.lib.nixosSystem {
         specialArgs =
           defaultSpecialArgs x86_linux;
         modules = [
@@ -52,22 +46,18 @@
           ./programs/nixos/hardware-configuration.nix
           ./hosts/mars/configuration.nix
           ./hosts/mars/hardware-configuration.nix
-          home-manager.nixosModules.home-manager
+          inputs.home-manager.nixosModules.home-manager
           {
             home-manager.users.${username} = import ./hosts/mars/mars.nix;
             home-manager.extraSpecialArgs =
               (defaultSpecialArgs x86_linux)
               // {
                 hostname = "mars";
-                inherit nixvim;
-                inherit usql;
               };
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
           }
         ];
       };
-      mercury = nixpkgs.lib.nixosSystem {
+      mercury = inputs.nixpkgs.lib.nixosSystem {
         specialArgs =
           defaultSpecialArgs x86_linux;
         modules = [
@@ -75,39 +65,34 @@
           ./programs/nixos/hardware-configuration.nix
           ./hosts/mercury/configuration.nix
           ./hosts/mercury/hardware-configuration.nix
-          home-manager.nixosModules.home-manager
+          inputs.home-manager.nixosModules.home-manager
           {
             home-manager.users.${username} = import ./hosts/mercury/mercury.nix;
             home-manager.extraSpecialArgs =
               (defaultSpecialArgs x86_linux)
               // {
                 hostname = "mercury";
-                inherit nixvim;
               };
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
           }
         ];
       };
     };
 
     homeConfigurations = {
-      "dioxygen" = home-manager.lib.homeManagerConfiguration {
-        pkgs = nixpkgs.legacyPackages.${aarch64_darwin};
+      "dioxygen" = inputs.home-manager.lib.homeManagerConfiguration {
+        pkgs = inputs.nixpkgs.legacyPackages.${aarch64_darwin};
         extraSpecialArgs =
           (defaultSpecialArgs aarch64_darwin)
           // {
             hostname = "dioxygen";
-            inherit nixvim;
-            inherit usql;
           };
         modules = [
           ./hosts/dioxygen/dioxygen.nix
         ];
       };
 
-      "venus" = home-manager.lib.homeManagerConfiguration {
-        pkgs = nixpkgs.legacyPackages.${x86_linux};
+      "venus" = inputs.home-manager.lib.homeManagerConfiguration {
+        pkgs = inputs.nixpkgs.legacyPackages.${x86_linux};
         extraSpecialArgs =
           (defaultSpecialArgs x86_linux)
           // {
@@ -118,37 +103,34 @@
         ];
       };
 
-      "almagest" = home-manager.lib.homeManagerConfiguration {
-        pkgs = nixpkgs.legacyPackages.${x86_linux};
+      "almagest" = inputs.home-manager.lib.homeManagerConfiguration {
+        pkgs = inputs.nixpkgs.legacyPackages.${x86_linux};
         extraSpecialArgs =
           (defaultSpecialArgs x86_linux)
           // {
             hostname = "almagest";
-            inherit nixvim;
           };
         modules = [
           ./hosts/almagest/almagest.nix
         ];
       };
-      "jupiter" = home-manager.lib.homeManagerConfiguration {
-        pkgs = nixpkgs.legacyPackages.${x86_linux};
+      "jupiter" = inputs.home-manager.lib.homeManagerConfiguration {
+        pkgs = inputs.nixpkgs.legacyPackages.${x86_linux};
         extraSpecialArgs =
           (defaultSpecialArgs x86_linux)
           // {
             hostname = "jupiter";
-            inherit nixvim;
           };
         modules = [
           ./hosts/jupiter/jupiter.nix
         ];
       };
-      "singularity" = home-manager.lib.homeManagerConfiguration {
-        pkgs = nixpkgs.legacyPackages.${x86_linux};
+      "singularity" = inputs.home-manager.lib.homeManagerConfiguration {
+        pkgs = inputs.nixpkgs.legacyPackages.${x86_linux};
         extraSpecialArgs =
           (defaultSpecialArgs x86_linux)
           // {
             hostname = "singularity";
-            inherit nixvim;
           };
         modules = [
           ./hosts/singularity/singularity.nix
