@@ -1,6 +1,6 @@
 {pkgs, ...} @ inputs: {
   imports = [
-    ../../programs/nixos/nixos.nix
+    ../../modules/home-manager/programs/nixos/nixos.nix
     ../../modules/home-manager/home.nix
   ];
 

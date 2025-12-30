@@ -1,6 +1,6 @@
 {pkgs, ...}: {
   imports = [
-    ../../programs/tailscale.nix
+    ../../modules/nixos/programs/tailscale.nix
     ./ssh.nix
   ];
 
