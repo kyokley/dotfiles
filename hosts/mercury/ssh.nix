@@ -26,6 +26,7 @@ in {
     keyFiles = [
       ../mars/mars.pub
       ../mars/mars-root.pub
+      ../dioxygen/dioxygen.pub
     ];
   };
 }

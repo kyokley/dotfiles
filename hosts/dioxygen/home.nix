@@ -29,4 +29,20 @@ in {
     select = ''!echo "$(git branch | awk '{print $NF}')" "\n" "$(git branch -r | grep -v HEAD | awk '{print $NF}' | sed -E 's!^[^/]+/!!')" | sort -u | choose | xargs -r git switch'';
   };
   home.stateVersion = "24.05";
+
+  nix.buildMachines = [
+    {
+      hostName = "192.168.50.31";
+      sshUser = inputs.username;
+      system = "aarch64-darwin";
+      protocol = "ssh";
+      maxJobs = 3;
+      speedFactor = 2;
+      supportedFeatures = ["nixos-test" "benchmark" "big-parallel" "kvm"];
+    }
+  ];
+  nix.distributedBuilds = true;
+  nix.extraOptions = ''
+    builders-use-substitutes = true
+  '';
 }
