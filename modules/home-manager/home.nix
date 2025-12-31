@@ -36,7 +36,7 @@
   ];
 
   home.shellAliases = {
-    home-manager-switch = "home-manager switch --refresh --flake 'git+ssh://git@venus.ftpaccess.cc:10022/kyokley/dotfiles.git?ref=main#${inputs.hostname}'";
+    home-manager-switch = "home-manager switch --refresh --flake 'github:kyokley/dotfiles#${inputs.hostname}'";
     ls = "ls --color=auto";
   };
 
