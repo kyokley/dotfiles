@@ -48,7 +48,7 @@
           ./hosts/mars/hardware-configuration.nix
           inputs.home-manager.nixosModules.home-manager
           {
-            home-manager.users.${username} = import ./hosts/mars/mars.nix;
+            home-manager.users.${username} = import ./hosts/mars/home.nix;
             home-manager.extraSpecialArgs =
               (defaultSpecialArgs x86_linux)
               // {
@@ -67,7 +67,7 @@
           ./hosts/mercury/hardware-configuration.nix
           inputs.home-manager.nixosModules.home-manager
           {
-            home-manager.users.${username} = import ./hosts/mercury/mercury.nix;
+            home-manager.users.${username} = import ./hosts/mercury/home.nix;
             home-manager.extraSpecialArgs =
               (defaultSpecialArgs x86_linux)
               // {
@@ -87,7 +87,7 @@
             hostname = "dioxygen";
           };
         modules = [
-          ./hosts/dioxygen/dioxygen.nix
+          ./hosts/dioxygen/home.nix
         ];
       };
 
@@ -99,7 +99,7 @@
             hostname = "venus";
           };
         modules = [
-          ./hosts/venus/venus.nix
+          ./hosts/venus/home.nix
         ];
       };
 
@@ -111,7 +111,7 @@
             hostname = "almagest";
           };
         modules = [
-          ./hosts/almagest/almagest.nix
+          ./hosts/almagest/home.nix
         ];
       };
       "jupiter" = inputs.home-manager.lib.homeManagerConfiguration {
@@ -122,7 +122,7 @@
             hostname = "jupiter";
           };
         modules = [
-          ./hosts/jupiter/jupiter.nix
+          ./hosts/jupiter/home.nix
         ];
       };
       "singularity" = inputs.home-manager.lib.homeManagerConfiguration {
@@ -133,7 +133,7 @@
             hostname = "singularity";
           };
         modules = [
-          ./hosts/singularity/singularity.nix
+          ./hosts/singularity/home.nix
         ];
       };
     };
