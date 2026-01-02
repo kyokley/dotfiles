@@ -36,105 +36,71 @@
       nixvim = inputs.nixvim;
       usql = inputs.usql;
     };
+
+    homeManagerConfigurationGenerator = spec: (inputs.home-manager.lib.homeManagerConfiguration {
+      pkgs = inputs.nixpkgs.legacyPackages.${spec.system};
+      extraSpecialArgs =
+        (defaultSpecialArgs spec.system)
+        // {
+          hostname = spec.hostName;
+        };
+      modules = [
+        ./hosts/${spec.hostName}/home.nix
+      ];
+    });
+    nixosConfigurationGenerator = spec: (inputs.nixpkgs.lib.nixosSystem {
+      specialArgs =
+        defaultSpecialArgs spec.system;
+      modules = [
+        ./modules/nixos/programs/nixos/configuration.nix
+        ./modules/nixos/programs/nixos/hardware-configuration.nix
+        ./hosts/${spec.hostName}/configuration.nix
+        ./hosts/${spec.hostName}/hardware-configuration.nix
+        inputs.home-manager.nixosModules.home-manager
+        {
+          home-manager.users.${username} = import ./hosts/${spec.hostName}/home.nix;
+          home-manager.extraSpecialArgs =
+            (defaultSpecialArgs spec.system)
+            // {
+              hostname = spec.hostName;
+            };
+        }
+      ];
+    });
   in {
     nixosConfigurations = {
-      mars = inputs.nixpkgs.lib.nixosSystem {
-        specialArgs =
-          defaultSpecialArgs x86_linux;
-        modules = [
-          ./modules/nixos/programs/nixos/configuration.nix
-          ./modules/nixos/programs/nixos/hardware-configuration.nix
-          ./hosts/mars/configuration.nix
-          ./hosts/mars/hardware-configuration.nix
-          inputs.home-manager.nixosModules.home-manager
-          {
-            home-manager.users.${username} = import ./hosts/mars/home.nix;
-            home-manager.extraSpecialArgs =
-              (defaultSpecialArgs x86_linux)
-              // {
-                hostname = "mars";
-              };
-          }
-        ];
+      mars = nixosConfigurationGenerator {
+        hostName = "mars";
+        system = x86_linux;
       };
-      mercury = inputs.nixpkgs.lib.nixosSystem {
-        specialArgs =
-          defaultSpecialArgs x86_linux;
-        modules = [
-          ./modules/nixos/programs/nixos/configuration.nix
-          ./modules/nixos/programs/nixos/hardware-configuration.nix
-          ./hosts/mercury/configuration.nix
-          ./hosts/mercury/hardware-configuration.nix
-          inputs.home-manager.nixosModules.home-manager
-          {
-            home-manager.users.${username} = import ./hosts/mercury/home.nix;
-            home-manager.extraSpecialArgs =
-              (defaultSpecialArgs x86_linux)
-              // {
-                hostname = "mercury";
-              };
-          }
-        ];
+      mercury = nixosConfigurationGenerator {
+        hostName = "mercury";
+        system = x86_linux;
       };
     };
 
     homeConfigurations = {
-      "dioxygen" = inputs.home-manager.lib.homeManagerConfiguration {
-        pkgs = inputs.nixpkgs.legacyPackages.${aarch64_darwin};
-        extraSpecialArgs =
-          (defaultSpecialArgs aarch64_darwin)
-          // {
-            hostname = "dioxygen";
-          };
-        modules = [
-          ./hosts/dioxygen/home.nix
-        ];
+      dioxygen = homeManagerConfigurationGenerator {
+        system = aarch64_darwin;
+        hostName = "dioxygen";
       };
 
-      "venus" = inputs.home-manager.lib.homeManagerConfiguration {
-        pkgs = inputs.nixpkgs.legacyPackages.${x86_linux};
-        extraSpecialArgs =
-          (defaultSpecialArgs x86_linux)
-          // {
-            hostname = "venus";
-          };
-        modules = [
-          ./hosts/venus/home.nix
-        ];
+      venus = homeManagerConfigurationGenerator {
+        system = x86_linux;
+        hostName = "venus";
       };
 
-      "almagest" = inputs.home-manager.lib.homeManagerConfiguration {
-        pkgs = inputs.nixpkgs.legacyPackages.${x86_linux};
-        extraSpecialArgs =
-          (defaultSpecialArgs x86_linux)
-          // {
-            hostname = "almagest";
-          };
-        modules = [
-          ./hosts/almagest/home.nix
-        ];
+      almagest = homeManagerConfigurationGenerator {
+        system = x86_linux;
+        hostName = "almagest";
       };
-      "jupiter" = inputs.home-manager.lib.homeManagerConfiguration {
-        pkgs = inputs.nixpkgs.legacyPackages.${x86_linux};
-        extraSpecialArgs =
-          (defaultSpecialArgs x86_linux)
-          // {
-            hostname = "jupiter";
-          };
-        modules = [
-          ./hosts/jupiter/home.nix
-        ];
+      jupiter = homeManagerConfigurationGenerator {
+        system = x86_linux;
+        hostName = "jupiter";
       };
-      "singularity" = inputs.home-manager.lib.homeManagerConfiguration {
-        pkgs = inputs.nixpkgs.legacyPackages.${x86_linux};
-        extraSpecialArgs =
-          (defaultSpecialArgs x86_linux)
-          // {
-            hostname = "singularity";
-          };
-        modules = [
-          ./hosts/singularity/home.nix
-        ];
+      singularity = homeManagerConfigurationGenerator {
+        system = x86_linux;
+        hostName = "singularity";
       };
     };
   };

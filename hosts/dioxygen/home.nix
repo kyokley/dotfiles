@@ -34,7 +34,7 @@ in {
     {
       hostName = "192.168.50.31";
       sshUser = inputs.username;
-      system = "aarch64-darwin";
+      systems = ["aarch64-darwin"];
       protocol = "ssh";
       maxJobs = 3;
       speedFactor = 2;
