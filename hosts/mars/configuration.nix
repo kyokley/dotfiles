@@ -1,4 +1,4 @@
-{pkgs, ...} @ inputs: {
+{pkgs, ...}: {
   imports = [
     ../../modules/nixos/programs/tailscale.nix
     ../../modules/nixos/laptop.nix
@@ -46,20 +46,4 @@
   '';
 
   services.xserver.videoDrivers = ["amdgpu"];
-
-  nix.buildMachines = [
-    {
-      hostName = "192.168.50.31";
-      sshUser = inputs.username;
-      system = "x86_64-linux";
-      protocol = "ssh";
-      maxJobs = 3;
-      speedFactor = 2;
-      supportedFeatures = ["nixos-test" "benchmark" "big-parallel" "kvm"];
-    }
-  ];
-  nix.distributedBuilds = true;
-  nix.extraOptions = ''
-    builders-use-substitutes = true
-  '';
 }
