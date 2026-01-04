@@ -1,4 +1,8 @@
-{pkgs, ...}: {
+{
+  pkgs,
+  lib,
+  ...
+}: {
   imports = [
     ../../modules/nixos/programs/tailscale.nix
     ../../modules/nixos/laptop.nix
@@ -69,5 +73,9 @@
       password
     '');
     initScriptDir = builtins.dirOf initScriptFile;
+  };
+
+  virtualisation = {
+    diskSize = lib.mkForce 100000;
   };
 }
