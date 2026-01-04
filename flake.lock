@@ -85,11 +85,11 @@
         "systems": "systems"
       },
       "locked": {
-        "lastModified": 1767500177,
-        "narHash": "sha256-Bz9L1kOtXhGThk15JQs/BBuh4KggEjF/mKWqXgayhCo=",
+        "lastModified": 1767547414,
+        "narHash": "sha256-aElDCXnOE7VZglWU+kVIxxnn8tKDaNf75BqSxZMiLzo=",
         "owner": "kyokley",
         "repo": "nix-oracle-db",
-        "rev": "c1e2d97f8431cc7f716680705c83aa033e3e623e",
+        "rev": "540991b9468f58c20ffc82312dd665e5e2437b5e",
         "type": "github"
       },
       "original": {

@@ -72,7 +72,7 @@
     passwordFile = toString (builtins.toFile "passwordFile" ''
       password
     '');
-    initScriptDir = builtins.dirOf initScriptFile;
+    initScript = initScriptFile;
   };
 
   virtualisation = {
