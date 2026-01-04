@@ -46,4 +46,28 @@
   '';
 
   services.xserver.videoDrivers = ["amdgpu"];
+
+  services.oracle-database-container = let
+    initScriptFile = builtins.toFile "01_create.sql" ''
+      ALTER SESSION SET CONTAINER=FREEPDB1;
+      CREATE USER TEST IDENTIFIED BY test QUOTA UNLIMITED ON USERS;
+      GRANT CONNECT, RESOURCE TO TEST;
+
+      CREATE TABLE student (
+          last_name       VARCHAR2(15) NOT NULL,
+          first_name      VARCHAR2(15) NOT NULL,
+          id              NUMBER(6) PRIMARY KEY
+      );
+      INSERT INTO students (last_name, first_name, id)
+      VALUES ('Doe', 'John', 1001);
+
+    '';
+  in {
+    enable = true;
+    openFirewall = true;
+    passwordFile = toString (builtins.toFile "passwordFile" ''
+      password
+    '');
+    initScriptDir = builtins.dirOf initScriptFile;
+  };
 }

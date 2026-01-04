@@ -20,6 +20,7 @@
       url = "github:kyokley/psql-pager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nix-oracle-db.url = "github:kyokley/nix-oracle-db/gvenzl";
   };
 
   outputs = {...} @ inputs: let
@@ -35,6 +36,7 @@
       qtile-flake = inputs.qtile-flake;
       nixvim = inputs.nixvim;
       usql = inputs.usql;
+      nix-oracle-db = inputs.nix-oracle-db;
     };
 
     homeManagerConfigurationGenerator = spec: (inputs.home-manager.lib.homeManagerConfiguration {
@@ -56,6 +58,7 @@
         ./modules/nixos/programs/nixos/hardware-configuration.nix
         ./hosts/${spec.hostName}/configuration.nix
         ./hosts/${spec.hostName}/hardware-configuration.nix
+        inputs.nix-oracle-db.nixosModules.oracle-database-container
         inputs.home-manager.nixosModules.home-manager
         {
           home-manager.users.${username} = import ./hosts/${spec.hostName}/home.nix;
