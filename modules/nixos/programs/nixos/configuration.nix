@@ -216,7 +216,7 @@
     {
       hostName = "192.168.50.31";
       sshUser = inputs.username;
-      systems = ["aarch64-darwin" "x86_64-linux"];
+      systems = ["x86_64-linux"];
       protocol = "ssh";
       maxJobs = 3;
       speedFactor = 2;
