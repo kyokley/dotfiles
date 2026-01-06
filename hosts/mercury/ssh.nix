@@ -27,6 +27,7 @@ in {
       ../mars/mars.pub
       ../mars/mars-root.pub
       ../dioxygen/dioxygen.pub
+      ../dioxygen/dioxygen-root.pub
       ./saturn.pub
       ./saturn-root.pub
     ];
