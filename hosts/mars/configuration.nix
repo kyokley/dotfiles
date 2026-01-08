@@ -25,6 +25,7 @@
   environment.systemPackages = with pkgs; [
     protonvpn-gui
     spotify
+    steam-devices-udev-rules
   ];
 
   system.stateVersion = "24.05"; # Don't touch me!
