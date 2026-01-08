@@ -24,6 +24,7 @@
 
   environment.systemPackages = with pkgs; [
     protonvpn-gui
+    spotify
   ];
 
   system.stateVersion = "24.05"; # Don't touch me!
