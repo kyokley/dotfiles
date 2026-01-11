@@ -34,6 +34,7 @@
       inherit username;
       qtile-flake = inputs.qtile-flake;
       nixvim = inputs.nixvim;
+      nixvim-output = "default";
       usql = inputs.usql;
     };
 

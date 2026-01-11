@@ -5,7 +5,7 @@
     pkgs.tig
     pkgs.jq
     inputs.pkgs-unstable.devenv
-    inputs.nixvim.packages.${pkgs.stdenv.hostPlatform.system}.default
+    inputs.nixvim.packages.${pkgs.stdenv.hostPlatform.system}.${inputs.nixvim-output}
     pkgs.direnv
     inputs.usql.packages.${pkgs.stdenv.hostPlatform.system}.default
   ];
