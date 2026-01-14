@@ -227,4 +227,6 @@
   nix.extraOptions = ''
     builders-use-substitutes = true
   '';
+
+  services.fwupd.enable = true;
 }
