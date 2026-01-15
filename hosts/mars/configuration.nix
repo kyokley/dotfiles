@@ -26,7 +26,8 @@
     protonvpn-gui
     spotify
     steam-devices-udev-rules
-    (ollama.override {acceleration = "rocm";})
+    ollama-rocm
+    aider-chat
   ];
 
   system.stateVersion = "24.05"; # Don't touch me!
