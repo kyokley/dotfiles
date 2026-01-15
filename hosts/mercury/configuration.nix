@@ -13,9 +13,6 @@
     "aarch64-linux"
   ];
 
-  networking.hostName = "mercury"; # Define your hostname.
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
-
   services.ollama = {
     enable = false;
     acceleration = "cuda";

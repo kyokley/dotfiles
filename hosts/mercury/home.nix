@@ -11,7 +11,6 @@
   };
 
   home.packages = [
-    inputs.nixvim.packages.${pkgs.stdenv.hostPlatform.system}.default
     pkgs.mattermost-desktop
   ];
 
