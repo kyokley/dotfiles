@@ -33,10 +33,11 @@
     pkgs.nix-search-cli
     pkgs.lftp
     pkgs.home-manager
+    inputs.nixvim.packages.${pkgs.stdenv.hostPlatform.system}.${inputs.nixvim-output}
   ];
 
   home.shellAliases = {
-    home-manager-switch = "home-manager switch --refresh --flake 'github:kyokley/dotfiles#${inputs.hostname}'";
+    home-manager-switch = "home-manager switch --refresh --flake 'github:kyokley/dotfiles#${inputs.hostName}'";
     ls = "ls --color=auto";
   };
 

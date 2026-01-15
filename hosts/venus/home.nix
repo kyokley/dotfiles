@@ -8,6 +8,6 @@
   home.stateVersion = "23.11"; # Please read the comment before changing.
 
   home.packages = [
-    inputs.nixvim.packages.${pkgs.stdenv.hostPlatform.system}.minimal
+    inputs.nixvim.packages.${pkgs.stdenv.hostPlatform.system}.${inputs.nixvim-output}
   ];
 }

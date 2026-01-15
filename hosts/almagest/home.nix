@@ -12,7 +12,6 @@ in {
 
   home.packages = [
     pkgs.docker-compose
-    nixvim.packages.${pkgs.stdenv.hostPlatform.system}.minimal
   ];
 
   systemd.user.services = {

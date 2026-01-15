@@ -19,6 +19,7 @@
   };
 
   # Enable networking
+  networking.hostName = inputs.hostName;
   networking.networkmanager.enable = true;
   systemd.services.NetworkManager-wait-online.enable = true;
   systemd.network.wait-online.enable = false;

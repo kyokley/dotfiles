@@ -26,32 +26,34 @@
     username = "yokley";
     aarch64_darwin = "aarch64-darwin";
     x86_linux = "x86_64-linux";
-    defaultSpecialArgs = system: {
+    defaultSpecialArgs = {
+      system,
+      nixvim-output ? "default",
+      hostName,
+    }: {
       pkgs-unstable = import inputs.nixpkgs-unstable {
         config.allowUnfree = true;
         inherit system;
       };
+      inherit hostName;
       inherit username;
       qtile-flake = inputs.qtile-flake;
       nixvim = inputs.nixvim;
-      nixvim-output = "default";
+      inherit nixvim-output;
       usql = inputs.usql;
     };
 
     homeManagerConfigurationGenerator = spec: (inputs.home-manager.lib.homeManagerConfiguration {
       pkgs = inputs.nixpkgs.legacyPackages.${spec.system};
       extraSpecialArgs =
-        (defaultSpecialArgs spec.system)
-        // {
-          hostname = spec.hostName;
-        };
+        defaultSpecialArgs spec;
       modules = [
         ./hosts/${spec.hostName}/home.nix
       ];
     });
     nixosConfigurationGenerator = spec: (inputs.nixpkgs.lib.nixosSystem {
       specialArgs =
-        defaultSpecialArgs spec.system;
+        defaultSpecialArgs spec;
       modules = [
         ./modules/nixos/programs/nixos/configuration.nix
         ./modules/nixos/programs/nixos/hardware-configuration.nix
@@ -61,10 +63,7 @@
         {
           home-manager.users.${username} = import ./hosts/${spec.hostName}/home.nix;
           home-manager.extraSpecialArgs =
-            (defaultSpecialArgs spec.system)
-            // {
-              hostname = spec.hostName;
-            };
+            defaultSpecialArgs spec;
         }
       ];
     });
@@ -89,6 +88,7 @@
       venus = homeManagerConfigurationGenerator {
         system = x86_linux;
         hostName = "venus";
+        nixvim-output = "minimal";
       };
 
       almagest = homeManagerConfigurationGenerator {
@@ -102,6 +102,7 @@
       singularity = homeManagerConfigurationGenerator {
         system = x86_linux;
         hostName = "singularity";
+        nixvim-output = "minimal";
       };
     };
   };

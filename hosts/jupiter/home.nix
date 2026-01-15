@@ -13,7 +13,6 @@ in {
     pkgs.pass
     pkgs.borgbackup
     pkgs.borgmatic
-    inputs.nixvim.packages.${pkgs.stdenv.hostPlatform.system}.minimal
   ];
 
   systemd.user.services = {
