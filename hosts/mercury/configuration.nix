@@ -31,8 +31,8 @@
     acceleration = "rocm";
     host = "100.92.134.123";
     loadModels = [
-      "qwen3-coder:30b"
       "llama3.2:3b"
+      "gpt-oss"
     ];
   };
 

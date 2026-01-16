@@ -72,6 +72,7 @@
       mars = nixosConfigurationGenerator {
         hostName = "mars";
         system = x86_linux;
+        nixvim-output = "withAider";
       };
       mercury = nixosConfigurationGenerator {
         hostName = "mercury";
