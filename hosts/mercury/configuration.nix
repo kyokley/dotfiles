@@ -39,6 +39,10 @@
     ];
   };
 
+  environment.variables = {
+    ROCR_VISIBLE_DEVICES = "1";
+  };
+
   networking.firewall.interfaces.tailscale0.allowedTCPPorts = [
     11434
   ];
