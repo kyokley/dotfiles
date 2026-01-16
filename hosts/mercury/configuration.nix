@@ -34,6 +34,8 @@
       "llama3.2:3b"
       "gpt-oss"
       "qwen3:8b"
+      "qwen3-coder:30b"
+      "gemma3:12b"
     ];
   };
 
