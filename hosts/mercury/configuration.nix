@@ -33,6 +33,7 @@
     loadModels = [
       "llama3.2:3b"
       "gpt-oss"
+      "qwen3:8b"
     ];
   };
 
