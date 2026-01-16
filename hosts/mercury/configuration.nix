@@ -13,9 +13,10 @@
     "aarch64-linux"
   ];
 
-  services.ollama = {
-    enable = false;
-    acceleration = "cuda";
+  system.stateVersion = "24.05"; # Don't touch me!
+
+  programs.fuse = {
+    userAllowOther = true;
   };
 
   # List packages installed in system profile. To search, run:
@@ -25,9 +26,17 @@
     sshfs
   ];
 
-  system.stateVersion = "24.05"; # Don't touch me!
-
-  programs.fuse = {
-    userAllowOther = true;
+  services.ollama = {
+    enable = true;
+    acceleration = "rocm";
+    host = "100.92.134.123";
+    loadModels = [
+      "qwen3-coder:30b"
+      "llama3.2:3b"
+    ];
   };
+
+  networking.firewall.interfaces.tailscale0.allowedTCPPorts = [
+    11434
+  ];
 }
