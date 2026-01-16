@@ -1,6 +1,6 @@
 {
   programs.aider-chat.enable = true;
-  home.sessionVariables = {
+  home.sessionVariables = rec {
     OLLAMA_HOST = "100.92.134.123:11434";
     OLLAMA_API_BASE = "http://${OLLAMA_HOST}";
     # NIXVIM_AIDER_MODEL = "ollama_chat/gpt-oss";
