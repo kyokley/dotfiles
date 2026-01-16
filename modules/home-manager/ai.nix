@@ -5,6 +5,8 @@
     OLLAMA_API_BASE = "http://${OLLAMA_HOST}";
     # NIXVIM_AIDER_MODEL = "ollama_chat/gpt-oss";
     # NIXVIM_AIDER_MODEL = "ollama_chat/llama3.2:3b";
-    NIXVIM_AIDER_MODEL = "ollama_chat/qwen3:8b";
+    # NIXVIM_AIDER_MODEL = "ollama_chat/qwen3:8b";
+    NIXVIM_AIDER_MODEL = "ollama_chat/qwen3-coder:30b";
+    AIDER_COMMIT_MODEL = "ollama_chat/qwen3:8b";
   };
 }
