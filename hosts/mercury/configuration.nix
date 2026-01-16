@@ -37,10 +37,9 @@
       "qwen3-coder:30b"
       "gemma3:12b"
     ];
-  };
-
-  environment.variables = {
-    ROCR_VISIBLE_DEVICES = "1";
+    environmentVariables = {
+      ROCR_VISIBLE_DEVICES = "1";
+    };
   };
 
   networking.firewall.interfaces.tailscale0.allowedTCPPorts = [
