@@ -1,4 +1,8 @@
-{pkgs, ...}: {
+{
+  pkgs,
+  lib,
+  ...
+}: {
   imports = [
     ../../modules/nixos/programs/tailscale.nix
     ./ssh.nix
@@ -26,6 +30,7 @@
     sshfs
   ];
 
+  # Ollama server setup
   services.ollama = {
     enable = true;
     acceleration = "rocm";
@@ -42,7 +47,7 @@
     };
   };
 
-  networking.firewall.interfaces.tailscale0.allowedTCPPorts = [
+  networking.firewall.interfaces.tailscale0.allowedTCPPorts = lib.mkIf config.services.ollama.enable [
     11434
   ];
 }
