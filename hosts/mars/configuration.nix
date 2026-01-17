@@ -24,8 +24,6 @@
     protonvpn-gui
     spotify
     steam-devices-udev-rules
-    ollama-rocm
-    aider-chat
   ];
 
   system.stateVersion = "24.05"; # Don't touch me!
@@ -48,15 +46,4 @@
   '';
 
   services.xserver.videoDrivers = ["amdgpu"];
-
-  services.ollama = {
-    enable = true;
-    loadModels = ["gpt-oss"];
-    acceleration = "rocm";
-    environmentVariables = {
-      HSA_OVERRIDE_GFX_VERSION = "11.0.3";
-    };
-    # results in environment variable "HSA_OVERRIDE_GFX_VERSION=11.0.3"
-    rocmOverrideGfx = "11.0.3";
-  };
 }
