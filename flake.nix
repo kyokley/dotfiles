@@ -37,10 +37,8 @@
       };
       inherit hostName;
       inherit username;
-      qtile-flake = inputs.qtile-flake;
-      nixvim = inputs.nixvim;
       inherit nixvim-output;
-      usql = inputs.usql;
+      inherit (inputs) qtile-flake nixvim usql;
     };
 
     homeManagerConfigurationGenerator = spec: (inputs.home-manager.lib.homeManagerConfiguration {
