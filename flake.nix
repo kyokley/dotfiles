@@ -37,10 +37,8 @@
       };
       inherit hostName;
       inherit username;
-      qtile-flake = inputs.qtile-flake;
-      nixvim = inputs.nixvim;
       inherit nixvim-output;
-      usql = inputs.usql;
+      inherit (inputs) qtile-flake nixvim usql;
     };
 
     homeManagerConfigurationGenerator = spec: (inputs.home-manager.lib.homeManagerConfiguration {
@@ -72,6 +70,7 @@
       mars = nixosConfigurationGenerator {
         hostName = "mars";
         system = x86_linux;
+        nixvim-output = "withAider";
       };
       mercury = nixosConfigurationGenerator {
         hostName = "mercury";

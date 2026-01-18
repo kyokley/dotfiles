@@ -1,4 +1,8 @@
-{pkgs, ...}: {
+{
+  pkgs,
+  lib,
+  ...
+}: {
   imports = [
     ../../modules/nixos/programs/tailscale.nix
     ./ssh.nix
@@ -13,9 +17,10 @@
     "aarch64-linux"
   ];
 
-  services.ollama = {
-    enable = false;
-    acceleration = "cuda";
+  system.stateVersion = "24.05"; # Don't touch me!
+
+  programs.fuse = {
+    userAllowOther = true;
   };
 
   # List packages installed in system profile. To search, run:
@@ -25,9 +30,24 @@
     sshfs
   ];
 
-  system.stateVersion = "24.05"; # Don't touch me!
-
-  programs.fuse = {
-    userAllowOther = true;
+  # Ollama server setup
+  services.ollama = {
+    enable = true;
+    acceleration = "rocm";
+    host = "100.92.134.123";
+    loadModels = [
+      "llama3.2:3b"
+      "gpt-oss"
+      "qwen3:8b"
+      "qwen3-coder:30b"
+      "gemma3:12b"
+    ];
+    environmentVariables = {
+      ROCR_VISIBLE_DEVICES = "1";
+    };
   };
+
+  networking.firewall.interfaces.tailscale0.allowedTCPPorts = lib.mkIf config.services.ollama.enable [
+    11434
+  ];
 }

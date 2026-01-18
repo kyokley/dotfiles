@@ -13,6 +13,7 @@ in {
   imports = [
     ../../modules/home-manager/home.nix
     ../../modules/home-manager/dev.nix
+    ../../modules/home-manager/ai.nix
   ];
 
   programs.systemd-services.enable = false;
