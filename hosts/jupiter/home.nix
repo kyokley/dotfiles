@@ -1,9 +1,10 @@
 {
   pkgs,
   lib,
+  username,
   ...
-} @ inputs: let
-  homeDir = "/home/${inputs.username}";
+}: let
+  homeDir = "/home/${username}";
 in {
   imports = [
     ../../modules/home-manager/home.nix
@@ -22,7 +23,7 @@ in {
         Type = "oneshot";
         ExecStart = toString (
           pkgs.writeShellScript "mediawaiter-daily-tasks" ''
-            ${pkgs.rsync}/bin/rsync -av --rsh=ssh --delete ${inputs.username}@almagest.dyndns.org:/home/${inputs.username}/workspace/MediaViewerProd/backups /home/${inputs.username}/db_backups 2>&1 > /home/${inputs.username}/db_backup.log
+            ${pkgs.rsync}/bin/rsync -av --rsh=ssh --delete ${username}@almagest.dyndns.org:/home/${username}/workspace/MediaViewerProd/backups /home/${username}/db_backups 2>&1 > /home/${username}/db_backup.log
           ''
         );
       };
@@ -33,7 +34,7 @@ in {
         Type = "oneshot";
         ExecStart = toString (
           pkgs.writeShellScript "mediawaiter-weekly-tasks" ''
-            ${pkgs.bash}/bin/bash /mnt/external/backup.sh 2>&1 > /home/${inputs.username}/file_backup.log
+            ${pkgs.bash}/bin/bash /mnt/external/backup.sh 2>&1 > /home/${username}/file_backup.log
           ''
         );
       };

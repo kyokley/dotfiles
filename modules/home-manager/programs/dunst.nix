@@ -1,4 +1,4 @@
-{...} @ inputs: let
+{username, ...}: let
   dunst_config = ''
     [global]
         ### Display ###
@@ -180,7 +180,7 @@
         ### Misc/Advanced ###
 
         # dmenu path.
-        dmenu = /etc/profiles/per-user/${inputs.username}/bin/rofi -dmenu
+        dmenu = /etc/profiles/per-user/${username}/bin/rofi -dmenu
 
         # Browser for opening urls in context menu.
         browser = /run/current-system/sw/bin/brave

@@ -46,7 +46,8 @@
       inherit hostName;
       inherit username;
       inherit nixvim-output;
-      inherit (inputs) qtile-flake nixvim usql ollama-mattermost-bot;
+      # inherit (inputs) qtile-flake nixvim usql ollama-mattermost-bot;
+      inherit inputs;
     };
 
     homeManagerConfigurationGenerator = spec: (inputs.home-manager.lib.homeManagerConfiguration {

@@ -1,4 +1,9 @@
-{pkgs, config, ...} @ inputs: {
+{
+  pkgs,
+  config,
+  inputs,
+  ...
+}: {
   imports = [
     ../../modules/home-manager/programs/nixos/nixos.nix
     ../../modules/home-manager/home.nix

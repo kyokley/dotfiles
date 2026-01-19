@@ -1,4 +1,9 @@
-{pkgs, ...} @ inputs: {
+{
+  pkgs,
+  nixvim-output,
+  inputs,
+  ...
+}: {
   imports = [
     ../../modules/home-manager/home.nix
   ];

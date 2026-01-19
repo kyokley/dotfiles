@@ -1,4 +1,8 @@
-{pkgs, ...} @ inputs: {
+{
+  pkgs,
+  nixvim-output,
+  ...
+}: {
   imports = [
     ../../modules/home-manager/home.nix
   ];
@@ -8,6 +12,6 @@
   home.stateVersion = "23.11"; # Please read the comment before changing.
 
   home.packages = [
-    inputs.nixvim.packages.${pkgs.stdenv.hostPlatform.system}.${inputs.nixvim-output}
+    inputs.nixvim.packages.${pkgs.stdenv.hostPlatform.system}.${nixvim-output}
   ];
 }

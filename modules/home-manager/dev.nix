@@ -1,10 +1,15 @@
-{pkgs, ...} @ inputs: {
+{
+  pkgs,
+  pkgs-unstable,
+  inputs,
+  ...
+}: {
   home.packages = [
     pkgs.gnumake
     pkgs.ripgrep
     pkgs.tig
     pkgs.jq
-    inputs.pkgs-unstable.devenv
+    pkgs-unstable.devenv
     pkgs.direnv
     inputs.usql.packages.${pkgs.stdenv.hostPlatform.system}.default
   ];
