@@ -60,7 +60,6 @@
   '';
 
   age = {
-    identityPaths = ["~/.ssh/id_ed25519"];
     secrets = {
       ollama-mattermost-bot-token = {
         file = ../../secrets/ollama-mattermost-bot-token.age;

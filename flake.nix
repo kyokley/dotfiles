@@ -68,7 +68,7 @@
         ./hosts/${spec.hostName}/hardware-configuration.nix
         inputs.home-manager.nixosModules.home-manager
         {
-          home-manager.users.${username} = import ./hosts/${spec.hostName}/home.nix;
+          home-manager.users.${username} = inputs.nixpkgs.lib.mkMerge [./hosts/${spec.hostName}/home.nix inputs.agenix.homeManagerModules.default];
           home-manager.extraSpecialArgs =
             defaultSpecialArgs spec;
         }

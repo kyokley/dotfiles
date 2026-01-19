@@ -1,4 +1,4 @@
-{pkgs, ...} @ inputs: {
+{pkgs, config, ...} @ inputs: {
   imports = [
     ../../modules/home-manager/programs/nixos/nixos.nix
     ../../modules/home-manager/home.nix
@@ -40,15 +40,15 @@
     ollama-mattermost-bot = {
       Unit.Description = "Run Ollama Chatbot for Mattermost";
       Service = {
-        Type = "oneshot";
         ExecStart = toString (
           pkgs.writeShellScript "run-mattermost-bot" ''
-            ${inputs.packages.${inputs.system}.default}/bin/ollama-mattermost-bot
+            ${inputs.ollama-mattermost-bot.packages.${pkgs.stdenv.hostPlatform.system}.default}/bin/ollama-mattermost-bot
           ''
         );
+        RuntimeMaxSec = 86400;
         Environment = [
           "MATTERMOST_URL=mercury.taila5201.ts.net"
-          "BOT_TOKEN=${builtins.readFile config.age.secrets.ollama-mattermost-bot-token.path}"
+          "BOT_TOKEN_PATH=${config.age.secrets.ollama-mattermost-bot-token.path}"
           "TEAM_NAME=Mercury"
 
           "OLLAMA_API_URL=http://100.92.134.123:11434"
@@ -69,6 +69,20 @@
         RandomizedDelaySec = 14400;
         Persistent = true;
         Unit = "mattermost-clean-old-posts.service";
+      };
+      Install.WantedBy = ["timers.target"];
+    };
+
+    ollama-mattermost-bot-daily-task = {
+      Unit = {
+        Description = "Run tasks daily";
+        After = ["network.target"];
+      };
+      Timer = {
+        OnCalendar = "daily";
+        RandomizedDelaySec = 14400;
+        Persistent = true;
+        Unit = "ollama-mattermost-bot.service";
       };
       Install.WantedBy = ["timers.target"];
     };
