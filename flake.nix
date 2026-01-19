@@ -3,10 +3,11 @@
 
   inputs = {
     # Specify the source of Home Manager and Nixpkgs.
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
+    # nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     home-manager = {
-      url = "github:nix-community/home-manager/release-25.11";
+      url = "github:nix-community/home-manager/master";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nixvim = {
@@ -35,7 +36,7 @@
     aarch64_darwin = "aarch64-darwin";
     x86_linux = "x86_64-linux";
     defaultSpecialArgs = {
-      system,
+      system ? x86_linux,
       nixvim-output ? "default",
       hostName,
     }: {
@@ -79,12 +80,10 @@
     nixosConfigurations = {
       mars = nixosConfigurationGenerator {
         hostName = "mars";
-        system = x86_linux;
         nixvim-output = "withAider";
       };
       mercury = nixosConfigurationGenerator {
         hostName = "mercury";
-        system = x86_linux;
       };
     };
 
@@ -95,21 +94,17 @@
       };
 
       venus = homeManagerConfigurationGenerator {
-        system = x86_linux;
         hostName = "venus";
         nixvim-output = "minimal";
       };
 
       almagest = homeManagerConfigurationGenerator {
-        system = x86_linux;
         hostName = "almagest";
       };
       jupiter = homeManagerConfigurationGenerator {
-        system = x86_linux;
         hostName = "jupiter";
       };
       singularity = homeManagerConfigurationGenerator {
-        system = x86_linux;
         hostName = "singularity";
         nixvim-output = "minimal";
       };
