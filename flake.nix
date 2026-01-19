@@ -20,6 +20,14 @@
       url = "github:kyokley/psql-pager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    agenix = {
+      url = "github:ryantm/agenix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    ollama-mattermost-bot = {
+      url = "github:kyokley/ollama-mattermost-bot";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = {...} @ inputs: let
@@ -38,7 +46,7 @@
       inherit hostName;
       inherit username;
       inherit nixvim-output;
-      inherit (inputs) qtile-flake nixvim usql;
+      inherit (inputs) qtile-flake nixvim usql ollama-mattermost-bot;
     };
 
     homeManagerConfigurationGenerator = spec: (inputs.home-manager.lib.homeManagerConfiguration {
@@ -47,6 +55,7 @@
         defaultSpecialArgs spec;
       modules = [
         ./hosts/${spec.hostName}/home.nix
+        inputs.agenix.homeManagerModules.default
       ];
     });
     nixosConfigurationGenerator = spec: (inputs.nixpkgs.lib.nixosSystem {

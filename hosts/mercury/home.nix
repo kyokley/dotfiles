@@ -36,6 +36,26 @@
         );
       };
     };
+
+    ollama-mattermost-bot = {
+      Unit.Description = "Run Ollama Chatbot for Mattermost";
+      Service = {
+        Type = "oneshot";
+        ExecStart = toString (
+          pkgs.writeShellScript "run-mattermost-bot" ''
+            ${inputs.packages.${inputs.system}.default}/bin/ollama-mattermost-bot
+          ''
+        );
+        Environment = [
+          "MATTERMOST_URL=mercury.taila5201.ts.net"
+          "BOT_TOKEN=${builtins.readFile config.age.secrets.ollama-mattermost-bot-token.path}"
+          "TEAM_NAME=Mercury"
+
+          "OLLAMA_API_URL=http://100.92.134.123:11434"
+          "OLLAMA_MODEL=llama3.2:3b"
+        ];
+      };
+    };
   };
 
   systemd.user.timers = {
