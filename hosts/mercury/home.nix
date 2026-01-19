@@ -42,7 +42,7 @@
       Service = {
         ExecStart = toString (
           pkgs.writeShellScript "run-mattermost-bot" ''
-            source $(cat ${config.age.secrets.ollama-mattermost-bot-token.path})
+            export BOT_TOKEN_PATH=${config.age.secrets.ollama-mattermost-bot-token.path}
             ${inputs.ollama-mattermost-bot.packages.${pkgs.stdenv.hostPlatform.system}.default}/bin/ollama-mattermost-bot
           ''
         );
