@@ -32,5 +32,8 @@ jobs:
       - uses: actions/checkout@v4
       - uses: wimpysworld/nothing-but-nix@main
       - uses: cachix/install-nix-action@v31
+      - name: Set up Nix path
+        run: |
+          echo "NIX_PATH=nixpkgs=https://github.com/nixos/nixpkgs/archive/nixos-unstable.tar.gz" >> $GITHUB_ENV
       - name: Attempt to build host machine configs
         run: nix-shell -p home-manager --run "home-manager build --flake '.#${{matrix.host}}'"
