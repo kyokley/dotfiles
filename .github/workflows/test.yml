@@ -5,7 +5,7 @@ on:
     branches:
       - main
 jobs:
-  tests:
+  nixos-tests:
     name: Run test suite
     runs-on: ubuntu-latest
     strategy:
@@ -15,6 +15,22 @@ jobs:
           - mercury
     steps:
       - uses: actions/checkout@v4
+      - uses: wimpysworld/nothing-but-nix@main
       - uses: cachix/install-nix-action@v31
       - name: Attempt to build host machine configs
         run: nix eval '.#nixosConfigurations.${{matrix.host}}.config.system.build.toplevel'
+  home-tests:
+    name: Run test suite
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        host:
+          - venus
+          - almagest
+          - jupiter
+    steps:
+      - uses: actions/checkout@v4
+      - uses: wimpysworld/nothing-but-nix@main
+      - uses: cachix/install-nix-action@v31
+      - name: Attempt to build host machine configs
+        run: nix-shell -p home-manager --run "home-manager build --flake '.#${{matrix.host}}'"
