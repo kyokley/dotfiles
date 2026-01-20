@@ -1,6 +1,5 @@
 {
   pkgs,
-  pkgs-unstable,
   lib,
   username,
   hostName,
@@ -171,7 +170,7 @@
     feh
     alsa-utils
     slack
-    pkgs-unstable.zoom-us
+    zoom-us
     pulsemixer
   ];
 

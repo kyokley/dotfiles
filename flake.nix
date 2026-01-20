@@ -3,8 +3,6 @@
 
   inputs = {
     # Specify the source of Home Manager and Nixpkgs.
-    # nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
-    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     home-manager = {
       url = "github:nix-community/home-manager/master";
@@ -36,14 +34,9 @@
     aarch64_darwin = "aarch64-darwin";
     x86_linux = "x86_64-linux";
     defaultSpecialArgs = {
-      system ? x86_linux,
       nixvim-output ? "default",
       hostName,
     }: {
-      pkgs-unstable = import inputs.nixpkgs-unstable {
-        config.allowUnfree = true;
-        inherit system;
-      };
       inherit hostName;
       inherit username;
       inherit nixvim-output;

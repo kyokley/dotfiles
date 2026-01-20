@@ -1,6 +1,5 @@
 {
   pkgs,
-  pkgs-unstable,
   inputs,
   ...
 }: {
@@ -9,7 +8,7 @@
     pkgs.ripgrep
     pkgs.tig
     pkgs.jq
-    pkgs-unstable.devenv
+    pkgs.devenv
     pkgs.direnv
     inputs.usql.packages.${pkgs.stdenv.hostPlatform.system}.default
   ];
