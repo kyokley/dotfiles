@@ -1,8 +1,11 @@
 {
   pkgs,
   lib,
+  username,
+  hostName,
+  inputs,
   ...
-} @ inputs: {
+}: {
   nix = {
     gc = {
       automatic = true;
@@ -12,14 +15,14 @@
     settings = {
       trusted-users = [
         "root"
-        "${inputs.username}"
+        "${username}"
       ];
       download-buffer-size = 524288000;
     };
   };
 
   # Enable networking
-  networking.hostName = inputs.hostName;
+  networking.hostName = hostName;
   networking.networkmanager.enable = true;
   systemd.services.NetworkManager-wait-online.enable = true;
   systemd.network.wait-online.enable = false;
@@ -130,7 +133,7 @@
   };
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.${inputs.username} = {
+  users.users.${username} = {
     shell = pkgs.zsh;
     isNormalUser = true;
     description = "Kevin Yokley";
@@ -167,7 +170,7 @@
     feh
     alsa-utils
     slack
-    inputs.pkgs-unstable.zoom-us
+    zoom-us
     pulsemixer
   ];
 
@@ -210,13 +213,13 @@
   home-manager = {
     useGlobalPkgs = true;
     useUserPackages = true;
-    users.${inputs.username} = import ../../../home-manager/home.nix;
+    users.${username} = import ../../../home-manager/home.nix;
   };
 
   nix.buildMachines = [
     {
       hostName = "192.168.50.31";
-      sshUser = inputs.username;
+      sshUser = username;
       systems = ["x86_64-linux"];
       protocol = "ssh";
       maxJobs = 3;

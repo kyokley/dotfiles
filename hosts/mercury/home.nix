@@ -1,7 +1,14 @@
-{pkgs, ...} @ inputs: {
+{
+  pkgs,
+  config,
+  username,
+  inputs,
+  ...
+}: {
   imports = [
     ../../modules/home-manager/programs/nixos/nixos.nix
     ../../modules/home-manager/home.nix
+    ../../modules/home-manager/ai.nix
   ];
 
   programs.git.settings.user.email = "kyokley@mercury";
@@ -23,7 +30,7 @@
         Type = "oneshot";
         ExecStart = toString (
           pkgs.writeShellScript "mattermost-clean-old-posts" ''
-            cd /home/${inputs.username}/workspace/mattermost
+            cd /home/${username}/workspace/mattermost
             ${pkgs.docker}/bin/docker compose exec postgres17 psql -U mmuser -d mattermost -c "
               begin;
               delete from posts where createat < extract(epoch from (now() - interval '7 days'))::int8 * 1000;
@@ -33,6 +40,26 @@
               "
           ''
         );
+      };
+    };
+
+    ollama-mattermost-bot = {
+      Unit.Description = "Run Ollama Chatbot for Mattermost";
+      Service = {
+        ExecStart = toString (
+          pkgs.writeShellScript "run-mattermost-bot" ''
+            export BOT_TOKEN_PATH=${config.age.secrets.ollama-mattermost-bot-token.path}
+            ${inputs.ollama-mattermost-bot.packages.${pkgs.stdenv.hostPlatform.system}.default}/bin/ollama-mattermost-bot
+          ''
+        );
+        RuntimeMaxSec = 86400;
+        Environment = [
+          "MATTERMOST_URL=mercury.taila5201.ts.net"
+          "TEAM_NAME=Mercury"
+
+          "OLLAMA_API_URL=http://100.92.134.123:11434"
+          "OLLAMA_MODEL=llama3.2:3b"
+        ];
       };
     };
   };
@@ -48,6 +75,20 @@
         RandomizedDelaySec = 14400;
         Persistent = true;
         Unit = "mattermost-clean-old-posts.service";
+      };
+      Install.WantedBy = ["timers.target"];
+    };
+
+    ollama-mattermost-bot-daily-task = {
+      Unit = {
+        Description = "Run tasks daily";
+        After = ["network.target"];
+      };
+      Timer = {
+        OnCalendar = "daily";
+        RandomizedDelaySec = 14400;
+        Persistent = true;
+        Unit = "ollama-mattermost-bot.service";
       };
       Install.WantedBy = ["timers.target"];
     };

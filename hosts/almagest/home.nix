@@ -1,10 +1,10 @@
 {
   pkgs,
   lib,
-  nixvim,
+  username,
   ...
-} @ inputs: let
-  mv_path = "/home/${inputs.username}/workspace/MediaViewerProd";
+}: let
+  mv_path = "/home/${username}/workspace/MediaViewerProd";
 in {
   imports = [
     ../../modules/home-manager/home.nix

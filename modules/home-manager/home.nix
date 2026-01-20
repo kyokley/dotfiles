@@ -1,8 +1,12 @@
 {
   pkgs,
   lib,
+  username,
+  nixvim-output,
+  hostName,
+  inputs,
   ...
-} @ inputs: {
+}: {
   imports = [
     ./programs/shell/zsh.nix
     ./programs/git.nix
@@ -13,8 +17,8 @@
 
   # Home Manager needs a bit of information about you and the paths it should
   # manage.
-  home.username = lib.mkDefault "${inputs.username}";
-  home.homeDirectory = lib.mkDefault "/home/${inputs.username}";
+  home.username = lib.mkDefault "${username}";
+  home.homeDirectory = lib.mkDefault "/home/${username}";
 
   nix = {
     package = lib.mkDefault pkgs.nix;
@@ -33,11 +37,11 @@
     pkgs.nix-search-cli
     pkgs.lftp
     pkgs.home-manager
-    inputs.nixvim.packages.${pkgs.stdenv.hostPlatform.system}.${inputs.nixvim-output}
+    inputs.nixvim.packages.${pkgs.stdenv.hostPlatform.system}.${nixvim-output}
   ];
 
   home.shellAliases = {
-    home-manager-switch = "home-manager switch --refresh --flake 'github:kyokley/dotfiles#${inputs.hostName}'";
+    home-manager-switch = "home-manager switch --refresh --flake 'github:kyokley/dotfiles#${hostName}'";
     ls = "ls --color=auto";
   };
 
@@ -46,7 +50,7 @@
   nix.buildMachines = [
     {
       hostName = "192.168.50.31";
-      sshUser = inputs.username;
+      sshUser = username;
       systems = ["x86_64-linux"];
       protocol = "ssh";
       maxJobs = 3;
@@ -58,4 +62,12 @@
   nix.extraOptions = ''
     builders-use-substitutes = true
   '';
+
+  age = {
+    secrets = {
+      ollama-mattermost-bot-token = {
+        file = ../../secrets/ollama-mattermost-bot-token.age;
+      };
+    };
+  };
 }

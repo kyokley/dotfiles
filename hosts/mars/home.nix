@@ -1,10 +1,11 @@
 {
   pkgs,
   lib,
+  username,
   ...
-} @ inputs: let
+}: let
   cd_paths = [
-    "/home/${inputs.username}/workspace"
+    "/home/${username}/workspace"
   ];
 in {
   imports = [
@@ -12,6 +13,7 @@ in {
     ../../modules/home-manager/programs/nixos/wallpapers.nix
     ../../modules/home-manager/home.nix
     ../../modules/home-manager/dev.nix
+    ../../modules/home-manager/ai.nix
   ];
 
   programs.git.settings.user.email = "kyokley@mars";
