@@ -34,7 +34,6 @@
   # Ollama server setup
   services.ollama = {
     enable = true;
-    acceleration = "rocm";
     host = "100.92.134.123";
     loadModels = [
       "llama3.2:3b"
