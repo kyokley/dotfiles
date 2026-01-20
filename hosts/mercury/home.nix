@@ -1,6 +1,7 @@
 {
   pkgs,
   config,
+  username,
   inputs,
   ...
 }: {
@@ -29,7 +30,7 @@
         Type = "oneshot";
         ExecStart = toString (
           pkgs.writeShellScript "mattermost-clean-old-posts" ''
-            cd /home/${inputs.username}/workspace/mattermost
+            cd /home/${username}/workspace/mattermost
             ${pkgs.docker}/bin/docker compose exec postgres17 psql -U mmuser -d mattermost -c "
               begin;
               delete from posts where createat < extract(epoch from (now() - interval '7 days'))::int8 * 1000;
