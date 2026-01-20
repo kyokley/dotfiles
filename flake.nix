@@ -30,42 +30,40 @@
   };
 
   outputs = {...} @ inputs: let
-    username = "yokley";
+    defaultUsername = "yokley";
     aarch64_darwin = "aarch64-darwin";
     x86_linux = "x86_64-linux";
-    defaultSpecialArgs = {
+
+    homeManagerConfigurationGenerator = {
+      system ? x86_linux,
       nixvim-output ? "default",
       hostName,
-    }: {
-      inherit hostName;
-      inherit username;
-      inherit nixvim-output;
-      # inherit (inputs) qtile-flake nixvim usql ollama-mattermost-bot;
-      inherit inputs;
-    };
-
-    homeManagerConfigurationGenerator = spec: (inputs.home-manager.lib.homeManagerConfiguration {
-      pkgs = inputs.nixpkgs.legacyPackages.${spec.system};
-      extraSpecialArgs =
-        defaultSpecialArgs spec;
+      username ? defaultUsername,
+    }: (inputs.home-manager.lib.homeManagerConfiguration {
+      pkgs = inputs.nixpkgs.legacyPackages.${system};
+      extraSpecialArgs = {inherit inputs username nixvim-output hostName;};
       modules = [
-        ./hosts/${spec.hostName}/home.nix
+        ./hosts/${hostName}/home.nix
         inputs.agenix.homeManagerModules.default
       ];
     });
-    nixosConfigurationGenerator = spec: (inputs.nixpkgs.lib.nixosSystem {
-      specialArgs =
-        defaultSpecialArgs spec;
+
+    nixosConfigurationGenerator = {
+      system ? x86_linux,
+      nixvim-output ? "default",
+      hostName,
+      username ? defaultUsername,
+    }: (inputs.nixpkgs.lib.nixosSystem {
+      specialArgs = {inherit inputs username nixvim-output hostName;};
       modules = [
         ./modules/nixos/programs/nixos/configuration.nix
         ./modules/nixos/programs/nixos/hardware-configuration.nix
-        ./hosts/${spec.hostName}/configuration.nix
-        ./hosts/${spec.hostName}/hardware-configuration.nix
+        ./hosts/${hostName}/configuration.nix
+        ./hosts/${hostName}/hardware-configuration.nix
         inputs.home-manager.nixosModules.home-manager
         {
-          home-manager.users.${username} = inputs.nixpkgs.lib.mkMerge [./hosts/${spec.hostName}/home.nix inputs.agenix.homeManagerModules.default];
-          home-manager.extraSpecialArgs =
-            defaultSpecialArgs spec;
+          home-manager.users.${username} = inputs.nixpkgs.lib.mkMerge [./hosts/${hostName}/home.nix inputs.agenix.homeManagerModules.default];
+          home-manager.extraSpecialArgs = {inherit inputs username nixvim-output hostName;};
         }
       ];
     });

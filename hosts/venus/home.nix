@@ -1,6 +1,7 @@
 {
   pkgs,
   nixvim-output,
+  inputs,
   ...
 }: {
   imports = [
