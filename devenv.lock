@@ -3,10 +3,10 @@
     "auto-commit-message": {
       "flake": false,
       "locked": {
-        "lastModified": 1768597012,
+        "lastModified": 1768967568,
         "owner": "kyokley",
         "repo": "aider-commit",
-        "rev": "f5d6cb39aeb078252d2e860787987aeae18d8b17",
+        "rev": "c9a027fd1b10041021ed8811af0bb173d83529f1",
         "type": "github"
       },
       "original": {
@@ -18,10 +18,10 @@
     "devenv": {
       "locked": {
         "dir": "src/modules",
-        "lastModified": 1768597968,
+        "lastModified": 1768954892,
         "owner": "cachix",
         "repo": "devenv",
-        "rev": "92ad9c70fad164e8f4a3656dec91717a5c42cd98",
+        "rev": "c6267b9343bbc96c88038765d02e2a2ad2a3b8a0",
         "type": "github"
       },
       "original": {
@@ -55,10 +55,10 @@
         ]
       },
       "locked": {
-        "lastModified": 1767281941,
+        "lastModified": 1768935149,
         "owner": "cachix",
         "repo": "git-hooks.nix",
-        "rev": "f0927703b7b1c8d97511c4116eb9b4ec6645a0fa",
+        "rev": "18cbede9ff6da05b911c5c4802a397c2686ac8fa",
         "type": "github"
       },
       "original": {

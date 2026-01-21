@@ -52,7 +52,6 @@
             ${inputs.ollama-mattermost-bot.packages.${pkgs.stdenv.hostPlatform.system}.default}/bin/ollama-mattermost-bot
           ''
         );
-        RuntimeMaxSec = 86400;
         Environment = [
           "MATTERMOST_URL=mercury.taila5201.ts.net"
           "TEAM_NAME=Mercury"
@@ -85,8 +84,7 @@
         After = ["network.target"];
       };
       Timer = {
-        OnCalendar = "daily";
-        RandomizedDelaySec = 14400;
+        OnStartupSec = 300;
         Persistent = true;
         Unit = "ollama-mattermost-bot.service";
       };
