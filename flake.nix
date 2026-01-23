@@ -71,7 +71,6 @@
     nixosConfigurations = {
       mars = nixosConfigurationGenerator {
         hostName = "mars";
-        nixvim-output = "withAider";
       };
       mercury = nixosConfigurationGenerator {
         hostName = "mercury";
@@ -91,6 +90,7 @@
 
       almagest = homeManagerConfigurationGenerator {
         hostName = "almagest";
+        nixvim-output = "withoutAider";
       };
       jupiter = homeManagerConfigurationGenerator {
         hostName = "jupiter";
