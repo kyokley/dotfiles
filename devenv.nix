@@ -60,7 +60,6 @@
     ruff-format.enable = true;
     trim-trailing-whitespace.enable = true;
     yamlfmt.enable = true;
-    auto-commit-message.enable = true;
   };
 
   # See full reference at https://devenv.sh/reference/options/
