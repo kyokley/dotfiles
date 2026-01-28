@@ -23,6 +23,26 @@
         "type": "github"
       }
     },
+    "aider-commit": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1769531054,
+        "narHash": "sha256-1Q9JEM0AJC0Pp7LavCJybPUNUl/HLQmjeiSevP8NiuU=",
+        "owner": "kyokley",
+        "repo": "aider-commit",
+        "rev": "fa55f10b17b9c1973012bb64933d6467afb5eb7d",
+        "type": "github"
+      },
+      "original": {
+        "owner": "kyokley",
+        "repo": "aider-commit",
+        "type": "github"
+      }
+    },
     "darwin": {
       "inputs": {
         "nixpkgs": [
@@ -330,6 +350,7 @@
     "root": {
       "inputs": {
         "agenix": "agenix",
+        "aider-commit": "aider-commit",
         "home-manager": "home-manager_2",
         "nixpkgs": "nixpkgs",
         "nixvim": "nixvim",

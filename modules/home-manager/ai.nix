@@ -1,4 +1,8 @@
 {
+  pkgs,
+  inputs,
+  ...
+}: {
   programs.aider-chat = {
     enable = true;
     settings = {
@@ -23,4 +27,8 @@
     # AIDER_COMMIT_MODEL = "ollama_chat/llama3.2:3b";
     AIDER_COMMIT_MODEL = "ollama_chat/qwen3:8b";
   };
+
+  home.packages = [
+    inputs.aider-commit.packages.${pkgs.stdenv.hostPlatform.system}.gitac
+  ];
 }
