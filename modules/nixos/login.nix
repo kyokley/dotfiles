@@ -4,7 +4,7 @@ in {
   services.xserver.displayManager.lightdm = {
     background = "${background_dir}/login.jpg";
     # Temporarily switching to slick greeter as enso fails
-    greeters.slick = {
+    greeters.enso = {
       enable = true;
     };
   };
