@@ -24,6 +24,7 @@
     # NIXVIM_AIDER_MODEL = "ollama_chat/llama3.2:3b";
     # NIXVIM_AIDER_MODEL = "ollama_chat/qwen3:8b";
     NIXVIM_AIDER_MODEL = "ollama_chat/qwen3-coder:30b";
+    NIXVIM_AIDER_EXTRA_ARGS = "--no-stream";
     # AIDER_COMMIT_MODEL = "ollama_chat/llama3.2:3b";
     AIDER_COMMIT_MODEL = "ollama_chat/qwen3:8b";
   };
