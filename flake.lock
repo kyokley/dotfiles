@@ -30,11 +30,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1769531054,
-        "narHash": "sha256-1Q9JEM0AJC0Pp7LavCJybPUNUl/HLQmjeiSevP8NiuU=",
+        "lastModified": 1769731259,
+        "narHash": "sha256-lWXjna3AwyOsN3DHoMY1KmqbErMHnFC34oJgGuaufNc=",
         "owner": "kyokley",
         "repo": "aider-commit",
-        "rev": "fa55f10b17b9c1973012bb64933d6467afb5eb7d",
+        "rev": "186d6083ffec03e7bdd6f688227061b8bc21b70e",
         "type": "github"
       },
       "original": {
