@@ -30,11 +30,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1769828440,
-        "narHash": "sha256-KI4m/biKPXk8VO5jzOXH012/2qv1aYpQ6/Yev/z2gJA=",
+        "lastModified": 1769891784,
+        "narHash": "sha256-0XaXEfxHSNvXGLS5bMqV2QrkHxrMVu6xPRVeXQ0f6nM=",
         "owner": "kyokley",
         "repo": "aider-commit",
-        "rev": "ab70f23197a848d95251dbeb0c2191ed9f302654",
+        "rev": "06d3e5c02d0afd65494adfe9ec3040b497368324",
         "type": "github"
       },
       "original": {
@@ -219,11 +219,11 @@
         "nixvim": "nixvim_2"
       },
       "locked": {
-        "lastModified": 1769835788,
-        "narHash": "sha256-Eh3/+GV9UeRzp5cNNrXdWmyUlWTUWtkUSWzkIkkzHgE=",
+        "lastModified": 1769891845,
+        "narHash": "sha256-ZymVqT8m6+l2wrluTwlqR08fd4BcVDE6tv8zRAyIOnA=",
         "owner": "kyokley",
         "repo": "nixvim",
-        "rev": "2c7990445b3d909e89d4bbb46d8313219e6cd968",
+        "rev": "34b0304c71e1c43106d2f8cc7d7e1b33e4427031",
         "type": "github"
       },
       "original": {
