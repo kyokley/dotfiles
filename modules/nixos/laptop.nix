@@ -41,5 +41,12 @@
         DISPLAY=:0 ${pkgs.sudo}/bin/sudo -u ${username} ${pkgs.betterlockscreen}/bin/betterlockscreen --lock -- --nofork &
       '';
     };
+    fprintd = {
+      enable = true;
+      tod = {
+        enable = true;
+        driver = pkgs.libfprint-2-tod1-goodix;
+      };
+    };
   };
 }
