@@ -4,6 +4,7 @@
   ...
 }: {
   services = {
+    tlp.enable = true;
     logind = {
       settings.Login = {
         HandleLidSwitch = "ignore";
