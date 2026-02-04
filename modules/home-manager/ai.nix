@@ -37,13 +37,25 @@
 
   programs.aichat = {
     enable = true;
+    agents = {
+      gpt = {
+        model = "ollama:gpt-oss";
+      };
+      llama = {
+        model = "ollama:llama3.2:3b";
+      };
+      coder = {
+        model = "ollama:qwen3-coder:30b";
+      };
+    };
+
     settings = {
       model = "ollama:gpt-oss";
       clients = [
         {
           type = "openai-compatible";
           name = "ollama";
-          api_base = "http://${config.home.sessionVariables.OLLAMA_HOST}:11434";
+          api_base = "http://${config.home.sessionVariables.OLLAMA_HOST}/v1";
           models = [
             {
               name = "llama3.2:3b";
@@ -73,6 +85,7 @@
             {
               name = "deepseek-r1:32b";
               supports_function_calling = true;
+              supports_reasoning = true;
               supports_vision = false;
             }
           ];
