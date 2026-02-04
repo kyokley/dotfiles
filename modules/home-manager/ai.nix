@@ -40,12 +40,20 @@
     agents = {
       gpt = {
         model = "ollama:gpt-oss";
+        temperature = 0.5;
+        use_tools = "web_search";
+        agent_prelude = ''
+        '';
       };
       llama = {
         model = "ollama:llama3.2:3b";
+        temperature = 0.5;
+        use_tools = "web_search";
       };
       coder = {
         model = "ollama:qwen3-coder:30b";
+        temperature = 0.5;
+        use_tools = "web_search";
       };
     };
 
