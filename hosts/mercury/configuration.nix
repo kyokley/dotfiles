@@ -41,6 +41,7 @@
       "qwen3:8b"
       "qwen3-coder:30b"
       "gemma3:12b"
+      "deepseek-r1:32b"
     ];
     environmentVariables = {
       ROCR_VISIBLE_DEVICES = "1";
