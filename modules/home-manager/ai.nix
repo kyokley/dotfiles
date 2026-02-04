@@ -101,4 +101,13 @@
       ];
     };
   };
+
+  programs.fabric-ai = {
+    enable = true;
+    enablePatternsAliases = true;
+    enableYtAlias = true;
+    enableZshIntegration = true;
+  };
+
+  programs.yt-dlp.enable = true;
 }
