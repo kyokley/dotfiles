@@ -18,6 +18,7 @@
 
   home.packages = [
     inputs.aider-commit.packages.${pkgs.stdenv.hostPlatform.system}.gitac
+    pkgs.ollama
   ];
 
   programs.aider-chat = {
