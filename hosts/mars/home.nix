@@ -24,7 +24,6 @@ in {
   };
 
   home.packages = [
-    pkgs.ollama
     pkgs.brightnessctl
     pkgs.mattermost-desktop
     pkgs.lutris
