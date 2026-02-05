@@ -2,8 +2,11 @@
   pkgs,
   inputs,
   config,
+  lib,
   ...
 }: {
+  age.secrets.openrouter.file = ../../secrets/openrouter.age;
+
   home.sessionVariables = rec {
     OLLAMA_HOST = "100.92.134.123:11434";
     OLLAMA_API_BASE = "http://${OLLAMA_HOST}";
@@ -35,6 +38,12 @@
     ];
   };
 
+  home.activation."openrouter-secret" = ''
+    secret=$(cat "${config.age.secrets.openrouter.path}")
+    configFile="${lib.removePrefix config.home.homeDirectory config.xdg.configHome}/aichat/config.yaml"
+    ${pkgs.gnused}/bin/sed -i "s#@api_key@#$secret#" "$configFile"
+  '';
+
   programs.aichat = {
     enable = true;
     agents = {
@@ -52,6 +61,32 @@
       };
       coder = {
         model = "ollama:qwen3-coder:30b";
+        temperature = 0.5;
+        use_tools = "web_search";
+      };
+      # OpenRouter agents
+      openrouter-gpt-4 = {
+        model = "openrouter/openai/gpt-4";
+        temperature = 0.5;
+        use_tools = "web_search";
+      };
+      openrouter-gpt-4-turbo = {
+        model = "openrouter/openai/gpt-4-turbo";
+        temperature = 0.5;
+        use_tools = "web_search";
+      };
+      openrouter-gpt-3-5 = {
+        model = "openrouter/openai/gpt-3.5-turbo";
+        temperature = 0.5;
+        use_tools = "web_search";
+      };
+      openrouter-llama-3-70b = {
+        model = "openrouter/meta-llama/llama-3-70b-instruct";
+        temperature = 0.5;
+        use_tools = "web_search";
+      };
+      openrouter-mistral-7b = {
+        model = "openrouter/mistralai/mistral-7b-instruct";
         temperature = 0.5;
         use_tools = "web_search";
       };
@@ -94,6 +129,39 @@
               name = "deepseek-r1:32b";
               supports_function_calling = true;
               supports_reasoning = true;
+              supports_vision = false;
+            }
+          ];
+        }
+        {
+          type = "openai";
+          name = "openrouter";
+          api_base = "https://openrouter.ai/api/v1";
+          api_key = "@api_key@"; # This should be set in environment variables
+          models = [
+            {
+              name = "openai/gpt-4";
+              supports_function_calling = true;
+              supports_vision = true;
+            }
+            {
+              name = "openai/gpt-4-turbo";
+              supports_function_calling = true;
+              supports_vision = true;
+            }
+            {
+              name = "openai/gpt-3-5-turbo";
+              supports_function_calling = true;
+              supports_vision = false;
+            }
+            {
+              name = "meta-llama/llama-3-70b-instruct";
+              supports_function_calling = true;
+              supports_vision = false;
+            }
+            {
+              name = "mistralai/mistral-7b-instruct";
+              supports_function_calling = true;
               supports_vision = false;
             }
           ];
