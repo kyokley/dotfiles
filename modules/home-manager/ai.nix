@@ -141,7 +141,7 @@
 
   programs.fabric-ai = {
     enable = true;
-    enablePatternsAliases = true;
+    enablePatternsAliases = false;
     enableYtAlias = true;
     enableZshIntegration = true;
   };
