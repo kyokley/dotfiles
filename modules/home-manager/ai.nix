@@ -13,10 +13,14 @@
     # NIXVIM_AIDER_MODEL = "ollama_chat/gpt-oss";
     # NIXVIM_AIDER_MODEL = "ollama_chat/llama3.2:3b";
     # NIXVIM_AIDER_MODEL = "ollama_chat/qwen3:8b";
-    NIXVIM_AIDER_MODEL = "ollama_chat/qwen3-coder:30b";
-    NIXVIM_AIDER_EXTRA_ARGS = "--no-stream";
+    # NIXVIM_AIDER_MODEL = "ollama_chat/qwen3-coder:30b";
+    # NIXVIM_AIDER_EXTRA_ARGS = "--no-stream";
+
+    NIXVIM_AIDER_MODEL = "openrouter/meta-llama/llama-3.3-70b-instruct:free";
+
     # AIDER_COMMIT_MODEL = "ollama_chat/llama3.2:3b";
-    AIDER_COMMIT_MODEL = "ollama_chat/qwen3:8b";
+    # AIDER_COMMIT_MODEL = "ollama_chat/qwen3:8b";
+    AIDER_COMMIT_MODEL = "openrouter/meta-llama/llama-3.3-70b-instruct:free";
   };
 
   home.packages = [
@@ -27,7 +31,7 @@
   programs.aider-chat = {
     enable = true;
     settings = {
-      model = "ollama_chat/gpt-oss";
+      model = "openrouter/meta-llama/llama-3.3-70b-instruct:free";
       gitignore = false;
       notifications = true;
     };
@@ -47,19 +51,19 @@
   programs.zsh.prezto.extraConfig = ''
     export OPENROUTER_API_KEY=$(cat "${config.age.secrets.openrouter.path}")
     export AICHAT_PLATFORM="openrouter"
-    export AICHAT_MODEL=openrouter:google/gemma-3n-e2b-it:free
+    export AICHAT_MODEL=openrouter:meta-llama/llama-3.3-70b-instruct:free
   '';
 
   programs.aichat = {
     enable = true;
-    agents = {
-      foo = {
-        model = "openrouter:google/gemma-3n-e2b-it:free";
-        name = "foo";
-        temperature = 0.5;
-        use_tools = "web_search";
-      };
-    };
+    # agents = {
+    #   foo = {
+    #     model = "openrouter:google/gemma-3n-e2b-it:free";
+    #     name = "foo";
+    #     temperature = 0.5;
+    #     use_tools = "web_search";
+    #   };
+    # };
 
     #    settings = {
     #      model = "ollama:gpt-oss";
