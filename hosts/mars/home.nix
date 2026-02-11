@@ -29,7 +29,6 @@ in {
       pkgs.brightnessctl
       pkgs.mattermost-desktop
       pkgs.lutris
-      pkgs.bitwarden-desktop
     ];
 
     stateVersion = "24.05"; # Don't touch me!
