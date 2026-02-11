@@ -18,17 +18,20 @@ in {
 
   programs.git.settings.user.email = "kyokley@mars";
 
-  home.sessionVariables = {
-    QTILE_NET_INTERFACE = "wlp1s0";
-    CDPATH = lib.concatStringsSep ":" cd_paths;
+  home = {
+    sessionVariables = {
+      QTILE_NET_INTERFACE = "wlp1s0";
+      CDPATH = lib.concatStringsSep ":" cd_paths;
+    };
+
+    packages = [
+      pkgs.ollama
+      pkgs.brightnessctl
+      pkgs.mattermost-desktop
+      pkgs.lutris
+      pkgs.bitwarden-desktop
+    ];
+
+    stateVersion = "24.05"; # Don't touch me!
   };
-
-  home.packages = [
-    pkgs.ollama
-    pkgs.brightnessctl
-    pkgs.mattermost-desktop
-    pkgs.lutris
-  ];
-
-  home.stateVersion = "24.05"; # Don't touch me!
 }
