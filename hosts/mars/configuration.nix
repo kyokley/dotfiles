@@ -6,10 +6,12 @@
   ];
 
   # Bootloader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
-  boot.supportedFilesystems = ["bcachefs"];
-  boot.kernelPackages = pkgs.linuxPackages_latest;
+  boot = {
+    loader.systemd-boot.enable = true;
+    loader.efi.canTouchEfiVariables = true;
+    supportedFilesystems = ["bcachefs"];
+    kernelPackages = pkgs.linuxPackages_latest;
+  };
 
   powerManagement.enable = true;
   services.udev.extraRules = ''
