@@ -110,7 +110,7 @@ in {
         Type = "oneshot";
         ExecStart = toString (
           pkgs.writeShellScript "betterlockscreen-update-script" ''
-            PATH=$PATH:${lib.makeBinPath [pkgs.nix pkgs.coreutils pkgs.busybox pkgs.xorg.xrdb]}
+            PATH=$PATH:${lib.makeBinPath [pkgs.nix pkgs.coreutils pkgs.busybox pkgs.xrdb]}
             ${pkgs.betterlockscreen}/bin/betterlockscreen -u ${homeDir}/Pictures/wallpapers --fx ""
           ''
         );
