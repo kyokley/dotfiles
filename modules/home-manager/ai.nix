@@ -20,7 +20,8 @@
       # NIXVIM_AIDER_MODEL = "ollama_chat/qwen3-coder:30b";
       # NIXVIM_AIDER_EXTRA_ARGS = "--no-stream";
 
-      NIXVIM_AIDER_MODEL = "openrouter/meta-llama/llama-3.3-70b-instruct:free";
+      # NIXVIM_AIDER_MODEL = "openrouter/meta-llama/llama-3.3-70b-instruct:free";
+      NIXVIM_AIDER_MODEL = "claude-sonnet-4.5";
 
       # AIDER_COMMIT_MODEL = "ollama_chat/llama3.2:3b";
       # AIDER_COMMIT_MODEL = "ollama_chat/qwen3:8b";
@@ -52,9 +53,9 @@
     };
 
     zsh.prezto.extraConfig = ''
-      export OPENROUTER_API_KEY=$(cat "${config.age.secrets.openrouter.path}")
-      export AICHAT_PLATFORM="openrouter"
-      export AICHAT_MODEL=openrouter:meta-llama/llama-3.3-70b-instruct:free
+      # export OPENROUTER_API_KEY=$(cat "${config.age.secrets.openrouter.path}")
+      # export AICHAT_PLATFORM="openrouter"
+      # export AICHAT_MODEL=openrouter:meta-llama/llama-3.3-70b-instruct:free
       export OPENAI_API_BASE=https://api.githubcopilot.com
       export OPENAI_API_KEY=$(cat "${config.age.secrets.github-copilot.path}")
     '';
