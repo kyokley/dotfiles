@@ -11,6 +11,7 @@
     pkgs.devenv
     pkgs.direnv
     pkgs.ragenix
+    pkgs.gh
     inputs.usql.packages.${pkgs.stdenv.hostPlatform.system}.default
   ];
 
