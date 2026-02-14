@@ -11,4 +11,8 @@ in {
     publicKeys = [mercury mars dioxygen];
     armor = true;
   };
+  "github-copilot.age" = {
+    publicKeys = [mercury mars dioxygen];
+    armor = true;
+  };
 }

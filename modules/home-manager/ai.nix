@@ -5,7 +5,10 @@
   lib,
   ...
 }: {
-  age.secrets.openrouter.file = ../../secrets/openrouter.age;
+  age.secrets = {
+    openrouter.file = ../../secrets/openrouter.age;
+    github-copilot.file = ../../secrets/github-copilot.age;
+  };
 
   home = {
     sessionVariables = rec {
@@ -21,7 +24,8 @@
 
       # AIDER_COMMIT_MODEL = "ollama_chat/llama3.2:3b";
       # AIDER_COMMIT_MODEL = "ollama_chat/qwen3:8b";
-      AIDER_COMMIT_MODEL = "openrouter/meta-llama/llama-3.3-70b-instruct:free";
+      # AIDER_COMMIT_MODEL = "openrouter/meta-llama/llama-3.3-70b-instruct:free";
+      AIDER_COMMIT_MODEL = "gpt-5-mini";
     };
 
     packages = [
@@ -35,7 +39,7 @@
     aider-chat = {
       enable = true;
       settings = {
-        model = "openrouter/meta-llama/llama-3.3-70b-instruct:free";
+        model = "claude-sonnet-4.5";
         gitignore = false;
         notifications = true;
       };
@@ -47,105 +51,13 @@
       ];
     };
 
-    # home.activation."openrouter-secret" = ''
-    #   secret=$(cat "${config.age.secrets.openrouter.path}")
-    #   configFile="${lib.removePrefix config.home.homeDirectory config.xdg.configHome}/aichat/config.yaml"
-    #   ${pkgs.gnused}/bin/sed -i "s#@api_key@#$secret#" "$configFile"
-    # '';
     zsh.prezto.extraConfig = ''
       export OPENROUTER_API_KEY=$(cat "${config.age.secrets.openrouter.path}")
       export AICHAT_PLATFORM="openrouter"
       export AICHAT_MODEL=openrouter:meta-llama/llama-3.3-70b-instruct:free
+      export OPENAI_API_BASE=https://api.githubcopilot.com
+      export OPENAI_API_KEY=$(cat "${config.age.secrets.github-copilot.path}")
     '';
-
-    aichat = {
-      enable = true;
-      # agents = {
-      #   foo = {
-      #     model = "openrouter:google/gemma-3n-e2b-it:free";
-      #     name = "foo";
-      #     temperature = 0.5;
-      #     use_tools = "web_search";
-      #   };
-      # };
-
-      #    settings = {
-      #      model = "ollama:gpt-oss";
-      #      clients = [
-      #        {
-      #          type = "openai-compatible";
-      #          name = "ollama";
-      #          api_base = "http://${config.home.sessionVariables.OLLAMA_HOST}/v1";
-      #          models = [
-      #            {
-      #              name = "llama3.2:3b";
-      #              supports_function_calling = false;
-      #              supports_vision = false;
-      #            }
-      #            {
-      #              name = "gpt-oss";
-      #              supports_function_calling = false;
-      #              supports_vision = false;
-      #            }
-      #            {
-      #              name = "qwen3:8b";
-      #              supports_function_calling = false;
-      #              supports_vision = false;
-      #            }
-      #            {
-      #              name = "qwen3-coder:30b";
-      #              supports_function_calling = true;
-      #              supports_vision = false;
-      #            }
-      #            {
-      #              name = "gemma3:12b";
-      #              supports_function_calling = false;
-      #              supports_vision = false;
-      #            }
-      #            {
-      #              name = "deepseek-r1:32b";
-      #              supports_function_calling = true;
-      #              supports_reasoning = true;
-      #              supports_vision = false;
-      #            }
-      #          ];
-      #        }
-      #        {
-      #          type = "openai";
-      #          name = "openrouter";
-      #          api_base = "https://openrouter.ai/api/v1";
-      #          api_key = "@api_key@"; # This should be set in environment variables
-      #          models = [
-      #            {
-      #              name = "openai/gpt-4";
-      #              supports_function_calling = true;
-      #              supports_vision = true;
-      #            }
-      #            {
-      #              name = "openai/gpt-4-turbo";
-      #              supports_function_calling = true;
-      #              supports_vision = true;
-      #            }
-      #            {
-      #              name = "openai/gpt-3-5-turbo";
-      #              supports_function_calling = true;
-      #              supports_vision = false;
-      #            }
-      #            {
-      #              name = "meta-llama/llama-3-70b-instruct";
-      #              supports_function_calling = true;
-      #              supports_vision = false;
-      #            }
-      #            {
-      #              name = "mistralai/mistral-7b-instruct";
-      #              supports_function_calling = true;
-      #              supports_vision = false;
-      #            }
-      #          ];
-      #        }
-      #      ];
-      #    };
-    };
 
     fabric-ai = {
       enable = true;
