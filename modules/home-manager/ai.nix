@@ -4,13 +4,37 @@
   config,
   lib,
   ...
-}: {
+}: let
+  copilot_models = [
+    "github_copilot/claude-sonnet-4.5"
+    "github_copilot/gpt-5-mini"
+  ];
+  aider_settings_string = lib.concatStringsSep "\n" (map (
+      model: ''
+        - name: ${model}
+          extra_params:
+            extra_headers:
+              User-Agent: GithubCopilot/1.155.0
+              Editor-Plugin-Version: copilot/1.155.0
+              Editor-Version: vscode/1.85.1
+              Copilot-Integration-Id: copilot-chat
+      ''
+    )
+    copilot_models);
+in {
   age.secrets = {
     openrouter.file = ../../secrets/openrouter.age;
     github-copilot.file = ../../secrets/github-copilot.age;
   };
 
   home = {
+    file = {
+      aider_settings = {
+        enable = true;
+        target = ".aider.model.settings.yml";
+        text = aider_settings_string;
+      };
+    };
     sessionVariables = rec {
       OLLAMA_HOST = "100.92.134.123:11434";
       OLLAMA_API_BASE = "http://${OLLAMA_HOST}";
@@ -21,13 +45,13 @@
       # NIXVIM_AIDER_EXTRA_ARGS = "--no-stream";
 
       # NIXVIM_AIDER_MODEL = "openrouter/meta-llama/llama-3.3-70b-instruct:free";
-      NIXVIM_AIDER_MODEL = "openai/claude-sonnet-4.5";
+      NIXVIM_AIDER_MODEL = "github_copilot/claude-sonnet-4.5";
 
       # AIDER_COMMIT_MODEL = "ollama_chat/llama3.2:3b";
       # AIDER_COMMIT_MODEL = "ollama_chat/qwen3:8b";
       # AIDER_COMMIT_MODEL = "openrouter/meta-llama/llama-3.3-70b-instruct:free";
 
-      AIDER_COMMIT_MODEL = "openai/gpt-5-mini";
+      AIDER_COMMIT_MODEL = "github_copilot/gpt-5-mini";
     };
 
     packages = [
@@ -41,7 +65,7 @@
     aider-chat = {
       enable = true;
       settings = {
-        model = "openai/claude-sonnet-4.5";
+        model = "github_copilot/claude-sonnet-4.5";
         gitignore = false;
         notifications = true;
       };
