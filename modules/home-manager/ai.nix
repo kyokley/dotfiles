@@ -21,15 +21,13 @@
       # NIXVIM_AIDER_EXTRA_ARGS = "--no-stream";
 
       # NIXVIM_AIDER_MODEL = "openrouter/meta-llama/llama-3.3-70b-instruct:free";
-      NIXVIM_AIDER_MODEL = "github_copilot/claude-sonnet-4.5";
+      NIXVIM_AIDER_MODEL = "openai/claude-sonnet-4.5";
 
       # AIDER_COMMIT_MODEL = "ollama_chat/llama3.2:3b";
       # AIDER_COMMIT_MODEL = "ollama_chat/qwen3:8b";
       # AIDER_COMMIT_MODEL = "openrouter/meta-llama/llama-3.3-70b-instruct:free";
 
-      # Copilot is configured to use an OpenAI compliant key so gpt models
-      # don't require the "github_copilot/" prefix
-      AIDER_COMMIT_MODEL = "gpt-5-mini";
+      AIDER_COMMIT_MODEL = "openai/gpt-5-mini";
     };
 
     packages = [
@@ -43,7 +41,7 @@
     aider-chat = {
       enable = true;
       settings = {
-        model = "github_copilot/claude-sonnet-4.5";
+        model = "openai/claude-sonnet-4.5";
         gitignore = false;
         notifications = true;
       };
