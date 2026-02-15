@@ -46,7 +46,6 @@
     }: (inputs.home-manager.lib.homeManagerConfiguration {
       pkgs = import inputs.nixpkgs {
         inherit system;
-        config.allowUnfree = true;
       };
       extraSpecialArgs = {inherit inputs username nixvim-output hostName;};
       modules = [
@@ -69,7 +68,6 @@
         ./hosts/${hostName}/hardware-configuration.nix
         inputs.home-manager.nixosModules.home-manager
         {
-          nixpkgs.config.allowUnfree = true;
           home-manager.users.${username} = inputs.nixpkgs.lib.mkMerge [./hosts/${hostName}/home.nix inputs.agenix.homeManagerModules.default];
           home-manager.extraSpecialArgs = {inherit inputs username nixvim-output hostName;};
         }
