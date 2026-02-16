@@ -81,6 +81,53 @@
       mercury = nixosConfigurationGenerator {
         hostName = "mercury";
       };
+
+      dioxygen-vm = inputs.nixpkgs.lib.nixosSystem {
+        specialArgs = {inherit inputs;};
+        modules = let
+          pkgs = import inputs.nixpkgs {
+            system = "aarch64-linux";
+          };
+          inherit (inputs.nixpkgs) lib;
+          username = "yokley";
+        in [
+          inputs.home-manager.nixosModules.home-manager
+          {
+            fileSystems."/".device = "/dev/vdb1";
+            boot.loader.grub.devices = ["/dev/vdb1"];
+            nixpkgs.hostPlatform = {system = "aarch64-linux";};
+            system.stateVersion = "26.05"; # Don't touch me!
+            users.users.${username} = {
+              shell = pkgs.zsh;
+              isNormalUser = true;
+              description = "Kevin Yokley";
+              extraGroups = [
+                "networkmanager"
+                "wheel"
+                "docker"
+                "vboxusers"
+              ];
+            };
+            programs.zsh.enable = true;
+            home-manager.users.${username} = {
+              nix = {
+                package = lib.mkDefault pkgs.nix;
+                settings.experimental-features = ["nix-command" "flakes"];
+              };
+              home = {
+                packages = with pkgs; [
+                  devenv
+                  direnv
+                ];
+                inherit username;
+                homeDirectory = "/home/${username}";
+                stateVersion = "26.05";
+              };
+            };
+            home-manager.extraSpecialArgs = {inherit inputs;};
+          }
+        ];
+      };
     };
 
     homeConfigurations = {
