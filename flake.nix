@@ -33,7 +33,7 @@
     };
   };
 
-  outputs = {...} @ inputs: let
+  outputs = inputs: let
     defaultUsername = "yokley";
     aarch64_darwin = "aarch64-darwin";
     x86_linux = "x86_64-linux";
@@ -44,7 +44,9 @@
       hostName,
       username ? defaultUsername,
     }: (inputs.home-manager.lib.homeManagerConfiguration {
-      pkgs = inputs.nixpkgs.legacyPackages.${system};
+      pkgs = import inputs.nixpkgs {
+        inherit system;
+      };
       extraSpecialArgs = {inherit inputs username nixvim-output hostName;};
       modules = [
         ./hosts/${hostName}/home.nix

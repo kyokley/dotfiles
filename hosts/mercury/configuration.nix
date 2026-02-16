@@ -41,10 +41,13 @@
       "qwen3:8b"
       "qwen3-coder:30b"
       "gemma3:12b"
+      "deepseek-r1:32b"
     ];
     environmentVariables = {
-      ROCR_VISIBLE_DEVICES = "1";
+      # ROCR_VISIBLE_DEVICES = "1";
+      HSA_OVERRIDE_GFX_VERSION = "11.0.2";
     };
+    rocmOverrideGfx = "11.0.2";
   };
 
   networking.firewall.interfaces.tailscale0.allowedTCPPorts = lib.mkIf config.services.ollama.enable [

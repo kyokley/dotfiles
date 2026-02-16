@@ -15,10 +15,16 @@
     ./programs/systemd.nix
   ];
 
-  # Home Manager needs a bit of information about you and the paths it should
-  # manage.
-  home.username = lib.mkDefault "${username}";
-  home.homeDirectory = lib.mkDefault "/home/${username}";
+  home = {
+    sessionVariables = {
+      NIXPKGS_ALLOW_UNFREE = 1;
+    };
+
+    # Home Manager needs a bit of information about you and the paths it should
+    # manage.
+    username = lib.mkDefault "${username}";
+    homeDirectory = lib.mkDefault "/home/${username}";
+  };
 
   nix = {
     package = lib.mkDefault pkgs.nix;
