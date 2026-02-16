@@ -130,7 +130,6 @@ in {
           ---
           description: Reviews code for quality and best practices
           mode: primary
-          model: github_copilot/claude-sonnet-4.5
           temperature: 0.1
           tools:
             write: false
