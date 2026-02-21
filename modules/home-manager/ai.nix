@@ -100,6 +100,20 @@ in {
 
     opencode = {
       enable = true;
+      commands = {
+        changelog = ''
+          # Update Changelog Command
+
+          Update CHANGELOG.md with a new entry for the specified version.
+          Usage: /changelog [version] [change-type] [message]
+        '';
+        commit = ''
+          # Commit Command
+
+          Create a git commit with proper message formatting.
+          Usage: /commit [message]
+        '';
+      };
       agents = {
         code-reviewer = ''
           # Code Reviewer Agent
