@@ -121,6 +121,7 @@ in {
           Use the imperative mood and begin each bullet with '-'.
           Focus on high level actions, avoiding repetition of file summaries.  Return no more than five bullet points.
           Leave an empty line between the single line summary and the rest of the bullet points.
+          Only output the commit message, without any additional commentary or formatting.
 
           Usage: /commit [message]
         '';
