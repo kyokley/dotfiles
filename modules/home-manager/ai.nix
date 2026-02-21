@@ -116,6 +116,7 @@ in {
 
           Create a git commit with proper message formatting.
 
+          If branch is not main or master, use "branch: [message]" for first line.
           Add a handful of short bullet points to summarize the overall change.
           Use the imperative mood and begin each bullet with '-'.
           Focus on high level actions, avoiding repetition of file summaries.  Return no more than five bullet points.
