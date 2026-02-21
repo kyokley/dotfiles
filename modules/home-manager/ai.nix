@@ -59,6 +59,10 @@ in {
       pkgs.ollama
       pkgs.github-copilot-cli
     ];
+
+    shellAliases = {
+      gitoc = "opencode run --command commit";
+    };
   };
 
   programs = {
@@ -114,20 +118,25 @@ in {
         commit = ''
           ---
           description: Commit Command
-          subtask: true
+          model: github-copilot/claude-haiku-4.5
           ---
 
           Create a git commit with proper message formatting.
 
-          If $1 is "-a" include any unstaged changes otherwise only include changes that have already been staged for commit.
+          If $1 is "a" or "all" and there are no staged or unstaged changes, do nothing.
+          If $1 is "a" or "all" and there are unstaged changes, stage them before making the commit.
+          If $1 is not "a" or "all, only commit currently staged commits.
+
           If branch is not main or master, use "branch: [message]" for first line.
           Add a handful of short bullet points to summarize the overall change.
           Use the imperative mood and begin each bullet with '-'.
           Focus on high level actions, avoiding repetition of file summaries.  Return no more than five bullet points.
           Leave an empty line between the single line summary and the rest of the bullet points.
           Only output the commit message, without any additional commentary or formatting.
+          Do not ask for what to do.
+          If there are no changes to commit, just do nothing.
 
-          Usage: /commit [message]
+          Usage: /commit [all]
         '';
       };
       agents = {
