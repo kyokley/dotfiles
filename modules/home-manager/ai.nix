@@ -112,10 +112,14 @@ in {
           Usage: /changelog [version] [change-type] [message]
         '';
         commit = ''
-          # Commit Command
+          ---
+          description: Commit Command
+          subtask: true
+          ---
 
           Create a git commit with proper message formatting.
 
+          If $1 is "-a" include any unstaged changes otherwise only include changes that have already been staged for commit.
           If branch is not main or master, use "branch: [message]" for first line.
           Add a handful of short bullet points to summarize the overall change.
           Use the imperative mood and begin each bullet with '-'.
