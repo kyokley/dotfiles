@@ -8,20 +8,23 @@
   imports = [
     ../../modules/home-manager/programs/nixos/nixos.nix
     ../../modules/home-manager/home.nix
-    ../../modules/home-manager/ai.nix
+    ../../modules/home-manager/ai/ai.nix
+    ../../modules/home-manager/ai/aider.nix
   ];
 
   programs.git.settings.user.email = "kyokley@mercury";
 
-  home.sessionVariables = {
-    QTILE_NET_INTERFACE = "enp14s0";
+  home = {
+    sessionVariables = {
+      QTILE_NET_INTERFACE = "enp14s0";
+    };
+
+    packages = [
+      pkgs.mattermost-desktop
+    ];
+
+    stateVersion = "24.05"; # Don't touch me!
   };
-
-  home.packages = [
-    pkgs.mattermost-desktop
-  ];
-
-  home.stateVersion = "24.05"; # Don't touch me!
 
   systemd.user.services = {
     mattermost-clean-old-posts = {

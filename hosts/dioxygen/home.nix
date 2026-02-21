@@ -14,21 +14,24 @@ in {
   imports = [
     ../../modules/home-manager/home.nix
     ../../modules/home-manager/dev.nix
-    ../../modules/home-manager/ai.nix
+    ../../modules/home-manager/ai/ai.nix
+    ../../modules/home-manager/ai/aider.nix
   ];
 
   programs.systemd-services.enable = false;
 
-  home.homeDirectory = "/Users/${username}";
+  home = {
+    homeDirectory = "/Users/${username}";
 
-  home.packages = [
-    nix-update
-  ];
+    packages = [
+      nix-update
+    ];
+    stateVersion = "24.05";
+  };
 
   services.home-manager.autoUpgrade.enable = false;
 
   programs.git.settings.alias = {
     select = ''!echo "$(git branch | awk '{print $NF}')" "\n" "$(git branch -r | grep -v HEAD | awk '{print $NF}' | sed -E 's!^[^/]+/!!')" | sort -u | choose | xargs -r git switch'';
   };
-  home.stateVersion = "24.05";
 }
