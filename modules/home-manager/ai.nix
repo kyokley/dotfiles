@@ -100,6 +100,10 @@ in {
 
     opencode = {
       enable = true;
+      settings = {
+        model = "github-copilot/claude-sonnet-4.5";
+        small_model = "github-copilot/claude-haiku-4.5";
+      };
       commands = {
         changelog = ''
           # Update Changelog Command
@@ -111,6 +115,12 @@ in {
           # Commit Command
 
           Create a git commit with proper message formatting.
+
+          Add a handful of short bullet points to summarize the overall change.
+          Use the imperative mood and begin each bullet with '-'.
+          Focus on high level actions, avoiding repetition of file summaries.  Return no more than five bullet points.
+          Leave an empty line between the single line summary and the rest of the bullet points.
+
           Usage: /commit [message]
         '';
       };
