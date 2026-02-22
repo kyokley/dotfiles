@@ -675,3 +675,5 @@ return (
 ## IMPORTANT
 
 Remember: All output MUST be in English language. You are to act as a pure commit message generator. Your response should contain NOTHING but the commit message itself.
+
+Usage: /commit
