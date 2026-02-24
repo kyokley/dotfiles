@@ -5,101 +5,47 @@
   lib,
   ...
 }: let
-  copilot_models = [
-    "github_copilot/claude-sonnet-4.5"
-    "github_copilot/gpt-5-mini"
-  ];
-  aider_settings_string = lib.concatStringsSep "\n" (map (
-      model: ''
-        - name: ${model}
-          extra_params:
-            extra_headers:
-              User-Agent: GithubCopilot/1.155.0
-              Editor-Plugin-Version: copilot/1.155.0
-              Editor-Version: vscode/1.85.1
-              Copilot-Integration-Id: copilot-chat
-      ''
-    )
-    copilot_models);
+  gitoc = pkgs.writeShellScriptBin "gitoc" (import ./gitoc.nix {inherit pkgs;}).gitoc-script;
 in {
   age.secrets = {
-    openrouter.file = ../../secrets/openrouter.age;
-    github-copilot.file = ../../secrets/github-copilot.age;
+    openrouter.file = ../../../secrets/openrouter.age;
+    github-copilot.file = ../../../secrets/github-copilot.age;
   };
 
   home = {
-    file = {
-      aider_settings = {
-        enable = true;
-        target = ".aider.model.settings.yml";
-        text = aider_settings_string;
-      };
-    };
     sessionVariables = rec {
       OLLAMA_HOST = "100.92.134.123:11434";
       OLLAMA_API_BASE = "http://${OLLAMA_HOST}";
-      # NIXVIM_AIDER_MODEL = "ollama_chat/gpt-oss";
-      # NIXVIM_AIDER_MODEL = "ollama_chat/llama3.2:3b";
-      # NIXVIM_AIDER_MODEL = "ollama_chat/qwen3:8b";
-      # NIXVIM_AIDER_MODEL = "ollama_chat/qwen3-coder:30b";
-      # NIXVIM_AIDER_EXTRA_ARGS = "--no-stream";
-
-      # NIXVIM_AIDER_MODEL = "openrouter/meta-llama/llama-3.3-70b-instruct:free";
-      NIXVIM_AIDER_MODEL = "github_copilot/claude-sonnet-4.5";
-
-      # AIDER_COMMIT_MODEL = "ollama_chat/llama3.2:3b";
-      # AIDER_COMMIT_MODEL = "ollama_chat/qwen3:8b";
-      # AIDER_COMMIT_MODEL = "openrouter/meta-llama/llama-3.3-70b-instruct:free";
-
-      AIDER_COMMIT_MODEL = "github_copilot/gpt-5-mini";
     };
 
     packages = [
-      inputs.aider-commit.packages.${pkgs.stdenv.hostPlatform.system}.gitac
       pkgs.ollama
       pkgs.github-copilot-cli
+      gitoc
     ];
   };
 
   programs = {
-    aider-chat = {
-      enable = true;
-      settings = {
-        model = "github_copilot/claude-sonnet-4.5";
-        gitignore = false;
-        notifications = true;
-      };
-    };
-
-    git = {
-      ignores = [
-        ".aider*"
-      ];
-    };
-
     zsh.prezto.extraConfig = ''
-      # export OPENROUTER_API_KEY=$(cat "${config.age.secrets.openrouter.path}")
-      # export AICHAT_PLATFORM="openrouter"
-      # export AICHAT_MODEL=openrouter:meta-llama/llama-3.3-70b-instruct:free
       export OPENAI_API_BASE=https://api.githubcopilot.com
       export OPENAI_API_KEY=$(cat "${config.age.secrets.github-copilot.path}")
     '';
 
-    fabric-ai = {
-      enable = true;
-      enablePatternsAliases = false;
-      enableYtAlias = true;
-      enableZshIntegration = true;
-    };
-
-    yt-dlp.enable = true;
-
-    gemini-cli = {
-      enable = true;
-    };
-
     opencode = {
       enable = true;
+      settings = {
+        model = "github-copilot/claude-sonnet-4.5";
+        small_model = "github-copilot/claude-haiku-4.5";
+      };
+      commands = {
+        changelog = ''
+          # Update Changelog Command
+
+          Update CHANGELOG.md with a new entry for the specified version.
+          Usage: /changelog [version] [change-type] [message]
+        '';
+        commit = ./conventional-commit-with-gitmoji-ai-prompt.md;
+      };
       agents = {
         code-reviewer = ''
           # Code Reviewer Agent
