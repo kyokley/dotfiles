@@ -1,3 +1,7 @@
+---
+description: Generate git commit message
+model: github-copilot/claude-haiku-4.5
+---
 # Git Commit Message Guide
 
 Usage: /commit
@@ -10,7 +14,7 @@ Commits should follow the Conventional Commits 1.0.0 specification and be furthe
 
 ## The [Conventional Commits 1.0.0 Specification](https://www.conventionalcommits.org/en/v1.0.0/):
 
-The key words “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL NOT”, “SHOULD”, “SHOULD NOT”, “RECOMMENDED”, “MAY”, and “OPTIONAL” in this document are to be interpreted as described in [RFC 2119](https://www.ietf.org/rfc/rfc2119.txt).
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.ietf.org/rfc/rfc2119.txt).
 
 1. Commits MUST be prefixed with a type, which consists of a noun, `feat`, `fix`, etc., followed by the OPTIONAL scope, OPTIONAL `!`, and REQUIRED terminal colon and space.
 2. The type `feat` MUST be used when a commit adds a new feature to your application or library.
@@ -20,8 +24,8 @@ The key words “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL 
 6. A longer commit body MAY be provided after the short description, providing additional contextual information about the code changes. The body MUST begin one blank line after the description.
 7. A commit body is free-form and MAY consist of any number of newline separated paragraphs.
 8. One or more footers MAY be provided one blank line after the body. Each footer MUST consist of a word token, followed by either a `:<space>` or `<space>#` separator, followed by a string value (this is inspired by the git trailer convention).
-9. A footer’s token MUST use `-` in place of whitespace characters, e.g., `Acked-by` (this helps differentiate the footer section from a multi-paragraph body). An exception is made for `BREAKING CHANGE`, which MAY also be used as a token.
-10. A footer’s value MAY contain spaces and newlines, and parsing MUST terminate when the next valid footer token/separator pair is observed.
+9. A footer's token MUST use `-` in place of whitespace characters, e.g., `Acked-by` (this helps differentiate the footer section from a multi-paragraph body). An exception is made for `BREAKING CHANGE`, which MAY also be used as a token.
+10. A footer's value MAY contain spaces and newlines, and parsing MUST terminate when the next valid footer token/separator pair is observed.
 11. Breaking changes MUST be indicated in the type/scope prefix of a commit, or as an entry in the footer.
 12. If included as a footer, a breaking change MUST consist of the uppercase text BREAKING CHANGE, followed by a colon, space, and description, e.g. BREAKING CHANGE: environment variables now take precedence over config files.
 13. If included in the type/scope prefix, breaking changes MUST be indicated by a `!` immediately before the `:`. If `!` is used, BREAKING CHANGE: MAY be omitted from the footer section, and the commit description SHALL be used to describe the breaking change.
@@ -35,7 +39,7 @@ The key words “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL 
 ### Single Type Changes
 
 ```
-<emoji> <type>(<scope>): <description>
+<emoji> <type>[optional (<scope>)][optional (<branch>)]: <description>
 <BLANK LINE>
 [optional <body>]
 <BLANK LINE>
@@ -47,19 +51,19 @@ The key words “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL 
 When the provided diff contains changes that address SEPARATE, UNRELATED concerns, use this format to document each distinct change with its own subject line:
 
 ```
-<emoji> <type>(<scope>): <description>
+<emoji> <type>[optional (<scope>)][optional (<branch>)]: <description>
 <BLANK LINE>
 [optional <body> of type 1]
 <BLANK LINE>
 [optional <footer(s)> of type 1]
 <BLANK LINE>
 <BLANK LINE>
-<emoji> <type>(<scope>): <description>
+<emoji> <type>[optional (<scope>)][optional (<branch>)]: <description>
 <BLANK LINE>
 [optional <body> of type 2]
 <BLANK LINE>
 [optional <footer(s)> of type 2]
-<emoji> <type>(<scope>): <description>
+<emoji> <type>[optional (<scope>)][optional (<branch>)]: <description>
 <BLANK LINE>
 [optional <body> of type 3]
 <BLANK LINE>
@@ -155,9 +159,9 @@ This type is used for commits that involve changes related to internationalizati
 
 ### Subject Line
 
-Format: `<emoji> <type>[optional (<scope>)]: [optional (<branch>): <description>`
+Format: `<emoji> <type>[optional (<scope>)][optional (<branch>)]: <description>`
 
-- Scope must be in English
+- Scope and branch must be in English
 - Imperative mood
 - No capitalization
 - No period at the end
@@ -180,10 +184,12 @@ Format: `<emoji> <type>[optional (<scope>)]: [optional (<branch>): <description>
 **When to include branch:**
 
 - The name of the branch is something other than main or master
+- The branch has been given as part of the [Additional Context](#additional-context)
 
 **When to omit branch:**
 
 - The name of the branch is main or master
+- No branch information is provided in [Additional Context](#additional-context)
 
 ### Body
 
@@ -268,7 +274,7 @@ Reviewed-by: John Smith <john.smith@example.com>
 
 ##### Signed-off-by
 
-Purpose: To indicate that the commit complies with the project’s contribution guidelines, often seen in projects using the Developer Certificate of Origin (DCO).
+Purpose: To indicate that the commit complies with the project's contribution guidelines, often seen in projects using the Developer Certificate of Origin (DCO).
 Example:
 
 ```
@@ -297,7 +303,7 @@ When additional context is present:
 
 - Consider it carefully when generating the commit message
 - Incorporate relevant information into the commit body as appropriate
-- The context may clarify what changed, explain why, explain the scope, the type or provide any other relevant information
+- The context may clarify what changed, explain why, explain the scope, the type, the branch or provide any other relevant information
 - Maintain all formatting rules (100 character limit, bullet points, etc.)
 - Still base the description of WHAT changed primarily on the diff itself
 - Use the additional context to supplement or clarify information as needed
@@ -680,6 +686,41 @@ return (
 ♻️ refactor(db): improve database backup console message
 
 - add "Database" prefix to backup completion and file path messages
+```
+
+### Example 6 - Commit with Branch Name
+
+This example demonstrates including a branch name in the commit message when working on a feature branch.
+
+**EXAMPLE INPUT:**
+
+```
+Additional context for the changes:
+branch: feature/user-authentication
+```
+
+```
+diff --git a/src/auth/login.ts b/src/auth/login.ts
+index 1234567..abcdefg 100644
+--- a/src/auth/login.ts
++++ b/src/auth/login.ts
+@@ -10,6 +10,7 @@ export async function login(username: string, password: string) {
+     throw new Error('Invalid credentials');
+   }
+
++  const token = generateToken(user);
+-  return { user };
++  return { user, token };
+ }
+```
+
+**EXAMPLE OUTPUT:**
+
+```
+✨ feat(auth)(feature/user-authentication): add JWT token generation to login
+
+- generate authentication token upon successful login
+- include token in login response alongside user object
 ```
 
 **━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━**
