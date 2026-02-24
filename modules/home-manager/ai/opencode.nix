@@ -4,14 +4,10 @@
   config,
   lib,
   ...
-}: let
-  gitoc = pkgs.writeShellScriptBin "gitoc" (import ./gitoc.nix {inherit pkgs;}).gitoc-script;
-in {
-  home = {
-    packages = [
-      gitoc
-    ];
-  };
+}: {
+  imports = [
+    ./gitoc.nix
+  ];
 
   programs = {
     opencode = {
