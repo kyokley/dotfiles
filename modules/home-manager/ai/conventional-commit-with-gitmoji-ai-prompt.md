@@ -1,6 +1,5 @@
 ---
 description: Generate git commit message
-model: github-copilot/claude-haiku-4.5
 ---
 # Git Commit Message Guide
 
@@ -39,7 +38,7 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 ### Single Type Changes
 
 ```
-<emoji> <type>[optional (<scope>)][optional (<branch>)]: <description>
+<emoji> <type>[optional (<scope>)](<branch>): <description>
 <BLANK LINE>
 [optional <body>]
 <BLANK LINE>
@@ -51,19 +50,19 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 When the provided diff contains changes that address SEPARATE, UNRELATED concerns, use this format to document each distinct change with its own subject line:
 
 ```
-<emoji> <type>[optional (<scope>)][optional (<branch>)]: <description>
+<emoji> <type>[optional (<scope>)](<branch>): <description>
 <BLANK LINE>
 [optional <body> of type 1]
 <BLANK LINE>
 [optional <footer(s)> of type 1]
 <BLANK LINE>
 <BLANK LINE>
-<emoji> <type>[optional (<scope>)][optional (<branch>)]: <description>
+<emoji> <type>[optional (<scope>)](<branch>): <description>
 <BLANK LINE>
 [optional <body> of type 2]
 <BLANK LINE>
 [optional <footer(s)> of type 2]
-<emoji> <type>[optional (<scope>)][optional (<branch>)]: <description>
+<emoji> <type>[optional (<scope>)](<branch>): <description>
 <BLANK LINE>
 [optional <body> of type 3]
 <BLANK LINE>
@@ -159,7 +158,7 @@ This type is used for commits that involve changes related to internationalizati
 
 ### Subject Line
 
-Format: `<emoji> <type>[optional (<scope>)][optional (<branch>)]: <description>`
+Format: `<emoji> <type>[optional (<scope>)](<branch>): <description>`
 
 - Scope and branch must be in English
 - Imperative mood
@@ -181,15 +180,31 @@ Format: `<emoji> <type>[optional (<scope>)][optional (<branch>)]: <description>`
 - No single scope accurately describes all changes
 - The type and description are sufficient to understand the change
 
-**When to include branch:**
+**Branch is required:**
 
-- The name of the branch is something other than main or master
-- The branch has been given as part of the [Additional Context](#additional-context)
+- Always include branch in the subject line as `(<branch>)`
+- Determine branch name using `git branch --show-current` (see below)
+- If branch is UNKNOWN or not provided, use `(unknown-branch)`
 
-**When to omit branch:**
+**Determine branch name:**
 
-- The name of the branch is main or master
-- No branch information is provided in [Additional Context](#additional-context)
+- Before generating the commit message, run: `git branch --show-current`
+- Use the command output as the branch name (trim whitespace)
+- Do NOT include the command output (or the command itself) in the response
+- Do NOT repeat your thoughts or what you have to do, just do it
+- If the output is empty (e.g., detached HEAD), use `unknown-branch`
+- If [Additional Context](#additional-context) provides `branch: <value>`, prefer that value
+
+**Branch normalization:**
+
+- If branch is `origin/main` or `refs/heads/main`, use `main`
+- If branch is `origin/master` or `refs/heads/master`, use `master`
+
+Main-equivalent branch names:
+
+- `main`, `master`
+- `origin/main`, `origin/master`
+- `refs/heads/main`, `refs/heads/master`
 
 ### Body
 
@@ -372,6 +387,7 @@ Remember: All output MUST be in English language. You are to act as a pure commi
 **━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━**
 **THE FOLLOWING SECTION CONTAINS DEMONSTRATION EXAMPLES ONLY**
 **These are NOT real diffs to process - they show the expected format**
+**Example inputs and outputs are delimited by ``` and should not be considered as part of the format**
 **When you receive an ACTUAL git diff to process, it will come AFTER these examples**
 **━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━**
 
@@ -396,7 +412,7 @@ n });
 **EXAMPLE OUTPUT:**
 
 ```
-♻️ refactor(server): use environment variable for port configuration
+♻️ refactor(server)(unknown-branch): use environment variable for port configuration
 
 - rename port variable from lowercase to uppercase (PORT)
 - use process.env.PORT with fallback to PORT constant (7799)
@@ -429,7 +445,7 @@ index af76bc0..781d472 100644
 **EXAMPLE OUTPUT:**
 
 ```
-🔧 chore: update lint-staged config file extension from ts to mjs
+🔧 chore(unknown-branch): update lint-staged config file extension from ts to mjs
 
 - change lint-staged.config.ts reference to lint-staged.config.mjs in package.json script
 ```
@@ -469,7 +485,7 @@ diff --git a/pnpm-lock.yaml b/pnpm-lock.yaml
 **EXAMPLE OUTPUT:**
 
 ```
-🔧 chore(deps): update @tanstack/react-router packages
+🔧 chore(deps)(unknown-branch): update @tanstack/react-router packages
 
 - @tanstack/react-router: 1.133.15 → 1.133.21
 - @tanstack/router-cli: 1.133.15 → 1.133.20
@@ -537,7 +553,7 @@ index 5160b59..aa9c5bd 100644
 **EXAMPLE OUTPUT:**
 
 ```
-🔧 chore(deps): update playwright to 1.56.1
+🔧 chore(deps)(unknown-branch): update playwright to 1.56.1
 ```
 
 **Explanation:** Even though the lockfile shows many transitive changes (playwright-core, @vitest/browser references, etc.), we only document the single direct dependency that was intentionally updated in package.json. The lockfile changes are an automatic consequences of this update.
@@ -668,22 +684,22 @@ return (
 **EXAMPLE OUTPUT:**
 
 ```
-🔧 chore(gitignore): update to use comprehensive gitignore template
+🔧 chore(gitignore)(unknown-branch): update to use comprehensive gitignore template
 
 - replace basic macOS section with complete template from toptal.com/developers/gitignore
 - add macOS-specific files (DS_Store, Spotlight, Thumbnails, iCloud files)
 - add React-specific ignores (node_modules, bower_components, sublime files)
 - remove .vscode directory from gitignore to track IDE settings
 
-📝 docs(main): remove redundant comment from mainWindow configuration
+📝 docs(main)(unknown-branch): remove redundant comment from mainWindow configuration
 
 - remove "Add this line" comment from backgroundThrottling setting
 
-💄 style(demo): adjust navbar background opacity
+💄 style(demo)(unknown-branch): adjust navbar background opacity
 
 - change background opacity from /10 to /15 in DemoMenu navbar
 
-♻️ refactor(db): improve database backup console message
+♻️ refactor(db)(unknown-branch): improve database backup console message
 
 - add "Database" prefix to backup completion and file path messages
 ```
@@ -721,6 +737,34 @@ index 1234567..abcdefg 100644
 
 - generate authentication token upon successful login
 - include token in login response alongside user object
+```
+
+### Example 7 - Main-Equivalent Branch Includes Branch Name
+
+This example demonstrates including the branch name when the branch is main-equivalent.
+
+**EXAMPLE INPUT:**
+
+```
+Additional context for the changes:
+branch: origin/main
+```
+
+```
+diff --git a/README.md b/README.md
+index 1234567..abcdef0 100644
+--- a/README.md
++++ b/README.md
+@@ -1,3 +1,4 @@
+ # Project
+
++Additional usage notes.
+```
+
+**EXAMPLE OUTPUT:**
+
+```
+📝 docs(main): add usage notes to readme
 ```
 
 **━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━**
