@@ -57,7 +57,6 @@
   };
   services.xserver.windowManager.qtile = {
     enable = true;
-    package = inputs.qtile-flake.packages.${pkgs.stdenv.hostPlatform.system}.default;
     extraPackages = python3Packages:
       with python3Packages; [
         requests
@@ -233,4 +232,6 @@
   '';
 
   services.fwupd.enable = true;
+
+  programs.less.package = inputs.less-nixpkgs.outputs.legacyPackages.${pkgs.stdenv.hostPlatform.system}.less;
 }

@@ -151,11 +151,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1771531206,
-        "narHash": "sha256-1R3Wx6KUkMb4x4E5UOhW9p6rqiexzSGGWxZqSHqW5n0=",
+        "lastModified": 1772807318,
+        "narHash": "sha256-Qjw6ILt8cb2HQQpCmWNLMZZ63wEo1KjTQt+1BcQBr7k=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "91be7cce763fa4022c7cf025a71b0c366d1b6e77",
+        "rev": "daa2c221320809f5514edde74d0ad0193ad54ed8",
         "type": "github"
       },
       "original": {
@@ -165,13 +165,29 @@
         "type": "github"
       }
     },
-    "nixpkgs": {
+    "less-nixpkgs": {
       "locked": {
-        "lastModified": 1771369470,
-        "narHash": "sha256-0NBlEBKkN3lufyvFegY4TYv5mCNHbi5OmBDrzihbBMQ=",
+        "lastModified": 1772598333,
+        "narHash": "sha256-YaHht/C35INEX3DeJQNWjNaTcPjYmBwwjFJ2jdtr+5U=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "0182a361324364ae3f436a63005877674cf45efb",
+        "rev": "fabb8c9deee281e50b1065002c9828f2cf7b2239",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "ref": "nixos-25.11",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs": {
+      "locked": {
+        "lastModified": 1772624091,
+        "narHash": "sha256-QKyJ0QGWBn6r0invrMAK8dmJoBYWoOWy7lN+UHzW1jc=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "80bdc1e5ce51f56b19791b52b2901187931f5353",
         "type": "github"
       },
       "original": {
@@ -326,36 +342,15 @@
         "type": "github"
       }
     },
-    "qtile-flake": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1765735690,
-        "narHash": "sha256-PPyI+IGvHBQusVmU3D26VjYjLaa9+94KUqNwbQSzeaI=",
-        "owner": "qtile",
-        "repo": "qtile",
-        "rev": "6f0977f2244f234fc2a79f899177af052a6fa914",
-        "type": "github"
-      },
-      "original": {
-        "owner": "qtile",
-        "ref": "v0.34.1",
-        "repo": "qtile",
-        "type": "github"
-      }
-    },
     "root": {
       "inputs": {
         "agenix": "agenix",
         "aider-commit": "aider-commit",
         "home-manager": "home-manager_2",
+        "less-nixpkgs": "less-nixpkgs",
         "nixpkgs": "nixpkgs",
         "nixvim": "nixvim",
         "ollama-mattermost-bot": "ollama-mattermost-bot",
-        "qtile-flake": "qtile-flake",
         "usql": "usql"
       }
     },
@@ -411,11 +406,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1766754656,
-        "narHash": "sha256-F0i6B0LDRqMznrAfWLUtD2vDyEMCJmJVZGKlCKCblF0=",
+        "lastModified": 1772329874,
+        "narHash": "sha256-sM8l/9mTPh9LKYVNrfXNQx7a96XJSmOFvH6tBnPm2dk=",
         "owner": "kyokley",
         "repo": "psql-pager",
-        "rev": "db65ff6925f478a88c5ca276baa2fc67003bd185",
+        "rev": "97b9c22172129411a820bcf61c9c45c34b679d56",
         "type": "github"
       },
       "original": {

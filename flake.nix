@@ -4,16 +4,14 @@
   inputs = {
     # Specify the source of Home Manager and Nixpkgs.
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    less-nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
+
     home-manager = {
       url = "github:nix-community/home-manager/master";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nixvim = {
       url = "github:kyokley/nixvim";
-    };
-    qtile-flake = {
-      url = "github:qtile/qtile/v0.34.1";
-      inputs.nixpkgs.follows = "nixpkgs";
     };
     usql = {
       url = "github:kyokley/psql-pager";
