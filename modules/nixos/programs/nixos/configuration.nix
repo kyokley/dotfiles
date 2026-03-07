@@ -19,13 +19,43 @@
       ];
       download-buffer-size = 524288000;
     };
+    buildMachines = [
+      {
+        hostName = "192.168.50.31";
+        sshUser = username;
+        systems = ["x86_64-linux"];
+        protocol = "ssh";
+        maxJobs = 3;
+        speedFactor = 2;
+        supportedFeatures = ["nixos-test" "benchmark" "big-parallel" "kvm"];
+      }
+    ];
+    distributedBuilds = true;
+    extraOptions = ''
+      builders-use-substitutes = true
+    '';
   };
 
   # Enable networking
-  networking.hostName = hostName;
-  networking.networkmanager.enable = true;
-  systemd.services.NetworkManager-wait-online.enable = true;
-  systemd.network.wait-online.enable = false;
+  networking = {
+    inherit hostName;
+    networkmanager.enable = true;
+
+    # Open ports in the firewall.
+    # networking.firewall.allowedTCPPorts = [ ... ];
+    # networking.firewall.allowedUDPPorts = [ ... ];
+    # Or disable the firewall altogether.
+    useDHCP = lib.mkDefault false;
+    firewall.enable = lib.mkDefault false;
+    firewall.checkReversePath = false;
+    useNetworkd = true;
+  };
+
+  systemd = {
+    services.NetworkManager-wait-online.enable = true;
+    network.wait-online.enable = false;
+  };
+
   boot = {
     initrd.systemd.network.wait-online.enable = false;
     tmp.cleanOnBoot = true;
@@ -33,84 +63,96 @@
 
   # Set your time zone.
   # time.timeZone = lib.mkDefault "America/Chicago";
-  services.localtimed.enable = true;
-  services.geoclue2.enable = true;
+
+  services = {
+    localtimed.enable = true;
+    geoclue2.enable = true;
+
+    # Enable the XFCE Desktop Environment.
+    xserver = {
+      enable = true;
+      xkb.layout = "us";
+      xkb.variant = "";
+
+      displayManager.lightdm = {
+        enable = true;
+      };
+      windowManager.qtile = {
+        enable = true;
+        extraPackages = python3Packages:
+          with python3Packages; [
+            requests
+            pillow
+            pywal
+            python-dateutil
+          ];
+      };
+    };
+    displayManager.defaultSession = lib.mkDefault "qtile";
+
+    # Enable CUPS to print documents.
+    printing.enable = true;
+
+    # Enable sound with pipewire.
+    pulseaudio.enable = false;
+
+    blueman.enable = true;
+    pipewire = {
+      enable = true;
+      alsa.enable = true;
+      alsa.support32Bit = true;
+      pulse.enable = true;
+      # If you want to use JACK applications, uncomment this
+      #jack.enable = true;
+
+      # use the example session manager (no others are packaged yet so this is enabled by default,
+      # no need to redefine it in your config for now)
+      #media-session.enable = true;
+    };
+
+    flatpak.enable = true;
+
+    earlyoom.enable = true;
+    resolved.enable = true;
+    fwupd.enable = true;
+  };
 
   # Select internationalisation properties.
-  i18n.defaultLocale = "en_US.UTF-8";
+  i18n = {
+    defaultLocale = "en_US.UTF-8";
 
-  i18n.extraLocaleSettings = {
-    LC_ADDRESS = "en_US.UTF-8";
-    LC_IDENTIFICATION = "en_US.UTF-8";
-    LC_MEASUREMENT = "en_US.UTF-8";
-    LC_MONETARY = "en_US.UTF-8";
-    LC_NAME = "en_US.UTF-8";
-    LC_NUMERIC = "en_US.UTF-8";
-    LC_PAPER = "en_US.UTF-8";
-    LC_TELEPHONE = "en_US.UTF-8";
-    LC_TIME = "en_US.UTF-8";
+    extraLocaleSettings = {
+      LC_ADDRESS = "en_US.UTF-8";
+      LC_IDENTIFICATION = "en_US.UTF-8";
+      LC_MEASUREMENT = "en_US.UTF-8";
+      LC_MONETARY = "en_US.UTF-8";
+      LC_NAME = "en_US.UTF-8";
+      LC_NUMERIC = "en_US.UTF-8";
+      LC_PAPER = "en_US.UTF-8";
+      LC_TELEPHONE = "en_US.UTF-8";
+      LC_TIME = "en_US.UTF-8";
+    };
   };
-
-  # Enable the XFCE Desktop Environment.
-  services.xserver.displayManager.lightdm = {
-    enable = true;
-  };
-  services.xserver.windowManager.qtile = {
-    enable = true;
-    extraPackages = python3Packages:
-      with python3Packages; [
-        requests
-        pillow
-        pywal
-        python-dateutil
-      ];
-  };
-  services.displayManager.defaultSession = lib.mkDefault "qtile";
-
-  # Needed to make screen locker work
-  programs.i3lock.enable = true;
-
-  # Configure keymap in X11
-  services.xserver = {
-    enable = true;
-    xkb.layout = "us";
-    xkb.variant = "";
-  };
-
-  # Enable CUPS to print documents.
-  services.printing.enable = true;
 
   # Enable bluetooth
-  hardware.bluetooth.enable = true;
-  hardware.bluetooth.powerOnBoot = true;
-  services.blueman.enable = true;
-
-  # Enable sound with pipewire.
-  services.pulseaudio.enable = false;
-  security.rtkit.enable = true;
-  services.pipewire = {
-    enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
-    pulse.enable = true;
-    # If you want to use JACK applications, uncomment this
-    #jack.enable = true;
-
-    # use the example session manager (no others are packaged yet so this is enabled by default,
-    # no need to redefine it in your config for now)
-    #media-session.enable = true;
+  hardware = {
+    bluetooth.enable = true;
+    bluetooth.powerOnBoot = true;
   };
+
+  security.rtkit.enable = true;
 
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
 
   # Enable flatpaks
-  xdg.portal.enable = true;
-  xdg.portal.extraPortals = [pkgs.xdg-desktop-portal-gtk];
-  xdg.portal.config.common.default = "*";
-  services.flatpak.enable = true;
-
-  services.earlyoom.enable = true;
+  xdg = {
+    portal = {
+      enable = true;
+      extraPortals = [pkgs.xdg-desktop-portal-gtk];
+      config.common.default = "*";
+    };
+  };
 
   # Enable docker
   virtualisation.docker = {
@@ -175,63 +217,32 @@
 
   systemd.tmpfiles.rules = ["d /tmp 1777 root root 7d"];
 
-  # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
-  # programs.mtr.enable = true;
-  # programs.gnupg.agent = {
-  #   enable = true;
-  #   enableSSHSupport = true;
-  # };
-  programs.neovim = {
-    enable = false;
-    defaultEditor = true;
-    viAlias = true;
-    vimAlias = true;
+  programs = {
+    neovim = {
+      enable = false;
+      defaultEditor = true;
+      viAlias = true;
+      vimAlias = true;
+    };
+
+    # Needed to make screen locker work
+    i3lock.enable = true;
+    less.package = inputs.less-nixpkgs.outputs.legacyPackages.${pkgs.stdenv.hostPlatform.system}.less;
+    zsh.enable = true;
   };
 
   environment.variables = {
     EDITOR = "nvim";
   };
-  programs.zsh.enable = true;
 
   # List services that you want to enable:
 
   # Enable the OpenSSH daemon.
   # services.openssh.enable = true;
 
-  # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
-  # Or disable the firewall altogether.
-  networking.useDHCP = lib.mkDefault false;
-  networking.firewall.enable = lib.mkDefault false;
-  networking.firewall.checkReversePath = false;
-  services.resolved.enable = true;
-  networking.useNetworkd = true;
-
   home-manager = {
     useGlobalPkgs = true;
     useUserPackages = true;
     users.${username} = import ../../../home-manager/home.nix;
   };
-
-  nix.buildMachines = [
-    {
-      hostName = "192.168.50.31";
-      sshUser = username;
-      systems = ["x86_64-linux"];
-      protocol = "ssh";
-      maxJobs = 3;
-      speedFactor = 2;
-      supportedFeatures = ["nixos-test" "benchmark" "big-parallel" "kvm"];
-    }
-  ];
-  nix.distributedBuilds = true;
-  nix.extraOptions = ''
-    builders-use-substitutes = true
-  '';
-
-  services.fwupd.enable = true;
-
-  programs.less.package = inputs.less-nixpkgs.outputs.legacyPackages.${pkgs.stdenv.hostPlatform.system}.less;
 }
