@@ -29,6 +29,9 @@
       url = "github:kyokley/aider-commit";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    opencode-config = {
+      url = "github:kyokley/opencode-config";
+    };
   };
 
   outputs = inputs: let
