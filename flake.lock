@@ -350,11 +350,11 @@
         "nixpkgs": "nixpkgs_3"
       },
       "locked": {
-        "lastModified": 1773110405,
-        "narHash": "sha256-cwwqTQXFRVPqkfmXX1Y9bEZ6BS/cKZRl3mz+Cny/fY0=",
+        "lastModified": 1773623859,
+        "narHash": "sha256-wV596olWJFoaqfvFn8792YTHYT2Ef7c+sIqKCbu/ZuY=",
         "owner": "kyokley",
         "repo": "opencode-config",
-        "rev": "f171e78f5468f0e0151925ae4be0dc5bce058ff8",
+        "rev": "582f26843a055a8b9b238826b26b37679371d14f",
         "type": "github"
       },
       "original": {
