@@ -1,4 +1,8 @@
+---
+description: Review code
+---
 # Code Review Task
+Usage: /review
 
 ## ROLE AND GOAL
 
@@ -138,4 +142,7 @@ The `.one()` method will raise a `NoResultFound` exception if a user with the gi
 ---
 
 ## INPUT
-!`git diff $(git branch -a | grep 'origin/HEAD' | awk '{print $1}')`
+**━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━**
+**When you receive an ACTUAL git diff to process, it will appear below this line**
+**━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━**
+!`git diff $(git branch -a | grep 'origin/HEAD' | awk '{print \$1}') | cat -`
