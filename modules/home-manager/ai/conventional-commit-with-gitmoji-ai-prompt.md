@@ -49,7 +49,7 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 ### Single Type Changes
 
 ```
-<emoji> <type>[optional (<scope>)](<branch>): <description>
+<emoji> <type>(<branch>)[optional (<scope>)]: <description>
 <BLANK LINE>
 [optional <body>]
 <BLANK LINE>
@@ -61,19 +61,19 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 When the provided diff contains changes that address SEPARATE, UNRELATED concerns, use this format to document each distinct change with its own subject line:
 
 ```
-<emoji> <type>[optional (<scope>)](<branch>): <description>
+<emoji> <type>(<branch>)[optional (<scope>)]: <description>
 <BLANK LINE>
 [optional <body> of type 1]
 <BLANK LINE>
 [optional <footer(s)> of type 1]
 <BLANK LINE>
 <BLANK LINE>
-<emoji> <type>[optional (<scope>)](<branch>): <description>
+<emoji> <type>(<branch>)[optional (<scope>)]: <description>
 <BLANK LINE>
 [optional <body> of type 2]
 <BLANK LINE>
 [optional <footer(s)> of type 2]
-<emoji> <type>[optional (<scope>)](<branch>): <description>
+<emoji> <type>(<branch>)[optional (<scope>)]: <description>
 <BLANK LINE>
 [optional <body> of type 3]
 <BLANK LINE>
@@ -169,7 +169,7 @@ This type is used for commits that involve changes related to internationalizati
 
 ### Subject Line
 
-Format: `<emoji> <type>[optional (<scope>)](<branch>): <description>`
+Format: `<emoji> <type>(<branch>)[optional (<scope>)]: <description>`
 
 - Scope and branch must be in English
 - Imperative mood
@@ -400,7 +400,7 @@ n });
 **EXAMPLE OUTPUT:**
 
 ```
-♻️ refactor(server)(unknown-branch): use environment variable for port configuration
+♻️ refactor(unknown-branch)(server): use environment variable for port configuration
 
 - rename port variable from lowercase to uppercase (PORT)
 - use process.env.PORT with fallback to PORT constant (7799)
@@ -473,7 +473,7 @@ diff --git a/pnpm-lock.yaml b/pnpm-lock.yaml
 **EXAMPLE OUTPUT:**
 
 ```
-🔧 chore(deps)(unknown-branch): update @tanstack/react-router packages
+🔧 chore(unknown-branch)(deps): update @tanstack/react-router packages
 
 - @tanstack/react-router: 1.133.15 → 1.133.21
 - @tanstack/router-cli: 1.133.15 → 1.133.20
@@ -672,22 +672,22 @@ return (
 **EXAMPLE OUTPUT:**
 
 ```
-🔧 chore(gitignore)(unknown-branch): update to use comprehensive gitignore template
+🔧 chore(unknown-branch)(gitignore): update to use comprehensive gitignore template
 
 - replace basic macOS section with complete template from toptal.com/developers/gitignore
 - add macOS-specific files (DS_Store, Spotlight, Thumbnails, iCloud files)
 - add React-specific ignores (node_modules, bower_components, sublime files)
 - remove .vscode directory from gitignore to track IDE settings
 
-📝 docs(main)(unknown-branch): remove redundant comment from mainWindow configuration
+📝 docs(unknown-branch)(main): remove redundant comment from mainWindow configuration
 
 - remove "Add this line" comment from backgroundThrottling setting
 
-💄 style(demo)(unknown-branch): adjust navbar background opacity
+💄 style(unknown-branch)(demo): adjust navbar background opacity
 
 - change background opacity from /10 to /15 in DemoMenu navbar
 
-♻️ refactor(db)(unknown-branch): improve database backup console message
+♻️ refactor(unknown-branch)(db): improve database backup console message
 
 - add "Database" prefix to backup completion and file path messages
 ```
@@ -721,7 +721,7 @@ index 1234567..abcdefg 100644
 **EXAMPLE OUTPUT:**
 
 ```
-✨ feat(auth)(feature/user-authentication): add JWT token generation to login
+✨ feat(feature/user-authentication)(auth): add JWT token generation to login
 
 - generate authentication token upon successful login
 - include token in login response alongside user object
