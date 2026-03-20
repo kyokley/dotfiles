@@ -194,8 +194,7 @@ Format: `<emoji> <type>[optional (<scope>)](<branch>): <description>`
 **Branch is required:**
 
 - Always include branch in the subject line as `(<branch>)`
-- Determine branch name using `git branch --show-current` (see below)
-- If branch is UNKNOWN or not provided, use `(unknown-branch)`
+- Branch is !`git branch --show-current`
 
 **Determine branch name:**
 
