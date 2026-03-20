@@ -110,8 +110,8 @@ class Tetris(base._Widget):
         self.started = False
         self.columns = 0
         self.rows = 0
-        self.grid = []
-        self.fall_grid = []
+        self.grid: list[list[int | str]] = []
+        self.fall_grid: list[list[int | str]] = []
         self.is_falling = True
         self.shape = None
         self.found_position = False
@@ -146,33 +146,56 @@ class Tetris(base._Widget):
         if self.autostart:
             self.timeout_add(0.5, self.restart)
 
+    def _get_dimensions(self):
+        columns = (self.height if self.bar.horizontal else self.width) // self.cell_size
+        rows = (self.width if self.bar.horizontal else self.height) // self.cell_size
+        return columns, rows
+
+    def _resize_grid(self, grid: list[list[int | str]], rows: int, columns: int):
+        current_rows = len(grid)
+
+        if current_rows < rows:
+            for _ in range(rows - current_rows):
+                grid.insert(0, [0 for _ in range(columns)])
+        elif current_rows > rows:
+            for _ in range(current_rows - rows):
+                grid.pop(0)
+
+        for i, row in enumerate(grid):
+            row_len = len(row)
+            if row_len < columns:
+                grid[i] = row + [0 for _ in range(columns - row_len)]
+            elif row_len > columns:
+                grid[i] = row[:columns]
+
+        return grid
+
     def _set_width(self):
-        """Resize the grid if the length changes."""
+        """Resize internal state only when cell dimensions changed."""
         if not self.started:
             return
 
-        self._stop_timers()
+        new_columns, new_rows = self._get_dimensions()
 
-        # Work out how many extra rows we gain/lose
-        row_count = self.length // self.cell_size
-        grid_len = len(self.grid)
-        diff = row_count - grid_len
+        # No meaningful size change, so avoid resetting movement.
+        if new_columns == self.columns and new_rows == self.rows:
+            return
 
-        # Add/remove rows from the grids
-        if diff > 0:
-            for _ in range(diff):
-                self.grid.insert(0, [0 for _ in range(self.columns)])
-                self.fall_grid.insert(0, [0 for _ in range(self.columns)])
-        elif diff < 0:
-            for _ in range(abs(diff)):
-                self.grid.pop(0)
-                self.fall_grid.pop(0)
+        self.grid = self._resize_grid(self.grid, new_rows, new_columns)
+        self.fall_grid = self._resize_grid(self.fall_grid, new_rows, new_columns)
 
-        # Update variables. Start dropping a new piece
-        self.rows = row_count
-        self.shape = None
+        self.columns = new_columns
+        self.rows = new_rows
 
-        self.step_timer = self.timeout_add(self.step_interval, self.step)
+        # Keep active game state alive across genuine resize.
+        if self.shape is not None:
+            self.found_position = False
+            self.is_falling = False
+            self.path = []
+            self.fall_row = 0
+            self.fall_col = min(self.columns // 2, max(0, self.columns - 1))
+
+        self.draw()
 
     def _stop_timers(self):
         if self.step_timer is not None:
