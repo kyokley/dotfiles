@@ -36,6 +36,9 @@ in {
             commit = {
               template = builtins.readFile ./conventional-commit-with-gitmoji-ai-prompt.md;
             };
+            review = {
+              template = builtins.readFile ./review_code.md;
+            };
           };
           agent = {
             code-reviewer = {
