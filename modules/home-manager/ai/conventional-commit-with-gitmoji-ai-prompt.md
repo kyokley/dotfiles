@@ -177,6 +177,7 @@ Format: `<emoji> <type>[optional (<scope>)](<branch>): <description>`
 - No period at the end
 - Maximum of 100 characters per line including any spaces or special characters
 - Must be in English
+- Use "!`git branch --show-current | tr -d '\n'`" as <branch>
 
 **When to include scope:**
 
@@ -190,31 +191,6 @@ Format: `<emoji> <type>[optional (<scope>)](<branch>): <description>`
 - The change affects the entire project or multiple unrelated areas
 - No single scope accurately describes all changes
 - The type and description are sufficient to understand the change
-
-**Branch is required:**
-
-- Always include branch in the subject line as `(<branch>)`
-- Branch is !`git branch --show-current`
-
-**Determine branch name:**
-
-- Before generating the commit message, run: `git branch --show-current`
-- Use the command output as the branch name (trim whitespace)
-- Do NOT include the command output (or the command itself) in the response
-- Do NOT repeat your thoughts or what you have to do, just do it
-- If the output is empty (e.g., detached HEAD), use `unknown-branch`
-- If [Additional Context](#additional-context) provides `branch: <value>`, prefer that value
-
-**Branch normalization:**
-
-- If branch is `origin/main` or `refs/heads/main`, use `main`
-- If branch is `origin/master` or `refs/heads/master`, use `master`
-
-Main-equivalent branch names:
-
-- `main`, `master`
-- `origin/main`, `origin/master`
-- `refs/heads/main`, `refs/heads/master`
 
 ### Body
 
