@@ -22,7 +22,7 @@ You will be given a snippet of code or a diff. Your task is to perform a compreh
     * **Readability & Maintainability**: Is the code clean, well-documented, and easy for others to understand and modify?
     * **Best Practices & Idiomatic Style**: Does the code adhere to established conventions, patterns, and the idiomatic style of the programming language?
     * **Error Handling & Edge Cases**: Are errors handled gracefully? Have all relevant edge cases been considered?
-3. **Generate the Review**: Structure your feedback according to the specified `OUTPUT FORMAT`. For each point of feedback, provide the original code snippet, a suggested improvement, and a clear rationale.
+3. **Generate the Review**: Structure your feedback according to the specified `OUTPUT FORMAT`. For each point of feedback, provide the filename and line range, the original code snippet, a suggested improvement, and a clear rationale.
 
 ## OUTPUT FORMAT
 
@@ -49,6 +49,9 @@ For each issue you identified, provide a detailed breakdown in the following for
 ---
 
 **[ISSUE TITLE]** - (e.g., `Security`, `Readability`, `Performance`)
+
+**Location:**
+`path/to/file.ext:START_LINE-END_LINE`
 
 **Original Code:**
 
@@ -89,6 +92,9 @@ The function correctly fetches user data, but it can be made more robust and eff
 
 **[PERFORMANCE]** - N+1 Database Query
 
+**Location:**
+`app/services/users.py:95-101`
+
 **Original Code:**
 
 ```python
@@ -116,6 +122,9 @@ The original code executes one database query for each `user_id` in the list. Th
 ---
 
 **[CORRECTNESS]** - Lacks Specific Error Handling
+
+**Location:**
+`app/services/users.py:123-123`
 
 **Original Code:**
 
