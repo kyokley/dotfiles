@@ -6,7 +6,7 @@
   ...
 }: let
   opencodePkg = inputs.opencode-config.packages.${pkgs.stdenv.hostPlatform.system}.default;
-  base_opencode_config = builtins.fromJSON (builtins.readFile "${opencodePkg}/lib/configs/opencode.json");
+  baseOpencodeConfig = builtins.fromJSON (builtins.readFile "${opencodePkg}/lib/configs/opencode.json");
 in {
   imports = [
     ./gitoc.nix
@@ -14,7 +14,9 @@ in {
 
   home = {
     file = {
-      ".config/opencode/oh-my-opencode-slim.json" = {text = builtins.readFile "${opencodePkg}/lib/configs/oh-my-opencode-slim.json";};
+      ".config/opencode/oh-my-opencode-slim.json" = {
+        text = builtins.readFile "${opencodePkg}/lib/configs/oh-my-opencode-slim.json";
+      };
       ".agents" = {
         source = "${opencodePkg}/lib/configs/agents";
         recursive = true;
@@ -27,7 +29,7 @@ in {
     ];
 
     shellAliases = {
-      review = "if [ -t 1 ]; then opencode --command review run | glow --tui -; else opencode --command review run; fi";
+      review = "opencode --command review run | if [ -t 1 ]; then glow --tui -; else cat; fi";
     };
   };
 
@@ -36,7 +38,7 @@ in {
       enable = true;
       package = null;
       settings =
-        base_opencode_config
+        baseOpencodeConfig
         // {
           model = "github-copilot/claude-haiku-4.5";
           small_model = "github-copilot/claude-haiku-4.5";
