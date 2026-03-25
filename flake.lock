@@ -363,11 +363,11 @@
         "nixpkgs": "nixpkgs_4"
       },
       "locked": {
-        "lastModified": 1773623859,
-        "narHash": "sha256-wV596olWJFoaqfvFn8792YTHYT2Ef7c+sIqKCbu/ZuY=",
+        "lastModified": 1774408159,
+        "narHash": "sha256-fEnfGZMyb44iDXuXwpXNdHI68UGK/oAJn01jb4bEniA=",
         "owner": "kyokley",
         "repo": "opencode-config",
-        "rev": "582f26843a055a8b9b238826b26b37679371d14f",
+        "rev": "280f0111291312d73135086717a3015ab9993b4a",
         "type": "github"
       },
       "original": {
