@@ -5,7 +5,8 @@
   lib,
   ...
 }: let
-  base_opencode_config = builtins.fromJSON (builtins.readFile "${inputs.opencode-config.packages.${pkgs.stdenv.hostPlatform.system}.default}/lib/configs/opencode.json");
+  opencodePkg = inputs.opencode-config.packages.${pkgs.stdenv.hostPlatform.system}.default;
+  base_opencode_config = builtins.fromJSON (builtins.readFile "${opencodePkg}/lib/configs/opencode.json");
 in {
   imports = [
     ./gitoc.nix
@@ -13,20 +14,20 @@ in {
 
   home = {
     file = {
-      ".config/opencode/oh-my-opencode-slim.json" = {text = builtins.readFile "${inputs.opencode-config.packages.${pkgs.stdenv.hostPlatform.system}.default}/lib/configs/oh-my-opencode-slim.json";};
+      ".config/opencode/oh-my-opencode-slim.json" = {text = builtins.readFile "${opencodePkg}/lib/configs/oh-my-opencode-slim.json";};
       ".agents" = {
-        source = "${inputs.opencode-config.packages.${pkgs.stdenv.hostPlatform.system}.default}/lib/configs/agents";
+        source = "${opencodePkg}/lib/configs/agents";
         recursive = true;
       };
     };
 
     packages = [
       pkgs.glow
-      inputs.opencode-config.packages.${pkgs.stdenv.hostPlatform.system}.default
+      opencodePkg
     ];
 
     shellAliases = {
-      review = "opencode --command review run | glow --tui -";
+      review = "if [ -t 1 ]; then opencode --command review run | glow --tui -; else opencode --command review run; fi";
     };
   };
 
