@@ -11,17 +11,24 @@ in {
     ./gitoc.nix
   ];
 
-  home.file = {
-    ".config/opencode/oh-my-opencode-slim.json" = {text = builtins.readFile "${inputs.opencode-config.packages.${pkgs.stdenv.hostPlatform.system}.default}/lib/configs/oh-my-opencode-slim.json";};
-    ".agents" = {
-      source = "${inputs.opencode-config.packages.${pkgs.stdenv.hostPlatform.system}.default}/lib/configs/agents";
-      recursive = true;
+  home = {
+    file = {
+      ".config/opencode/oh-my-opencode-slim.json" = {text = builtins.readFile "${inputs.opencode-config.packages.${pkgs.stdenv.hostPlatform.system}.default}/lib/configs/oh-my-opencode-slim.json";};
+      ".agents" = {
+        source = "${inputs.opencode-config.packages.${pkgs.stdenv.hostPlatform.system}.default}/lib/configs/agents";
+        recursive = true;
+      };
+    };
+
+    packages = [
+      pkgs.glow
+      inputs.opencode-config.packages.${pkgs.stdenv.hostPlatform.system}.default
+    ];
+
+    shellAliases = {
+      review = "opencode --command review run | glow --tui -";
     };
   };
-
-  home.packages = [
-    inputs.opencode-config.packages.${pkgs.stdenv.hostPlatform.system}.default
-  ];
 
   programs = {
     opencode = {
