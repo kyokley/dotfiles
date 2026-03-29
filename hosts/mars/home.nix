@@ -14,7 +14,6 @@ in {
     ../../modules/home-manager/home.nix
     ../../modules/home-manager/dev.nix
     ../../modules/home-manager/ai/ai.nix
-    ../../modules/home-manager/ai/aider.nix
   ];
 
   programs.git.settings.user.email = "kyokley@mars";

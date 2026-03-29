@@ -25,10 +25,6 @@
       url = "github:kyokley/ollama-mattermost-bot";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    aider-commit = {
-      url = "github:kyokley/aider-commit";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     opencode-config = {
       url = "github:kyokley/opencode-config";
     };
