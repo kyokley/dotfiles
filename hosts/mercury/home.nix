@@ -4,12 +4,13 @@
   username,
   inputs,
   ...
-}: {
+}: let
+  CLEANUP_RETENTION_WINDOW = "30 days";
+in {
   imports = [
     ../../modules/home-manager/programs/nixos/nixos.nix
     ../../modules/home-manager/home.nix
     ../../modules/home-manager/ai/ai.nix
-    ../../modules/home-manager/ai/aider.nix
   ];
 
   programs.git.settings.user.email = "kyokley@mercury";
@@ -36,7 +37,7 @@
             cd /home/${username}/workspace/mattermost
             ${pkgs.docker}/bin/docker compose exec postgres17 psql -U mmuser -d mattermost -c "
               begin;
-              delete from posts where createat < extract(epoch from (now() - interval '7 days'))::int8 * 1000;
+              delete from posts where createat < extract(epoch from (now() - interval '${CLEANUP_RETENTION_WINDOW}'))::int8 * 1000;
               delete from reactions where postid not in (select id from posts);
               delete from fileinfo where postid not in (select id from posts);
               commit;

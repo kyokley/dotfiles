@@ -5,30 +5,40 @@
   lib,
   ...
 }: let
-  base_opencode_config = builtins.fromJSON (builtins.readFile "${inputs.opencode-config.packages.${pkgs.stdenv.hostPlatform.system}.default}/lib/configs/opencode.json");
+  opencodePkg = inputs.opencode-config.packages.${pkgs.stdenv.hostPlatform.system}.default;
+  baseOpencodeConfig = builtins.fromJSON (builtins.readFile "${opencodePkg}/lib/configs/opencode.json");
 in {
   imports = [
     ./gitoc.nix
   ];
 
-  home.file = {
-    ".config/opencode/oh-my-opencode-slim.json" = {text = builtins.readFile "${inputs.opencode-config.packages.${pkgs.stdenv.hostPlatform.system}.default}/lib/configs/oh-my-opencode-slim.json";};
-    ".agents" = {
-      source = "${inputs.opencode-config.packages.${pkgs.stdenv.hostPlatform.system}.default}/lib/configs/agents";
-      recursive = true;
+  home = {
+    file = {
+      ".config/opencode/oh-my-opencode-slim.json" = {
+        text = builtins.readFile "${opencodePkg}/lib/configs/oh-my-opencode-slim.json";
+      };
+      ".agents" = {
+        source = "${opencodePkg}/lib/configs/agents";
+        recursive = true;
+      };
+    };
+
+    packages = [
+      pkgs.glow
+      opencodePkg
+    ];
+
+    shellAliases = {
+      review = "opencode --command review run | if [ -t 1 ]; then glow --tui -; else cat; fi";
     };
   };
-
-  home.packages = [
-    inputs.opencode-config.packages.${pkgs.stdenv.hostPlatform.system}.default
-  ];
 
   programs = {
     opencode = {
       enable = true;
       package = null;
       settings =
-        base_opencode_config
+        baseOpencodeConfig
         // {
           model = "github-copilot/claude-haiku-4.5";
           small_model = "github-copilot/claude-haiku-4.5";

@@ -25,10 +25,6 @@
       url = "github:kyokley/ollama-mattermost-bot";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    aider-commit = {
-      url = "github:kyokley/aider-commit";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     opencode-config = {
       url = "github:kyokley/opencode-config";
     };
@@ -97,7 +93,7 @@
 
       almagest = homeManagerConfigurationGenerator {
         hostName = "almagest";
-        nixvim-output = "withoutAider";
+        nixvim-output = "withoutCopilot";
       };
       jupiter = homeManagerConfigurationGenerator {
         hostName = "jupiter";
