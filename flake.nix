@@ -93,7 +93,7 @@
 
       almagest = homeManagerConfigurationGenerator {
         hostName = "almagest";
-        nixvim-output = "withoutAider";
+        nixvim-output = "withoutCopilot";
       };
       jupiter = homeManagerConfigurationGenerator {
         hostName = "jupiter";
