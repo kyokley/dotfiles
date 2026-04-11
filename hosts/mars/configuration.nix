@@ -19,7 +19,7 @@
   '';
 
   environment.systemPackages = with pkgs; [
-    protonvpn-gui
+    proton-vpn
     spotify
     steam-devices-udev-rules
   ];

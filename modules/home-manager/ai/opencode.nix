@@ -12,31 +12,10 @@ in {
     ./gitoc.nix
   ];
 
-  home = {
-    file = {
-      ".config/opencode/oh-my-opencode-slim.json" = {
-        text = builtins.readFile "${opencodePkg}/lib/configs/oh-my-opencode-slim.json";
-      };
-      ".agents" = {
-        source = "${opencodePkg}/lib/configs/agents";
-        recursive = true;
-      };
-    };
-
-    packages = [
-      pkgs.glow
-      opencodePkg
-    ];
-
-    shellAliases = {
-      review = "opencode --command review run | if [ -t 1 ]; then glow --tui -; else cat; fi";
-    };
-  };
-
   programs = {
     opencode = {
       enable = true;
-      package = null;
+      package = opencodePkg;
       settings =
         baseOpencodeConfig
         // {
@@ -103,4 +82,27 @@ in {
         };
     };
   };
+
+  home =
+    if config.programs.opencode.enable
+    then {
+      file = {
+        ".config/opencode/oh-my-opencode-slim.json" = {
+          text = builtins.readFile "${opencodePkg}/lib/configs/oh-my-opencode-slim.json";
+        };
+        ".agents" = {
+          source = "${opencodePkg}/lib/configs/agents";
+          recursive = true;
+        };
+      };
+
+      packages = [
+        pkgs.glow
+      ];
+
+      shellAliases = {
+        review = "opencode --command review run | if [ -t 1 ]; then glow --tui -; else cat; fi";
+      };
+    }
+    else {};
 }
