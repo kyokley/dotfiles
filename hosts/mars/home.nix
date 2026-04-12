@@ -29,6 +29,7 @@ in {
       pkgs.brightnessctl
       pkgs.mattermost-desktop
       pkgs.lutris
+      pkgs.steam
     ];
 
     stateVersion = "24.05"; # Don't touch me!
