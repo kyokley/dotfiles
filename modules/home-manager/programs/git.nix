@@ -30,6 +30,7 @@
       "__pycache__"
       ".nixos-test-history"
       "result"
+      ".direnv"
     ];
   };
 
