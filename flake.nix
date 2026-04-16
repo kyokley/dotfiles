@@ -28,6 +28,8 @@
     opencode-config = {
       url = "github:kyokley/opencode-config";
     };
+    import-tree.url = "github:vic/import-tree";
+    den.url = "github:vic/den";
   };
 
   outputs = inputs: let
@@ -56,27 +58,43 @@
       nixvim-output ? "default",
       hostName,
       username ? defaultUsername,
+      additionalModules ? [],
     }: (inputs.nixpkgs.lib.nixosSystem {
       specialArgs = {inherit inputs username nixvim-output hostName;};
-      modules = [
-        ./modules/nixos/programs/nixos/configuration.nix
-        ./modules/nixos/programs/nixos/hardware-configuration.nix
-        ./hosts/${hostName}/configuration.nix
-        ./hosts/${hostName}/hardware-configuration.nix
-        inputs.home-manager.nixosModules.home-manager
-        {
-          home-manager.users.${username} = inputs.nixpkgs.lib.mkMerge [./hosts/${hostName}/home.nix inputs.agenix.homeManagerModules.default];
-          home-manager.extraSpecialArgs = {inherit inputs username nixvim-output hostName;};
-        }
-      ];
+      modules =
+        [
+          ./modules/nixos/programs/nixos/configuration.nix
+          ./modules/nixos/programs/nixos/hardware-configuration.nix
+          ./hosts/${hostName}/configuration.nix
+          ./hosts/${hostName}/hardware-configuration.nix
+          inputs.home-manager.nixosModules.home-manager
+          {
+            home-manager.users.${username} = inputs.nixpkgs.lib.mkMerge [./hosts/${hostName}/home.nix inputs.agenix.homeManagerModules.default];
+            home-manager.extraSpecialArgs = {inherit inputs username nixvim-output hostName;};
+          }
+        ]
+        ++ additionalModules;
     });
+
+    den =
+      (inputs.nixpkgs.lib.evalModules {
+        modules = [
+          (inputs.import-tree ./mods)
+          inputs.den.flakeModule
+        ];
+        specialArgs.inputs = inputs;
+      }).config;
+
+    inherit (den.den.hosts.x86_64-linux) mars mercury;
   in {
     nixosConfigurations = {
       mars = nixosConfigurationGenerator {
         hostName = "mars";
+        additionalModules = [mars.mainModule];
       };
       mercury = nixosConfigurationGenerator {
         hostName = "mercury";
+        additionalModules = [mercury.mainModule];
       };
     };
 
