@@ -186,11 +186,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1775900011,
-        "narHash": "sha256-QUGu6CJYFQ5AWVV0n3/FsJyV+1/gj7HSDx68/SX9pwM=",
+        "lastModified": 1776373306,
+        "narHash": "sha256-iAJIzHngGZeLIkjzuuWI6VBsYJ1n89a/Esq0m8R1vjs=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "b0569dc6ec1e6e7fefd8f6897184e4c191cd768e",
+        "rev": "d401492e2acd4fea42f7705a3c266cea739c9c36",
         "type": "github"
       },
       "original": {
@@ -200,29 +200,13 @@
         "type": "github"
       }
     },
-    "less-nixpkgs": {
-      "locked": {
-        "lastModified": 1775811116,
-        "narHash": "sha256-t+HZK42pB6N+i5RGbuy7Xluez/VvWbembBdvzsc23Ss=",
-        "owner": "nixos",
-        "repo": "nixpkgs",
-        "rev": "54170c54449ea4d6725efd30d719c5e505f1c10e",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nixos",
-        "ref": "nixos-25.11",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1775710090,
-        "narHash": "sha256-ar3rofg+awPB8QXDaFJhJ2jJhu+KqN/PRCXeyuXR76E=",
+        "lastModified": 1776169885,
+        "narHash": "sha256-l/iNYDZ4bGOAFQY2q8y5OAfBBtrDAaPuRQqWaFHVRXM=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "4c1018dae018162ec878d42fec712642d214fdfa",
+        "rev": "4bd9165a9165d7b5e33ae57f3eecbcb28fb231c9",
         "type": "github"
       },
       "original": {
@@ -430,11 +414,11 @@
         "nixpkgs": "nixpkgs_7"
       },
       "locked": {
-        "lastModified": 1775960125,
-        "narHash": "sha256-NjjRcvDnI/4LVxKl3emHaCpf97fI15y/42lbhOL0Oh4=",
+        "lastModified": 1776049503,
+        "narHash": "sha256-rzQk6ReH2MjfiwPXrtU3sdnVeOcWRfLKl2w1WVtiOWo=",
         "owner": "kyokley",
         "repo": "opencode-config",
-        "rev": "7e5113a10e17411873ae55a7c7d0035b827089aa",
+        "rev": "14c4d606ac574900d65919b1425a64bc1cb6bc3c",
         "type": "github"
       },
       "original": {
@@ -494,7 +478,6 @@
       "inputs": {
         "agenix": "agenix",
         "home-manager": "home-manager_2",
-        "less-nixpkgs": "less-nixpkgs",
         "nixpkgs": "nixpkgs",
         "nixvim": "nixvim",
         "ollama-mattermost-bot": "ollama-mattermost-bot",

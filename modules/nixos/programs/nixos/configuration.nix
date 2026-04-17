@@ -227,7 +227,6 @@
 
     # Needed to make screen locker work
     i3lock.enable = true;
-    less.package = inputs.less-nixpkgs.outputs.legacyPackages.${pkgs.stdenv.hostPlatform.system}.less;
     zsh.enable = true;
   };
 
