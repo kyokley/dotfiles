@@ -1,12 +1,20 @@
-{pkgs, ...}: let
+{
+  pkgs,
+  username,
+  ...
+}: let
   background_dir = "/usr/share/backgrounds";
 in {
-  services.xserver.displayManager.lightdm = {
-    background = "${background_dir}/login.jpg";
-    # Temporarily switching to slick greeter as enso fails
-    greeters.slick = {
-      enable = true;
+  services = {
+    xserver.displayManager.lightdm = {
+      background = "${background_dir}/login.jpg";
+      # Temporarily switching to slick greeter as enso fails
+      greeters.slick = {
+        enable = true;
+      };
     };
+
+    getty.autologinUser = username;
   };
 
   systemd.services = {
