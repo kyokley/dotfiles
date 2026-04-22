@@ -44,7 +44,7 @@
     {
       inherit inputs;
     }
-    ({...}: let
+    (_: let
       constants = import ./flake/lib/constants.nix;
       generators = import ./flake/lib/generators.nix {
         inherit inputs constants;
