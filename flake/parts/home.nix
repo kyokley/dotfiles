@@ -10,8 +10,6 @@
       ...
     }: {
       imports = [
-        ./programs/shell/zsh.nix
-        ./programs/git.nix
         ./programs/tmux.nix
         ./programs/vim.nix
         ./programs/systemd.nix

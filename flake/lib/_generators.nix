@@ -21,6 +21,7 @@ in {
         ../../hosts/${hostName}/home.nix
         inputs.agenix.homeManagerModules.default
         inputs.self.modules.homeManager.${hostName}
+        inputs.self.modules.homeManager.common
       ];
     };
 
@@ -45,6 +46,7 @@ in {
             ../../hosts/${hostName}/home.nix
             inputs.agenix.homeManagerModules.default
             inputs.self.modules.homeManager.${hostName}
+            inputs.self.modules.homeManager.common
           ];
           home-manager.extraSpecialArgs = {inherit inputs username nixvim-output hostName;};
         }
