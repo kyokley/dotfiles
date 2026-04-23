@@ -48,6 +48,7 @@ in {
           home-manager.extraSpecialArgs = {inherit inputs username nixvim-output hostName;};
         }
         inputs.self.modules.nixos.${hostName}
+        inputs.self.modules.nixos.common
       ];
     };
 }
