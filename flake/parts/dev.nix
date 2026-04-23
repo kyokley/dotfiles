@@ -1,6 +1,6 @@
 {inputs, ...}: {
   flake.modules.homeManager = rec {
-    dev = {pkgs, ...}: {
+    _dev_default = {pkgs, ...}: {
       home.packages = [
         pkgs.gnumake
         pkgs.ripgrep
@@ -32,7 +32,7 @@
       };
     };
 
-    dioxygen = dev;
-    mars = dev;
+    dioxygen = _dev_default;
+    mars = _dev_default;
   };
 }
