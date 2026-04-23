@@ -42,5 +42,18 @@ in {
         nixvim-output = "minimal";
       };
     };
+
+    modules = {
+      homeManager = {
+        common = {lib, ...}: {home.stateVersion = lib.mkDefault "23.11";};
+        mercury.home.stateVersion = "24.05";
+        mars.home.stateVersion = "24.05";
+        dioxygen.home.stateVersion = "24.05";
+      };
+
+      nixos = {
+        common.system.stateVersion = "24.05";
+      };
+    };
   };
 }

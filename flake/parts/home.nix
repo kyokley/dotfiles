@@ -9,12 +9,6 @@
       inputs,
       ...
     }: {
-      imports = [
-        ./programs/tmux.nix
-        ./programs/vim.nix
-        ./programs/systemd.nix
-      ];
-
       home = {
         sessionVariables = {
           NIXPKGS_ALLOW_UNFREE = 1;
