@@ -58,6 +58,7 @@
         inherit constants generators;
       };
       imports = [
+        inputs.flake-parts.flakeModules.modules
         ./flake/parts/tree.nix
       ];
     });

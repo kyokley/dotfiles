@@ -1,10 +1,6 @@
-{
-  pkgs,
-  inputs,
-  ...
-}: {
-  flake.modules.homeManager = {
-    dev = {
+{inputs, ...}: {
+  flake.modules.homeManager = rec {
+    dev = {pkgs, ...}: {
       home.packages = [
         pkgs.gnumake
         pkgs.ripgrep
