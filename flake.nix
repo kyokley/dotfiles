@@ -9,6 +9,7 @@
       url = "github:hercules-ci/flake-parts";
       inputs.nixpkgs-lib.follows = "nixpkgs";
     };
+    import-tree.url = "github:vic/import-tree";
 
     home-manager = {
       url = "github:nix-community/home-manager/master";
@@ -45,8 +46,8 @@
       inherit inputs;
     }
     (_: let
-      constants = import ./flake/lib/constants.nix;
-      generators = import ./flake/lib/generators.nix {
+      constants = import ./flake/lib/_constants.nix;
+      generators = import ./flake/lib/_generators.nix {
         inherit inputs constants;
       };
     in {
@@ -59,7 +60,7 @@
       };
       imports = [
         inputs.flake-parts.flakeModules.modules
-        ./flake/parts/tree.nix
+        (inputs.import-tree ./flake)
       ];
     });
 }
