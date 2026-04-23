@@ -1,6 +1,5 @@
 {pkgs, ...}: {
   imports = [
-    ../../modules/nixos/programs/tailscale.nix
     ../../modules/nixos/laptop.nix
     ../../modules/nixos/login.nix
   ];
