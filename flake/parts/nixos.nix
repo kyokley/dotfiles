@@ -1,4 +1,8 @@
-{inputs, ...}: {
+{
+  inputs,
+  config,
+  ...
+}: {
   flake.modules = {
     nixos = rec {
       _nixos_default = {
@@ -290,9 +294,9 @@
           ../terminator.nix
           ../dunst.nix
           ../rofi/rofi.nix
-          ../qtile/qtile.nix
+          # ../qtile/qtile.nix
           # vvvvvvvvvv    Maybe?
-          # config.flake.modules.homeManager.qtile
+          config.flake.modules.homeManager.qtile
           ./_kitty.nix
         ];
 
