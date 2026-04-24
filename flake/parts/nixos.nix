@@ -259,6 +259,7 @@
       };
 
       mars = _nixos_default;
+      mercury = _nixos_default;
     };
 
     homeManager = rec {
@@ -291,9 +292,10 @@
         '';
       in {
         imports = [
-          ../terminator.nix
-          ../dunst.nix
-          ../rofi/rofi.nix
+          config.flake.modules.homeManager.terminator
+          config.flake.modules.homeManager.dunst
+          # ../rofi/rofi.nix
+          config.flake.modules.homeManager.rofi
           # ../qtile/qtile.nix
           # vvvvvvvvvv    Maybe?
           config.flake.modules.homeManager.qtile
@@ -316,7 +318,7 @@
 
         home.file = {
           ".config/qtile" = {
-            source = ../qtile;
+            source = ./qtile;
             target = ".config/qtile";
             recursive = true;
           };
@@ -406,6 +408,8 @@
           };
         };
       };
+      mars = _nixos_default;
+      mercury = _nixos_default;
     };
   };
 }

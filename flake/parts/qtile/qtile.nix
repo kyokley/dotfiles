@@ -15,7 +15,6 @@
   };
 in {
   flake.modules.homeManager = {
-    mars = _qtile;
-    mercury = _qtile;
+    qtile = _qtile;
   };
 }
