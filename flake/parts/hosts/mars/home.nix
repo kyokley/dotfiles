@@ -9,9 +9,6 @@
       "/home/${username}/workspace"
     ];
   in {
-    imports = [
-    ];
-
     programs.git.settings.user.email = "kyokley@mars";
 
     home = {
