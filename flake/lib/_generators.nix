@@ -35,9 +35,6 @@ in {
       inherit system;
       specialArgs = {inherit inputs username nixvim-output hostName;};
       modules = [
-        ../../modules/nixos/programs/nixos/hardware-configuration.nix
-        ../../hosts/${hostName}/configuration.nix
-        ../../hosts/${hostName}/hardware-configuration.nix
         inputs.home-manager.nixosModules.home-manager
         {
           home-manager.users.${username} = inputs.nixpkgs.lib.mkMerge [

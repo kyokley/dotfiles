@@ -246,6 +246,11 @@
         useUserPackages = true;
         # users.${username} = import ../../../home-manager/home.nix;
       };
+
+      fileSystems."/" = {
+        fsType = "bcachefs";
+        options = ["casefold_disabled"];
+      };
     };
 
     mars = _nixos_default;

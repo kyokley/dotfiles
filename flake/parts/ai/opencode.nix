@@ -1,4 +1,4 @@
-let
+{config, ...}: let
   _opencode = {
     pkgs,
     inputs,
@@ -9,10 +9,7 @@ let
     opencodePkg = inputs.opencode-config.packages.${pkgs.stdenv.hostPlatform.system}.default;
     baseOpencodeConfig = builtins.fromJSON (builtins.readFile "${opencodePkg}/lib/configs/opencode.json");
   in {
-    imports = [
-      ./gitoc.nix
-    ];
-
+    imports = [./_gitoc.nix];
     programs = {
       opencode = {
         enable = true;
@@ -99,6 +96,7 @@ let
 
         packages = [
           pkgs.glow
+          pkgs.github-copilot-cli
         ];
 
         shellAliases = {
