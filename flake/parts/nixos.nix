@@ -5,7 +5,7 @@
 }: {
   flake.modules = {
     nixos = rec {
-      _nixos_default = {
+      nixos = {
         pkgs,
         lib,
         username,
@@ -257,9 +257,6 @@
           options = ["casefold_disabled"];
         };
       };
-
-      mars = _nixos_default;
-      mercury = _nixos_default;
     };
 
     homeManager = rec {
@@ -408,8 +405,6 @@
           };
         };
       };
-      mars = _nixos_default;
-      mercury = _nixos_default;
     };
   };
 }

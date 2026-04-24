@@ -3,12 +3,18 @@
     pkgs,
     lib,
     username,
+    inputs,
     ...
   }: let
     cd_paths = [
       "/home/${username}/workspace"
     ];
   in {
+    imports = [
+      inputs.self.modules.homeManager.nixos
+      inputs.self.modules.nixos.nixos
+    ];
+
     programs.git.settings.user.email = "kyokley@mars";
 
     home = {
