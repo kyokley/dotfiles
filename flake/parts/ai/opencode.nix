@@ -9,7 +9,7 @@
     opencodePkg = inputs.opencode-config.packages.${pkgs.stdenv.hostPlatform.system}.default;
     baseOpencodeConfig = builtins.fromJSON (builtins.readFile "${opencodePkg}/lib/configs/opencode.json");
   in {
-    imports = [./_gitoc.nix];
+    imports = [inputs.self.modules.homeManager.gitoc];
     programs = {
       opencode = {
         enable = true;

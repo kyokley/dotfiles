@@ -46,6 +46,6 @@ let
   };
 in {
   flake.modules.nixos = {
-    mars = _laptop;
+    laptop = _laptop;
   };
 }
