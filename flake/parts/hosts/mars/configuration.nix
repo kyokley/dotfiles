@@ -1,5 +1,13 @@
 {
-  flake.modules.nixos.mars = {pkgs, ...}: {
+  flake.modules.nixos.mars = {
+    inputs,
+    pkgs,
+    ...
+  }: {
+    imports = [
+      inputs.self.modules.nixos.nixos
+    ];
+
     # Bootloader.
     boot = {
       loader.systemd-boot.enable = true;

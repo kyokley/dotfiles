@@ -107,7 +107,6 @@
   };
 in {
   flake.modules.homeManager = {
-    mars = _opencode;
-    mercury = _opencode;
+    opencode = _opencode;
   };
 }

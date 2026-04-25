@@ -260,7 +260,8 @@
     };
 
     homeManager = rec {
-      _nixos_default = {
+      nixos = {
+        inputs,
         pkgs,
         lib,
         username,
@@ -289,13 +290,10 @@
         '';
       in {
         imports = [
-          config.flake.modules.homeManager.terminator
-          config.flake.modules.homeManager.dunst
-          # ../rofi/rofi.nix
-          config.flake.modules.homeManager.rofi
-          # ../qtile/qtile.nix
-          # vvvvvvvvvv    Maybe?
-          config.flake.modules.homeManager.qtile
+          inputs.self.modules.homeManager.terminator
+          inputs.self.modules.homeManager.dunst
+          inputs.self.modules.homeManager.rofi
+          inputs.self.modules.homeManager.qtile
           ./_kitty.nix
         ];
 

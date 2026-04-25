@@ -7,8 +7,6 @@
     ...
   }: {
     imports = [
-      inputs.self.modules.nixos.nixos
-      inputs.self.modules.homeManager.nixos
       inputs.self.modules.nixos.tailscale
     ];
 

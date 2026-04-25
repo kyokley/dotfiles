@@ -1,9 +1,4 @@
-{config, ...}: {
-  imports = [
-    config.flake.modules.homeManager.nixos
-    config.flake.modules.nixos.nixos
-  ];
-
+{
   flake.modules.homeManager.mercury = {
     pkgs,
     config,
