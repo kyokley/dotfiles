@@ -1,6 +1,6 @@
 {inputs, ...}: {
   flake.modules.homeManager = rec {
-    _home_default = {
+    common = {
       pkgs,
       lib,
       username,
@@ -71,7 +71,5 @@
         };
       };
     };
-
-    mars = _home_default;
   };
 }

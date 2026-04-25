@@ -39,6 +39,7 @@
     nixos.mars = {
       inputs,
       pkgs,
+      lib,
       config,
       modulesPath,
       ...
