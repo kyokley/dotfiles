@@ -294,7 +294,7 @@
           inputs.self.modules.homeManager.dunst
           inputs.self.modules.homeManager.rofi
           inputs.self.modules.homeManager.qtile
-          ./_kitty.nix
+          inputs.self.modules.homeManager.kitty
         ];
 
         home.packages = [
