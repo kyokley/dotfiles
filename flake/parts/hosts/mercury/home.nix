@@ -9,9 +9,7 @@
     CLEANUP_RETENTION_WINDOW = "30 days";
   in {
     imports = [
-      ../../modules/home-manager/programs/nixos/nixos.nix
-      ../../modules/home-manager/home.nix
-      ../../modules/home-manager/ai/ai.nix
+      inputs.self.modules.homeManager.opencode
     ];
 
     programs.git.settings.user.email = "kyokley@mercury";

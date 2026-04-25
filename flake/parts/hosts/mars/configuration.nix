@@ -4,10 +4,6 @@
     pkgs,
     ...
   }: {
-    imports = [
-      inputs.self.modules.nixos.nixos
-    ];
-
     # Bootloader.
     boot = {
       loader.systemd-boot.enable = true;

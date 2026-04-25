@@ -5,7 +5,7 @@
 }: {
   flake.modules = {
     nixos = rec {
-      nixos = {
+      common = {
         pkgs,
         lib,
         username,
