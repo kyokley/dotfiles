@@ -11,15 +11,17 @@
           ${pkgs.betterlockscreen}/bin/betterlockscreen --lock
         '';
       in {
-        home.packages = [
-          force-lock-screen
-        ];
+        home = {
+          packages = [
+            force-lock-screen
+          ];
 
-        file = {
-          ".config/qtile" = {
-            source = ./.;
-            target = ".config/qtile";
-            recursive = true;
+          file = {
+            ".config/qtile" = {
+              source = ./.;
+              target = ".config/qtile";
+              recursive = true;
+            };
           };
         };
       };
