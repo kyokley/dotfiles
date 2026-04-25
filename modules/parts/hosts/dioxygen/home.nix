@@ -1,5 +1,6 @@
 {
   flake.modules.homeManager.dioxygen = {
+    inputs,
     pkgs,
     lib,
     username,
@@ -12,6 +13,10 @@
       ${pkgs.nix}/bin/nix store gc
     '';
   in {
+    imports = [
+      inputs.self.modules.homeManager.opencode
+    ];
+
     programs.systemd-services.enable = false;
 
     home = {
