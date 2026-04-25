@@ -297,15 +297,15 @@
         ];
 
         home = {
-          packages = [
-            pkgs.arandr
-            pkgs.dunst
-            pkgs.libreoffice
-            pkgs.nitrogen
-            pkgs.python312Packages.bpython
-            pkgs.thunderbird
-            pkgs.nerd-fonts.hack
-            pkgs.vlc
+          packages = with pkgs; [
+            arandr
+            dunst
+            libreoffice
+            nitrogen
+            python312Packages.bpython
+            thunderbird
+            nerd-fonts.hack
+            vlc
             reboot-kexec
             toggle-picom
             open-all
