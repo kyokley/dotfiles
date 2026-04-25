@@ -2,7 +2,6 @@
   flake.modules.homeManager = rec {
     dev = {pkgs, ...}: {
       imports = [
-        inputs.self.modules.homeManager.agenix
         inputs.self.modules.homeManager.opencode
       ];
 

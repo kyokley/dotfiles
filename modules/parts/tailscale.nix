@@ -1,24 +1,21 @@
-let
-  _tailscale = {pkgs, ...}: {
-    # Enable tailscale
-    services.tailscale = {
-      enable = true;
-      package = pkgs.tailscale;
-      useRoutingFeatures = "both";
-    };
-    networking.nameservers = [
-      "100.124.31.71"
-    ];
-
-    # Enable trayscale once added to home-manager
-    # services.trayscale.enable = false;
-    environment.systemPackages = [
-      pkgs.tailscale
-    ];
-  };
-in {
+{
   flake.modules.nixos = {
-    mars = _tailscale;
-    mercury = _tailscale;
+    common = {pkgs, ...}: {
+      # Enable tailscale
+      services.tailscale = {
+        enable = true;
+        package = pkgs.tailscale;
+        useRoutingFeatures = "both";
+      };
+      networking.nameservers = [
+        "100.124.31.71"
+      ];
+
+      # Enable trayscale once added to home-manager
+      # services.trayscale.enable = false;
+      environment.systemPackages = [
+        pkgs.tailscale
+      ];
+    };
   };
 }

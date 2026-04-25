@@ -1,5 +1,5 @@
 {inputs, ...}: {
-  flake.modules.homeManager.agenix = {pkgs, ...}: {
+  flake.modules.homeManager.common = {pkgs, ...}: {
     imports = [
       inputs.agenix.homeManagerModules.default
     ];
