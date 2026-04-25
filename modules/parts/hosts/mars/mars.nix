@@ -114,6 +114,14 @@
       # with explicit per-interface declarations with `networking.interfaces.<interface>.useDHCP`.
       networking.interfaces.wlp1s0.useDHCP = lib.mkDefault true;
 
+      nixpkgs.overlays = [
+        (final: prev: {
+          openldap = prev.openldap.overrideAttrs (_: {
+            doCheck = false;
+          });
+        })
+      ];
+
       nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
       hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
       hardware.graphics.enable32Bit = true;
