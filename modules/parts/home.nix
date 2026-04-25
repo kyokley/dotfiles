@@ -1,5 +1,5 @@
 {inputs, ...}: {
-  flake.modules.homeManager = rec {
+  flake.modules.homeManager = {
     common = {
       pkgs,
       lib,

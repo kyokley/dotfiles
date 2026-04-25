@@ -5,14 +5,7 @@
     lib,
     username,
     ...
-  }: let
-    nix-update = pkgs.writeShellScriptBin "nix-update" ''
-      PATH=$PATH:${lib.makeBinPath [pkgs.nix]}
-      ${pkgs.home-manager}/bin/home-manager switch --flake 'github:kyokley/dotfiles#dioxygen'
-      test $(echo "$(${pkgs.home-manager}/bin/home-manager generations | wc -l) > 1" | bc) -eq 1 && ${pkgs.home-manager}/bin/home-manager expire-generations "-30 days"
-      ${pkgs.nix}/bin/nix store gc
-    '';
-  in {
+  }: {
     imports = [
       inputs.self.modules.homeManager.opencode
     ];
@@ -21,10 +14,6 @@
 
     home = {
       homeDirectory = "/Users/${username}";
-
-      packages = [
-        nix-update
-      ];
       stateVersion = "24.05";
     };
 

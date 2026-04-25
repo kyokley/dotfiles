@@ -249,7 +249,6 @@
         home-manager = {
           useGlobalPkgs = true;
           useUserPackages = true;
-          # users.${username} = import ../../../home-manager/home.nix;
         };
 
         fileSystems."/" = {
@@ -289,39 +288,46 @@
           done
         '';
       in {
-        imports = [
-          inputs.self.modules.homeManager.terminator
-          inputs.self.modules.homeManager.dunst
-          inputs.self.modules.homeManager.rofi
-          inputs.self.modules.homeManager.qtile
-          inputs.self.modules.homeManager.kitty
+        imports = with inputs.self.modules.homeManager; [
+          terminator
+          dunst
+          rofi
+          qtile
+          kitty
         ];
 
-        home.packages = [
-          pkgs.arandr
-          pkgs.dunst
-          pkgs.libreoffice
-          pkgs.nitrogen
-          pkgs.python312Packages.bpython
-          pkgs.thunderbird
-          pkgs.nerd-fonts.hack
-          pkgs.vlc
-          reboot-kexec
-          toggle-picom
-          open-all
-        ];
+        home = {
+          packages = [
+            pkgs.arandr
+            pkgs.dunst
+            pkgs.libreoffice
+            pkgs.nitrogen
+            pkgs.python312Packages.bpython
+            pkgs.thunderbird
+            pkgs.nerd-fonts.hack
+            pkgs.vlc
+            reboot-kexec
+            toggle-picom
+            open-all
+          ];
 
-        home.file = {
-          ".config/qtile" = {
-            source = ./qtile;
-            target = ".config/qtile";
-            recursive = true;
+          file = {
+            ".config/qtile" = {
+              source = ./qtile;
+              target = ".config/qtile";
+              recursive = true;
+            };
+            ".config/picom/picom-custom.conf" = {
+              source = ./picom.conf;
+            };
+            ".config/nixpkgs/config.nix" = {
+              text = "{ allowUnfree = true; }";
+            };
           };
-          ".config/picom/picom-custom.conf" = {
-            source = ./picom.conf;
-          };
-          ".config/nixpkgs/config.nix" = {
-            text = "{ allowUnfree = true; }";
+
+          shellAliases = {
+            nixos-switch = "nixos-rebuild switch --refresh --sudo --flake 'github:kyokley/dotfiles'";
+            nixos-test = "nixos-rebuild test --refresh --sudo --flake 'github:kyokley/dotfiles'";
           };
         };
 
@@ -335,64 +341,66 @@
           };
         };
 
-        home.shellAliases = {
-          nixos-switch = "nixos-rebuild switch --refresh --sudo --flake 'github:kyokley/dotfiles'";
-          nixos-test = "nixos-rebuild test --refresh --sudo --flake 'github:kyokley/dotfiles'";
-        };
+        services = {
+          blueman-applet.enable = true;
 
-        services.blueman-applet.enable = true;
-
-        services.xidlehook = {
-          enable = true;
-          detect-sleep = true;
-          not-when-fullscreen = true;
-          timers = [
-            {
-              delay = 590;
-              command = "${pkgs.dunst}/bin/dunstify 'Locking screen in 10 secs' -t 10";
-            }
-            {
-              delay = 20; # Add an extra 10 secs to allow waking up after screen blank
-              command = "${pkgs.betterlockscreen}/bin/betterlockscreen --lock";
-            }
-          ];
-        };
-
-        services.network-manager-applet.enable = true;
-        systemd.user.targets.tray = {
-          Unit = {
-            Description = "Home Manager System Tray";
-            Requires = ["graphical-session-pre.target"];
+          xidlehook = {
+            enable = true;
+            detect-sleep = true;
+            not-when-fullscreen = true;
+            timers = [
+              {
+                delay = 590;
+                command = "${pkgs.dunst}/bin/dunstify 'Locking screen in 10 secs' -t 10";
+              }
+              {
+                delay = 20; # Add an extra 10 secs to allow waking up after screen blank
+                command = "${pkgs.betterlockscreen}/bin/betterlockscreen --lock";
+              }
+            ];
           };
+
+          network-manager-applet.enable = true;
         };
 
-        systemd.user.services = {
-          update-lockscreen = {
-            Unit.Description = "Update lockscreen background image";
-            Service = {
-              Type = "oneshot";
-              ExecStart = toString (
-                pkgs.writeShellScript "betterlockscreen-update-script" ''
-                  PATH=$PATH:${lib.makeBinPath [pkgs.nix pkgs.coreutils pkgs.busybox pkgs.xrdb]}
-                  ${pkgs.betterlockscreen}/bin/betterlockscreen -u ${homeDir}/Pictures/wallpapers --fx ""
-                ''
-              );
+        systemd = {
+          user = {
+            targets.tray = {
+              Unit = {
+                Description = "Home Manager System Tray";
+                Requires = ["graphical-session-pre.target"];
+              };
             };
-          };
-        };
 
-        systemd.user.timers = {
-          update-lockscreen = {
-            Unit = {
-              Description = "Update betterlockscreen";
-              After = ["network.target"];
+            services = {
+              update-lockscreen = {
+                Unit.Description = "Update lockscreen background image";
+                Service = {
+                  Type = "oneshot";
+                  ExecStart = toString (
+                    pkgs.writeShellScript "betterlockscreen-update-script" ''
+                      PATH=$PATH:${lib.makeBinPath [pkgs.nix pkgs.coreutils pkgs.busybox pkgs.xrdb]}
+                      ${pkgs.betterlockscreen}/bin/betterlockscreen -u ${homeDir}/Pictures/wallpapers --fx ""
+                    ''
+                  );
+                };
+              };
             };
-            Timer = {
-              OnCalendar = "*-*-* *:0/5:00";
-              Persistent = true;
-              Unit = "update-lockscreen.service";
+
+            timers = {
+              update-lockscreen = {
+                Unit = {
+                  Description = "Update betterlockscreen";
+                  After = ["network.target"];
+                };
+                Timer = {
+                  OnCalendar = "*-*-* *:0/5:00";
+                  Persistent = true;
+                  Unit = "update-lockscreen.service";
+                };
+                Install.WantedBy = ["timers.target"];
+              };
             };
-            Install.WantedBy = ["timers.target"];
           };
         };
 

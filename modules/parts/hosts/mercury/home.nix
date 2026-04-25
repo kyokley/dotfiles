@@ -7,7 +7,7 @@
       inputs,
       ...
     }: let
-      CLEANUP_RETENTION_WINDOW = "30 days";
+      MATTERMOST_CLEANUP_RETENTION_WINDOW = "30 days";
     in {
       imports = [
         inputs.self.modules.homeManager.opencode
@@ -37,7 +37,7 @@
                 cd /home/${username}/workspace/mattermost
                 ${pkgs.docker}/bin/docker compose exec postgres17 psql -U mmuser -d mattermost -c "
                   begin;
-                  delete from posts where createat < extract(epoch from (now() - interval '${CLEANUP_RETENTION_WINDOW}'))::int8 * 1000;
+                  delete from posts where createat < extract(epoch from (now() - interval '${MATTERMOST_CLEANUP_RETENTION_WINDOW}'))::int8 * 1000;
                   delete from reactions where postid not in (select id from posts);
                   delete from fileinfo where postid not in (select id from posts);
                   commit;
