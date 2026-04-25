@@ -119,6 +119,9 @@
           openldap = prev.openldap.overrideAttrs (_: {
             doCheck = false;
           });
+          libreoffice = prev.libreoffice.overrideAttrs (_: {
+            doCheck = false;
+          });
         })
       ];
 
