@@ -12,7 +12,7 @@
       ];
     in {
       imports = [
-        inputs.self.modules.homeManager.opencode
+        inputs.self.modules.homeManager.dev
       ];
 
       programs.git.settings.user.email = "kyokley@mars";

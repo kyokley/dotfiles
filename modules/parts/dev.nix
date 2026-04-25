@@ -1,6 +1,11 @@
 {inputs, ...}: {
   flake.modules.homeManager = rec {
-    _dev_default = {pkgs, ...}: {
+    dev = {pkgs, ...}: {
+      imports = [
+        inputs.self.modules.homeManager.agenix
+        inputs.self.modules.homeManager.opencode
+      ];
+
       home.packages = [
         pkgs.gnumake
         pkgs.ripgrep
@@ -8,7 +13,6 @@
         pkgs.jq
         pkgs.devenv
         pkgs.direnv
-        pkgs.ragenix
         pkgs.gh
         inputs.usql.packages.${pkgs.stdenv.hostPlatform.system}.default
       ];
@@ -31,8 +35,5 @@
         '';
       };
     };
-
-    dioxygen = _dev_default;
-    mars = _dev_default;
   };
 }

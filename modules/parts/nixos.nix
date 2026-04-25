@@ -13,6 +13,10 @@
         inputs,
         ...
       }: {
+        imports = [
+          inputs.self.modules.nixos.qtile
+        ];
+
         nix = {
           gc = {
             automatic = true;
@@ -84,18 +88,7 @@
             displayManager.lightdm = {
               enable = true;
             };
-            windowManager.qtile = {
-              enable = true;
-              extraPackages = python3Packages:
-                with python3Packages; [
-                  requests
-                  pillow
-                  pywal
-                  python-dateutil
-                ];
-            };
           };
-          displayManager.defaultSession = lib.mkDefault "qtile";
 
           # Enable CUPS to print documents.
           printing.enable = true;
@@ -258,7 +251,7 @@
       };
     };
 
-    homeManager = rec {
+    homeManager = {
       nixos = {
         inputs,
         pkgs,
@@ -312,11 +305,6 @@
           ];
 
           file = {
-            ".config/qtile" = {
-              source = ./qtile;
-              target = ".config/qtile";
-              recursive = true;
-            };
             ".config/picom/picom-custom.conf" = {
               source = ./picom.conf;
             };

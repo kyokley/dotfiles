@@ -7,7 +7,7 @@
     ...
   }: {
     imports = [
-      inputs.self.modules.homeManager.opencode
+      inputs.self.modules.homeManager.dev
     ];
 
     programs.systemd-services.enable = false;
