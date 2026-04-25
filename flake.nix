@@ -46,8 +46,8 @@
       inherit inputs;
     }
     (_: let
-      constants = import ./flake/lib/_constants.nix;
-      generators = import ./flake/lib/_generators.nix {
+      constants = import ./modules/lib/constants.nix;
+      generators = import ./modules/lib/generators.nix {
         inherit inputs constants;
       };
     in {
@@ -60,7 +60,7 @@
       };
       imports = [
         inputs.flake-parts.flakeModules.modules
-        (inputs.import-tree ./flake)
+        (inputs.import-tree ./modules/parts)
       ];
     });
 }
