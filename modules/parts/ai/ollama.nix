@@ -14,7 +14,6 @@ let
   };
 in {
   flake.modules.homeManager = {
-    mars = _ollama;
-    mercury = _ollama;
+    ollama = _ollama;
   };
 }

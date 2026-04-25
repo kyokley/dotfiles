@@ -12,7 +12,6 @@
       ];
     in {
       imports = [
-        inputs.self.modules.homeManager.nixos
         inputs.self.modules.homeManager.opencode
       ];
 
@@ -55,6 +54,10 @@
         loader.efi.canTouchEfiVariables = true;
         supportedFilesystems = ["bcachefs"];
         kernelPackages = pkgs.linuxPackages_latest;
+        initrd.availableKernelModules = ["nvme" "xhci_pci" "thunderbolt" "uas" "sd_mod"];
+        initrd.kernelModules = ["amdgpu"];
+        kernelModules = ["kvm-amd" "amdgpu"];
+        extraModulePackages = [];
       };
 
       powerManagement.enable = true;
@@ -89,19 +92,16 @@
 
       services.xserver.videoDrivers = ["amdgpu"];
 
-      boot.initrd.availableKernelModules = ["nvme" "xhci_pci" "thunderbolt" "uas" "sd_mod"];
-      boot.initrd.kernelModules = ["amdgpu"];
-      boot.kernelModules = ["kvm-amd" "amdgpu"];
-      boot.extraModulePackages = [];
+      fileSystems = {
+        "/" = {
+          device = "UUID=12b2a9cf-4d19-43d9-a9db-0942d019fa4f";
+        };
 
-      fileSystems."/" = {
-        device = "UUID=12b2a9cf-4d19-43d9-a9db-0942d019fa4f";
-      };
-
-      fileSystems."/boot" = {
-        device = "/dev/disk/by-uuid/B1C7-96E8";
-        fsType = "vfat";
-        options = ["fmask=0022" "dmask=0022"];
+        "/boot" = {
+          device = "/dev/disk/by-uuid/B1C7-96E8";
+          fsType = "vfat";
+          options = ["fmask=0022" "dmask=0022"];
+        };
       };
 
       swapDevices = [

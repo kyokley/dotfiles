@@ -13,7 +13,6 @@ let
   };
 in {
   flake.modules.homeManager = {
-    mars = _fabric;
-    mercury = _fabric;
+    fabric = _fabric;
   };
 }
