@@ -13,6 +13,7 @@
     in {
       imports = [
         inputs.self.modules.homeManager.dev
+        inputs.self.modules.homeManager.distributedBuilds
       ];
 
       programs.git.settings.user.email = "kyokley@mars";
@@ -45,6 +46,7 @@
     }: {
       imports = [
         inputs.self.modules.nixos.laptop
+        inputs.self.modules.nixos.distributedBuilds
         (modulesPath + "/installer/scan/not-detected.nix")
       ];
 

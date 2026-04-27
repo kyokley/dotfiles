@@ -47,22 +47,6 @@
 
       programs.home-manager.enable = false;
 
-      nix.buildMachines = [
-        {
-          hostName = "192.168.50.31";
-          sshUser = username;
-          systems = ["x86_64-linux"];
-          protocol = "ssh";
-          maxJobs = 3;
-          speedFactor = 2;
-          supportedFeatures = ["nixos-test" "benchmark" "big-parallel" "kvm"];
-        }
-      ];
-      nix.distributedBuilds = true;
-      nix.extraOptions = ''
-        builders-use-substitutes = true
-      '';
-
       age = {
         secrets = {
           ollama-mattermost-bot-token = {

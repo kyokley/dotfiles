@@ -8,6 +8,7 @@
   }: {
     imports = [
       inputs.self.modules.homeManager.dev
+      inputs.self.modules.homeManager.distributedBuilds
     ];
 
     programs.systemd-services.enable = false;

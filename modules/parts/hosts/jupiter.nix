@@ -1,4 +1,4 @@
-{
+{inputs, ...}: {
   flake.modules.homeManager.jupiter = {
     pkgs,
     lib,
@@ -7,6 +7,10 @@
   }: let
     homeDir = "/home/${username}";
   in {
+    imports = [
+      inputs.self.modules.homeManager.distributedBuilds
+    ];
+
     home.packages = [
       pkgs.pass
       pkgs.borgbackup
