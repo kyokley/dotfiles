@@ -9,8 +9,9 @@
     }: let
       MATTERMOST_CLEANUP_RETENTION_WINDOW = "30 days";
     in {
-      imports = [
-        inputs.self.modules.homeManager.opencode
+      imports = with inputs.self.modules.homeManager; [
+        opencode
+        wallpapers
       ];
 
       programs.git.settings.user.email = "kyokley@mercury";

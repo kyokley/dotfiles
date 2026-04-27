@@ -11,9 +11,10 @@
         "/home/${username}/workspace"
       ];
     in {
-      imports = [
-        inputs.self.modules.homeManager.dev
-        inputs.self.modules.homeManager.distributedBuilds
+      imports = with inputs.self.modules.homeManager; [
+        dev
+        distributedBuilds
+        wallpapers
       ];
 
       programs.git.settings.user.email = "kyokley@mars";
