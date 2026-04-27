@@ -59,6 +59,7 @@
         inherit constants generators;
       };
       imports = [
+        inputs.home-manager.flakeModules.home-manager
         inputs.flake-parts.flakeModules.modules
         (inputs.import-tree ./modules/parts)
       ];
