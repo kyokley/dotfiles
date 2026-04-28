@@ -15,6 +15,7 @@
       }: {
         imports = [
           inputs.self.modules.nixos.qtile
+          # inputs.self.modules.nixos.flatpak
         ];
 
         nix = {
@@ -95,8 +96,6 @@
             #media-session.enable = true;
           };
 
-          flatpak.enable = true;
-
           earlyoom.enable = true;
           resolved.enable = true;
           fwupd.enable = true;
@@ -129,15 +128,6 @@
 
         # Enable touchpad support (enabled default in most desktopManager).
         # services.xserver.libinput.enable = true;
-
-        # Enable flatpaks
-        xdg = {
-          portal = {
-            enable = true;
-            extraPortals = [pkgs.xdg-desktop-portal-gtk];
-            config.common.default = "*";
-          };
-        };
 
         # Enable docker
         virtualisation.docker = {
