@@ -5,102 +5,63 @@
     # Specify the source of Home Manager and Nixpkgs.
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
 
+    flake-parts = {
+      url = "github:hercules-ci/flake-parts";
+      inputs.nixpkgs-lib.follows = "nixpkgs";
+    };
+    import-tree.url = "github:vic/import-tree";
+
     home-manager = {
       url = "github:nix-community/home-manager/master";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
     nixvim = {
       url = "github:kyokley/nixvim";
     };
+
     usql = {
       url = "github:kyokley/psql-pager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
     agenix = {
       url = "github:ryantm/agenix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
     ollama-mattermost-bot = {
       url = "github:kyokley/ollama-mattermost-bot";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
     opencode-config = {
       url = "github:kyokley/opencode-config";
     };
   };
 
-  outputs = inputs: let
-    defaultUsername = "yokley";
-    aarch64_darwin = "aarch64-darwin";
-    x86_linux = "x86_64-linux";
-
-    homeManagerConfigurationGenerator = {
-      system ? x86_linux,
-      nixvim-output ? "default",
-      hostName,
-      username ? defaultUsername,
-    }: (inputs.home-manager.lib.homeManagerConfiguration {
-      pkgs = import inputs.nixpkgs {
-        inherit system;
+  outputs = inputs:
+    inputs.flake-parts.lib.mkFlake
+    {
+      inherit inputs;
+    }
+    (_: let
+      constants = import ./modules/lib/constants.nix;
+      generators = import ./modules/lib/generators.nix {
+        inherit inputs constants;
       };
-      extraSpecialArgs = {inherit inputs username nixvim-output hostName;};
-      modules = [
-        ./hosts/${hostName}/home.nix
-        inputs.agenix.homeManagerModules.default
+    in {
+      systems = [
+        constants.systems.x86_linux
+        constants.systems.aarch64_darwin
+      ];
+      _module.args = {
+        inherit constants generators;
+      };
+      imports = [
+        inputs.home-manager.flakeModules.home-manager
+        inputs.flake-parts.flakeModules.modules
+        (inputs.import-tree ./modules/parts)
       ];
     });
-
-    nixosConfigurationGenerator = {
-      system ? x86_linux,
-      nixvim-output ? "default",
-      hostName,
-      username ? defaultUsername,
-    }: (inputs.nixpkgs.lib.nixosSystem {
-      specialArgs = {inherit inputs username nixvim-output hostName;};
-      modules = [
-        ./modules/nixos/programs/nixos/configuration.nix
-        ./modules/nixos/programs/nixos/hardware-configuration.nix
-        ./hosts/${hostName}/configuration.nix
-        ./hosts/${hostName}/hardware-configuration.nix
-        inputs.home-manager.nixosModules.home-manager
-        {
-          home-manager.users.${username} = inputs.nixpkgs.lib.mkMerge [./hosts/${hostName}/home.nix inputs.agenix.homeManagerModules.default];
-          home-manager.extraSpecialArgs = {inherit inputs username nixvim-output hostName;};
-        }
-      ];
-    });
-  in {
-    nixosConfigurations = {
-      mars = nixosConfigurationGenerator {
-        hostName = "mars";
-      };
-      mercury = nixosConfigurationGenerator {
-        hostName = "mercury";
-      };
-    };
-
-    homeConfigurations = {
-      dioxygen = homeManagerConfigurationGenerator {
-        system = aarch64_darwin;
-        hostName = "dioxygen";
-      };
-
-      venus = homeManagerConfigurationGenerator {
-        hostName = "venus";
-        nixvim-output = "minimal";
-      };
-
-      almagest = homeManagerConfigurationGenerator {
-        hostName = "almagest";
-        nixvim-output = "withoutCopilot";
-      };
-      jupiter = homeManagerConfigurationGenerator {
-        hostName = "jupiter";
-      };
-      singularity = homeManagerConfigurationGenerator {
-        hostName = "singularity";
-        nixvim-output = "minimal";
-      };
-    };
-  };
 }
