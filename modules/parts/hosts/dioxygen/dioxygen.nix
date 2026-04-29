@@ -9,6 +9,7 @@
     imports = [
       inputs.self.modules.homeManager.dev
       inputs.self.modules.homeManager.distributedBuilds
+      inputs.self.modules.homeManager.opencode
     ];
 
     programs.systemd-services.enable = false;

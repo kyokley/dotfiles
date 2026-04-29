@@ -13,6 +13,7 @@
     in {
       imports = with inputs.self.modules.homeManager; [
         dev
+        opencode
         distributedBuilds
         wallpapers
         systemd-services
