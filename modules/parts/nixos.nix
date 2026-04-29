@@ -82,7 +82,10 @@
           # Enable sound with pipewire.
           pulseaudio.enable = false;
 
-          blueman.enable = true;
+          blueman = {
+            enable = true;
+            withApplet = true;
+          };
           pipewire = {
             enable = true;
             alsa.enable = true;
@@ -305,8 +308,6 @@
         };
 
         services = {
-          blueman-applet.enable = true;
-
           xidlehook = {
             enable = true;
             detect-sleep = true;
@@ -372,6 +373,8 @@
             enable = true;
             extraArgs = ["--config=${homeDir}/.config/picom/picom-custom.conf"];
           };
+
+          mpris-proxy.enable = true;
         };
       };
     };
