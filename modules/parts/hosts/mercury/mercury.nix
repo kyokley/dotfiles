@@ -13,6 +13,7 @@
         opencode
         wallpapers
         systemd-services
+        tailscale
       ];
 
       programs.git.settings.user.email = "kyokley@mercury";

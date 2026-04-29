@@ -49,6 +49,7 @@
       imports = [
         inputs.self.modules.nixos.laptop
         inputs.self.modules.nixos.distributedBuilds
+        inputs.self.modules.nixos.tailscale
         (modulesPath + "/installer/scan/not-detected.nix")
       ];
 
