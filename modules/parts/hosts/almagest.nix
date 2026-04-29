@@ -1,5 +1,6 @@
 {
   flake.modules.homeManager.almagest = {
+    inputs,
     pkgs,
     lib,
     username,
@@ -7,6 +8,10 @@
   }: let
     mv_path = "/home/${username}/workspace/MediaViewerProd";
   in {
+    imports = [
+      inputs.self.modules.homeManager.systemd-services
+    ];
+
     home.packages = [
       pkgs.docker-compose
     ];

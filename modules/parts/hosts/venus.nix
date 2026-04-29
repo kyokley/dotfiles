@@ -1,5 +1,13 @@
 {
-  flake.modules.homeManager.venus = {pkgs, ...}: {
+  flake.modules.homeManager.venus = {
+    inputs,
+    pkgs,
+    ...
+  }: {
+    imports = [
+      inputs.self.modules.homeManager.systemd-services
+    ];
+
     programs = {
       git.settings.user.email = "kyokley@venus";
       zsh = {

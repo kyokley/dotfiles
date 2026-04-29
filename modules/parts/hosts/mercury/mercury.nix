@@ -12,6 +12,7 @@
       imports = with inputs.self.modules.homeManager; [
         opencode
         wallpapers
+        systemd-services
       ];
 
       programs.git.settings.user.email = "kyokley@mercury";

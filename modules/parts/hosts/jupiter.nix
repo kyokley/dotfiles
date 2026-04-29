@@ -9,6 +9,7 @@
   in {
     imports = [
       inputs.self.modules.homeManager.distributedBuilds
+      inputs.self.modules.homeManager.systemd-services
     ];
 
     home.packages = [
