@@ -25,7 +25,6 @@
           "terminal"
           "editor"
           "history"
-          "directory"
           "spectrum"
           "utility"
           "completion" # completion module can lead to slow terminal start times
