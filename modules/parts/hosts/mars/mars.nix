@@ -15,6 +15,7 @@
         dev
         distributedBuilds
         wallpapers
+        systemd-services
       ];
 
       programs.git.settings.user.email = "kyokley@mars";

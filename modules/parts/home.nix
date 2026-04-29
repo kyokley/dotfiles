@@ -25,8 +25,6 @@
         settings.experimental-features = ["nix-command" "flakes"];
       };
 
-      programs.systemd-services.enable = lib.mkDefault true;
-
       # The home.packages option allows you to install Nix packages into your
       # environment.
       home.packages = [
