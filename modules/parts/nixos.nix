@@ -51,6 +51,12 @@
         systemd = {
           services.NetworkManager-wait-online.enable = true;
           network.wait-online.enable = false;
+
+          # Needed to resolve a bug where nixos and HM both set ExecStart for blueman-applet
+          user.services.blueman-applet.serviceConfig.ExecStart = lib.mkForce [
+            ""
+            "${pkgs.blueman}/bin/blueman-applet"
+          ];
         };
 
         boot = {
