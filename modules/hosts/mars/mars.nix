@@ -1,4 +1,18 @@
-{
+{inputs, ...}: let
+  home_modules = with inputs.self.modules.homeManager; [
+    dev
+    opencode
+    distributedBuilds
+    wallpapers
+    systemd-services
+  ];
+
+  nixos_modules = with inputs.self.modules.nixos; [
+    laptop
+    distributedBuilds
+    tailscale
+  ];
+in {
   flake.modules = {
     homeManager.mars = {
       pkgs,
@@ -11,14 +25,7 @@
         "/home/${username}/workspace"
       ];
     in {
-      imports = with inputs.self.modules.homeManager; [
-        dev
-        opencode
-        distributedBuilds
-        wallpapers
-        systemd-services
-      ];
-
+      imports = home_modules;
       programs.git.settings.user.email = "kyokley@mars";
 
       home = {
@@ -47,12 +54,11 @@
       modulesPath,
       ...
     }: {
-      imports = [
-        inputs.self.modules.nixos.laptop
-        inputs.self.modules.nixos.distributedBuilds
-        inputs.self.modules.nixos.tailscale
-        (modulesPath + "/installer/scan/not-detected.nix")
-      ];
+      imports =
+        nixos_modules
+        ++ [
+          (modulesPath + "/installer/scan/not-detected.nix")
+        ];
 
       # Bootloader.
       boot = {
