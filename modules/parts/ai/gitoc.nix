@@ -54,10 +54,10 @@
       fi
 
       if [[ "$dry_run" != true ]]; then
-          git commit -m "$(git diff --cached | ''${OPENCODE_BIN} run --command commit 2>/dev/null)"
+          git commit -m "$(git diff --cached | ''${OPENCODE_BIN} --log-level INFO run --command commit 2>/dev/null)"
       else
           echo -e "\033[33mDry run: No changes will be made. Commit message would be:\033[0m"
-          printf "$(git diff --cached | ''${OPENCODE_BIN} run --command commit 2>/dev/null)"
+          printf "$(git diff --cached | ''${OPENCODE_BIN} --log-level INFO run --command commit 2>/dev/null)"
       fi
     '';
   in {
