@@ -62,6 +62,7 @@
         inputs.home-manager.flakeModules.home-manager
         inputs.flake-parts.flakeModules.modules
         (inputs.import-tree ./modules/parts)
+        (inputs.import-tree ./modules/hosts)
       ];
     });
 }

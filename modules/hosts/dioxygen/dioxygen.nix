@@ -6,10 +6,10 @@
     username,
     ...
   }: {
-    imports = [
-      inputs.self.modules.homeManager.dev
-      inputs.self.modules.homeManager.distributedBuilds
-      inputs.self.modules.homeManager.opencode
+    imports = with inputs.self.modules.homeManager; [
+      dev
+      distributedBuilds
+      opencode
     ];
 
     home = {
