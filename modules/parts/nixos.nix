@@ -133,7 +133,10 @@
           bluetooth.powerOnBoot = true;
         };
 
-        security.rtkit.enable = true;
+        security = {
+          rtkit.enable = true;
+          pam.services.login.enableGnomeKeyring = true;
+        };
 
         # Enable touchpad support (enabled default in most desktopManager).
         # services.xserver.libinput.enable = true;
