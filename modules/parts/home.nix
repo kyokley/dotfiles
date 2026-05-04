@@ -8,16 +8,18 @@
       hostName,
       inputs,
       ...
-    }: {
+    }: let
+      # Home Manager needs a bit of information about you and the paths it should
+      # manage.
+      homeDirectory = "/home/${username}";
+    in {
       home = {
         sessionVariables = {
           NIXPKGS_ALLOW_UNFREE = 1;
         };
 
-        # Home Manager needs a bit of information about you and the paths it should
-        # manage.
-        username = lib.mkDefault "${username}";
-        homeDirectory = lib.mkDefault "/home/${username}";
+        inherit username;
+        homeDirectory = lib.mkDefault homeDirectory;
       };
 
       nix = {
@@ -43,7 +45,17 @@
         ls = "ls --color=auto";
       };
 
-      programs.home-manager.enable = false;
+      programs = {
+        home-manager.enable = false;
+        nh = {
+          enable = true;
+          clean = {
+            enable = true;
+            dates = "weekly";
+          };
+          flake = lib.mkDefault homeDirectory;
+        };
+      };
 
       age = {
         secrets = {
