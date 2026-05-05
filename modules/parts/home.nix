@@ -53,7 +53,7 @@
             enable = true;
             dates = "weekly";
           };
-          flake = lib.mkDefault homeDirectory;
+          flake = lib.mkDefault "${homeDirectory}/dotfiles";
         };
       };
 
