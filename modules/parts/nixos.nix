@@ -45,7 +45,7 @@
           useDHCP = lib.mkDefault false;
           firewall.enable = lib.mkDefault false;
           firewall.checkReversePath = false;
-          useNetworkd = true;
+          useNetworkd = false;
         };
 
         systemd = {
