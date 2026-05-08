@@ -135,7 +135,10 @@
 
         security = {
           rtkit.enable = true;
-          pam.services.login.enableGnomeKeyring = true;
+          pam.services = {
+            login.enableGnomeKeyring = true;
+            lightdm.enableGnomeKeyring = true;
+          };
         };
 
         # Enable touchpad support (enabled default in most desktopManager).
