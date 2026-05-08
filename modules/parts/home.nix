@@ -13,6 +13,17 @@
       # manage.
       homeDirectory = "/home/${username}";
     in {
+      nix = {
+        package = lib.mkDefault pkgs.nix;
+        settings.experimental-features = ["nix-command" "flakes"];
+      };
+
+      nixpkgs.config.allowUnfreePredicate = pkg:
+        builtins.elem (lib.getName pkg) [
+          # Add additional package names here
+          "github-copilot-cli"
+        ];
+
       home = {
         sessionVariables = {
           NIXPKGS_ALLOW_UNFREE = 1;
@@ -20,29 +31,22 @@
 
         inherit username;
         homeDirectory = lib.mkDefault homeDirectory;
-      };
 
-      nix = {
-        package = lib.mkDefault pkgs.nix;
-        settings.experimental-features = ["nix-command" "flakes"];
-      };
+        packages = [
+          pkgs.fd
+          pkgs.fzf
+          pkgs.unzip
+          pkgs.zsh
+          pkgs.nix-search-cli
+          pkgs.lftp
+          pkgs.home-manager
+          inputs.nixvim.packages.${pkgs.stdenv.hostPlatform.system}.${nixvim-output}
+        ];
 
-      # The home.packages option allows you to install Nix packages into your
-      # environment.
-      home.packages = [
-        pkgs.fd
-        pkgs.fzf
-        pkgs.unzip
-        pkgs.zsh
-        pkgs.nix-search-cli
-        pkgs.lftp
-        pkgs.home-manager
-        inputs.nixvim.packages.${pkgs.stdenv.hostPlatform.system}.${nixvim-output}
-      ];
-
-      home.shellAliases = {
-        home-manager-switch = "home-manager switch --refresh --flake 'github:kyokley/dotfiles#${hostName}'";
-        ls = "ls --color=auto";
+        shellAliases = {
+          home-manager-switch = "home-manager switch --refresh --flake 'github:kyokley/dotfiles#${hostName}'";
+          ls = "ls --color=auto";
+        };
       };
 
       programs = {
