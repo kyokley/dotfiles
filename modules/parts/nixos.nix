@@ -136,7 +136,7 @@
         security = {
           rtkit.enable = true;
           pam.services = {
-            login.enableGnomeKeyring = true;
+            # login.enableGnomeKeyring = true;
             lightdm.enableGnomeKeyring = true;
           };
         };
