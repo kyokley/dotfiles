@@ -13,7 +13,6 @@
         opencode
         wallpapers
         systemd-services
-        tailscale
       ];
 
       programs.git.settings.user.email = "kyokley@mercury";
@@ -110,6 +109,7 @@
     }: {
       imports = [
         (modulesPath + "/installer/scan/not-detected.nix")
+        inputs.self.modules.nixos.tailscale
       ];
 
       # Bootloader.
