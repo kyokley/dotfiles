@@ -22,6 +22,8 @@
         builtins.elem (lib.getName pkg) [
           # Add additional package names here
           "github-copilot-cli"
+          "steam"
+          "steam-unwrapped"
         ];
 
       home = {
