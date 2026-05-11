@@ -44,5 +44,7 @@
         wantedBy = ["timers.target"];
       };
     };
+
+    programs.dconf.enable = true;
   };
 }

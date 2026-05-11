@@ -222,8 +222,6 @@
         systemd.tmpfiles.rules = ["d /tmp 1777 root root 7d"];
 
         programs = {
-          dconf.enable = true;
-
           neovim = {
             enable = false;
             defaultEditor = true;
