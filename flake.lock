@@ -449,11 +449,11 @@
         "nixpkgs": "nixpkgs_7"
       },
       "locked": {
-        "lastModified": 1777602545,
-        "narHash": "sha256-wmxAg88iGOJTWrhLY8bibtgeZSlNB/75Y0arO5X9a3w=",
+        "lastModified": 1778431114,
+        "narHash": "sha256-JJVQ0PIJUa4M6UzpY9FB98BnUhMpzqct46EnvpZve4w=",
         "owner": "kyokley",
         "repo": "opencode-config",
-        "rev": "fc12c9d2c2f90ea99ddac9797d77a8212e609edc",
+        "rev": "ac2167a8345e0c9cda4e55e8314154ab7ebe2b67",
         "type": "github"
       },
       "original": {
