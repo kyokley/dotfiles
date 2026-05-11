@@ -1,5 +1,15 @@
-{
-  flake.modules = {
+{inputs, ...}: {
+  flake.modules = let
+    home_imports = with inputs.self.modules.homeManager; [
+      opencode
+      wallpapers
+      systemd-services
+    ];
+
+    nixos_imports = with inputs.self.modules.nixos; [
+      tailscale
+    ];
+  in {
     homeManager.mercury = {
       pkgs,
       config,
@@ -9,13 +19,7 @@
     }: let
       MATTERMOST_CLEANUP_RETENTION_WINDOW = "30 days";
     in {
-      imports = with inputs.self.modules.homeManager; [
-        opencode
-        wallpapers
-        systemd-services
-        tailscale
-      ];
-
+      imports = home_imports;
       programs.git.settings.user.email = "kyokley@mercury";
 
       home = {
@@ -108,18 +112,30 @@
       modulesPath,
       ...
     }: {
-      imports = [
-        (modulesPath + "/installer/scan/not-detected.nix")
-      ];
+      imports =
+        [
+          (modulesPath + "/installer/scan/not-detected.nix")
+        ]
+        ++ nixos_imports;
 
       # Bootloader.
-      boot.loader.systemd-boot.enable = true;
-      boot.loader.efi.canTouchEfiVariables = true;
-      boot.supportedFilesystems = ["bcachefs"];
-      boot.kernelPackages = pkgs.linuxPackages_latest;
-      boot.binfmt.emulatedSystems = [
-        "aarch64-linux"
-      ];
+      boot = {
+        loader = {
+          systemd-boot.enable = true;
+          efi.canTouchEfiVariables = true;
+        };
+        supportedFilesystems = ["bcachefs"];
+        kernelPackages = pkgs.linuxPackages_latest;
+        binfmt.emulatedSystems = [
+          "aarch64-linux"
+        ];
+        initrd = {
+          availableKernelModules = ["nvme" "xhci_pci" "ahci" "usbhid" "uas" "sd_mod"];
+          kernelModules = ["amdgpu"];
+        };
+        kernelModules = ["kvm-amd" "amdgpu"];
+        extraModulePackages = [];
+      };
 
       system.stateVersion = "24.05"; # Don't touch me!
 
@@ -156,19 +172,17 @@
       networking.firewall.interfaces.tailscale0.allowedTCPPorts = lib.mkIf config.services.ollama.enable [
         11434
       ];
-      boot.initrd.availableKernelModules = ["nvme" "xhci_pci" "ahci" "usbhid" "uas" "sd_mod"];
-      boot.initrd.kernelModules = ["amdgpu"];
-      boot.kernelModules = ["kvm-amd" "amdgpu"];
-      boot.extraModulePackages = [];
 
-      fileSystems."/" = {
-        device = "UUID=75f8e791-7457-4ae2-b6a1-dbcda9aed60b";
-      };
+      fileSystems = {
+        "/" = {
+          device = "UUID=75f8e791-7457-4ae2-b6a1-dbcda9aed60b";
+        };
 
-      fileSystems."/boot" = {
-        device = "/dev/disk/by-uuid/764D-E9E8";
-        fsType = "vfat";
-        options = ["fmask=0777" "dmask=0777"];
+        "/boot" = {
+          device = "/dev/disk/by-uuid/764D-E9E8";
+          fsType = "vfat";
+          options = ["fmask=0777" "dmask=0777"];
+        };
       };
 
       swapDevices = [];

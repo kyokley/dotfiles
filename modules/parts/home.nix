@@ -18,11 +18,25 @@
         settings.experimental-features = ["nix-command" "flakes"];
       };
 
-      nixpkgs.config.allowUnfreePredicate = pkg:
-        builtins.elem (lib.getName pkg) [
-          # Add additional package names here
-          "github-copilot-cli"
+      nixpkgs = {
+        overlays = [
+          (final: prev: {
+            openldap = prev.openldap.overrideAttrs (_: {
+              doCheck = false;
+            });
+            libreoffice = prev.libreoffice.overrideAttrs (_: {
+              doCheck = false;
+            });
+          })
         ];
+        config.allowUnfreePredicate = pkg:
+          builtins.elem (lib.getName pkg) [
+            # Add additional package names here
+            "github-copilot-cli"
+            "steam"
+            "steam-unwrapped"
+          ];
+      };
 
       home = {
         sessionVariables = {

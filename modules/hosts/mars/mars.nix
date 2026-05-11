@@ -70,6 +70,11 @@ in {
         initrd.kernelModules = ["amdgpu"];
         kernelModules = ["kvm-amd" "amdgpu"];
         extraModulePackages = [];
+        extraModprobeConfig = ''
+          # Mediatek MT7921E can be unstable around suspend/resume with ASPM/CLC.
+          options mt7921e disable_aspm=Y
+          options mt7921e disable_clc=Y
+        '';
       };
 
       powerManagement.enable = true;
@@ -102,6 +107,19 @@ in {
         192.168.50.96 saturn-wifi # wifi
       '';
 
+      networking.networkmanager = {
+        wifi.powersave = false;
+        settings = {
+          device = {
+            "wifi.scan-rand-mac-address" = "no";
+          };
+          connection = {
+            "wifi.cloned-mac-address" = "preserve";
+            "ethernet.cloned-mac-address" = "preserve";
+          };
+        };
+      };
+
       services.xserver.videoDrivers = ["amdgpu"];
 
       fileSystems = {
@@ -120,22 +138,22 @@ in {
         {device = "/dev/disk/by-uuid/beaf0a2b-05bb-4517-8ead-65a47660b6f6";}
       ];
 
-      # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
-      # (the default) this is the recommended approach. When using systemd-networkd it's
-      # still possible to use this option, but it's recommended to use it in conjunction
-      # with explicit per-interface declarations with `networking.interfaces.<interface>.useDHCP`.
-      networking.interfaces.wlp1s0.useDHCP = lib.mkDefault true;
+      environment.etc."systemd/system-sleep/99-nm-resume-reconnect" = {
+        mode = "0755";
+        text = ''
+          #!${pkgs.runtimeShell}
+          if [ "$1" = "post" ]; then
+            ${pkgs.coreutils}/bin/sleep 2
+            state="$(${pkgs.networkmanager}/bin/nmcli -t -f GENERAL.STATE device show wlp1s0 2>/dev/null | ${pkgs.coreutils}/bin/cut -d: -f2 | ${pkgs.gawk}/bin/awk '{print $1}')"
 
-      nixpkgs.overlays = [
-        (final: prev: {
-          openldap = prev.openldap.overrideAttrs (_: {
-            doCheck = false;
-          });
-          libreoffice = prev.libreoffice.overrideAttrs (_: {
-            doCheck = false;
-          });
-        })
-      ];
+            if [ "$state" != "100" ]; then
+              ${pkgs.networkmanager}/bin/nmcli device disconnect wlp1s0 >/dev/null 2>&1 || true
+              ${pkgs.coreutils}/bin/sleep 1
+              ${pkgs.networkmanager}/bin/nmcli device connect wlp1s0 >/dev/null 2>&1 || true
+            fi
+          fi
+        '';
+      };
 
       nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
       hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;

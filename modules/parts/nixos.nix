@@ -11,11 +11,25 @@
         username,
         hostName,
         inputs,
+        options,
         ...
       }: {
         imports = [
           inputs.self.modules.nixos.qtile
           # inputs.self.modules.nixos.flatpak
+
+          # Uncomment below to set default password for build-vm
+          # (
+          #   ({
+          #     options,
+          #     lib,
+          #     ...
+          #   }:
+          #     lib.mkIf (options ? virtualisation.memorySize) {
+          #       users.users.${username}.password = "wert66";
+          #     })
+          #   {inherit options lib;}
+          # )
         ];
 
         nix = {
@@ -230,7 +244,7 @@
         # services.openssh.enable = true;
 
         home-manager = {
-          useGlobalPkgs = true;
+          useGlobalPkgs = false;
           useUserPackages = true;
         };
 

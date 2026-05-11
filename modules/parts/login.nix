@@ -1,14 +1,17 @@
 {
   flake.modules.nixos.common = {pkgs, ...}: let
-    background_dir = "/usr/share/backgrounds";
+    background_file = "/etc/login/login.jpg";
+    wallpapers_dir = "/home/yokley/Pictures/wallpapers";
   in {
     services.xserver.displayManager.lightdm = {
-      background = "${background_dir}/login.jpg";
+      background = "${background_file}";
       # Temporarily switching to slick greeter as enso fails
       greeters.slick = {
         enable = true;
       };
     };
+
+    environment.etc."login/login.jpg".source = ./qtile/wallpapers/wallpaper.jpg;
 
     systemd.services = {
       update-login-background = {
@@ -20,8 +23,9 @@
         };
         script = toString (
           pkgs.writeShellScript "login-screen-update-script" ''
-            cp -fv $(${pkgs.busybox}/bin/find ${background_dir}/wallpapers -name '*.jpg' | ${pkgs.busybox}/bin/shuf | ${pkgs.busybox}/bin/head -n 1) ${background_dir}/login.jpg
-            chmod 755 ${background_dir}/login.jpg
+
+            cp -fv $(${pkgs.busybox}/bin/find ${wallpapers_dir} -name '*.jpg' | ${pkgs.busybox}/bin/shuf | ${pkgs.busybox}/bin/head -n 1) ${background_file}
+            chmod 755 ${background_file}
           ''
         );
         wants = ["network-online.target"];
@@ -40,5 +44,7 @@
         wantedBy = ["timers.target"];
       };
     };
+
+    programs.dconf.enable = true;
   };
 }
