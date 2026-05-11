@@ -45,11 +45,11 @@
     "copilot-cmp": {
       "flake": false,
       "locked": {
-        "lastModified": 1778467297,
-        "narHash": "sha256-ll9uuDQ9eknpmxX1tEU2hycA1cMI1QwMj/EZZOaFzQs=",
+        "lastModified": 1778495953,
+        "narHash": "sha256-PEBrbfA6+zym64kG0n9W6lxHwCa6sWLaV2kT/+SBYyw=",
         "owner": "kyokley",
         "repo": "copilot-cmp",
-        "rev": "f74fe5df401e1d0cbc2bd1ccbd56d435cd018e61",
+        "rev": "f3f879b871342b78a3d61436e26d195f0257357e",
         "type": "github"
       },
       "original": {
@@ -401,11 +401,11 @@
         "nixvim": "nixvim_2"
       },
       "locked": {
-        "lastModified": 1778468627,
-        "narHash": "sha256-UoCQtMpMsn3kX6aMxGoYvoZlciqetZfKqFZIqXBNvmU=",
+        "lastModified": 1778496034,
+        "narHash": "sha256-kAgIBDjrebQreEW4dPKdXOZsAi34Of9PfUppdRygYVo=",
         "owner": "kyokley",
         "repo": "nixvim",
-        "rev": "d73a940be3a40747f57033f6ba57dda802f739a2",
+        "rev": "edec7874421f8aa82128319625abb755711d5108",
         "type": "github"
       },
       "original": {
