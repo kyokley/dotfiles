@@ -408,11 +408,17 @@ top_widgets.extend(
         StandardWidgetBox(
             widgets=(
                 widget.Clock(
+                    name="Clock",
                     foreground=extension_defaults.foreground_yellow,
                     background=extension_defaults.black,
                     format="%a %b %d %H:%M:%S",
                     font=extension_defaults.font,
                     fontsize=extension_defaults.fontsize,
+                    mouse_callbacks={
+                        "Button1": lambda: qtile.widgets_map.get(
+                            "Clock"
+                        ).update_timezone(),
+                    },
                 ),
             ),
             text_closed="󰅐",

@@ -83,6 +83,7 @@
 
         services = {
           localtimed.enable = true;
+          automatic-timezoned.enable = true;
           geoclue2.enable = true;
 
           # Enable the XFCE Desktop Environment.
@@ -297,7 +298,7 @@
           packages = with pkgs; [
             arandr
             dunst
-            libreoffice
+            inputs.nixpkgs-stable.legacyPackages.${pkgs.stdenv.hostPlatform.system}.libreoffice
             nitrogen
             python312Packages.bpython
             thunderbird
