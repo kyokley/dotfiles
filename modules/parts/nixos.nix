@@ -45,6 +45,7 @@
             ];
             download-buffer-size = 524288000;
           };
+          settings.experimental-features = ["nix-command" "flakes"];
         };
 
         # Enable networking
