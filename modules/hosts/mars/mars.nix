@@ -78,9 +78,6 @@ in {
       };
 
       powerManagement.enable = true;
-      services.udev.extraRules = ''
-        ACTION=="add", SUBSYSTEM=="pci", DRIVER=="pcieport", ATTR{power/wakeup}="disabled"
-      '';
 
       environment.systemPackages = with pkgs; [
         proton-vpn
@@ -120,8 +117,14 @@ in {
         };
       };
 
-      services.xserver.videoDrivers = ["amdgpu"];
+      services = {
+        udev.extraRules = ''
+          ACTION=="add", SUBSYSTEM=="pci", DRIVER=="pcieport", ATTR{power/wakeup}="disabled"
+        '';
+        xserver.videoDrivers = ["amdgpu"];
+      };
 
+      security.pam.services.lightdm.enableGnomeKeyring = false;
       fileSystems = {
         "/" = {
           device = "UUID=12b2a9cf-4d19-43d9-a9db-0942d019fa4f";
