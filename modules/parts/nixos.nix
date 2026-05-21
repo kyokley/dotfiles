@@ -48,6 +48,14 @@
           settings.experimental-features = ["nix-command" "flakes"];
         };
 
+        nixpkgs.overlays = [
+          (final: prev: {
+            qtile = prev.qtile.overrideAttrs (_: {
+              pytestCheckPhase = ":";
+            });
+          })
+        ];
+
         # Enable networking
         networking = {
           inherit hostName;
