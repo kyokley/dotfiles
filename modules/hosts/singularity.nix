@@ -1,7 +1,8 @@
 {
   flake.modules.homeManager.singularity = {inputs, ...}: {
-    imports = [
-      inputs.self.modules.homeManager.systemd-services
+    imports = with inputs.self.modules.homeManager; [
+      systemd-services
+      opencode
     ];
 
     programs.git.settings.user.email = "kyokley@singularity";
