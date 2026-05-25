@@ -27,6 +27,7 @@
       programs.zsh = {
         initContent = ''
           eval "$(direnv hook zsh)"
+          eval "$(devenv hook zsh)"
         '';
       };
     };
