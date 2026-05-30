@@ -114,7 +114,6 @@
 
           blueman = {
             enable = true;
-            withApplet = true;
           };
           pipewire = {
             enable = true;
