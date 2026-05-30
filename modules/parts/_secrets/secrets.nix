@@ -21,6 +21,10 @@ in {
     publicKeys = [mars];
     armor = true;
   };
+  "syncthing/mars/cert.age" = {
+    publicKeys = [mars];
+    armor = true;
+  };
   "syncthing/dioxygen/key.age" = {
     publicKeys = [dioxygen];
     armor = true;

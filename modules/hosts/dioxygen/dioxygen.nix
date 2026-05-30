@@ -37,9 +37,14 @@
       home-manager.autoUpgrade.enable = false;
 
       syncthing = {
-        cert = "../../parts/_secrets/syncthing/dioxygen/cert.pem";
+        cert = ../../parts/_secrets/syncthing/dioxygen/cert.pem;
         key = "${config.age.secrets.dioxygen-syncthing-key.path}";
       };
+    };
+
+    systemd.user.services.syncthing.Unit = {
+      After = ["agenix.service"];
+      Wants = ["agenix.service"];
     };
   };
 }

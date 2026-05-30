@@ -30,8 +30,6 @@ in {
       imports = home_modules;
       programs.git.settings.user.email = "kyokley@mars";
 
-      age.secrets.mars-syncthing-key.file = ../../parts/_secrets/syncthing/mars/key.age;
-
       home = {
         sessionVariables = {
           QTILE_NET_INTERFACE = "wlp1s0";
@@ -49,9 +47,18 @@ in {
         stateVersion = "24.05"; # Don't touch me!
       };
 
+      age.secrets = {
+        mars-syncthing-key.file = ../../parts/_secrets/syncthing/mars/key.age;
+        mars-syncthing-cert.file = ../../parts/_secrets/syncthing/mars/cert.age;
+      };
       services.syncthing = {
-        cert = "../../parts/_secrets/syncthing/mars/cert.pem";
+        cert = "${config.age.secrets.mars-syncthing-cert.path}";
         key = "${config.age.secrets.mars-syncthing-key.path}";
+      };
+
+      systemd.user.services.syncthing.Unit = {
+        After = ["agenix.service"];
+        Wants = ["agenix.service"];
       };
     };
 
