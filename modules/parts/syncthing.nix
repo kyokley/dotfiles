@@ -1,8 +1,11 @@
 {
-  flake.modules.homeManager.syncthing = {pkgs, ...}: {
+  flake.modules.homeManager.syncthing = {
+    pkgs,
+    config,
+    ...
+  }: {
     services.syncthing = {
       enable = true;
-      extraFlags = ["--no-default-folder"];
       settings = {
         devices = {
           mars = {
@@ -19,15 +22,13 @@
           };
         };
         folders = {
-          "sen_docs" = {
-            id = "sen_docs";
+          "taxes" = {
+            id = "taxes";
             devices = [
               "mars"
-              "mercury"
-              "jupiter"
-              "venus"
+              "dioxygen"
             ];
-            path = "/home/sen/docs";
+            path = "${config.home.homeDirectory}/Documents/taxes";
             type = "sendreceive";
           };
         };

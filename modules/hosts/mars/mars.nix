@@ -20,6 +20,7 @@ in {
       lib,
       username,
       inputs,
+      config,
       ...
     }: let
       cd_paths = [
@@ -47,10 +48,8 @@ in {
       };
 
       services.syncthing = {
-        cert = ../../parts/_secrets/syncthing/mars/cert.pem;
-        key = ''
-          $(cat "${config.age.secrets.mars-syncthing-key.path}")
-        '';
+        cert = "../../parts/_secrets/syncthing/mars/cert.pem";
+        key = "${config.age.secrets.mars-syncthing-key.path}";
       };
     };
 

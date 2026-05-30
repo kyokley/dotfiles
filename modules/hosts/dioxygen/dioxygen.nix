@@ -4,6 +4,7 @@
     pkgs,
     lib,
     username,
+    config,
     ...
   }: {
     imports = with inputs.self.modules.homeManager; [
@@ -34,10 +35,8 @@
       home-manager.autoUpgrade.enable = false;
 
       syncthing = {
-        cert = ../../parts/_secrets/syncthing/dioxygen/cert.pem;
-        key = ''
-          $(cat "${config.age.secrets.dioxygen-syncthing-key.path}")
-        '';
+        cert = "../../parts/_secrets/syncthing/dioxygen/cert.pem";
+        key = "${config.age.secrets.dioxygen-syncthing-key.path}";
       };
     };
   };
