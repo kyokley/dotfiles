@@ -20,4 +20,12 @@ in {
     publicKeys = [dioxygen];
     armor = true;
   };
+  "syncthing/venus/key.age" = {
+    publicKeys = [venus];
+    armor = true;
+  };
+  "syncthing/venus/cert.age" = {
+    publicKeys = [venus];
+    armor = true;
+  };
 }

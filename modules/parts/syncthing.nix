@@ -20,6 +20,12 @@
               "tcp://dioxygen"
             ];
           };
+          venus = {
+            id = "E2M66D3-ZQZNVV4-JJZ7PMZ-UTIGMG5-QUEPYO5-HPVG4Q5-WV5RB2Y-ZFNQCAL";
+            addresses = [
+              "tcp://venus"
+            ];
+          };
         };
         folders = {
           "taxes" = {
@@ -27,6 +33,7 @@
             devices = [
               "mars"
               "dioxygen"
+              "venus"
             ];
             path = "${config.home.homeDirectory}/Documents/taxes";
             type = "sendreceive";

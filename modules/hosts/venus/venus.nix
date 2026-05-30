@@ -2,26 +2,31 @@
   flake.modules.homeManager.venus = {
     inputs,
     pkgs,
+    config,
     ...
   }: {
-    imports = [
-      inputs.self.modules.homeManager.systemd-services
+    imports = with inputs.self.modules.homeManager; [
+      systemd-services
+      syncthing
     ];
 
     programs = {
       git.settings.user.email = "kyokley@venus";
-      zsh = {
-        initContent = ''
-          eval "$(direnv hook zsh)"
-        '';
-      };
     };
 
     home = {
       stateVersion = "23.11"; # Please read the comment before changing.
-      packages = [
-        pkgs.direnv
-      ];
+    };
+
+    age.secrets = {
+      venus-syncthing-key.file = ../../parts/_secrets/syncthing/venus/key.age;
+      venus-syncthing-cert.file = ../../parts/_secrets/syncthing/venus/cert.age;
+    };
+    services = {
+      syncthing = {
+        cert = "${config.age.secrets.dioxygen-syncthing-cert.path}";
+        key = "${config.age.secrets.dioxygen-syncthing-key.path}";
+      };
     };
   };
 }
