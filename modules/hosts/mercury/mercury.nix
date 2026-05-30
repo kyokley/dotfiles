@@ -53,25 +53,6 @@
             );
           };
         };
-
-        ollama-mattermost-bot = {
-          Unit.Description = "Run Ollama Chatbot for Mattermost";
-          Service = {
-            ExecStart = toString (
-              pkgs.writeShellScript "run-mattermost-bot" ''
-                export BOT_TOKEN_PATH=${config.age.secrets.ollama-mattermost-bot-token.path}
-                ${inputs.ollama-mattermost-bot.packages.${pkgs.stdenv.hostPlatform.system}.default}/bin/ollama-mattermost-bot
-              ''
-            );
-            Environment = [
-              "MATTERMOST_URL=mercury.taila5201.ts.net"
-              "TEAM_NAME=Mercury"
-
-              "OLLAMA_API_URL=http://100.92.134.123:11434"
-              "OLLAMA_MODEL=llama3.2:3b"
-            ];
-          };
-        };
       };
 
       systemd.user.timers = {
@@ -85,19 +66,6 @@
             RandomizedDelaySec = 14400;
             Persistent = true;
             Unit = "mattermost-clean-old-posts.service";
-          };
-          Install.WantedBy = ["timers.target"];
-        };
-
-        ollama-mattermost-bot-daily-task = {
-          Unit = {
-            Description = "Run tasks daily";
-            After = ["network.target"];
-          };
-          Timer = {
-            OnStartupSec = 300;
-            Persistent = true;
-            Unit = "ollama-mattermost-bot.service";
           };
           Install.WantedBy = ["timers.target"];
         };
@@ -146,31 +114,7 @@
       # List packages installed in system profile. To search, run:
       # $ nix search wget
       environment.systemPackages = with pkgs; [
-        ollama-rocm
         sshfs
-      ];
-
-      # Ollama server setup
-      services.ollama = {
-        enable = true;
-        host = "100.92.134.123";
-        loadModels = [
-          "llama3.2:3b"
-          "gpt-oss"
-          "qwen3:8b"
-          "qwen3-coder:30b"
-          "gemma3:12b"
-          "deepseek-r1:32b"
-        ];
-        environmentVariables = {
-          # ROCR_VISIBLE_DEVICES = "1";
-          HSA_OVERRIDE_GFX_VERSION = "11.0.2";
-        };
-        rocmOverrideGfx = "11.0.2";
-      };
-
-      networking.firewall.interfaces.tailscale0.allowedTCPPorts = lib.mkIf config.services.ollama.enable [
-        11434
       ];
 
       fileSystems = {

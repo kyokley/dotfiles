@@ -31,11 +31,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    ollama-mattermost-bot = {
-      url = "github:kyokley/ollama-mattermost-bot";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     opencode-config = {
       url = "github:kyokley/opencode-config";
     };
