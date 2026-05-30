@@ -29,4 +29,8 @@ in {
     publicKeys = [dioxygen];
     armor = true;
   };
+  "syncthing/dioxygen/cert.age" = {
+    publicKeys = [dioxygen];
+    armor = true;
+  };
 }

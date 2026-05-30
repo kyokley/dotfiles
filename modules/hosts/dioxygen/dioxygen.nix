@@ -14,8 +14,6 @@
       syncthing
     ];
 
-    age.secrets.dioxygen-syncthing-key.file = ../../parts/_secrets/syncthing/dioxygen/key.age;
-
     home = {
       homeDirectory = "/Users/${username}";
       stateVersion = "24.05";
@@ -33,11 +31,16 @@
       })
     ];
 
+    age.secrets = {
+      dioxygen-syncthing-key.file = ../../parts/_secrets/syncthing/dioxygen/key.age;
+      dioxygen-syncthing-cert.file = ../../parts/_secrets/syncthing/dioxygen/cert.age;
+    };
+
     services = {
       home-manager.autoUpgrade.enable = false;
 
       syncthing = {
-        cert = ../../parts/_secrets/syncthing/dioxygen/cert.pem;
+        cert = "${config.age.secrets.dioxygen-syncthing-cert.path}";
         key = "${config.age.secrets.dioxygen-syncthing-key.path}";
       };
     };
