@@ -74,14 +74,6 @@
           flake = lib.mkDefault "${homeDirectory}/dotfiles";
         };
       };
-
-      age = {
-        secrets = {
-          ollama-mattermost-bot-token = {
-            file = ./secrets/ollama-mattermost-bot-token.age;
-          };
-        };
-      };
     };
   };
 }
