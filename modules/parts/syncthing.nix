@@ -2,6 +2,7 @@
   flake.modules.homeManager.syncthing = {
     pkgs,
     config,
+    hostName,
     ...
   }: {
     services.syncthing = {
@@ -40,6 +41,20 @@
           };
         };
       };
+    };
+
+    age.secrets = {
+      "${hostName}-syncthing-key".file = ../parts/_secrets/syncthing/${hostName}/key.age;
+      "${hostName}-syncthing-cert".file = ../parts/_secrets/syncthing/${hostName}/cert.age;
+    };
+    services.syncthing = {
+      cert = ''${config.age.secrets."${hostName}-syncthing-cert".path}'';
+      key = ''${config.age.secrets."${hostName}-syncthing-key".path}'';
+    };
+
+    systemd.user.services.syncthing.Unit = {
+      After = ["agenix.service"];
+      Wants = ["agenix.service"];
     };
   };
 }

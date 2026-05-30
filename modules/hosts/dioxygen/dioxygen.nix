@@ -31,23 +31,8 @@
       })
     ];
 
-    age.secrets = {
-      dioxygen-syncthing-key.file = ../../parts/_secrets/syncthing/dioxygen/key.age;
-      dioxygen-syncthing-cert.file = ../../parts/_secrets/syncthing/dioxygen/cert.age;
-    };
-
     services = {
       home-manager.autoUpgrade.enable = false;
-
-      syncthing = {
-        cert = "${config.age.secrets.dioxygen-syncthing-cert.path}";
-        key = "${config.age.secrets.dioxygen-syncthing-key.path}";
-      };
-    };
-
-    systemd.user.services.syncthing.Unit = {
-      After = ["agenix.service"];
-      Wants = ["agenix.service"];
     };
   };
 }
