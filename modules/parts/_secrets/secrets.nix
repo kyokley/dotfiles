@@ -16,8 +16,13 @@ in {
     publicKeys = [mercury mars dioxygen];
     armor = true;
   };
+
   "syncthing/mars/key.age" = {
     publicKeys = [mars];
+    armor = true;
+  };
+  "syncthing/dioxygen/key.age" = {
+    publicKeys = [dioxygen];
     armor = true;
   };
 }

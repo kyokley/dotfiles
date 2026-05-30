@@ -13,6 +13,9 @@
         mars-syncthing-key = {
           file = ./_secrets/syncthing/mars/key.age;
         };
+        dioxygen-syncthing-key = {
+          file = ./_secrets/syncthing/dioxygen/key.age;
+        };
       };
     };
   };

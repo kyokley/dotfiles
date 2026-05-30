@@ -11,6 +11,12 @@
               "tcp://mars"
             ];
           };
+          dioxygen = {
+            id = "HVFOU6H-GRPJWVP-B4DSXRS-O2XMHRC-73TDGHP-IJKNALJ-BLN5TVA-YZJDUA3";
+            addresses = [
+              "tcp://dioxygen"
+            ];
+          };
         };
         folders = {
           "sen_docs" = {
