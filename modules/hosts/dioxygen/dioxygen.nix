@@ -14,6 +14,8 @@
       syncthing
     ];
 
+    age.secrets.dioxygen-syncthing-key.file = ../../parts/_secrets/syncthing/dioxygen/key.age;
+
     home = {
       homeDirectory = "/Users/${username}";
       stateVersion = "24.05";

@@ -2,7 +2,7 @@
   home_modules = with inputs.self.modules.homeManager; [
     dev
     opencode
-    distributedBuilds
+    # distributedBuilds
     wallpapers
     systemd-services
     syncthing
@@ -10,7 +10,7 @@
 
   nixos_modules = with inputs.self.modules.nixos; [
     laptop
-    distributedBuilds
+    # distributedBuilds
     tailscale
   ];
 in {
@@ -29,6 +29,8 @@ in {
     in {
       imports = home_modules;
       programs.git.settings.user.email = "kyokley@mars";
+
+      age.secrets.mars-syncthing-key.file = ../../parts/_secrets/syncthing/mars/key.age;
 
       home = {
         sessionVariables = {
