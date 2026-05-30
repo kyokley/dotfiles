@@ -5,6 +5,7 @@
     distributedBuilds
     wallpapers
     systemd-services
+    syncthing
   ];
 
   nixos_modules = with inputs.self.modules.nixos; [
@@ -43,6 +44,13 @@ in {
         ];
 
         stateVersion = "24.05"; # Don't touch me!
+      };
+
+      services.syncthing = {
+        cert = ../../parts/_secrets/syncthing/mars/cert.pem;
+        key = ''
+          $(cat "${config.age.secrets.mars-syncthing-key.path}")
+        '';
       };
     };
 
