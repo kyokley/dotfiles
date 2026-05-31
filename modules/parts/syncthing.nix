@@ -39,6 +39,12 @@
               "tcp://mercury"
             ];
           };
+          saturn = {
+            id = "2QQKAGF-26OP2ZE-NAIE3X4-GEWXWC2-RKHG25Z-FKKKZBU-K6S2OZZ-2DEB5A4";
+            addresses = [
+              "tcp://saturn"
+            ];
+          };
         };
         folders = {
           "taxes" = {
@@ -56,6 +62,7 @@
             devices = [
               "mars"
               "mercury"
+              "saturn"
             ];
             path = "${config.home.homeDirectory}/Pictures/wallpapers";
             type = "sendreceive";
