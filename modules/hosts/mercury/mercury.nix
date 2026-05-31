@@ -2,8 +2,8 @@
   flake.modules = let
     home_imports = with inputs.self.modules.homeManager; [
       opencode
-      wallpapers
       systemd-services
+      syncthing
     ];
 
     nixos_imports = with inputs.self.modules.nixos; [

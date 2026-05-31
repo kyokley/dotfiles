@@ -3,7 +3,6 @@
     dev
     opencode
     # distributedBuilds
-    wallpapers
     systemd-services
     syncthing
   ];

@@ -51,6 +51,15 @@
             path = "${config.home.homeDirectory}/Documents/taxes";
             type = "sendreceive";
           };
+          "wallpapers" = {
+            id = "wallpapers";
+            devices = [
+              "mars"
+              "mercury"
+            ];
+            path = "${config.home.homeDirectory}/Pictures/wallpapers";
+            type = "sendreceive";
+          };
         };
       };
     };
