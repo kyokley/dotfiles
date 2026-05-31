@@ -27,6 +27,9 @@
             libreoffice = prev.libreoffice.overrideAttrs (_: {
               doCheck = false;
             });
+            # qtile = prev.qtile.overrideAttrs (_: {
+            #   doCheck = false;
+            # });
           })
         ];
         config.allowUnfreePredicate = pkg:
