@@ -1,14 +1,18 @@
 let
-  mercury = builtins.readFile ../../hosts/mercury/mercury.pub;
-  mars = builtins.readFile ../../hosts/mars/mars.pub;
-  dioxygen = builtins.readFile ../../hosts/dioxygen/dioxygen.pub;
-  venus = builtins.readFile ../../hosts/venus/venus.pub;
-  jupiter = builtins.readFile ../../hosts/jupiter/jupiter.pub;
+  identities = {
+    dioxygen = builtins.readFile ../../hosts/dioxygen/dioxygen.pub;
+    jupiter = builtins.readFile ../../hosts/jupiter/jupiter.pub;
+    mars = builtins.readFile ../../hosts/mars/mars.pub;
+    mercury = builtins.readFile ../../hosts/mercury/mercury.pub;
+    venus = builtins.readFile ../../hosts/venus/venus.pub;
+  };
 
   syncthing-hosts = [
-    mars
-    dioxygen
-    venus
+    "dioxygen"
+    "jupiter"
+    "mars"
+    "mercury"
+    "venus"
   ];
 
   # This is a bit of a hack to avoid having to repeat the same code for each host. We can generate the attrs for each host and then merge them together.
@@ -24,9 +28,9 @@ let
   syncthing-attrs = builtins.listToAttrs (map (var: {
       name = "syncthing-${var}";
       value = builtins.listToAttrs (map (host: {
-          name = "syncthing/${host}/cert.age";
+          name = "syncthing/${host}/${builtins.substring 0 ((builtins.stringLength var) - 1) var}.age";
           value = {
-            publicKeys = [host];
+            publicKeys = [identities.${host}];
             armor = true;
           };
         })

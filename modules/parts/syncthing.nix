@@ -27,6 +27,18 @@
               "tcp://venus"
             ];
           };
+          jupiter = {
+            id = "OB2E2QP-APZJDAT-W6C36QY-GXCZHOB-U7GCWPJ-WGMMGAD-4U4NHEG-ZXJULAK";
+            addresses = [
+              "tcp://jupiter"
+            ];
+          };
+          mercury = {
+            id = "YW2X2OD-S3GVEJH-FNHBFOF-F6KTG7Y-4OZPRHV-B3AM625-LQMRATN-BTR53AF";
+            addresses = [
+              "tcp://mercury"
+            ];
+          };
         };
         folders = {
           "taxes" = {
