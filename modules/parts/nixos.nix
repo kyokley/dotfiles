@@ -44,8 +44,9 @@
               "${username}"
             ];
             download-buffer-size = 524288000;
+            experimental-features = ["nix-command" "flakes"];
+            auto-optimise-store = true;
           };
-          settings.experimental-features = ["nix-command" "flakes"];
         };
 
         nixpkgs.overlays = [
