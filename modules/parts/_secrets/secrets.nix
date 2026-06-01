@@ -5,6 +5,7 @@ let
     mars = builtins.readFile ../../hosts/mars/mars.pub;
     mercury = builtins.readFile ../../hosts/mercury/mercury.pub;
     venus = builtins.readFile ../../hosts/venus/venus.pub;
+    saturn = builtins.readFile ../../hosts/mercury/saturn.pub;
   };
 
   syncthing-hosts = [
@@ -13,6 +14,7 @@ let
     "mars"
     "mercury"
     "venus"
+    "saturn"
   ];
 
   # This is a bit of a hack to avoid having to repeat the same code for each host. We can generate the attrs for each host and then merge them together.
