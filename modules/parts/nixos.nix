@@ -53,6 +53,7 @@
           (final: prev: {
             qtile = prev.qtile.overrideAttrs (_: {
               pytestCheckPhase = ":";
+              doCheck = false;
             });
           })
         ];
