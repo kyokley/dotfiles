@@ -13,6 +13,7 @@
             id = "LLSD6II-ROUHKRL-3XBQA7D-G7QEUWD-W6RNLN2-NL7SP5S-WUVTCDN-4XSVGQK";
             addresses = [
               "tcp://mars"
+              "tcp://192.168.50.145"
             ];
           };
           dioxygen = {
@@ -37,12 +38,15 @@
             id = "YW2X2OD-S3GVEJH-FNHBFOF-F6KTG7Y-4OZPRHV-B3AM625-LQMRATN-BTR53AF";
             addresses = [
               "tcp://mercury"
+              "tcp://192.168.50.31"
             ];
           };
           saturn = {
             id = "2QQKAGF-26OP2ZE-NAIE3X4-GEWXWC2-RKHG25Z-FKKKZBU-K6S2OZZ-2DEB5A4";
             addresses = [
               "tcp://saturn"
+              "tcp://192.168.50.126"
+              "tcp://192.168.50.96"
             ];
           };
         };
