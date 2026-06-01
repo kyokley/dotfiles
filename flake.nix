@@ -34,6 +34,10 @@
     opencode-config = {
       url = "github:kyokley/opencode-config";
     };
+
+    fastfetch-config = {
+      url = "github:kyokley/fastfetch-config";
+    };
   };
 
   outputs = inputs:
