@@ -86,13 +86,26 @@ def parse_text(text):
 def safe_image_widget(filename: Path, **config):
     """Return an Image widget only if Qtile can decode the file."""
 
-    path = str(filename)
+    # Some systems don't have an SVG loader in gdk-pixbuf (librsvg), so try a
+    # sibling PNG first when an SVG path is provided.
+    image_path = filename
+    # if filename.suffix.lower() == ".svg":
+    #     png_fallback = filename.with_suffix(".png")
+    #     if png_fallback.exists():
+    #         image_path = png_fallback
+
+    path = str(image_path)
 
     try:
         # Force decode at config load time so bar setup doesn't crash.
         Img.from_path(path).default_surface
     except Exception as err:
-        logger.warning("Skipping image widget (%s): %s", path, err)
+        if image_path != filename:
+            logger.warning(
+                "Skipping image widget (%s, original %s): %s", path, filename, err
+            )
+        else:
+            logger.warning("Skipping image widget (%s): %s", path, err)
         return widget.TextBox(
             "",
             font=extension_defaults.font,
@@ -104,11 +117,6 @@ def safe_image_widget(filename: Path, **config):
 
 top_widgets = [
     widget.Spacer(length=10),
-    safe_image_widget(
-        filename=Path(__file__).parent / "logos" / "nix-snowflake-rainbow.png",
-        margin=5,
-    ),
-    widget.Spacer(length=10),
     CustomWindowNameEndcap(
         "",
         font=extension_defaults.font,
@@ -116,6 +124,12 @@ top_widgets = [
         foreground=extension_defaults.black,
         padding=0,
         for_current_screen=True,
+    ),
+    safe_image_widget(
+        filename=Path(__file__).parent / "logos" / "nix-snowflake-rainbow.svg",
+        # background="#00000000",
+        background=extension_defaults.black,
+        margin=5,
     ),
     widget.WindowName(
         name="WindowName",

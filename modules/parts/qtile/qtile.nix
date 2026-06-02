@@ -10,6 +10,15 @@
           PATH=$PATH:${lib.makeBinPath [pkgs.betterlockscreen]}
           ${pkgs.betterlockscreen}/bin/betterlockscreen --lock
         '';
+        gdkPixbufLoaderDir = "${pkgs.gdk-pixbuf}/lib/gdk-pixbuf-2.0/2.10.0/loaders";
+        rsvgLoaderDir = "${pkgs.librsvg}/lib/gdk-pixbuf-2.0/2.10.0/loaders";
+        gdkPixbufLoadersCache = pkgs.runCommand "qtile-gdk-pixbuf-loaders-cache" {} ''
+          mkdir -p "$out/lib/gdk-pixbuf-2.0/2.10.0"
+          ${pkgs.gdk-pixbuf.dev}/bin/gdk-pixbuf-query-loaders \
+            ${gdkPixbufLoaderDir}/*.so \
+            ${rsvgLoaderDir}/*.so \
+            > "$out/lib/gdk-pixbuf-2.0/2.10.0/loaders.cache"
+        '';
       in {
         home = {
           packages = [
@@ -25,7 +34,7 @@
             };
           };
           sessionVariables = {
-            GDK_PIXBUF_MODULE_FILE = "${pkgs.librsvg}/lib/gdk-pixbuf-2.0/2.10.0/loaders.cache";
+            GDK_PIXBUF_MODULE_FILE = "${gdkPixbufLoadersCache}/lib/gdk-pixbuf-2.0/2.10.0/loaders.cache";
           };
         };
       };
