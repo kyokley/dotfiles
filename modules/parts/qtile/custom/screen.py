@@ -100,6 +100,11 @@ def safe_image_widget(filename: Path, **config):
         # Force decode at config load time so bar setup doesn't crash.
         Img.from_path(path).default_surface
     except Exception as err:
+        logger.warning(
+            "GDK pixbuf env at runtime: GDK_PIXBUF_MODULE_FILE=%s GDK_PIXBUF_MODULEDIR=%s",
+            os.environ.get("GDK_PIXBUF_MODULE_FILE"),
+            os.environ.get("GDK_PIXBUF_MODULEDIR"),
+        )
         if image_path != filename:
             logger.warning(
                 "Skipping image widget (%s, original %s): %s", path, filename, err
@@ -131,6 +136,7 @@ top_widgets = [
         background=extension_defaults.black,
         margin=5,
     ),
+    widget.Spacer(length=5, background=extension_defaults.black),
     widget.WindowName(
         name="WindowName",
         for_current_screen=True,

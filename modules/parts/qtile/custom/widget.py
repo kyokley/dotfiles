@@ -910,15 +910,16 @@ class CustomWindowNameEndcap(TextBox):
         hook.unsubscribe.current_screen_change(self.hook_response_current_screen)
 
     def hook_response(self, *args):
-        if self.for_current_screen:
-            w = self.qtile.current_screen.group.current_window
-        else:
-            w = self.bar.screen.group.current_window
+        pass
+        # if self.for_current_screen:
+        #     w = self.qtile.current_screen.group.current_window
+        # else:
+        #     w = self.bar.screen.group.current_window
 
-        if not w:
-            self.update(" ")
-        else:
-            self.update(self._original_text)
+        # if not w:
+        #     self.update(" ")
+        # else:
+        #     self.update(self._original_text)
 
     def hook_response_current_screen(self, *args):
         if self.for_current_screen:
