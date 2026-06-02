@@ -30,6 +30,9 @@ from custom.widget import (
     MemoryGraphWidgetBox,
     CustomCPUGraph,
     CPUGraphWidgetBox,
+    WindowNameWidgetBox,
+    LogoImageWidget,
+    LogoTextWidget,
 )
 
 BATTERY_PATHS = [
@@ -111,13 +114,14 @@ def safe_image_widget(filename: Path, **config):
             )
         else:
             logger.warning("Skipping image widget (%s): %s", path, err)
-        return widget.TextBox(
+        return LogoTextWidget(
             "",
             font=extension_defaults.font,
             fontsize=extension_defaults.iconsize,
+            debug=True,
         )
 
-    return widget.Image(filename=path, **config)
+    return LogoImageWidget(filename=path, debug=True, **config)
 
 
 top_widgets = [
@@ -136,21 +140,26 @@ top_widgets = [
         background=extension_defaults.black,
         margin=5,
     ),
-    widget.Spacer(length=5, background=extension_defaults.black),
-    widget.WindowName(
-        name="WindowName",
-        for_current_screen=True,
-        font=extension_defaults.font,
-        fontsize=extension_defaults.fontsize,
-        background=extension_defaults.black,
-        parse_text=parse_text,
-        scroll=True,
-        scroll_delay=0,
-        scroll_interval=0.05,
-        scroll_clear=True,
-        scroll_step=1,
-        width=350,
-        empty_group_string="",
+    WindowNameWidgetBox(
+        widgets=(
+            widget.WindowName(
+                name="WindowName",
+                for_current_screen=True,
+                font=extension_defaults.font,
+                fontsize=extension_defaults.fontsize,
+                background=extension_defaults.black,
+                parse_text=parse_text,
+                scroll=True,
+                scroll_delay=0,
+                scroll_interval=0.05,
+                scroll_clear=True,
+                scroll_step=1,
+                width=350,
+                empty_group_string="",
+            ),
+        ),
+        text_open="",
+        text_closed="",
     ),
     CustomWindowNameEndcap(
         "",
