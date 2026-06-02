@@ -3,6 +3,8 @@ from pathlib import Path
 
 from libqtile import bar, qtile, widget
 from libqtile.config import Screen
+from libqtile.images import Img
+from libqtile.log_utils import logger
 
 from custom.default import extension_defaults
 from custom.extras.snake import Snake
@@ -81,10 +83,30 @@ def parse_text(text):
     return text
 
 
+def safe_image_widget(filename: Path, **config):
+    """Return an Image widget only if Qtile can decode the file."""
+
+    path = str(filename)
+
+    try:
+        # Force decode at config load time so bar setup doesn't crash.
+        Img.from_path(path).default_surface
+    except Exception as err:
+        logger.warning("Skipping image widget (%s): %s", path, err)
+        return widget.TextBox(
+            "",
+            font=extension_defaults.font,
+            fontsize=extension_defaults.iconsize,
+        )
+
+    return widget.Image(filename=path, **config)
+
+
 top_widgets = [
     widget.Spacer(length=10),
-    widget.Image(
-        filename=Path(__file__).parent / "logos" / "nix-snowflake-colours.svg",
+    safe_image_widget(
+        filename=Path(__file__).parent / "logos" / "nix-snowflake-rainbow.png",
+        margin=5,
     ),
     widget.Spacer(length=10),
     CustomWindowNameEndcap(
