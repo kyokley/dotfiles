@@ -11,7 +11,7 @@
       };
     };
 
-    environment.etc."login/login.jpg".source = ./qtile/wallpapers/wallpaper.jpg;
+    # environment.etc."login/login.jpg".source = ./qtile/wallpapers/wallpaper.jpg;
 
     systemd.services = {
       update-login-background = {

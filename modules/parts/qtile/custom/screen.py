@@ -83,6 +83,10 @@ def parse_text(text):
 
 top_widgets = [
     widget.Spacer(length=10),
+    widget.Image(
+        filename=Path(__file__).parent / "logos" / "nix-snowflake-colours.svg",
+    ),
+    widget.Spacer(length=10),
     CustomWindowNameEndcap(
         "",
         font=extension_defaults.font,
