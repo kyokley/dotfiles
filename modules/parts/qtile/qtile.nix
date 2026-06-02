@@ -1,4 +1,16 @@
-{inputs, ...}: {
+{inputs, ...}: let
+  mkGdkPixbufLoadersCache = pkgs: let
+    gdkPixbufLoaderDir = "${pkgs.gdk-pixbuf}/lib/gdk-pixbuf-2.0/2.10.0/loaders";
+    rsvgLoaderDir = "${pkgs.librsvg}/lib/gdk-pixbuf-2.0/2.10.0/loaders";
+  in
+    pkgs.runCommand "qtile-gdk-pixbuf-loaders-cache" {} ''
+      mkdir -p "$out/lib/gdk-pixbuf-2.0/2.10.0"
+      ${pkgs.gdk-pixbuf.dev}/bin/gdk-pixbuf-query-loaders \
+        ${gdkPixbufLoaderDir}/*.so \
+        ${rsvgLoaderDir}/*.so \
+        > "$out/lib/gdk-pixbuf-2.0/2.10.0/loaders.cache"
+    '';
+in {
   flake.modules = {
     homeManager = {
       qtile = {
@@ -10,15 +22,7 @@
           PATH=$PATH:${lib.makeBinPath [pkgs.betterlockscreen]}
           ${pkgs.betterlockscreen}/bin/betterlockscreen --lock
         '';
-        gdkPixbufLoaderDir = "${pkgs.gdk-pixbuf}/lib/gdk-pixbuf-2.0/2.10.0/loaders";
-        rsvgLoaderDir = "${pkgs.librsvg}/lib/gdk-pixbuf-2.0/2.10.0/loaders";
-        gdkPixbufLoadersCache = pkgs.runCommand "qtile-gdk-pixbuf-loaders-cache" {} ''
-          mkdir -p "$out/lib/gdk-pixbuf-2.0/2.10.0"
-          ${pkgs.gdk-pixbuf.dev}/bin/gdk-pixbuf-query-loaders \
-            ${gdkPixbufLoaderDir}/*.so \
-            ${rsvgLoaderDir}/*.so \
-            > "$out/lib/gdk-pixbuf-2.0/2.10.0/loaders.cache"
-        '';
+        gdkPixbufLoadersCache = mkGdkPixbufLoadersCache pkgs;
       in {
         home = {
           packages = [
@@ -41,7 +45,17 @@
     };
 
     nixos = {
-      qtile = {lib, ...}: {
+      qtile = {
+        lib,
+        pkgs,
+        ...
+      }: let
+        gdkPixbufLoadersCache = mkGdkPixbufLoadersCache pkgs;
+      in {
+        environment.sessionVariables = {
+          GDK_PIXBUF_MODULE_FILE = "${gdkPixbufLoadersCache}/lib/gdk-pixbuf-2.0/2.10.0/loaders.cache";
+        };
+
         services = {
           xserver.windowManager.qtile = {
             enable = true;
