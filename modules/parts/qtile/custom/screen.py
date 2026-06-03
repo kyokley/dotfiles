@@ -3,6 +3,8 @@ from pathlib import Path
 
 from libqtile import bar, qtile, widget
 from libqtile.config import Screen
+from libqtile.images import Img
+from libqtile.log_utils import logger
 
 from custom.default import extension_defaults
 from custom.extras.snake import Snake
@@ -28,6 +30,9 @@ from custom.widget import (
     MemoryGraphWidgetBox,
     CustomCPUGraph,
     CPUGraphWidgetBox,
+    WindowNameWidgetBox,
+    LogoImageWidget,
+    LogoTextWidget,
 )
 
 BATTERY_PATHS = [
@@ -81,6 +86,44 @@ def parse_text(text):
     return text
 
 
+def safe_image_widget(filename: Path, **config):
+    """Return an Image widget only if Qtile can decode the file."""
+
+    # Some systems don't have an SVG loader in gdk-pixbuf (librsvg), so try a
+    # sibling PNG first when an SVG path is provided.
+    image_path = filename
+    # if filename.suffix.lower() == ".svg":
+    #     png_fallback = filename.with_suffix(".png")
+    #     if png_fallback.exists():
+    #         image_path = png_fallback
+
+    path = str(image_path)
+
+    try:
+        # Force decode at config load time so bar setup doesn't crash.
+        Img.from_path(path).default_surface
+    except Exception as err:
+        logger.warning(
+            "GDK pixbuf env at runtime: GDK_PIXBUF_MODULE_FILE=%s GDK_PIXBUF_MODULEDIR=%s",
+            os.environ.get("GDK_PIXBUF_MODULE_FILE"),
+            os.environ.get("GDK_PIXBUF_MODULEDIR"),
+        )
+        if image_path != filename:
+            logger.warning(
+                "Skipping image widget (%s, original %s): %s", path, filename, err
+            )
+        else:
+            logger.warning("Skipping image widget (%s): %s", path, err)
+        return LogoTextWidget(
+            "",
+            font=extension_defaults.font,
+            fontsize=extension_defaults.iconsize,
+            debug=True,
+        )
+
+    return LogoImageWidget(filename=path, debug=True, **config)
+
+
 top_widgets = [
     widget.Spacer(length=10),
     CustomWindowNameEndcap(
@@ -91,20 +134,32 @@ top_widgets = [
         padding=0,
         for_current_screen=True,
     ),
-    widget.WindowName(
-        name="WindowName",
-        for_current_screen=True,
-        font=extension_defaults.font,
-        fontsize=extension_defaults.fontsize,
+    safe_image_widget(
+        filename=Path(__file__).parent / "logos" / "nix-snowflake-rainbow.svg",
+        # background="#00000000",
         background=extension_defaults.black,
-        parse_text=parse_text,
-        scroll=True,
-        scroll_delay=0,
-        scroll_interval=0.05,
-        scroll_clear=True,
-        scroll_step=1,
-        width=350,
-        empty_group_string="",
+        margin=5,
+    ),
+    WindowNameWidgetBox(
+        widgets=(
+            widget.WindowName(
+                name="WindowName",
+                for_current_screen=True,
+                font=extension_defaults.font,
+                fontsize=extension_defaults.fontsize,
+                background=extension_defaults.black,
+                parse_text=parse_text,
+                scroll=True,
+                scroll_delay=0,
+                scroll_interval=0.05,
+                scroll_clear=True,
+                scroll_step=1,
+                width=350,
+                empty_group_string="",
+            ),
+        ),
+        text_open="",
+        text_closed="",
     ),
     CustomWindowNameEndcap(
         "",

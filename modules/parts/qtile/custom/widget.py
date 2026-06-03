@@ -26,6 +26,7 @@ from libqtile.widget import (
     DF,
     MemoryGraph,
     CPUGraph,
+    Image,
 )
 from libqtile.widget.battery import BatteryState
 from libqtile.widget.generic_poll_text import GenPollText
@@ -660,7 +661,7 @@ class StandardWidgetBox(WidgetBox):
         font=extension_defaults.font,
         fontsize=extension_defaults.fontsize,
         foreground=extension_defaults.foreground_green,
-        text_closed=None,
+        text_closed="",
         start_opened=True,
         **kwargs,
     ):
@@ -910,15 +911,16 @@ class CustomWindowNameEndcap(TextBox):
         hook.unsubscribe.current_screen_change(self.hook_response_current_screen)
 
     def hook_response(self, *args):
-        if self.for_current_screen:
-            w = self.qtile.current_screen.group.current_window
-        else:
-            w = self.bar.screen.group.current_window
+        pass
+        # if self.for_current_screen:
+        #     w = self.qtile.current_screen.group.current_window
+        # else:
+        #     w = self.bar.screen.group.current_window
 
-        if not w:
-            self.update(" ")
-        else:
-            self.update(self._original_text)
+        # if not w:
+        #     self.update(" ")
+        # else:
+        #     self.update(self._original_text)
 
     def hook_response_current_screen(self, *args):
         if self.for_current_screen:
@@ -1007,3 +1009,37 @@ class CustomCPUGraph(DebugWidgetMixin, CPUGraph):
                 cpu_graph_widget.layout.colour = cpu_graph_widget.default_foreground
                 self._print(f"Display is black {percent=}")
             cpu_graph_widget.bar.draw()
+
+
+class WindowNameWidgetBox(StandardWidgetBox):
+    def __init__(self, start_opened=True, **kwargs):
+        kwargs["name"] = "WindowNameWidgetBox"
+        super().__init__(start_opened=start_opened, **kwargs)
+        self.default_foreground = extension_defaults.black
+
+
+class LogoWidget(DebugWidgetMixin):
+    defaults = [
+        ("debug", False, "Enable additional debugging"),
+    ]
+
+    def __init__(self, **config):
+        super().__init__(**config)
+        self.add_defaults(LogoWidget.defaults)
+        self.default_foreground = extension_defaults.black
+
+    def button_press(self, x, y, button):
+        if button == BUTTON_LEFT:
+            self._print("Got button press")
+            window_name_widget_box = qtile.widgets_map.get("WindowNameWidgetBox")
+            # window_name_widget_box.toggle()
+            window_name_widget_box.close()
+            window_name_widget_box.bar.draw()
+
+
+class LogoImageWidget(Image, LogoWidget):
+    pass
+
+
+class LogoTextWidget(TextBox, LogoWidget):
+    pass
