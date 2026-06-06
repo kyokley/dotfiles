@@ -43,4 +43,8 @@ in
   syncthing-attrs.syncthing-certs
   // syncthing-attrs.syncthing-keys
   // {
+    "opencode_zen.age" = {
+      publicKeys = builtins.attrValues identities;
+      armor = true;
+    };
   }
