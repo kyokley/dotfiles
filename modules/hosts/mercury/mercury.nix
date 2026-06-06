@@ -4,6 +4,7 @@
       opencode
       systemd-services
       syncthing
+      dev
     ];
 
     nixos_imports = with inputs.self.modules.nixos; [
