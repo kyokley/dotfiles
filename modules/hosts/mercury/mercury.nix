@@ -18,7 +18,7 @@
       inputs,
       ...
     }: let
-      MATTERMOST_CLEANUP_RETENTION_WINDOW = "30 days";
+      MATTERMOST_CLEANUP_RETENTION_WINDOW = "90 days";
     in {
       imports = home_imports;
       programs.git.settings.user.email = "kyokley@mercury";
