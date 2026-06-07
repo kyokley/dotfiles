@@ -317,6 +317,7 @@
             reboot-kexec
             toggle-picom
             open-all
+            inputs.fastfetch-config.packages.${pkgs.stdenv.hostPlatform.system}.default
           ];
 
           file = {

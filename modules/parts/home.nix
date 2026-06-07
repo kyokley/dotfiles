@@ -59,7 +59,6 @@
           pkgs.lftp
           pkgs.home-manager
           inputs.nixvim.packages.${pkgs.stdenv.hostPlatform.system}.${nixvim-output}
-          inputs.fastfetch-config.packages.${pkgs.stdenv.hostPlatform.system}.default
         ];
 
         shellAliases = {
