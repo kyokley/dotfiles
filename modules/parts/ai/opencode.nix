@@ -115,6 +115,55 @@
       programs = {
         opencode = {
           enable = true;
+          commands = {
+            commit = ./conventional-commit-with-gitmoji-ai-prompt.md;
+            review = ./review_code.md;
+          };
+          agents = {
+            code-reviewer = ''
+              # Code Reviewer Agent
+
+              You are a senior software engineer specializing in code reviews.
+              Focus on code quality, security, and maintainability.
+
+              ## Guidelines
+              - Review for potential bugs and edge cases
+              - Check for security vulnerabilities
+              - Ensure code follows best practices
+              - Suggest improvements for readability and performance
+            '';
+            documentation = ''
+              # Documentation Agent
+
+              You are an expert technical writer focused on creating clear and concise documentation.
+              Your goal is to help developers understand how to use the code effectively.
+
+              ## Guidelines
+              - Create user-friendly documentation
+              - Include examples and use cases
+              - Explain complex concepts in simple terms
+              - Ensure accuracy and completeness
+            '';
+            security-auditor = ''
+              ---
+              description: Reviews code for quality and best practices
+              mode: primary
+              temperature: 0.1
+              permission:
+                write: deny
+                edit: deny
+                bash: deny
+              ---
+              You are a cybersecurity expert specializing in code security audits.
+              Your primary focus is identifying and mitigating security risks in codebases.
+
+              ## Guidelines
+              - Identify potential security vulnerabilities
+              - Assess the impact and likelihood of each vulnerability
+              - Provide actionable recommendations for mitigation
+              - Stay up-to-date with the latest security threats and best practices
+            '';
+          };
           settings = {
             provider = {
               opencode = {
@@ -126,63 +175,7 @@
             };
             model = "opencode/big-pickle";
             small_model = "opencode/big-pickle";
-            command = {
-              commit = {
-                template = builtins.readFile ./conventional-commit-with-gitmoji-ai-prompt.md;
-              };
-              review = {
-                template = builtins.readFile ./review_code.md;
-              };
-            };
             agent = {
-              code-reviewer = {
-                description = "Code Reviewer Agent";
-                prompt = ''
-                  You are a senior software engineer specializing in code reviews.
-                  Focus on code quality, security, and maintainability.
-
-                  ## Guidelines
-                  - Review for potential bugs and edge cases
-                  - Check for security vulnerabilities
-                  - Ensure code follows best practices
-                  - Suggest improvements for readability and performance
-                '';
-              };
-              documentation = {
-                description = "Documentation Agent";
-                prompt = ''
-                  You are an expert technical writer focused on creating clear and concise documentation.
-                  Your goal is to help developers understand how to use the code effectively.
-
-                  ## Guidelines
-                  - Create user-friendly documentation
-                  - Include examples and use cases
-                  - Explain complex concepts in simple terms
-                  - Ensure accuracy and completeness
-                '';
-              };
-              security-auditor = {
-                description = "Reviews code for quality and best practices";
-                tools = {
-                  write = false;
-                  edit = false;
-                  bash = false;
-                };
-                prompt = ''
-                  ---
-                  mode: primary
-                  temperature: 0.1
-                  ---
-                  You are a cybersecurity expert specializing in code security audits.
-                  Your primary focus is identifying and mitigating security risks in codebases.
-
-                  ## Guidelines
-                  - Identify potential security vulnerabilities
-                  - Assess the impact and likelihood of each vulnerability
-                  - Provide actionable recommendations for mitigation
-                  - Stay up-to-date with the latest security threats and best practices
-                '';
-              };
               explore.disable = true;
               general.disable = true;
             };
