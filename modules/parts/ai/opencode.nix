@@ -9,9 +9,6 @@
     }: let
       bun2nix-lib = inputs.bun2nix.packages.${pkgs.stdenv.hostPlatform.system}.default;
       npm_deps = bun2nix-lib.mkDerivation {
-        # pname = "opencode deps";
-        # version = "1.0.0";
-
         packageJson = ./package.json;
         src = ./.;
 
@@ -22,166 +19,93 @@
         module = "package.json";
       };
 
+      agentDefaults = {
+        orchestrator = {
+          skills = ["*"];
+          mcps = ["*" "!context7"];
+        };
+        oracle = {
+          skills = ["simplify"];
+          mcps = [];
+        };
+        council = {
+          variant = "high";
+          skills = [];
+          mcps = [];
+        };
+        librarian = {
+          skills = [];
+          mcps = ["websearch" "context7" "grep_app"];
+        };
+        explorer = {
+          skills = [];
+          mcps = [];
+        };
+        designer = {
+          variant = "medium";
+          skills = [];
+          mcps = [];
+        };
+        fixer = {
+          skills = [];
+          mcps = [];
+        };
+      };
+      mkPreset = presetConfigs: lib.mapAttrs (name: config: agentDefaults.${name} // config) presetConfigs;
+
       oh_my_opencode_slim = {
         preset = "opencode-free";
         presets = {
-          openai = {
-            orchestrator = {
-              model = "opencode/gpt-5.5";
-              skills = [
-                "*"
-              ];
-              mcps = [
-                "*"
-                "!context7"
-              ];
-            };
+          openai = mkPreset {
+            orchestrator = {model = "opencode/gpt-5.5";};
             oracle = {
               model = "opencode/gpt-5.5";
               variant = "high";
-              skills = [
-                "simplify"
-              ];
-              mcps = [];
             };
             librarian = {
               model = "opencode/gpt-5.4-mini";
               variant = "low";
-              skills = [];
-              mcps = [
-                "websearch"
-                "context7"
-                "grep_app"
-              ];
             };
             explorer = {
               model = "opencode/gpt-5.4-mini";
               variant = "low";
-              skills = [];
-              mcps = [];
             };
-            designer = {
-              model = "opencode/gpt-5.4-mini";
-              variant = "medium";
-              skills = [];
-              mcps = [];
-            };
+            designer = {model = "opencode/gpt-5.4-mini";};
             fixer = {
               model = "opencode/gpt-5.4-mini";
               variant = "low";
-              skills = [];
-              mcps = [];
             };
-            council = {
-              model = "opencode/gpt-5.5";
-              variant = "high";
-              skills = [];
-              mcps = [];
-            };
+            council = {model = "opencode/gpt-5.5";};
           };
-          opencode-go = {
-            orchestrator = {
-              model = "opencode/glm-5.1";
-              skills = [
-                "*"
-              ];
-              mcps = [
-                "*"
-                "!context7"
-              ];
-            };
+          opencode-go = mkPreset {
+            orchestrator = {model = "opencode/glm-5.1";};
             oracle = {
               model = "opencode/glm-5.1";
               variant = "max";
-              skills = [
-                "simplify"
-              ];
-              mcps = [];
             };
-            council = {
-              model = "opencode/glm-5.1";
-              variant = "high";
-              skills = [];
-              mcps = [];
-            };
-            librarian = {
-              model = "opencode/minimax-m2.7";
-              skills = [];
-              mcps = [
-                "websearch"
-                "context7"
-                "grep_app"
-              ];
-            };
-            explorer = {
-              model = "opencode/minimax-m2.7";
-              skills = [];
-              mcps = [];
-            };
-            designer = {
-              model = "opencode/kimi-k2.6";
-              variant = "medium";
-              skills = [];
-              mcps = [];
-            };
+            librarian = {model = "opencode/minimax-m2.7";};
+            explorer = {model = "opencode/minimax-m2.7";};
+            designer = {model = "opencode/kimi-k2.6";};
             fixer = {
               model = "opencode/deepseek-v4-flash";
               variant = "high";
-              skills = [];
-              mcps = [];
             };
+            council = {model = "opencode/glm-5.1";};
           };
-          opencode-free = {
-            orchestrator = {
-              model = "opencode/big-pickle";
-              skills = [
-                "*"
-              ];
-              mcps = [
-                "*"
-                "!context7"
-              ];
-            };
+          opencode-free = mkPreset {
+            orchestrator = {model = "opencode/big-pickle";};
             oracle = {
               model = "opencode/big-pickle";
               variant = "max";
-              skills = [
-                "simplify"
-              ];
-              mcps = [];
             };
-            council = {
-              model = "opencode/big-pickle";
-              variant = "high";
-              skills = [];
-              mcps = [];
-            };
-            librarian = {
-              model = "opencode/minimax-m2.7";
-              skills = [];
-              mcps = [
-                "websearch"
-                "context7"
-                "grep_app"
-              ];
-            };
-            explorer = {
-              model = "opencode/minimax-m2.7";
-              skills = [];
-              mcps = [];
-            };
-            designer = {
-              model = "opencode/kimi-k2.6";
-              variant = "medium";
-              skills = [];
-              mcps = [];
-            };
+            librarian = {model = "opencode/minimax-m2.7";};
+            explorer = {model = "opencode/minimax-m2.7";};
+            designer = {model = "opencode/kimi-k2.6";};
             fixer = {
               model = "opencode/deepseek-v4-flash";
               variant = "high";
-              skills = [];
-              mcps = [];
             };
+            council = {model = "opencode/big-pickle";};
           };
         };
       };
