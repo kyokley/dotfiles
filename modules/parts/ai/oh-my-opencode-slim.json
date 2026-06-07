@@ -1,5 +1,5 @@
 {
-  "preset": "opencode-go",
+  "preset": "opencode-free",
   "presets": {
     "openai": {
       "orchestrator": {
@@ -76,6 +76,58 @@
       },
       "council": {
         "model": "opencode/glm-5.1",
+        "variant": "high",
+        "skills": [],
+        "mcps": []
+      },
+      "librarian": {
+        "model": "opencode/minimax-m2.7",
+        "skills": [],
+        "mcps": [
+          "websearch",
+          "context7",
+          "grep_app"
+        ]
+      },
+      "explorer": {
+        "model": "opencode/minimax-m2.7",
+        "skills": [],
+        "mcps": []
+      },
+      "designer": {
+        "model": "opencode/kimi-k2.6",
+        "variant": "medium",
+        "skills": [],
+        "mcps": []
+      },
+      "fixer": {
+        "model": "opencode/deepseek-v4-flash",
+        "variant": "high",
+        "skills": [],
+        "mcps": []
+      }
+    },
+    "opencode-free": {
+      "orchestrator": {
+        "model": "opencode/big-pickle",
+        "skills": [
+          "*"
+        ],
+        "mcps": [
+          "*",
+          "!context7"
+        ]
+      },
+      "oracle": {
+        "model": "opencode/big-pickle",
+        "variant": "max",
+        "skills": [
+          "simplify"
+        ],
+        "mcps": []
+      },
+      "council": {
+        "model": "opencode/big-pickle",
         "variant": "high",
         "skills": [],
         "mcps": []
