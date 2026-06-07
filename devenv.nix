@@ -9,7 +9,10 @@
   # env.GREET = "devenv";
 
   # https://devenv.sh/packages/
-  # packages = [ pkgs.git ];
+  packages = [
+    pkgs.bun
+    inputs.bun2nix.packages.${pkgs.stdenv.hostPlatform.system}.default
+  ];
 
   # https://devenv.sh/languages/
   # languages.rust.enable = true;

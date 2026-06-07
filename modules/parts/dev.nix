@@ -8,7 +8,6 @@
         pkgs.jq
         pkgs.devenv
         pkgs.direnv
-        pkgs.gh
         inputs.usql.packages.${pkgs.stdenv.hostPlatform.system}.default
       ];
 

@@ -43,4 +43,14 @@ in
   syncthing-attrs.syncthing-certs
   // syncthing-attrs.syncthing-keys
   // {
+    "opencode_zen.age" = {
+      publicKeys = map (host: identities.${host}) [
+        "dioxygen"
+        "jupiter"
+        "mars"
+        "mercury"
+        "venus"
+      ];
+      armor = true;
+    };
   }
