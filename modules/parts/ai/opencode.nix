@@ -109,12 +109,21 @@
           };
         };
       };
+      zen_key_path = "${config.home.homeDirectory}/.config/opencode/zen.key";
     in {
       imports = [inputs.self.modules.homeManager.gitoc];
       programs = {
         opencode = {
           enable = true;
           settings = {
+            provider = {
+              opencode = {
+                options = {
+                  apiKey = "{file:${zen_key_path}}";
+                  baseUrl = "https://opencode.ai/zen/v1";
+                };
+              };
+            };
             model = "opencode/big-pickle";
             small_model = "opencode/big-pickle";
             command = {
@@ -181,6 +190,13 @@
               "oh-my-opencode-slim"
             ];
           };
+        };
+      };
+
+      age.secrets = {
+        opencode-zen = {
+          file = ../_secrets/opencode_zen.age;
+          path = zen_key_path;
         };
       };
 
