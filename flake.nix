@@ -19,6 +19,7 @@
 
     nixvim = {
       url = "github:kyokley/nixvim";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     usql = {
@@ -31,12 +32,14 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    opencode-config = {
-      url = "github:kyokley/opencode-config";
-    };
-
     fastfetch-config = {
       url = "github:kyokley/fastfetch-config";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    bun2nix = {
+      url = "github:nix-community/bun2nix";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
