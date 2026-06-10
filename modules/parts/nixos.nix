@@ -87,6 +87,11 @@
         boot = {
           initrd.systemd.network.wait-online.enable = false;
           tmp.cleanOnBoot = true;
+          kernel.sysctl = {
+            max_user_watches = 524288;
+            max_user_instances = 8192;
+            max_queued_events = 32768;
+          };
         };
 
         # Set your time zone.
