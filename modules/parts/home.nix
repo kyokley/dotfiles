@@ -77,6 +77,10 @@
           };
           flake = lib.mkDefault "${homeDirectory}/dotfiles";
         };
+        zoxide = {
+          enable = true;
+          enableZshIntegration = true;
+        };
       };
     };
   };
