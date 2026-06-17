@@ -31,6 +31,8 @@
         ../dioxygen/dioxygen-root.pub
         ./saturn.pub
         ./saturn-root.pub
+        ../jupiter/jupiter.pub
+        ../jupiter/jupiter-root.pub
       ];
     };
   };
