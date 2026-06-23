@@ -5,7 +5,7 @@
     "": {
       "name": "opencode",
       "dependencies": {
-        "oh-my-opencode-slim": "^2.0.4",
+        "oh-my-opencode-slim": "^2.0.5",
       },
     },
   },
