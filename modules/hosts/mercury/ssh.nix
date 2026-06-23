@@ -8,7 +8,7 @@
       openFirewall = true;
       listenAddresses = [
         {
-          addr = "192.168.50.31";
+          addr = "0.0.0.0";
           port = sshd_port;
         }
       ];
