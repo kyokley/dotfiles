@@ -7,9 +7,9 @@
   }: let
     homeDir = "/home/${username}";
   in {
-    imports = [
-      inputs.self.modules.homeManager.distributedBuilds
-      inputs.self.modules.homeManager.systemd-services
+    imports = with inputs.self.modules.homeManager; [
+      distributedBuilds
+      systemd-services
     ];
 
     home.packages = [
@@ -48,7 +48,13 @@
             Type = "oneshot";
             ExecStart = toString (
               pkgs.writeShellScript "borg-update-script" ''
-                PATH=$PATH:${lib.makeBinPath [pkgs.nix pkgs.coreutils pkgs.busybox]}
+                PATH=$PATH:${
+                  lib.makeBinPath [
+                    pkgs.nix
+                    pkgs.coreutils
+                    pkgs.busybox
+                  ]
+                }
                 ${pkgs.borgmatic}/bin/borgmatic create --stats
               ''
             );
@@ -120,15 +126,13 @@
         };
       };
 
-      zsh.prezto.extraConfig =
-        lib.mkAfter
-        ''
-          function mc-run() {
-              cd ${homeDir}/workspace/MediaConverterProd
-              make run
-              cd -
-          }
-        '';
+      zsh.prezto.extraConfig = lib.mkAfter ''
+        function mc-run() {
+            cd ${homeDir}/workspace/MediaConverterProd
+            make run
+            cd -
+        }
+      '';
     };
 
     home.stateVersion = "23.11"; # Please read the comment before changing.

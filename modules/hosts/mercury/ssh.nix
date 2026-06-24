@@ -33,6 +33,7 @@
         ./saturn-root.pub
         ../jupiter/jupiter.pub
         ../jupiter/jupiter-root.pub
+        ../venus/venus.pub
       ];
     };
   };

@@ -8,6 +8,7 @@
     imports = with inputs.self.modules.homeManager; [
       systemd-services
       syncthing
+      distributedBuilds
     ];
 
     programs = {
