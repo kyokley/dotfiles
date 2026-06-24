@@ -972,9 +972,9 @@
     url = "https://registry.npmjs.org/object-inspect/-/object-inspect-1.13.4.tgz";
     hash = "sha512-W67iLl4J2EXEGTbfeHCffrjDfitvLANg0UlX3wFUUSTx92KXRFegMHUVgSqE+wvhAbi4WqjGg9czysTV2Epbew==";
   };
-  "oh-my-opencode-slim@2.0.4" = fetchurl {
-    url = "https://registry.npmjs.org/oh-my-opencode-slim/-/oh-my-opencode-slim-2.0.4.tgz";
-    hash = "sha512-HNQUJN8Fa3r2flm3aT0Dtzfn5tiHBXAzeTz9UOGhcZsPRCHsxCHG3iSYvIhKoEuYnjHBSLXzANg/BQc5WfYAJQ==";
+  "oh-my-opencode-slim@2.0.5" = fetchurl {
+    url = "https://registry.npmjs.org/oh-my-opencode-slim/-/oh-my-opencode-slim-2.0.5.tgz";
+    hash = "sha512-ePZ5oFH1L1f61YJO3gJMRwtJLUNdChNSAbFt8paZ8L52dyyFKXbmDT3NzYSfpKCi0VLpOaqmLn9mNYqTxw95Bg==";
   };
   "omggif@1.0.10" = fetchurl {
     url = "https://registry.npmjs.org/omggif/-/omggif-1.0.10.tgz";
