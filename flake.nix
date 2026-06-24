@@ -18,7 +18,7 @@
     };
 
     nixvim = {
-      url = "github:kyokley/nixvim/opencode";
+      url = "github:kyokley/nixvim";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
