@@ -54,7 +54,7 @@
       fi
 
       if [[ "$dry_run" != true ]]; then
-          message="$(${pkgs.opencode}/bin/opencode --log-level INFO run --command commit 2>/dev/null)"
+          message="$(git diff --staged | ${pkgs.opencode}/bin/opencode --log-level INFO run --command commit 2>/dev/null)"
           echo "$message"
           echo
           echo
