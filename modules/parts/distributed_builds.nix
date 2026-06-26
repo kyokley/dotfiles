@@ -16,7 +16,8 @@
           StrictHostKeyChecking=accept-new
     '';
 
-    distributed_build_conf = {username, ...}: {
+    # Daemon-level settings — only applies in NixOS context where user is trusted
+    nixos_distributed_build_conf = {username, ...}: {
       nix = {
         buildMachines = [
           (mkMachine username "bangup.dyndns.org")
@@ -29,8 +30,14 @@
 
       programs.ssh.extraConfig = ssh_conf;
     };
+
+    # User-level settings only — daemon settings like buildMachines, builders-use-substitutes
+    # require trusted-user status and can't be set via home-manager on non-NixOS systems
+    hm_distributed_build_conf = {username, ...}: {
+      programs.ssh.extraConfig = ssh_conf;
+    };
   in {
-    nixos.distributedBuilds = distributed_build_conf;
-    homeManager.distributedBuilds = distributed_build_conf;
+    nixos.distributedBuilds = nixos_distributed_build_conf;
+    homeManager.distributedBuilds = hm_distributed_build_conf;
   };
 }
