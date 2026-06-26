@@ -28,13 +28,31 @@
         '';
       };
 
-      programs.ssh.extraConfig = ssh_conf;
+      programs.ssh = {
+        extraConfig = ssh_conf;
+      };
     };
 
     # User-level settings only — daemon settings like buildMachines, builders-use-substitutes
     # require trusted-user status and can't be set via home-manager on non-NixOS systems
     hm_distributed_build_conf = {username, ...}: {
-      programs.ssh.extraConfig = ssh_conf;
+      programs.ssh = {
+        enable = true;
+        extraConfig = ssh_conf;
+        enableDefaultConfig = false;
+        settings."*" = {
+          ForwardAgent = false;
+          AddKeysToAgent = "no";
+          Compression = false;
+          ServerAliveInterval = 0;
+          ServerAliveCountMax = 3;
+          HashKnownHosts = false;
+          UserKnownHostsFile = "~/.ssh/known_hosts";
+          ControlMaster = "no";
+          ControlPath = "~/.ssh/master-%r@%n:%p";
+          ControlPersist = "no";
+        };
+      };
     };
   in {
     nixos.distributedBuilds = nixos_distributed_build_conf;
