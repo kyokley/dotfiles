@@ -61,7 +61,7 @@
         ];
 
         shellAliases = {
-          home-manager-switch = "home-manager switch --refresh --flake 'github:kyokley/dotfiles#${hostName}'";
+          home-manager-switch = "home-manager switch --refresh --flake 'github:kyokley/dotfiles#${username}@${hostName}'";
           ls = "ls --color=auto";
         };
       };
