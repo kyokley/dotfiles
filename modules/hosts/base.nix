@@ -18,26 +18,26 @@ in {
     };
 
     homeConfigurations = {
-      dioxygen = mkHomeConfiguration {
+      "yokley@dioxygen" = mkHomeConfiguration {
         system = aarch64_darwin;
         hostName = "dioxygen";
       };
 
-      venus = mkHomeConfiguration {
+      "yokley@venus" = mkHomeConfiguration {
         hostName = "venus";
         nixvim-output = "minimal";
       };
 
-      almagest = mkHomeConfiguration {
+      "yokley@almagest" = mkHomeConfiguration {
         hostName = "almagest";
         nixvim-output = "withoutCopilot";
       };
 
-      jupiter = mkHomeConfiguration {
+      "yokley@jupiter" = mkHomeConfiguration {
         hostName = "jupiter";
       };
 
-      singularity = mkHomeConfiguration {
+      "yokley@singularity" = mkHomeConfiguration {
         hostName = "singularity";
         nixvim-output = "minimal";
       };
