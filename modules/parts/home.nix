@@ -54,6 +54,7 @@
           pkgs.fzf
           pkgs.unzip
           pkgs.zsh
+          pkgs.nix
           pkgs.nix-search-cli
           pkgs.lftp
           pkgs.home-manager
