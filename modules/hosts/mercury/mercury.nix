@@ -11,7 +11,7 @@
       tailscale
     ];
   in {
-    homeManager.mercury = {
+    homeManager."yokley@mercury" = {
       pkgs,
       config,
       username,

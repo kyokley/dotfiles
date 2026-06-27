@@ -1,5 +1,5 @@
 {
-  flake.modules.homeManager.singularity = {inputs, ...}: {
+  flake.modules.homeManager."yokley@singularity" = {inputs, ...}: {
     imports = with inputs.self.modules.homeManager; [
       systemd-services
       opencode

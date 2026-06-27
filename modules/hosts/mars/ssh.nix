@@ -1,6 +1,6 @@
 {
   flake.modules = {
-    homeManager.mars = {
+    homeManager."yokley@mars" = {
       programs.ssh = {
         enable = true;
         extraConfig = ''

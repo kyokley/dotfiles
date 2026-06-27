@@ -1,5 +1,5 @@
 {
-  flake.modules.homeManager.dioxygen = {
+  flake.modules.homeManager."yokley@dioxygen" = {
     inputs,
     pkgs,
     lib,

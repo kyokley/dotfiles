@@ -1,5 +1,5 @@
 {inputs, ...}: {
-  flake.modules.homeManager.jupiter = {
+  flake.modules.homeManager."yokley@jupiter" = {
     pkgs,
     lib,
     username,

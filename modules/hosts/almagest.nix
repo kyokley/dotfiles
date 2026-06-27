@@ -1,5 +1,5 @@
 {
-  flake.modules.homeManager.almagest = {
+  flake.modules.homeManager."yokley@almagest" = {
     inputs,
     pkgs,
     lib,

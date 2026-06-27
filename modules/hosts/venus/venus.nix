@@ -1,5 +1,5 @@
 {
-  flake.modules.homeManager.venus = {
+  flake.modules.homeManager."yokley@venus" = {
     inputs,
     pkgs,
     config,

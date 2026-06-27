@@ -18,7 +18,7 @@ in {
       };
       extraSpecialArgs = {inherit inputs username nixvim-output hostName;};
       modules = [
-        inputs.self.modules.homeManager.${hostName}
+        inputs.self.modules.homeManager."${username}@${hostName}"
         inputs.self.modules.homeManager.common
       ];
     };
@@ -37,7 +37,7 @@ in {
         inputs.home-manager.nixosModules.home-manager
         {
           home-manager.users.${username} = inputs.nixpkgs.lib.mkMerge [
-            inputs.self.modules.homeManager.${hostName}
+            inputs.self.modules.homeManager."${username}@${hostName}"
             inputs.self.modules.homeManager.common
             inputs.self.modules.homeManager.nixos
           ];

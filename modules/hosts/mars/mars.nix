@@ -14,7 +14,7 @@
   ];
 in {
   flake.modules = {
-    homeManager.mars = {
+    homeManager."yokley@mars" = {
       pkgs,
       lib,
       username,

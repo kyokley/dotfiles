@@ -1,5 +1,5 @@
 {
-  flake.modules.homeManager.dioxygen = {pkgs, ...}: {
+  flake.modules.homeManager."yokley@dioxygen" = {pkgs, ...}: {
     programs.opencode = {
       extraPackages = [pkgs.uv];
       settings = {
