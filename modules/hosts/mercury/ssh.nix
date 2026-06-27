@@ -34,6 +34,7 @@
         ../jupiter/jupiter.pub
         ../jupiter/jupiter-root.pub
         ../venus/venus.pub
+        ../almagest/almagest.pub
       ];
     };
   };
