@@ -30,7 +30,6 @@ in {
 
       "yokley@almagest" = mkHomeConfiguration {
         hostName = "almagest";
-        nixvim-output = "withoutCopilot";
       };
 
       "yokley@jupiter" = mkHomeConfiguration {
