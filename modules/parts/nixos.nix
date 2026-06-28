@@ -1,17 +1,12 @@
 {
-  inputs,
-  config,
-  ...
-}: {
   flake.modules = {
-    nixos = rec {
+    nixos = {
       common = {
         pkgs,
         lib,
         username,
         hostName,
         inputs,
-        options,
         ...
       }: {
         imports = [

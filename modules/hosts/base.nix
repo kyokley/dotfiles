@@ -21,6 +21,7 @@ in {
       "yokley@dioxygen" = mkHomeConfiguration {
         system = aarch64_darwin;
         hostName = "dioxygen";
+        nixvim-output = "yokley@dioxygen";
       };
 
       "yokley@venus" = mkHomeConfiguration {
