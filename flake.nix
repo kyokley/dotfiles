@@ -18,7 +18,7 @@
     };
 
     nixvim = {
-      url = "github:kyokley/nixvim";
+      url = "github:kyokley/nixvim/progress";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
