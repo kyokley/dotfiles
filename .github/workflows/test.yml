@@ -25,10 +25,10 @@ jobs:
     strategy:
       matrix:
         host:
-          - venus
-          - almagest
-          - jupiter
-          - singularity
+          - yokley@venus
+          - yokley@almagest
+          - yokley@jupiter
+          - yokley@singularity
     steps:
       - uses: actions/checkout@v4
       - uses: wimpysworld/nothing-but-nix@main
