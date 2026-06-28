@@ -1,7 +1,5 @@
 {
   pkgs,
-  lib,
-  config,
   inputs,
   ...
 }: {
@@ -24,14 +22,16 @@
   # services.postgres.enable = true;
 
   # https://devenv.sh/scripts/
-  # scripts.hello.exec = ''
-  #   echo hello from $GREET
-  # '';
+  scripts.hello.exec = ''
+    echo
+    echo "Welcome to"
+    echo "Yokley's Dots" | ${pkgs.figlet}/bin/figlet -f slant | ${pkgs.lolcat}/bin/lolcat
+    echo
+  '';
 
-  # enterShell = ''
-  #   hello
-  #   git --version
-  # '';
+  enterShell = ''
+    hello
+  '';
 
   # https://devenv.sh/tasks/
   # tasks = {
