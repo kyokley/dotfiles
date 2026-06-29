@@ -5,8 +5,8 @@
       lib,
       username,
       nixvim-output,
-      hostName,
       inputs,
+      config,
       ...
     }: let
       # Home Manager needs a bit of information about you and the paths it should
@@ -18,6 +18,7 @@
         settings = {
           experimental-features = ["nix-command" "flakes"];
         };
+        nixPath = ["nixpkgs=${inputs.nixpkgs}"];
       };
 
       nixpkgs = {
@@ -75,7 +76,7 @@
             enable = true;
             dates = "weekly";
           };
-          flake = lib.mkDefault "${homeDirectory}/dotfiles";
+          flake = lib.mkDefault "${config.home.homeDirectory}/dotfiles";
         };
         zoxide = {
           enable = true;

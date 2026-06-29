@@ -10,7 +10,6 @@ in {
     nixvim-output ? "default",
     hostName,
     username ? defaultUsername,
-    extraModules ? [],
   }:
     inputs.home-manager.lib.homeManagerConfiguration {
       pkgs = import inputs.nixpkgs {
@@ -28,7 +27,6 @@ in {
     nixvim-output ? "default",
     hostName,
     username ? defaultUsername,
-    extraModules ? [],
   }:
     inputs.nixpkgs.lib.nixosSystem {
       inherit system;

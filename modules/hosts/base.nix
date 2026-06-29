@@ -21,6 +21,7 @@ in {
       "yokley@dioxygen" = mkHomeConfiguration {
         system = aarch64_darwin;
         hostName = "dioxygen";
+        nixvim-output = "yokley@dioxygen";
       };
 
       "yokley@venus" = mkHomeConfiguration {
@@ -39,6 +40,11 @@ in {
       "yokley@singularity" = mkHomeConfiguration {
         hostName = "singularity";
         nixvim-output = "minimal";
+      };
+
+      # Output added to support nixd
+      "yokley@mars" = mkHomeConfiguration {
+        hostName = "mars";
       };
     };
   };
