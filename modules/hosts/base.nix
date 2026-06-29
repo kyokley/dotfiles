@@ -41,6 +41,11 @@ in {
         hostName = "singularity";
         nixvim-output = "minimal";
       };
+
+      # Output added to support nixd
+      "yokley@mars" = mkHomeConfiguration {
+        hostName = "mars";
+      };
     };
   };
 }
