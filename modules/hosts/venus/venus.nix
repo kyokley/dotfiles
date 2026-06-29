@@ -1,8 +1,6 @@
 {
   flake.modules.homeManager."yokley@venus" = {
     inputs,
-    pkgs,
-    config,
     ...
   }: {
     imports = with inputs.self.modules.homeManager; [

@@ -7,7 +7,7 @@
   inherit (generators) mkHomeConfiguration mkNixosConfiguration;
 in {
   flake = {
-    nixosConfigurations = {
+    nixosConfigurations = rec {
       mars = mkNixosConfiguration {
         hostName = "mars";
       };
@@ -15,13 +15,14 @@ in {
       mercury = mkNixosConfiguration {
         hostName = "mercury";
       };
+
+      default = mars;
     };
 
     homeConfigurations = {
       "yokley@dioxygen" = mkHomeConfiguration {
         system = aarch64_darwin;
         hostName = "dioxygen";
-        nixvim-output = "yokley@dioxygen";
       };
 
       "yokley@venus" = mkHomeConfiguration {
@@ -43,7 +44,7 @@ in {
       };
 
       # Output added to support nixd
-      "yokley@mars" = mkHomeConfiguration {
+      default = mkHomeConfiguration {
         hostName = "mars";
       };
     };
