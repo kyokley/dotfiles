@@ -44,15 +44,6 @@
           };
         };
 
-        nixpkgs.overlays = [
-          (final: prev: {
-            qtile = prev.qtile.overrideAttrs (_: {
-              pytestCheckPhase = ":";
-              doCheck = false;
-            });
-          })
-        ];
-
         # Enable networking
         networking = {
           inherit hostName;

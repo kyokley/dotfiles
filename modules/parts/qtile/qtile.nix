@@ -1,4 +1,4 @@
-{inputs, ...}: let
+let
   mkGdkPixbufLoadersCache = pkgs: let
     gdkPixbufLoaderDir = "${pkgs.gdk-pixbuf}/lib/gdk-pixbuf-2.0/2.10.0/loaders";
     rsvgLoaderDir = "${pkgs.librsvg}/lib/gdk-pixbuf-2.0/2.10.0/loaders";
@@ -59,6 +59,10 @@ in {
         services = {
           xserver.windowManager.qtile = {
             enable = true;
+            package = pkgs.python3.pkgs.qtile.overrideAttrs (_: {
+              doInstallCheck = false;
+              dontUsePytestCheck = true;
+            });
             extraPackages = python3Packages:
               with python3Packages; [
                 requests
