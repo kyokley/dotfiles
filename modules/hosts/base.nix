@@ -3,6 +3,7 @@
   generators,
   ...
 }: let
+  inherit (constants) defaultUsername;
   inherit (constants.systems) aarch64_darwin;
   inherit (generators) mkHomeConfiguration mkNixosConfiguration;
 in {
@@ -20,25 +21,25 @@ in {
     };
 
     homeConfigurations = {
-      "yokley@dioxygen" = mkHomeConfiguration {
+      "${defaultUsername}@dioxygen" = mkHomeConfiguration {
         system = aarch64_darwin;
         hostName = "dioxygen";
       };
 
-      "yokley@venus" = mkHomeConfiguration {
+      "${defaultUsername}@venus" = mkHomeConfiguration {
         hostName = "venus";
         nixvim-output = "minimal";
       };
 
-      "yokley@almagest" = mkHomeConfiguration {
+      "${defaultUsername}@almagest" = mkHomeConfiguration {
         hostName = "almagest";
       };
 
-      "yokley@jupiter" = mkHomeConfiguration {
+      "${defaultUsername}@jupiter" = mkHomeConfiguration {
         hostName = "jupiter";
       };
 
-      "yokley@singularity" = mkHomeConfiguration {
+      "${defaultUsername}@singularity" = mkHomeConfiguration {
         hostName = "singularity";
         nixvim-output = "minimal";
       };
