@@ -161,10 +161,12 @@ in {
         # When building with `nh os build-vm` (or nixos-rebuild build-vm),
         # default to Hyprland instead of Qtile, and configure the virtual GPU
         # so Hyprland can actually render.
-        services.displayManager.defaultSession = "hyprland";
+        services.displayManager.defaultSession = "hyprland-uwsm";
 
         virtualisation.qemu.options = [
-          # Enable virgl (virtio GPU with GL) so Hyprland gets a working DRM device
+          # Disable the default VGA (-vga std) and use virtio-vga-gl instead.
+          # This gives Hyprland a working DRM device via virgl (GL acceleration).
+          "-vga none"
           "-device virtio-vga-gl"
           "-display gtk,gl=on,show-cursor=off"
         ];
@@ -174,7 +176,15 @@ in {
           WLR_NO_HARDWARE_CURSORS = "1";
           # Fall back to software rendering if virgl isn't available
           WLR_RENDERER_ALLOW_SOFTWARE = "1";
+          # Allow aquamarine backend to start without KMS if needed
+          AQ_NO_KMS_REQUIREMENT = "1";
         };
+
+        # Hyprland crashes on NixOS if /usr/share/icons doesn't exist.
+        # In a VM, this path may not be present by default.
+        systemd.tmpfiles.rules = [
+          "d /usr/share/icons 0755 root root -"
+        ];
       };
     };
   };
