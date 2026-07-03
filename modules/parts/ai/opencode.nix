@@ -182,6 +182,11 @@
             plugin = [
               "oh-my-opencode-slim"
             ];
+            permission = {
+              external_directory = {
+                "/nix/store/**" = "allow";
+              };
+            };
           };
         };
       };
