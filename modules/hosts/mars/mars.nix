@@ -156,6 +156,26 @@ in {
       nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
       hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
       hardware.graphics.enable32Bit = true;
+
+      virtualisation.vmVariant = {
+        # When building with `nh os build-vm` (or nixos-rebuild build-vm),
+        # default to Hyprland instead of Qtile, and configure the virtual GPU
+        # so Hyprland can actually render.
+        services.displayManager.defaultSession = "hyprland";
+
+        virtualisation.qemu.options = [
+          # Enable virgl (virtio GPU with GL) so Hyprland gets a working DRM device
+          "-device virtio-vga-gl"
+          "-display gtk,gl=on,show-cursor=off"
+        ];
+
+        environment.sessionVariables = {
+          # virtio-gpu doesn't support hardware cursors
+          WLR_NO_HARDWARE_CURSORS = "1";
+          # Fall back to software rendering if virgl isn't available
+          WLR_RENDERER_ALLOW_SOFTWARE = "1";
+        };
+      };
     };
   };
 }

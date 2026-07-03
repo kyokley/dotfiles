@@ -14,17 +14,14 @@
           # inputs.self.modules.nixos.flatpak
 
           # Uncomment below to set default password for build-vm
-          # (
-          #   ({
-          #     options,
-          #     lib,
-          #     ...
-          #   }:
-          #     lib.mkIf (options ? virtualisation.memorySize) {
-          #       users.users.${username}.password = "wert66";
-          #     })
-          #   {inherit options lib;}
-          # )
+          ({
+            options,
+            lib,
+            ...
+          }:
+            lib.mkIf (options ? virtualisation.memorySize) {
+              users.users.${username}.password = "wert66";
+            })
         ];
 
         nix = {
