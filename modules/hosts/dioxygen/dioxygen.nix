@@ -1,10 +1,6 @@
 {
   flake.modules.homeManager."yokley@dioxygen" = {
     inputs,
-    pkgs,
-    lib,
-    username,
-    config,
     ...
   }: {
     imports = with inputs.self.modules.homeManager; [
@@ -15,7 +11,6 @@
     ];
 
     home = {
-      homeDirectory = "/Users/${username}";
       stateVersion = "24.05";
     };
 
@@ -34,16 +29,5 @@
       '';
     };
 
-    nixpkgs.overlays = [
-      (final: prev: {
-        direnv = prev.direnv.overrideAttrs (_: {
-          doCheck = false;
-        });
-      })
-    ];
-
-    services = {
-      home-manager.autoUpgrade.enable = false;
-    };
   };
 }

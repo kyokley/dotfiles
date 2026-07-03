@@ -20,6 +20,9 @@ in {
       default = mars;
     };
 
+    darwinConfigurations = {
+    };
+
     homeConfigurations = {
       "${defaultUsername}@dioxygen" = mkHomeConfiguration {
         system = aarch64_darwin;
