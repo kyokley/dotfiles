@@ -157,34 +157,78 @@ in {
       hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
       hardware.graphics.enable32Bit = true;
 
-      virtualisation.vmVariant = {
-        # When building with `nh os build-vm` (or nixos-rebuild build-vm),
-        # default to Hyprland instead of Qtile, and configure the virtual GPU
-        # so Hyprland can actually render.
-        services.displayManager.defaultSession = "hyprland-uwsm";
+      virtualisation = {
+        vmVariant = {
+          lib,
+          config,
+          pkgs,
+          ...
+        }: {
+          # Disable the X server and display manager (LightDM) — it fails to
+          # start Hyprland in the VM (session wrapper issue). Instead, use TTY
+          # autologin and start Hyprland directly from the shell on tty1.
+          services.xserver.enable = lib.mkForce false;
+          services.xserver.displayManager.lightdm.enable = lib.mkForce false;
+          services.displayManager.enable = lib.mkForce false;
+          # Resolve priority conflict with nixos.nix's lightdm.enableGnomeKeyring = true
+          security.pam.services.lightdm.enableGnomeKeyring = lib.mkForce false;
+          services.getty.autologinUser = "yokley";
 
-        virtualisation.qemu.options = [
-          # Disable the default VGA (-vga std) and use virtio-vga-gl instead.
-          # This gives Hyprland a working DRM device via virgl (GL acceleration).
-          "-vga none"
-          "-device virtio-vga-gl"
-          "-display gtk,gl=on,show-cursor=off"
-        ];
+          # Hyprland crashes on NixOS if /usr/share/icons doesn't exist.
+          # In a VM, this path may not be present by default.
+          systemd.tmpfiles.rules = [
+            "d /usr/share/icons 0755 root root -"
+          ];
 
-        environment.sessionVariables = {
-          # virtio-gpu doesn't support hardware cursors
-          WLR_NO_HARDWARE_CURSORS = "1";
-          # Fall back to software rendering if virgl isn't available
-          WLR_RENDERER_ALLOW_SOFTWARE = "1";
-          # Allow aquamarine backend to start without KMS if needed
-          AQ_NO_KMS_REQUIREMENT = "1";
+          # Set env vars that Hyprland/aquamarine need
+          # to function with virtio GPUs.  These are set at the system
+          # level via PAM (environment.sessionVariables) so they're
+          # inherited before the compositor backend initializes.
+          environment.sessionVariables = {
+            WLR_NO_HARDWARE_CURSORS = "1";
+            WLR_RENDERER_ALLOW_SOFTWARE = "1";
+            AQ_NO_KMS_REQUIREMENT = "1";
+          };
+
+          # On tty1 autologin, start Hyprland directly from the shell
+          # (bypassing LightDM's session wrapper which was failing).
+          environment.shellInit = ''
+            if [ "$(tty)" = "/dev/tty1" ] && [ -z "$_HYPRLAND_STARTED" ]; then
+              export _HYPRLAND_STARTED=1
+              export WLR_NO_HARDWARE_CURSORS=1
+              export WLR_RENDERER_ALLOW_SOFTWARE=1
+              export AQ_NO_KMS_REQUIREMENT=1
+              exec start-hyprland
+            fi
+          '';
+
+          # Forward host:2222 → guest:22 for SSH debugging
+          virtualisation.forwardPorts = [
+            {
+              from = "host";
+              host.port = 2222;
+              guest.port = 22;
+            }
+          ];
+
+          # Enable SSH so we can debug session failures from outside
+          services.openssh = {
+            enable = true;
+            settings = {
+              PasswordAuthentication = true;
+              PermitRootLogin = "yes";
+              UseDns = false;
+            };
+          };
+
+          virtualisation.qemu.options = [
+            # Disable the default VGA (-vga std) and use virtio-vga-gl instead.
+            # This gives Hyprland a working DRM device via virgl (GL acceleration).
+            "-vga none"
+            "-device virtio-vga-gl"
+            "-display gtk,gl=on,show-cursor=off"
+          ];
         };
-
-        # Hyprland crashes on NixOS if /usr/share/icons doesn't exist.
-        # In a VM, this path may not be present by default.
-        systemd.tmpfiles.rules = [
-          "d /usr/share/icons 0755 root root -"
-        ];
       };
     };
   };
