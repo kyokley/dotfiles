@@ -1,5 +1,6 @@
 {
-  flake.modules.homeManager."yokley@dioxygen" = {
+  flake.modules = {
+  homeManager."yokley@dioxygen" = {
     inputs,
     ...
   }: {
@@ -29,5 +30,11 @@
       '';
     };
 
+  };
+
+};
+
+  darwin.dioxygen = {
+    programs.zsh.enable = true;
   };
 }
