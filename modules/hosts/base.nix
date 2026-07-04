@@ -28,11 +28,6 @@ in {
     };
 
     homeConfigurations = {
-      "${defaultUsername}@dioxygen" = mkHomeConfiguration {
-        system = aarch64_darwin;
-        hostName = "dioxygen";
-      };
-
       "${defaultUsername}@venus" = mkHomeConfiguration {
         hostName = "venus";
         nixvim-output = "minimal";
