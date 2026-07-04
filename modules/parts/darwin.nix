@@ -1,6 +1,11 @@
 {
   flake.modules = {
-    darwin.common = {
+    darwin.common = {username, ...}: {
+      programs.zsh.enable = true;
+      users.users.${username} = {
+        home = "/Users/${username}";
+        uid = 501;
+      };
     };
 
     homeManager.darwin = {username, ...}: {
