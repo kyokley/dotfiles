@@ -63,7 +63,7 @@
         ];
 
         shellAliases = {
-          home-manager-switch = "nh home switch";
+          home-manager-switch = lib.mkDefault "nh home switch";
           ls = "ls --color=auto";
         };
       };
