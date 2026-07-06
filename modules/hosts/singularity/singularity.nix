@@ -1,7 +1,6 @@
 let
-host = "yokley@singularity";
-in
-{
+  host = "yokley@singularity";
+in {
   flake.modules.homeManager.${host} = {inputs, ...}: {
     imports = with inputs.self.modules.homeManager; [
       systemd-services
