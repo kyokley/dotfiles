@@ -278,7 +278,7 @@
           fi
         '';
         open-all = pkgs.writeScriptBin "open" ''
-          for file in $@
+          for file in "$@"
           do
             xdg-open "$file"
           done
