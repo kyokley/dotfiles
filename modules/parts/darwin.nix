@@ -1,6 +1,8 @@
 {
   flake.modules = {
     darwin.common = {username, ...}: {
+      nixpkgs.config.allowBroken = true;
+
       programs.zsh.enable = true;
       ids.gids.nixbld = 30000;
 
@@ -27,21 +29,24 @@
     };
 
     homeManager.darwin = {username, ...}: {
-      home = {
-        homeDirectory = "/Users/${username}";
+      home.homeDirectory = "/Users/${username}";
+
+      nixpkgs = {
+        overlays = [
+          (final: prev: {
+            direnv = prev.direnv.overrideAttrs (_: {
+              doCheck = false;
+            });
+          })
+        ];
+        config = {
+          allowBroken = true;
+          allowUnfree = true;
+          allowUnfreePredicate = pkg: true;
+        };
       };
 
-      nixpkgs.overlays = [
-        (final: prev: {
-          direnv = prev.direnv.overrideAttrs (_: {
-            doCheck = false;
-          });
-        })
-      ];
-
-      services = {
-        home-manager.autoUpgrade.enable = false;
-      };
+      services.home-manager.autoUpgrade.enable = false;
     };
   };
 }
