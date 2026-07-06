@@ -68,6 +68,26 @@
         "type": "github"
       }
     },
+    "darwin_2": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1781761792,
+        "narHash": "sha256-rCPytmKNjctLloB6UgK5CRrHSwV4b0ygxtJLPPp8R14=",
+        "owner": "lnl7",
+        "repo": "nix-darwin",
+        "rev": "a1fa429e945becaf60468600daf649be4ba0350c",
+        "type": "github"
+      },
+      "original": {
+        "owner": "lnl7",
+        "repo": "nix-darwin",
+        "type": "github"
+      }
+    },
     "fastfetch-config": {
       "inputs": {
         "nixpkgs": [
@@ -351,6 +371,7 @@
       "inputs": {
         "agenix": "agenix",
         "bun2nix": "bun2nix",
+        "darwin": "darwin_2",
         "fastfetch-config": "fastfetch-config",
         "flake-parts": "flake-parts_2",
         "home-manager": "home-manager_2",

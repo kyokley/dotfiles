@@ -5,7 +5,7 @@
 }: let
   inherit (constants) defaultUsername;
   inherit (constants.systems) aarch64_darwin;
-  inherit (generators) mkHomeConfiguration mkNixosConfiguration;
+  inherit (generators) mkHomeConfiguration mkNixosConfiguration mkDarwinConfiguration;
 in {
   flake = {
     nixosConfigurations = rec {
@@ -20,12 +20,14 @@ in {
       default = mars;
     };
 
-    homeConfigurations = {
-      "${defaultUsername}@dioxygen" = mkHomeConfiguration {
+    darwinConfigurations = {
+      dioxygen = mkDarwinConfiguration {
         system = aarch64_darwin;
         hostName = "dioxygen";
       };
+    };
 
+    homeConfigurations = {
       "${defaultUsername}@venus" = mkHomeConfiguration {
         hostName = "venus";
         nixvim-output = "minimal";
