@@ -18,8 +18,6 @@ in {
       pkgs,
       lib,
       username,
-      inputs,
-      config,
       ...
     }: let
       cd_paths = [
@@ -47,7 +45,6 @@ in {
     };
 
     nixos.mars = {
-      inputs,
       pkgs,
       lib,
       config,
