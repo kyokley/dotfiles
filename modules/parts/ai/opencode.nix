@@ -188,6 +188,7 @@
                 "/tmp/**" = "allow";
               };
             };
+            lsp = true;
           };
         };
       };
@@ -212,8 +213,9 @@
             };
           };
 
-          packages = [
-            pkgs.glow
+          packages = with pkgs; [
+            glow
+            nixd
           ];
 
           shellAliases = {
