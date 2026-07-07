@@ -11,7 +11,8 @@
   fetchgit,
   fetchurl,
   ...
-}: {
+}:
+{
   "@ampproject/remapping@2.3.0" = fetchurl {
     url = "https://registry.npmjs.org/@ampproject/remapping/-/remapping-2.3.0.tgz";
     hash = "sha512-30iZtAPgz+LTIYoeivqYo853f02jBYSd5uGnGpkFV0M3xOt9aN73erkgYAmZU43x4VfqcnLxW9Kpg3R5LC4YYw==";
@@ -972,9 +973,9 @@
     url = "https://registry.npmjs.org/object-inspect/-/object-inspect-1.13.4.tgz";
     hash = "sha512-W67iLl4J2EXEGTbfeHCffrjDfitvLANg0UlX3wFUUSTx92KXRFegMHUVgSqE+wvhAbi4WqjGg9czysTV2Epbew==";
   };
-  "oh-my-opencode-slim@2.0.5" = fetchurl {
-    url = "https://registry.npmjs.org/oh-my-opencode-slim/-/oh-my-opencode-slim-2.0.5.tgz";
-    hash = "sha512-ePZ5oFH1L1f61YJO3gJMRwtJLUNdChNSAbFt8paZ8L52dyyFKXbmDT3NzYSfpKCi0VLpOaqmLn9mNYqTxw95Bg==";
+  "oh-my-opencode-slim@2.1.0" = fetchurl {
+    url = "https://registry.npmjs.org/oh-my-opencode-slim/-/oh-my-opencode-slim-2.1.0.tgz";
+    hash = "sha512-a9xQRNL0Uwjj8tzNUeW9o7oB3CONCfsQssnXt5Zu1u2BqkVd6pj75tJhYhx3pzqDU4sBH6odWkXoF8VTinLQvA==";
   };
   "omggif@1.0.10" = fetchurl {
     url = "https://registry.npmjs.org/omggif/-/omggif-1.0.10.tgz";
