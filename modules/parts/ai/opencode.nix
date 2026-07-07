@@ -212,8 +212,9 @@
             };
           };
 
-          packages = [
-            pkgs.glow
+          packages = with pkgs; [
+            glow
+            nixd
           ];
 
           shellAliases = {
