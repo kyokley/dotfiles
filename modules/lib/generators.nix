@@ -27,9 +27,10 @@ in {
     nixvim-output ? "default",
     hostName,
     username ? defaultUsername,
-  }: inputs.darwin.lib.darwinSystem {
-    inherit system;
-    specialArgs = {inherit inputs username nixvim-output hostName;};
+  }:
+    inputs.darwin.lib.darwinSystem {
+      inherit system;
+      specialArgs = {inherit inputs username nixvim-output hostName;};
       modules = [
         inputs.home-manager.darwinModules.home-manager
         {
@@ -44,8 +45,8 @@ in {
         }
         inputs.self.modules.darwin.${hostName}
         inputs.self.modules.darwin.common
-        ];
-  };
+      ];
+    };
 
   mkNixosConfiguration = {
     system ? x86_linux,
