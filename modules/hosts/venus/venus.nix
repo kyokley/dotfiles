@@ -1,8 +1,5 @@
 {
-  flake.modules.homeManager."yokley@venus" = {
-    inputs,
-    ...
-  }: {
+  flake.modules.homeManager."yokley@venus" = {inputs, ...}: {
     imports = with inputs.self.modules.homeManager; [
       systemd-services
       syncthing

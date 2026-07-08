@@ -16,7 +16,7 @@
       # and bootstrap, which isn't enough for services with slow teardown
       # (syncthing, etc.), causing "I/O error (code 5)". We give them 5s.
       system.activationScripts.preHomeManagerLaunchAgents = {
-        deps = [ "std" ];
+        deps = ["std"];
         text = ''
           USER_ID=$(id -u "${username}")
           /bin/launchctl list "gui/$USER_ID" 2>/dev/null \
