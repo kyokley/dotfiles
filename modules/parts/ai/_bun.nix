@@ -872,6 +872,10 @@
     url = "https://registry.npmjs.org/json5/-/json5-2.2.3.tgz";
     hash = "sha512-XmOWe7eyHYH14cLdVPoyg+GOH3rYX++KpzrylJwSW98t3Nk+U8XOl8FWKOgwtzdb8lXGf6zYwDUzeHMWfxasyg==";
   };
+  "jsonc-parser@3.3.1" = fetchurl {
+    url = "https://registry.npmjs.org/jsonc-parser/-/jsonc-parser-3.3.1.tgz";
+    hash = "sha512-HUgH65KyejrUFPvHFPbqOY0rsFip3Bo5wb4ngvdi1EpCYWUQDC5V+Y7mZws+DLkr4M//zQJoanu1SP+87Dv1oQ==";
+  };
   "kubernetes-types@1.30.0" = fetchurl {
     url = "https://registry.npmjs.org/kubernetes-types/-/kubernetes-types-1.30.0.tgz";
     hash = "sha512-Dew1okvhM/SQcIa2rcgujNndZwU8VnSapDgdxlYoB84ZlpAD43U6KLAFqYo17ykSFGHNPrg0qry0bP+GJd9v7Q==";
@@ -987,6 +991,10 @@
   "once@1.4.0" = fetchurl {
     url = "https://registry.npmjs.org/once/-/once-1.4.0.tgz";
     hash = "sha512-lNaJgI+2Q5URQBkccEKHTQOPaXdUxnZZElQTZY0MFUAuaEqe1E+Nyvgdz/aIyNi6Z9MzO5dv1H8n58/GELp3+w==";
+  };
+  "opencode-skill-creator@0.2.23" = fetchurl {
+    url = "https://registry.npmjs.org/opencode-skill-creator/-/opencode-skill-creator-0.2.23.tgz";
+    hash = "sha512-DE2OUOyvvZiGBAYDq+lCVvI7HurTwjZHvjn0jujY7Wsb1o0WRx5NLxn22adwFl8tcJNfHpuBO6bL+/U8TvAsRg==";
   };
   "p-limit@2.3.0" = fetchurl {
     url = "https://registry.npmjs.org/p-limit/-/p-limit-2.3.0.tgz";

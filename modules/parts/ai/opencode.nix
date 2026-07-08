@@ -181,6 +181,7 @@
             };
             plugin = [
               "oh-my-opencode-slim"
+              "opencode-skill-creator"
             ];
             permission = {
               external_directory = {
