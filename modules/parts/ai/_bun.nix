@@ -11,8 +11,7 @@
   fetchgit,
   fetchurl,
   ...
-}:
-{
+}: {
   "@ampproject/remapping@2.3.0" = fetchurl {
     url = "https://registry.npmjs.org/@ampproject/remapping/-/remapping-2.3.0.tgz";
     hash = "sha512-30iZtAPgz+LTIYoeivqYo853f02jBYSd5uGnGpkFV0M3xOt9aN73erkgYAmZU43x4VfqcnLxW9Kpg3R5LC4YYw==";
