@@ -1,7 +1,5 @@
 {
   pkgs,
-  lib,
-  config,
   inputs,
   ...
 }: {
@@ -9,7 +7,10 @@
   # env.GREET = "devenv";
 
   # https://devenv.sh/packages/
-  # packages = [ pkgs.git ];
+  packages = [
+    pkgs.bun
+    inputs.bun2nix.packages.${pkgs.stdenv.hostPlatform.system}.default
+  ];
 
   # https://devenv.sh/languages/
   # languages.rust.enable = true;
@@ -21,14 +22,16 @@
   # services.postgres.enable = true;
 
   # https://devenv.sh/scripts/
-  # scripts.hello.exec = ''
-  #   echo hello from $GREET
-  # '';
+  scripts.hello.exec = ''
+    echo
+    echo "Welcome to"
+    echo "Yokley's Dots" | ${pkgs.figlet}/bin/figlet -f slant | ${pkgs.lolcat}/bin/lolcat
+    echo
+  '';
 
-  # enterShell = ''
-  #   hello
-  #   git --version
-  # '';
+  enterShell = ''
+    hello
+  '';
 
   # https://devenv.sh/tasks/
   # tasks = {
