@@ -60,6 +60,8 @@
           pkgs.lftp
           pkgs.home-manager
           inputs.nixvim.packages.${pkgs.stdenv.hostPlatform.system}.${nixvim-output}
+          pkgs.python3Packages.python
+          pkgs.uv
         ];
 
         shellAliases = {

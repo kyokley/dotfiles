@@ -181,6 +181,7 @@
             };
             plugin = [
               "oh-my-opencode-slim"
+              "opencode-skill-creator"
             ];
             permission = {
               external_directory = {
@@ -188,6 +189,7 @@
                 "/tmp/**" = "allow";
               };
             };
+            lsp = true;
           };
         };
       };
@@ -212,8 +214,9 @@
             };
           };
 
-          packages = [
-            pkgs.glow
+          packages = with pkgs; [
+            glow
+            nixd
           ];
 
           shellAliases = {

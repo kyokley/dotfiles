@@ -1,9 +1,6 @@
 {
   flake.modules = {
-    homeManager."yokley@dioxygen" = {
-      inputs,
-      ...
-    }: {
+    homeManager."yokley@dioxygen" = {inputs, ...}: {
       imports = with inputs.self.modules.homeManager; [
         dev
         distributedBuilds

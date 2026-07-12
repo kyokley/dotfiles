@@ -298,7 +298,7 @@
             dunst
             inputs.nixpkgs-stable.legacyPackages.${pkgs.stdenv.hostPlatform.system}.libreoffice
             nitrogen
-            python312Packages.bpython
+            python3Packages.bpython
             thunderbird
             nerd-fonts.hack
             vlc
