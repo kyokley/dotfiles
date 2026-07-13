@@ -180,9 +180,23 @@
               ];
 
               "hyprland/workspaces" = {
-                format = "{id}";
+                format = "{name}: {icon}";
                 sort-by = "number";
                 all-outputs = true;
+                "format-icons" = {
+                  "1" = "";
+                  "2" = "";
+                  "3" = "";
+                  "4" = "";
+                  "5" = "";
+                  "6" = "";
+                  "7" = "";
+                  "8" = "";
+                  "9" = "";
+                  "10" = "";
+                  "active" = "";
+                  "default" = "";
+                };
               };
 
               "hyprland/window" = {
