@@ -147,7 +147,7 @@
 
           window_rule = {
             match.class = "kitty";
-            border_size = 2;
+            border_size = 3;
           };
 
           on = {
@@ -163,6 +163,37 @@
         waybar = {
           enable = true;
           systemd.enable = true;
+          settings = {
+            mainBar = {
+              layer = "top";
+              position = "top";
+              height = 30;
+
+              modules-left = [
+                "hyprland/workspaces"
+              ];
+              modules-center = [
+                "hyprland/window"
+              ];
+              modules-right = [
+                "clock"
+              ];
+
+              "hyprland/workspaces" = {
+                format = "{id}";
+                sort-by = "number";
+                all-outputs = true;
+              };
+
+              "hyprland/window" = {
+                max-length = 50;
+              };
+
+              clock = {
+                format = "{:%H:%M}";
+              };
+            };
+          };
         };
       };
     };
