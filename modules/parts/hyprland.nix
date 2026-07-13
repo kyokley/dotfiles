@@ -100,8 +100,14 @@
             }
             {
               _args = [
-                "ALT + R"
-                (lib.generators.mkLuaInline "hl.dsp.submap(\"resize\")")
+                (lib.generators.mkLuaInline ''mod .. " + H"'')
+                (lib.generators.mkLuaInline ''hl.dsp.layout("mfact -0.1")'')
+              ];
+            }
+            {
+              _args = [
+                (lib.generators.mkLuaInline ''mod .. " + L"'')
+                (lib.generators.mkLuaInline ''hl.dsp.layout("mfact +0.1")'')
               ];
             }
           ];
@@ -128,6 +134,10 @@
       };
       programs = {
         kitty.enable = true;
+        waybar = {
+          enable = true;
+          systemd.enable = true;
+        };
       };
     };
   };
