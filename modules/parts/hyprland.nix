@@ -34,83 +34,109 @@
           # inputs.hyprland-plugins.packages.${pkgs.stdenv.hostPlatform.system}.wayle
         ];
 
+        extraConfig = ''
+          hl.config({
+            general = {
+              gaps_in = 5,
+              gaps_out = 20,
+              border_size = 2,
+              layout = "master",
+            },
+            decoration = {
+              rounding = 10,
+            },
+          })
+        '';
+
         settings = {
           mod = {
             # _var = "SUPER";
             _var = "ALT";
           };
 
-          config = {
-            general = {
-              gaps_in = 5;
-              gaps_out = 20;
-              border_size = 2;
-              layout = "master";
-            };
-
-            decoration = {
-              rounding = 10;
-            };
-          };
-
-          bind = [
-            {
-              _args = [
-                (lib.generators.mkLuaInline ''mod .. " + SHIFT + Q"'')
-                # "SUPER + C"
-                (lib.generators.mkLuaInline "hl.dsp.window.close()")
-                {locked = true;}
-              ];
-            }
-            {
-              _args = [
-                (lib.generators.mkLuaInline ''mod .. " + SHIFT + RETURN"'')
-                (lib.generators.mkLuaInline "hl.dsp.exec_cmd(\"kitty\")")
-              ];
-            }
-            {
-              _args = [
-                (lib.generators.mkLuaInline ''mod .. " + P"'')
-                (lib.generators.mkLuaInline ''hl.dsp.exec_cmd("rofi -show drun")'')
-              ];
-            }
-            {
-              _args = [
-                (lib.generators.mkLuaInline ''mod .. " + J"'')
-                (lib.generators.mkLuaInline ''hl.dsp.layout("cyclenext")'')
-              ];
-            }
-            {
-              _args = [
-                (lib.generators.mkLuaInline ''mod .. " + K"'')
-                (lib.generators.mkLuaInline ''hl.dsp.layout("cycleprev")'')
-              ];
-            }
-            {
-              _args = [
-                (lib.generators.mkLuaInline ''mod .. " + RETURN"'')
-                (lib.generators.mkLuaInline ''hl.dsp.layout("swapwithmaster ignoremaster")'')
-              ];
-            }
-            {
-              _args = [
-                (lib.generators.mkLuaInline ''mod .. " + CONTROL + Q"'')
-                (lib.generators.mkLuaInline ''hl.dsp.exec_cmd("rofi -show power-menu -modi power-menu:rofi-power-menu")'')
-              ];
-            }
-            {
-              _args = [
-                (lib.generators.mkLuaInline ''mod .. " + H"'')
-                (lib.generators.mkLuaInline ''hl.dsp.layout("mfact -0.1")'')
-              ];
-            }
-            {
-              _args = [
-                (lib.generators.mkLuaInline ''mod .. " + L"'')
-                (lib.generators.mkLuaInline ''hl.dsp.layout("mfact +0.1")'')
-              ];
-            }
-          ];
+          bind = let
+            ws =
+              builtins.genList (x: let
+                ws_id = toString (x + 1);
+                key =
+                  if x == 9
+                  then "0"
+                  else ws_id;
+              in [
+                {
+                  _args = [
+                    (lib.generators.mkLuaInline ''mod .. " + ${key}"'')
+                    (lib.generators.mkLuaInline ''hl.dsp.focus({ workspace = ${ws_id} })'')
+                  ];
+                }
+                {
+                  _args = [
+                    (lib.generators.mkLuaInline ''mod .. " + SHIFT + ${key}"'')
+                    (lib.generators.mkLuaInline ''hl.dsp.window.move({ workspace = "${ws_id}" })'')
+                  ];
+                }
+              ])
+              10;
+          in
+            [
+              {
+                _args = [
+                  (lib.generators.mkLuaInline ''mod .. " + SHIFT + Q"'')
+                  # "SUPER + C"
+                  (lib.generators.mkLuaInline "hl.dsp.window.close()")
+                  {locked = true;}
+                ];
+              }
+              {
+                _args = [
+                  (lib.generators.mkLuaInline ''mod .. " + SHIFT + RETURN"'')
+                  (lib.generators.mkLuaInline "hl.dsp.exec_cmd(\"kitty\")")
+                ];
+              }
+              {
+                _args = [
+                  (lib.generators.mkLuaInline ''mod .. " + P"'')
+                  (lib.generators.mkLuaInline ''hl.dsp.exec_cmd("rofi -show drun")'')
+                ];
+              }
+              {
+                _args = [
+                  (lib.generators.mkLuaInline ''mod .. " + J"'')
+                  (lib.generators.mkLuaInline ''hl.dsp.layout("cyclenext")'')
+                ];
+              }
+              {
+                _args = [
+                  (lib.generators.mkLuaInline ''mod .. " + K"'')
+                  (lib.generators.mkLuaInline ''hl.dsp.layout("cycleprev")'')
+                ];
+              }
+              {
+                _args = [
+                  (lib.generators.mkLuaInline ''mod .. " + RETURN"'')
+                  (lib.generators.mkLuaInline ''hl.dsp.layout("swapwithmaster ignoremaster")'')
+                ];
+              }
+              {
+                _args = [
+                  (lib.generators.mkLuaInline ''mod .. " + CONTROL + Q"'')
+                  (lib.generators.mkLuaInline ''hl.dsp.exec_cmd("rofi -show power-menu -modi power-menu:rofi-power-menu")'')
+                ];
+              }
+              {
+                _args = [
+                  (lib.generators.mkLuaInline ''mod .. " + H"'')
+                  (lib.generators.mkLuaInline ''hl.dsp.layout("mfact -0.1")'')
+                ];
+              }
+              {
+                _args = [
+                  (lib.generators.mkLuaInline ''mod .. " + L"'')
+                  (lib.generators.mkLuaInline ''hl.dsp.layout("mfact +0.1")'')
+                ];
+              }
+            ]
+            ++ (builtins.concatLists ws);
 
           define_submap = {
             _args = [

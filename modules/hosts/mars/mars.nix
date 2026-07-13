@@ -155,12 +155,7 @@ in {
       hardware.graphics.enable32Bit = true;
 
       virtualisation = {
-        vmVariant = {
-          lib,
-          config,
-          pkgs,
-          ...
-        }: {
+        vmVariant = {lib, ...}: {
           # Disable the X server and display manager (LightDM) — it fails to
           # start Hyprland in the VM (session wrapper issue). Instead, use TTY
           # autologin and start Hyprland directly from the shell on tty1.
