@@ -25,6 +25,8 @@
     }: {
       wayland.windowManager.hyprland = {
         enable = true;
+        package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
+        portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
         configType = "lua";
         systemd.enable = false;
 
@@ -34,7 +36,8 @@
 
         settings = {
           mod = {
-            _var = "SUPER";
+            # _var = "SUPER";
+            _var = "ALT";
           };
 
           config = {
@@ -42,6 +45,7 @@
               gaps_in = 5;
               gaps_out = 20;
               border_size = 2;
+              layout = "master";
             };
 
             decoration = {
@@ -52,15 +56,46 @@
           bind = [
             {
               _args = [
-                (lib.generators.mkLuaInline "mod .. \" + Q\"")
+                (lib.generators.mkLuaInline ''mod .. " + SHIFT + Q"'')
+                # "SUPER + C"
                 (lib.generators.mkLuaInline "hl.dsp.window.close()")
                 {locked = true;}
               ];
             }
             {
               _args = [
-                "SUPER + RETURN"
+                (lib.generators.mkLuaInline ''mod .. " + SHIFT + RETURN"'')
                 (lib.generators.mkLuaInline "hl.dsp.exec_cmd(\"kitty\")")
+              ];
+            }
+            {
+              _args = [
+                (lib.generators.mkLuaInline ''mod .. " + P"'')
+                (lib.generators.mkLuaInline ''hl.dsp.exec_cmd("rofi -show drun")'')
+              ];
+            }
+            {
+              _args = [
+                (lib.generators.mkLuaInline ''mod .. " + J"'')
+                (lib.generators.mkLuaInline ''hl.dsp.layout("cyclenext")'')
+              ];
+            }
+            {
+              _args = [
+                (lib.generators.mkLuaInline ''mod .. " + K"'')
+                (lib.generators.mkLuaInline ''hl.dsp.layout("cycleprev")'')
+              ];
+            }
+            {
+              _args = [
+                (lib.generators.mkLuaInline ''mod .. " + RETURN"'')
+                (lib.generators.mkLuaInline ''hl.dsp.layout("swapwithmaster ignoremaster")'')
+              ];
+            }
+            {
+              _args = [
+                (lib.generators.mkLuaInline ''mod .. " + CONTROL + Q"'')
+                (lib.generators.mkLuaInline ''hl.dsp.exec_cmd("rofi -show power-menu -modi power-menu:rofi-power-menu")'')
               ];
             }
             {
