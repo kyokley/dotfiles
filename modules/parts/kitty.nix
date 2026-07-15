@@ -4,7 +4,7 @@
       enable = true;
       font = {
         name = "Hack Nerd Font Mono";
-        size = 16;
+        size = 12;
       };
       shellIntegration = {
         enableZshIntegration = true;

@@ -66,7 +66,7 @@
                 {
                   _args = [
                     (lib.generators.mkLuaInline ''mod .. " + ${key}"'')
-                    (lib.generators.mkLuaInline ''hl.dsp.focus({ workspace = ${ws_id} })'')
+                    (lib.generators.mkLuaInline ''(function() local ws = hl.get_active_workspace(); if ws and ws.id == ${ws_id} then return hl.dsp.focus({ workspace = "previous" }) else return hl.dsp.focus({ workspace = ${ws_id} }) end end)()'')
                   ];
                 }
                 {
@@ -81,7 +81,7 @@
             [
               {
                 _args = [
-                  (lib.generators.mkLuaInline ''mod .. " + SHIFT + Q"'')
+                  (lib.generators.mkLuaInline ''mod .. " + SHIFT + C"'')
                   # "SUPER + C"
                   (lib.generators.mkLuaInline "hl.dsp.window.close()")
                   {locked = true;}
@@ -164,23 +164,43 @@
           enable = true;
           systemd.enable = true;
           settings = {
-            mainBar = {
+            topBar = {
               layer = "top";
               position = "top";
+              height = 30;
+
+              modules-center = [
+                "hyprland/window"
+              ];
+              modules-right = [
+                "tray"
+                "clock"
+              ];
+
+              "hyprland/window" = {
+                max-length = 50;
+              };
+
+              clock = {
+                format = "{:%H:%M}";
+              };
+
+              tray = {
+                icon-size = 16;
+                spacing = 10;
+              };
+            };
+
+            bottomBar = {
+              layer = "top";
+              position = "bottom";
               height = 30;
 
               modules-left = [
                 "hyprland/workspaces"
               ];
-              modules-center = [
-                "hyprland/window"
-              ];
-              modules-right = [
-                "clock"
-              ];
-
               "hyprland/workspaces" = {
-                format = "{name}: {icon}";
+                format = "{name} {icon}";
                 sort-by = "number";
                 all-outputs = true;
                 "format-icons" = {
@@ -194,8 +214,8 @@
                   "8" = "";
                   "9" = "";
                   "10" = "";
-                  "active" = "";
-                  "default" = "";
+                  # "active" = "";
+                  # "default" = "";
                 };
               };
 
@@ -209,6 +229,15 @@
             };
           };
         };
+      };
+
+      home.pointerCursor = {
+        enable = true;
+        gtk.enable = true;
+        x11.enable = true;
+        package = pkgs.bibata-cursors;
+        name = "Bibata-Modern-Classic";
+        size = 16;
       };
     };
   };
