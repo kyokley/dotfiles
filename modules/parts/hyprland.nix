@@ -34,25 +34,32 @@
           # inputs.hyprland-plugins.packages.${pkgs.stdenv.hostPlatform.system}.wayle
         ];
 
-        extraConfig = ''
-          hl.config({
-            general = {
-              gaps_in = 5,
-              gaps_out = 20,
-              border_size = 2,
-              layout = "master",
-            },
-            decoration = {
-              rounding = 10,
-            },
-          })
-        '';
-
         settings = {
           mod = {
             # _var = "SUPER";
             _var = "ALT";
           };
+
+          config = {
+            general = {
+              gaps_in = 5;
+              gaps_out = 20;
+              border_size = 2;
+              layout = "master";
+            };
+
+            decoration = {
+              rounding = 10;
+            };
+          };
+
+          gesture = [
+            {
+              fingers = 3;
+              direction = "horizontal";
+              action = "workspace";
+            }
+          ];
 
           bind = let
             ws =
