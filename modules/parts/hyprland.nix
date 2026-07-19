@@ -187,8 +187,8 @@
               ];
 
               "hyprland/workspaces" = {
-                format = "{name}: {icon}";
-                sort-by = "number";
+                format = "{name} {icon}";
+                sort-by = "id";
                 all-outputs = true;
                 "format-icons" = {
                   "1" = "";
