@@ -5,12 +5,15 @@
     distributedBuilds
     systemd-services
     syncthing
+    hyprland
+    waybar
   ];
 
   nixos_modules = with inputs.self.modules.nixos; [
     laptop
     distributedBuilds
     tailscale
+    hyprland
   ];
 in {
   flake.modules = {
