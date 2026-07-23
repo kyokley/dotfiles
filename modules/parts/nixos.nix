@@ -9,8 +9,9 @@
         inputs,
         ...
       }: {
-        imports = [
-          inputs.self.modules.nixos.qtile
+        imports = with inputs.self.modules.nixos; [
+          # qtile
+          hyprland
           # inputs.self.modules.nixos.flatpak
 
           # Uncomment below to set default password for build-vm
@@ -288,7 +289,9 @@
           terminator
           dunst
           rofi
-          qtile
+          # qtile
+          hyprland
+          waybar
           kitty
         ];
 

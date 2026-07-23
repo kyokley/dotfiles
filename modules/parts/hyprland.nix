@@ -30,10 +30,6 @@
         configType = "lua";
         systemd.enable = false;
 
-        plugins = [
-          # inputs.hyprland-plugins.packages.${pkgs.stdenv.hostPlatform.system}.wayle
-        ];
-
         settings = {
           monitor = [
             {
@@ -187,11 +183,16 @@
         size = 16;
       };
 
-      services.wpaperd = {
-        enable = true;
-        settings = {
-          eDP-1 = {
-            path = "/home/yokley/Pictures/wallpapers";
+      programs.hyprlock.enable = true;
+      services = {
+        hypridle.enable = true;
+        hyprpolkitagent.enable = true;
+        wpaperd = {
+          enable = true;
+          settings = {
+            eDP-1 = {
+              path = "/home/yokley/Pictures/wallpapers";
+            };
           };
         };
       };
