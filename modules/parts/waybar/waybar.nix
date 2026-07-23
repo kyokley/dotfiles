@@ -17,6 +17,7 @@
           ];
           modules-right = [
             "tray"
+            "pulseaudio"
             "battery"
             "clock"
           ];
@@ -32,6 +33,16 @@
           tray = {
             icon-size = 16;
             spacing = 10;
+          };
+
+          pulseaudio = {
+            format = "{icon} {volume}%";
+            format-muted = "󰝟 Muted";
+            format-icons = {
+              default = ["󰕿" "󰖀" "󰕾"];
+            };
+            on-click = "pavucontrol";
+            tooltip = true;
           };
 
           battery = {

@@ -155,6 +155,27 @@
                   (lib.generators.mkLuaInline ''hl.dsp.layout("mfact +0.1")'')
                 ];
               }
+              {
+                _args = [
+                  "XF86AudioRaiseVolume"
+                  (lib.generators.mkLuaInline ''hl.dsp.exec_cmd("pamixer -i 5")'')
+                  {locked = true;}
+                ];
+              }
+              {
+                _args = [
+                  "XF86AudioLowerVolume"
+                  (lib.generators.mkLuaInline ''hl.dsp.exec_cmd("pamixer -d 5")'')
+                  {locked = true;}
+                ];
+              }
+              {
+                _args = [
+                  "XF86AudioMute"
+                  (lib.generators.mkLuaInline ''hl.dsp.exec_cmd("pamixer -t")'')
+                  {locked = true;}
+                ];
+              }
             ]
             ++ (builtins.concatLists ws);
 
@@ -221,13 +242,19 @@
         };
       };
 
-      home.pointerCursor = {
-        enable = true;
-        gtk.enable = true;
-        x11.enable = true;
-        package = pkgs.bibata-cursors;
-        name = "Bibata-Modern-Classic";
-        size = 16;
+      home = {
+        packages = [
+          pkgs.pamixer
+        ];
+
+        pointerCursor = {
+          enable = true;
+          gtk.enable = true;
+          x11.enable = true;
+          package = pkgs.bibata-cursors;
+          name = "Bibata-Modern-Classic";
+          size = 16;
+        };
       };
 
       gtk = {
