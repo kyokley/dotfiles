@@ -1,5 +1,7 @@
 {
   flake.modules.homeManager.waybar = {
+    services.network-manager-applet.enable = true;
+    services.blueman-applet.enable = true;
     programs.waybar = {
       enable = true;
       systemd.enable = true;
