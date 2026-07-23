@@ -222,6 +222,19 @@
         size = 16;
       };
 
+      gtk = {
+        enable = true;
+        gtk4.theme = null;
+        iconTheme = {
+          name = "Papirus-Dark";
+          package = pkgs.papirus-icon-theme;
+        };
+        theme = {
+          name = "Catppuccin-Mocha-Standard-Blue-dark";
+          package = pkgs.catppuccin-gtk;
+        };
+      };
+
       services = {
         hypridle.enable = true;
         hyprpolkitagent.enable = true;
