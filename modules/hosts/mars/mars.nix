@@ -76,12 +76,6 @@ in {
 
       powerManagement.enable = true;
 
-      environment.systemPackages = with pkgs; [
-        proton-vpn
-        spotify
-        steam-devices-udev-rules
-      ];
-
       system.stateVersion = "24.05"; # Don't touch me!
 
       virtualisation.docker.daemon.settings = {
@@ -126,13 +120,40 @@ in {
 
       security.pam.services.lightdm.enableGnomeKeyring = lib.mkForce false;
 
-      # Start Hyprland directly from tty1 autologin shell
-      environment.shellInit = ''
-        if [ "$(tty)" = "/dev/tty1" ] && [ -z "$_HYPRLAND_STARTED" ]; then
-          export _HYPRLAND_STARTED=1
-          exec start-hyprland
-        fi
-      '';
+      environment = {
+        systemPackages = with pkgs; [
+          proton-vpn
+          spotify
+          steam-devices-udev-rules
+        ];
+
+        # Start Hyprland directly from tty1 autologin shell via uwsm
+        # so graphical-session.target and tray.target are properly activated.
+        shellInit = ''
+          if [ "$(tty)" = "/dev/tty1" ] && [ -z "$_HYPRLAND_STARTED" ]; then
+            export _HYPRLAND_STARTED=1
+            exec uwsm start -eD Hyprland start-hyprland
+          fi
+        '';
+
+        etc."systemd/system-sleep/99-nm-resume-reconnect" = {
+          mode = "0755";
+          text = ''
+            #!${pkgs.runtimeShell}
+            if [ "$1" = "post" ]; then
+              ${pkgs.coreutils}/bin/sleep 2
+              state="$(${pkgs.networkmanager}/bin/nmcli -t -f GENERAL.STATE device show wlp1s0 2>/dev/null | ${pkgs.coreutils}/bin/cut -d: -f2 | ${pkgs.gawk}/bin/awk '{print $1}')"
+
+              if [ "$state" != "100" ]; then
+                ${pkgs.networkmanager}/bin/nmcli device disconnect wlp1s0 >/dev/null 2>&1 || true
+                ${pkgs.coreutils}/bin/sleep 1
+                ${pkgs.networkmanager}/bin/nmcli device connect wlp1s0 >/dev/null 2>&1 || true
+              fi
+            fi
+          '';
+        };
+      };
+
       fileSystems = {
         "/" = {
           device = "UUID=12b2a9cf-4d19-43d9-a9db-0942d019fa4f";
@@ -149,29 +170,12 @@ in {
         {device = "/dev/disk/by-uuid/beaf0a2b-05bb-4517-8ead-65a47660b6f6";}
       ];
 
-      environment.etc."systemd/system-sleep/99-nm-resume-reconnect" = {
-        mode = "0755";
-        text = ''
-          #!${pkgs.runtimeShell}
-          if [ "$1" = "post" ]; then
-            ${pkgs.coreutils}/bin/sleep 2
-            state="$(${pkgs.networkmanager}/bin/nmcli -t -f GENERAL.STATE device show wlp1s0 2>/dev/null | ${pkgs.coreutils}/bin/cut -d: -f2 | ${pkgs.gawk}/bin/awk '{print $1}')"
-
-            if [ "$state" != "100" ]; then
-              ${pkgs.networkmanager}/bin/nmcli device disconnect wlp1s0 >/dev/null 2>&1 || true
-              ${pkgs.coreutils}/bin/sleep 1
-              ${pkgs.networkmanager}/bin/nmcli device connect wlp1s0 >/dev/null 2>&1 || true
-            fi
-          fi
-        '';
-      };
-
       nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
       hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
       hardware.graphics.enable32Bit = true;
 
       virtualisation = {
-        vmVariant = {lib, ...}: {
+        vmVariant = {
           # Hyprland crashes on NixOS if /usr/share/icons doesn't exist.
           # In a VM, this path may not be present by default.
           systemd.tmpfiles.rules = [

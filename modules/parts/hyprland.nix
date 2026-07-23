@@ -161,13 +161,6 @@
             match.class = "kitty";
             border_size = 3;
           };
-
-          on = {
-            _args = [
-              "hyprland.start"
-              (lib.generators.mkLuaInline "function()\n  hl.exec_cmd(\"waybar\")\nend")
-            ];
-          };
         };
       };
       programs = {
