@@ -62,10 +62,21 @@
           network.wait-online.enable = false;
 
           # Needed to resolve a bug where nixos and HM both set ExecStart for blueman-applet
-          user.services.blueman-applet.serviceConfig.ExecStart = lib.mkForce [
-            ""
-            "${pkgs.blueman}/bin/blueman-applet"
-          ];
+          user.services = {
+            blueman-applet.serviceConfig = {
+              ExecStart = lib.mkForce [
+                ""
+                "${pkgs.blueman}/bin/blueman-applet"
+              ];
+              Restart = "on-failure";
+              RestartSec = 5;
+            };
+
+            network-manager-applet.serviceConfig = {
+              Restart = "on-failure";
+              RestartSec = 5;
+            };
+          };
         };
 
         boot = {
