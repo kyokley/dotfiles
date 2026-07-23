@@ -165,6 +165,7 @@
             '';
           };
           settings = {
+            autoupdate = false;
             provider = {
               opencode = {
                 options = {

@@ -110,13 +110,29 @@ in {
       };
 
       services = {
+        # Disable X11 and LightDM — boot directly into Hyprland via TTY autologin.
+        xserver = {
+          enable = lib.mkForce false;
+          displayManager.lightdm.enable = lib.mkForce false;
+          videoDrivers = ["amdgpu"];
+        };
+        displayManager.enable = lib.mkForce false;
+        getty.autologinUser = "yokley";
+
         udev.extraRules = ''
           ACTION=="add", SUBSYSTEM=="pci", DRIVER=="pcieport", ATTR{power/wakeup}="disabled"
         '';
-        xserver.videoDrivers = ["amdgpu"];
       };
 
-      security.pam.services.lightdm.enableGnomeKeyring = false;
+      security.pam.services.lightdm.enableGnomeKeyring = lib.mkForce false;
+
+      # Start Hyprland directly from tty1 autologin shell
+      environment.shellInit = ''
+        if [ "$(tty)" = "/dev/tty1" ] && [ -z "$_HYPRLAND_STARTED" ]; then
+          export _HYPRLAND_STARTED=1
+          exec start-hyprland
+        fi
+      '';
       fileSystems = {
         "/" = {
           device = "UUID=12b2a9cf-4d19-43d9-a9db-0942d019fa4f";
@@ -156,21 +172,6 @@ in {
 
       virtualisation = {
         vmVariant = {lib, ...}: {
-          # Disable the X server and display manager (LightDM) — it fails to
-          # start Hyprland in the VM (session wrapper issue). Instead, use TTY
-          # autologin and start Hyprland directly from the shell on tty1.
-          services = {
-            xserver = {
-              enable = lib.mkForce false;
-              displayManager.lightdm.enable = lib.mkForce false;
-            };
-            displayManager.enable = lib.mkForce false;
-            getty.autologinUser = "yokley";
-          };
-
-          # Resolve priority conflict with nixos.nix's lightdm.enableGnomeKeyring = true
-          security.pam.services.lightdm.enableGnomeKeyring = lib.mkForce false;
-
           # Hyprland crashes on NixOS if /usr/share/icons doesn't exist.
           # In a VM, this path may not be present by default.
           systemd.tmpfiles.rules = [
@@ -178,26 +179,12 @@ in {
           ];
 
           # Set env vars that Hyprland/aquamarine need
-          # to function with virtio GPUs.  These are set at the system
-          # level via PAM (environment.sessionVariables) so they're
-          # inherited before the compositor backend initializes.
+          # to function with virtio GPUs.
           environment.sessionVariables = {
             WLR_NO_HARDWARE_CURSORS = "1";
             WLR_RENDERER_ALLOW_SOFTWARE = "1";
             AQ_NO_KMS_REQUIREMENT = "1";
           };
-
-          # On tty1 autologin, start Hyprland directly from the shell
-          # (bypassing LightDM's session wrapper which was failing).
-          environment.shellInit = ''
-            if [ "$(tty)" = "/dev/tty1" ] && [ -z "$_HYPRLAND_STARTED" ]; then
-              export _HYPRLAND_STARTED=1
-              export WLR_NO_HARDWARE_CURSORS=1
-              export WLR_RENDERER_ALLOW_SOFTWARE=1
-              export AQ_NO_KMS_REQUIREMENT=1
-              exec start-hyprland
-            fi
-          '';
 
           # Forward host:2222 → guest:22 for SSH debugging
           virtualisation.forwardPorts = [
