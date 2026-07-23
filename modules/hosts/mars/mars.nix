@@ -159,12 +159,17 @@ in {
           # Disable the X server and display manager (LightDM) — it fails to
           # start Hyprland in the VM (session wrapper issue). Instead, use TTY
           # autologin and start Hyprland directly from the shell on tty1.
-          services.xserver.enable = lib.mkForce false;
-          services.xserver.displayManager.lightdm.enable = lib.mkForce false;
-          services.displayManager.enable = lib.mkForce false;
+          services = {
+            xserver = {
+              enable = lib.mkForce false;
+              displayManager.lightdm.enable = lib.mkForce false;
+            };
+            displayManager.enable = lib.mkForce false;
+            getty.autologinUser = "yokley";
+          };
+
           # Resolve priority conflict with nixos.nix's lightdm.enableGnomeKeyring = true
           security.pam.services.lightdm.enableGnomeKeyring = lib.mkForce false;
-          services.getty.autologinUser = "yokley";
 
           # Hyprland crashes on NixOS if /usr/share/icons doesn't exist.
           # In a VM, this path may not be present by default.
