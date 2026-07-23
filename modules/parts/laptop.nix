@@ -16,11 +16,13 @@
           };
         };
         logind = {
+          # lidSwitch = "suspend";
+
           settings.Login = {
-            HandleLidSwitch = "ignore";
+            HandleLidSwitch = "suspend";
             HandlePowerKey = "ignore";
             IdleAction = "suspend";
-            IdleActionSec = "1m";
+            IdleActionSec = "10m";
           };
         };
       };
@@ -32,8 +34,6 @@
       ...
     }: {
       services = {
-        logind.lidSwitch = "suspend";
-
         acpid = {
           enable = true;
           lidEventCommands = ''
