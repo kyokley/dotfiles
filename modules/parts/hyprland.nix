@@ -5,6 +5,14 @@
       pkgs,
       ...
     }: {
+      systemd.services."lock-on-sleep" = {
+        description = "Lock screen before sleep";
+        before = ["sleep.target"];
+        wantedBy = ["sleep.target"];
+        unitConfig.Type = "oneshot";
+        serviceConfig.ExecStart = "loginctl lock-session";
+      };
+
       programs = {
         hyprland = {
           enable = true;

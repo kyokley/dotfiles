@@ -32,6 +32,8 @@
       ...
     }: {
       services = {
+        logind.lidSwitch = "suspend";
+
         acpid = {
           enable = true;
           lidEventCommands = ''
