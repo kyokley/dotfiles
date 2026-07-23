@@ -3,6 +3,7 @@
     programs.waybar = {
       enable = true;
       systemd.enable = true;
+      style = ./style.css;
       settings = {
         topBar = {
           layer = "top";
@@ -14,6 +15,7 @@
           ];
           modules-right = [
             "tray"
+            "battery"
             "clock"
           ];
 
@@ -28,6 +30,30 @@
           tray = {
             icon-size = 16;
             spacing = 10;
+          };
+
+          battery = {
+            states = {
+              warning = 30;
+              critical = 15;
+            };
+            format = "{icon} {capacity}%";
+            format-charging = "󰂄 {capacity}%";
+            format-plugged = "󰂄 {capacity}%";
+            format-icons = [
+              "󰁺"
+              "󰁻"
+              "󰁼"
+              "󰁽"
+              "󰁾"
+              "󰁿"
+              "󰂀"
+              "󰂁"
+              "󰂂"
+              "󰁹"
+            ];
+            tooltip = true;
+            tooltip-format = "{timeTo}";
           };
         };
 
@@ -49,13 +75,13 @@
               "3" = "";
               "4" = "";
               "5" = "";
-              "6" = "";
-              "7" = "";
-              "8" = "";
+              "6" = "";
+              "7" = "";
+              "8" = "";
               "9" = "";
               "10" = "";
-              # "active" = "";
-              # "default" = "";
+              # "active" = "";
+              # "default" = "";
             };
           };
 

@@ -51,9 +51,9 @@
 
           config = {
             general = {
-              gaps_in = 5;
+              gaps_in = 20;
               gaps_out = 20;
-              border_size = 2;
+              border_size = 5;
               layout = "master";
             };
 
