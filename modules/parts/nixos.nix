@@ -223,8 +223,6 @@
             vimAlias = true;
           };
 
-          # Needed to make screen locker work
-          i3lock.enable = true;
           zsh.enable = true;
         };
 
