@@ -186,10 +186,16 @@
             ];
           };
 
-          window_rule = {
-            match.class = "kitty";
-            border_size = 3;
-          };
+          window_rule = [
+            {
+              match.class = "kitty";
+              border_size = 3;
+            }
+            {
+              match.class = "brave";
+              workspace = 6;
+            }
+          ];
         };
       };
 

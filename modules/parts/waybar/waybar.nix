@@ -27,7 +27,7 @@
           };
 
           clock = {
-            format = "{:%H:%M}";
+            format = "{:%H:%M %d/%m/%Y}";
           };
 
           tray = {
@@ -96,14 +96,6 @@
               # "active" = "";
               # "default" = "";
             };
-          };
-
-          "hyprland/window" = {
-            max-length = 50;
-          };
-
-          clock = {
-            format = "{:%H:%M}";
           };
         };
       };
