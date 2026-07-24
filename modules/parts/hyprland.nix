@@ -92,7 +92,7 @@
                 {
                   _args = [
                     (lib.generators.mkLuaInline ''mod .. " + SHIFT + ${key}"'')
-                    (lib.generators.mkLuaInline ''hl.dsp.window.move({ workspace = "${ws_id}" })'')
+                    (lib.generators.mkLuaInline ''hl.dsp.window.move({ workspace = "${ws_id}", follow = false })'')
                   ];
                 }
               ])
@@ -192,8 +192,20 @@
               border_size = 3;
             }
             {
-              match.class = "brave";
-              workspace = 6;
+              match.class = "brave-browser";
+              workspace = "6 silent";
+            }
+            {
+              match.class = "Mattermost.Desktop";
+              workspace = "10 silent";
+            }
+            {
+              match.class = "Spotify";
+              workspace = "7 silent";
+            }
+            {
+              match.class = "slack";
+              workspace = "8 silent";
             }
           ];
         };
