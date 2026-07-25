@@ -10,7 +10,7 @@
         topBar = {
           layer = "top";
           position = "top";
-          height = 30;
+          height = 60;
 
           modules-center = [
             "hyprland/window"
@@ -31,7 +31,7 @@
           };
 
           tray = {
-            icon-size = 16;
+            icon-size = 32;
             spacing = 10;
           };
 
@@ -73,16 +73,16 @@
         bottomBar = {
           layer = "top";
           position = "bottom";
-          height = 30;
+          height = 60;
 
           modules-left = [
             "hyprland/workspaces"
           ];
           "hyprland/workspaces" = {
-            format = "{name} {icon}";
+            format = "{name} {windows}";
             sort-by = "id";
             all-outputs = true;
-            "format-icons" = {
+            format-icons = {
               "1" = "";
               "2" = "";
               "3" = "";
@@ -93,8 +93,23 @@
               "8" = "";
               "9" = "";
               "10" = "";
+              "0" = "";
               # "active" = "";
               # "default" = "";
+            };
+
+            "format-window-separator" = " ";
+            "window-rewrite-default" = "";
+            "window-rewrite" = {
+              "class<firefox>" = "";
+              "class<title<.*github.*>" = "";
+              "title<.*youtube.*>" = "";
+              "class<kitty>" = "";
+              "class<spotify>" = "";
+              "class<brave-browser>" = "󰖟";
+              "title<.*OC.*>" = "";
+              "class<slack>" = "";
+              "class<Mattermost.Desktop>" = "󰭹";
             };
           };
         };

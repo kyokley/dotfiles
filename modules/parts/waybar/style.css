@@ -1,7 +1,7 @@
 * {
     /* `otf-font-awesome` is required to be installed for icons */
     font-family: FontAwesome, Roboto, Helvetica, Arial, sans-serif;
-    font-size: 13px;
+    font-size: 30px;
 }
 
 window#waybar {
@@ -31,7 +31,8 @@ button:hover {
 }
 
 #workspaces button {
-    padding: 0 5px;
+    padding: 0 20px;
+    min-width: 50px;
     background-color: transparent;
     color: #ffffff;
 }
