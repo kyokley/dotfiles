@@ -100,9 +100,9 @@
             };
             librarian = {model = "opencode/minimax-m2.7";};
             explorer = {model = "opencode/minimax-m2.7";};
-            designer = {model = "opencode/kimi-k2.6";};
+            designer = {model = "opencode/deepseek-v4-flash-free";};
             fixer = {
-              model = "opencode/deepseek-v4-flash";
+              model = "opencode/deepseek-v4-flash-free";
               variant = "high";
             };
             council = {model = "opencode/big-pickle";};
