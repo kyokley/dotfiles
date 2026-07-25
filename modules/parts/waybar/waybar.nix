@@ -12,13 +12,15 @@
           position = "top";
           height = 60;
 
-          modules-center = [
+          modules-left = [
             "hyprland/window"
           ];
           modules-right = [
-            "tray"
-            "pulseaudio"
+            "cpu"
+            "disk"
             "battery"
+            "pulseaudio"
+            "tray"
             "clock"
           ];
 
@@ -43,6 +45,17 @@
             };
             on-click = "pavucontrol";
             tooltip = true;
+          };
+
+          cpu = {
+            format = "󰍛 {usage}%";
+            tooltip = true;
+          };
+
+          disk = {
+            format = "󰋊 {percentage_used}%";
+            tooltip = true;
+            tooltip-format = "{used} / {total}";
           };
 
           battery = {
