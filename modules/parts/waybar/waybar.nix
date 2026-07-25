@@ -5,7 +5,7 @@
     programs.waybar = {
       enable = true;
       systemd.enable = true;
-      style = ./style.css;
+      style = ./classy.css;
       settings = {
         topBar = {
           layer = "top";
@@ -50,14 +50,14 @@
 
           cpu = {
             interval = 1;
-            format = "{icon} {usage}%";
+            format = "󰍛 {icon} {usage}%";
             tooltip = true;
             format-icons = ["▁" "▂" "▃" "▄" "▅" "▆" "▇" "█"];
           };
 
           memory = {
             interval = 1;
-            format = "{icon} {percentage}%";
+            format = "󰈀 {icon} {percentage}%";
             tooltip = true;
             tooltip-format = "{used:0.1f}GiB / {total:0.1f}GiB";
             format-icons = ["▁" "▂" "▃" "▄" "▅" "▆" "▇" "█"];
