@@ -50,21 +50,21 @@
 
           cpu = {
             interval = 1;
-            format = "󰍛 {icon} {usage}%";
+            format = "󰍛 {icon} {usage:>2}%";
             tooltip = true;
             format-icons = ["▁" "▂" "▃" "▄" "▅" "▆" "▇" "█"];
           };
 
           memory = {
             interval = 1;
-            format = "󰈀 {icon} {percentage}%";
+            format = "󰈀 {icon} {percentage:>2}%";
             tooltip = true;
             tooltip-format = "{used:0.1f}GiB / {total:0.1f}GiB";
             format-icons = ["▁" "▂" "▃" "▄" "▅" "▆" "▇" "█"];
           };
 
           disk = {
-            format = "󰋊 {percentage_used}%";
+            format = "󰋊 {percentage_used:>2}%";
             tooltip = true;
             tooltip-format = "{used} / {total}";
           };
@@ -74,9 +74,9 @@
               warning = 30;
               critical = 15;
             };
-            format = "{icon} {capacity}%";
-            format-charging = "󰂄 {capacity}%";
-            format-plugged = "󰂄 {capacity}%";
+            format = "{icon} {capacity:>2}%";
+            format-charging = "󰂄 {capacity:>2}%";
+            format-plugged = "󰂄 {capacity:>2}%";
             format-icons = [
               "󰁺"
               "󰁻"
@@ -131,7 +131,7 @@
               "class<kitty>" = "";
               "class<spotify>" = "";
               "class<brave-browser>" = "󰖟";
-              "title<.*OC.*>" = "";
+              "title<.*(OpenCode|OC).*>" = "";
               "class<slack>" = "";
               "class<Mattermost.Desktop>" = "󰭹";
             };
