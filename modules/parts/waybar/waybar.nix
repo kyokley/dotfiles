@@ -17,6 +17,7 @@
           ];
           modules-right = [
             "cpu"
+            "memory"
             "disk"
             "battery"
             "pulseaudio"
@@ -48,8 +49,18 @@
           };
 
           cpu = {
-            format = "󰍛 {usage}%";
+            interval = 1;
+            format = "{icon} {usage}%";
             tooltip = true;
+            format-icons = ["▁" "▂" "▃" "▄" "▅" "▆" "▇" "█"];
+          };
+
+          memory = {
+            interval = 1;
+            format = "{icon} {percentage}%";
+            tooltip = true;
+            tooltip-format = "{used:0.1f}GiB / {total:0.1f}GiB";
+            format-icons = ["▁" "▂" "▃" "▄" "▅" "▆" "▇" "█"];
           };
 
           disk = {
