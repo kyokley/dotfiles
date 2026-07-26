@@ -329,6 +329,7 @@
           settings = {
             eDP-1 = {
               path = "/home/yokley/Pictures/wallpapers";
+              duration = "5m";
             };
           };
         };
