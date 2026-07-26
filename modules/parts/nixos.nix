@@ -283,7 +283,6 @@
           rofi
           # qtile
           hyprland
-          waybar
           kitty
         ];
 
