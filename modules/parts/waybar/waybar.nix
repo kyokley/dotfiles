@@ -50,21 +50,21 @@
 
           cpu = {
             interval = 1;
-            format = "󰍛 {icon} {usage:>2}%";
+            format = "󰍛 {icon} {usage}%";
             tooltip = true;
             format-icons = ["▁" "▂" "▃" "▄" "▅" "▆" "▇" "█"];
           };
 
           memory = {
             interval = 1;
-            format = "󰈀 {icon} {percentage:>2}%";
+            format = "󰈀 {icon} {percentage}%";
             tooltip = true;
             tooltip-format = "{used:0.1f}GiB / {total:0.1f}GiB";
             format-icons = ["▁" "▂" "▃" "▄" "▅" "▆" "▇" "█"];
           };
 
           disk = {
-            format = "󰋊 {percentage_used:>2}%";
+            format = "󰋊 {percentage_used}%";
             tooltip = true;
             tooltip-format = "{used} / {total}";
           };
@@ -74,9 +74,9 @@
               warning = 30;
               critical = 15;
             };
-            format = "{icon} {capacity:>2}%";
-            format-charging = "󰂄 {capacity:>2}%";
-            format-plugged = "󰂄 {capacity:>2}%";
+            format = "{icon} {capacity}%";
+            format-charging = "󰂄 {capacity}%";
+            format-plugged = "󰂄 {capacity}%";
             format-icons = [
               "󰁺"
               "󰁻"
