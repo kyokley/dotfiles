@@ -53,6 +53,11 @@
       url = "github:lnl7/nix-darwin";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    sysc-greet = {
+      url = "github:Nomadcxx/sysc-greet";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = inputs:
@@ -76,6 +81,7 @@
       imports = [
         inputs.home-manager.flakeModules.home-manager
         inputs.flake-parts.flakeModules.modules
+        inputs.sysc-greet.nixosModules.default
         (inputs.import-tree ./modules/parts)
         (inputs.import-tree ./modules/hosts)
       ];

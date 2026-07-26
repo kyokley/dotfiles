@@ -10,6 +10,7 @@
   packages = [
     pkgs.bun
     inputs.bun2nix.packages.${pkgs.stdenv.hostPlatform.system}.default
+    inputs.sysc-greet.packages.${pkgs.stdenv.hostPlatform.system}.default
   ];
 
   # https://devenv.sh/languages/
