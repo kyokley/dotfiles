@@ -128,10 +128,10 @@
               "class<firefox>" = "";
               "class<title<.*github.*>" = "";
               "title<.*youtube.*>" = "";
+              "class<kitty> title<.*(OpenCode|OC [|]).*>" = "";
               "class<kitty>" = "";
               "class<spotify>" = "";
               "class<brave-browser>" = "󰖟";
-              "title<.*(OpenCode|OC).*>" = "";
               "class<slack>" = "";
               "class<Mattermost.Desktop>" = "󰭹";
             };

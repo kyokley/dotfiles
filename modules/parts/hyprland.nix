@@ -28,7 +28,7 @@
         enable = true;
         settings = {
           default_session = {
-            command = "${pkgs.tuigreet}/bin/tuigreet --time --cmd 'uwsm start -eD Hyprland start-hyprland'";
+            command = "${pkgs.tuigreet}/bin/tuigreet --time --cmd 'uwsm start -eD Hyprland start-hyprland' --theme 'order=magenta;text=cyan;prompt=green;time=red;action=blue;button=yellow;container=black;input=red'";
             user = "greeter";
           };
         };
