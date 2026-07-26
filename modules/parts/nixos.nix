@@ -80,15 +80,11 @@
           automatic-timezoned.enable = true;
           geoclue2.enable = true;
 
-          # Enable the XFCE Desktop Environment.
+          # Keyboard layout
           xserver = {
             enable = true;
             xkb.layout = "us";
             xkb.variant = "";
-
-            displayManager.lightdm = {
-              enable = true;
-            };
           };
 
           # Enable CUPS to print documents.
@@ -145,7 +141,6 @@
           rtkit.enable = true;
           pam.services = {
             login.enableGnomeKeyring = true;
-            lightdm.enableGnomeKeyring = true;
           };
         };
 

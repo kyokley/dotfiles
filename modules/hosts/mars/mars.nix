@@ -104,21 +104,14 @@ in {
       };
 
       services = {
-        # Disable X11 and LightDM — boot directly into Hyprland via TTY autologin.
         xserver = {
-          enable = lib.mkForce false;
-          displayManager.lightdm.enable = lib.mkForce false;
           videoDrivers = ["amdgpu"];
         };
-        displayManager.enable = lib.mkForce false;
-        getty.autologinUser = "yokley";
 
         udev.extraRules = ''
           ACTION=="add", SUBSYSTEM=="pci", DRIVER=="pcieport", ATTR{power/wakeup}="disabled"
         '';
       };
-
-      security.pam.services.lightdm.enableGnomeKeyring = lib.mkForce false;
 
       environment = {
         systemPackages = with pkgs; [
@@ -126,15 +119,6 @@ in {
           spotify
           steam-devices-udev-rules
         ];
-
-        # Start Hyprland directly from tty1 autologin shell via uwsm
-        # so graphical-session.target and tray.target are properly activated.
-        shellInit = ''
-          if [ "$(tty)" = "/dev/tty1" ] && [ -z "$_HYPRLAND_STARTED" ]; then
-            export _HYPRLAND_STARTED=1
-            exec uwsm start -eD Hyprland start-hyprland
-          fi
-        '';
 
         etc."systemd/system-sleep/99-nm-resume-reconnect" = {
           mode = "0755";
