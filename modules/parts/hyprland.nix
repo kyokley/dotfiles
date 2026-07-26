@@ -5,12 +5,31 @@
       pkgs,
       ...
     }: {
-      systemd.services."lock-on-sleep" = {
-        description = "Lock screen before sleep";
-        before = ["sleep.target"];
-        wantedBy = ["sleep.target"];
-        unitConfig.Type = "oneshot";
-        serviceConfig.ExecStart = "loginctl lock-session";
+      systemd = {
+        services."lock-on-sleep" = {
+          description = "Lock screen before sleep";
+          before = ["sleep.target"];
+          wantedBy = ["sleep.target"];
+          unitConfig.Type = "oneshot";
+          serviceConfig.ExecStart = "loginctl lock-session";
+        };
+
+        # Ensure the greeter home directories exist before greetd/cagebreak
+        # starts.  kitty (used by sysc-greet) needs .cache/kitty to write to,
+        # but systemd-tmpfiles refuses to create dirs inside a non-root home
+        # ("unsafe path transition").  A oneshot service solves this.
+        services."greeter-home-setup" = {
+          description = "Create greeter home directories for sysc-greet/kitty";
+          before = ["greetd.service"];
+          wantedBy = ["greetd.service"];
+          unitConfig.Type = "oneshot";
+          serviceConfig.ExecStart = pkgs.writeShellScript "greeter-home-setup" ''
+            mkdir -p /var/lib/greeter/.cache/kitty
+            mkdir -p /var/lib/greeter/.config
+            mkdir -p /var/lib/greeter/.local/state
+            chown -R greeter:greeter /var/lib/greeter
+          '';
+        };
       };
 
       programs = {
@@ -25,18 +44,10 @@
       };
 
       services = {
-        greetd = {
-          enable = false;
-          settings = {
-            default_session = {
-              command = "${pkgs.tuigreet}/bin/tuigreet --time --cmd 'uwsm start -eD Hyprland start-hyprland' --theme 'order=magenta;text=cyan;prompt=green;time=red;action=blue;button=yellow;container=black;input=red'";
-              user = "greeter";
-            };
-          };
-        };
-
         sysc-greet = {
           enable = true;
+          compositor = "cagebreak";
+          cagebreakPackage = pkgs.cagebreak;
         };
       };
     };

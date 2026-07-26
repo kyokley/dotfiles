@@ -324,7 +324,7 @@
 
         services = {
           xidlehook = {
-            enable = true;
+            enable = false;
             detect-sleep = true;
             not-when-fullscreen = true;
             timers = [
@@ -385,7 +385,7 @@
 
         services = {
           picom = {
-            enable = true;
+            enable = false;
             extraArgs = ["--config=${homeDir}/.config/picom/picom-custom.conf"];
           };
 
