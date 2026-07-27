@@ -375,3 +375,56 @@ label:focus {
 #custom-media.custom-vlc {
     color: #e07a5f;
 }
+
+/* ===== Custom Weather (wttrbar) ===== */
+
+#custom-weather {
+    color: #c0c0c0;
+    padding: 0 14px;
+    margin: 5px 2px;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.04);
+}
+
+#custom-weather:hover {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+/* Sunny/clear day - warm gold */
+#custom-weather.sunnyDay {
+    color: #c9a86c;
+}
+
+/* Clear night - cool blue */
+#custom-weather.clearNight {
+    color: #7eb8da;
+}
+
+/* Cloudy/foggy - muted gray */
+#custom-weather.cloudyFoggyDay,
+#custom-weather.cloudyFoggyNight {
+    color: #8b8b8b;
+}
+
+/* Rainy - teal green */
+#custom-weather.rainyDay,
+#custom-weather.rainyNight {
+    color: #81b29a;
+}
+
+/* Snow/ice - light cyan */
+#custom-weather.showyIcyDay,
+#custom-weather.snowyIcyNight {
+    color: #b8c4d0;
+}
+
+/* Severe weather - alert red */
+#custom-weather.severe {
+    color: #e07a5f;
+    background: rgba(224, 122, 95, 0.08);
+}
+
+/* Default fallback */
+#custom-weather.default {
+    color: #c0c0c0;
+}

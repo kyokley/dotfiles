@@ -38,7 +38,10 @@
           };
 
           clock = {
-            format = "{:%H:%M %d/%m/%Y}";
+            interval = 1;
+            format = "󰅐 {:%H:%M:%S}";
+            tooltip = true;
+            tooltip-format = "{:%a %b %d}";
           };
 
           tray = {
@@ -61,6 +64,7 @@
             return-type = "json";
             format = "{}";
             tooltip = true;
+            interval = 900;
           };
 
           cpu = {
