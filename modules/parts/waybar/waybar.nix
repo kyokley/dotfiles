@@ -1,7 +1,14 @@
 {
-  flake.modules.homeManager.waybar = {
-    services.network-manager-applet.enable = true;
-    services.blueman-applet.enable = true;
+  flake.modules.homeManager.waybar = {pkgs, ...}: {
+    services = {
+      network-manager-applet.enable = true;
+      blueman-applet.enable = true;
+    };
+
+    home.packages = [
+      pkgs.wttrbar
+    ];
+
     programs.waybar = {
       enable = true;
       systemd.enable = true;
@@ -21,6 +28,7 @@
             "disk"
             "battery"
             "pulseaudio"
+            "custom/weather"
             "tray"
             "clock"
           ];
@@ -45,6 +53,13 @@
               default = ["󰕿" "󰖀" "󰕾"];
             };
             on-click = "pavucontrol";
+            tooltip = true;
+          };
+
+          "custom/weather" = {
+            exec = "wttrbar --mph --nerd --fahrenheit --custom-indicator '{ICON} {FeelsLikeF}F'";
+            return-type = "json";
+            format = "{}";
             tooltip = true;
           };
 
