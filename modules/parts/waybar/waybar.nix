@@ -14,104 +14,164 @@
       systemd.enable = true;
       style = ./classy.css;
       settings = {
-        topBar = {
-          layer = "top";
-          position = "top";
-          height = 60;
+        topBar = let
+          mods = ["cpu" "memory" "disk" "battery" "pulseaudio"];
+          modAttrDefaults =
+            builtins.elemAt (builtins.concatLists (
+              map (mod: {
+                "group/${mod}" = {
+                  orientation = "inherit";
+                  modules = [
+                    "${mod}#label"
+                    "${mod}#data"
+                  ];
+                  drawer = {
+                    transition-duration = 500;
+                    children-class = "group-${mod}";
+                    transition-left-to-right = true;
+                    click-to-reveal = true;
+                  };
+                };
+                "${mod}#label" = {
+                  interval = 1;
+                  tooltip = true;
+                };
+                "${mod}#data" = {
+                  interval = 1;
+                  format = "{icon} {usage}%";
+                  tooltip = true;
+                };
+              })
+              mods
+            ))
+            0;
+        in
+          modAttrDefaults
+          // {
+            layer = "top";
+            position = "top";
+            height = 60;
 
-          modules-left = [
-            "hyprland/window"
-          ];
-          modules-right = [
-            "cpu"
-            "memory"
-            "disk"
-            "battery"
-            "pulseaudio"
-            "custom/weather"
-            "tray"
-            "clock"
-          ];
-
-          "hyprland/window" = {
-            max-length = 50;
-          };
-
-          clock = {
-            interval = 1;
-            format = "󰅐 {:%H:%M:%S}";
-            tooltip = true;
-            tooltip-format = "{:%a %b %d}";
-          };
-
-          tray = {
-            icon-size = 32;
-            spacing = 10;
-          };
-
-          pulseaudio = {
-            format = "{icon} {volume}%";
-            format-muted = "󰝟 Muted";
-            format-icons = {
-              default = ["󰕿" "󰖀" "󰕾"];
-            };
-            on-click = "pavucontrol";
-            tooltip = true;
-          };
-
-          "custom/weather" = {
-            exec = "wttrbar --mph --nerd --fahrenheit --custom-indicator '{ICON} {FeelsLikeF}F'";
-            return-type = "json";
-            format = "{}";
-            tooltip = true;
-            interval = 900;
-          };
-
-          cpu = {
-            interval = 1;
-            format = "󰍛 {icon} {usage}%";
-            tooltip = true;
-            format-icons = ["▁" "▂" "▃" "▄" "▅" "▆" "▇" "█"];
-          };
-
-          memory = {
-            interval = 1;
-            format = "󰈀 {icon} {percentage}%";
-            tooltip = true;
-            tooltip-format = "{used:0.1f}GiB / {total:0.1f}GiB";
-            format-icons = ["▁" "▂" "▃" "▄" "▅" "▆" "▇" "█"];
-          };
-
-          disk = {
-            format = "󰋊 {percentage_used}%";
-            tooltip = true;
-            tooltip-format = "{used} / {total}";
-          };
-
-          battery = {
-            states = {
-              warning = 30;
-              critical = 15;
-            };
-            format = "{icon} {capacity}%";
-            format-charging = "󰂄 {capacity}%";
-            format-plugged = "󰂄 {capacity}%";
-            format-icons = [
-              "󰁺"
-              "󰁻"
-              "󰁼"
-              "󰁽"
-              "󰁾"
-              "󰁿"
-              "󰂀"
-              "󰂁"
-              "󰂂"
-              "󰁹"
+            modules-left = [
+              "hyprland/window"
             ];
-            tooltip = true;
-            tooltip-format = "{timeTo}";
+
+            "hyprland/window" = {
+              max-length = 50;
+            };
+
+            modules-right =
+              (map (mod: "group/${mod}") mods)
+              ++ [
+                "custom/weather"
+                "tray"
+                "clock"
+              ];
+
+            "cpu#label" = {
+              format = "󰍛";
+            };
+
+            "cpu#data" = {
+              format-icons = ["▁" "▂" "▃" "▄" "▅" "▆" "▇" "█"];
+            };
+
+            "memory#label" = {
+              format = "󰈀";
+            };
+
+            "memory#data" = {
+              format-icons = ["▁" "▂" "▃" "▄" "▅" "▆" "▇" "█"];
+            };
+
+            "disk#label" = {
+              format = "󰋊";
+            };
+
+            "pulseaudio#label" = {
+              format = "{icon}";
+              format-muted = "󰝟";
+              format-icons = {
+                default = ["󰕿" "󰖀" "󰕾"];
+              };
+            };
+
+            "pulseaudio#data" = {
+              format = "{volume}%";
+              format-muted = "󰝟 Muted";
+              format-icons = {
+                default = ["󰕿" "󰖀" "󰕾"];
+              };
+            };
+
+            clock = {
+              interval = 1;
+              format = "󰅐 {:%H:%M:%S}";
+              tooltip = true;
+              tooltip-format = "{:%a %b %d}";
+            };
+
+            tray = {
+              icon-size = 32;
+              spacing = 10;
+            };
+
+            pulseaudio = {
+              format = "{icon} {volume}%";
+              format-muted = "󰝟 Muted";
+              format-icons = {
+                default = ["󰕿" "󰖀" "󰕾"];
+              };
+              on-click = "pavucontrol";
+              tooltip = true;
+            };
+
+            "custom/weather" = {
+              exec = "wttrbar --mph --nerd --fahrenheit --custom-indicator '{ICON} {FeelsLikeF}F'";
+              return-type = "json";
+              format = "{}";
+              tooltip = true;
+              interval = 900;
+            };
+
+            memory = {
+              interval = 1;
+              format = "󰈀 {icon} {percentage}%";
+              tooltip = true;
+              tooltip-format = "{used:0.1f}GiB / {total:0.1f}GiB";
+              format-icons = ["▁" "▂" "▃" "▄" "▅" "▆" "▇" "█"];
+            };
+
+            disk = {
+              format = "󰋊 {percentage_used}%";
+              tooltip = true;
+              tooltip-format = "{used} / {total}";
+            };
+
+            battery = {
+              states = {
+                warning = 30;
+                critical = 15;
+              };
+              format = "{icon} {capacity}%";
+              format-charging = "󰂄 {capacity}%";
+              format-plugged = "󰂄 {capacity}%";
+              format-icons = [
+                "󰁺"
+                "󰁻"
+                "󰁼"
+                "󰁽"
+                "󰁾"
+                "󰁿"
+                "󰂀"
+                "󰂁"
+                "󰂂"
+                "󰁹"
+              ];
+              tooltip = true;
+              tooltip-format = "{timeTo}";
+            };
           };
-        };
 
         bottomBar = {
           layer = "top";
