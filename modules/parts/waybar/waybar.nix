@@ -1,5 +1,9 @@
 {
-  flake.modules.homeManager.waybar = {pkgs, ...}: {
+  flake.modules.homeManager.waybar = {
+    pkgs,
+    lib,
+    ...
+  }: {
     services = {
       network-manager-applet.enable = true;
       blueman-applet.enable = true;
@@ -13,40 +17,37 @@
       enable = true;
       systemd.enable = true;
       style = ./classy.css;
-      settings = {
-        topBar = let
-          mods = ["cpu" "memory" "disk" "battery" "pulseaudio"];
-          modAttrDefaults =
-            builtins.elemAt (builtins.concatLists (
-              map (mod: {
-                "group/${mod}" = {
-                  orientation = "inherit";
-                  modules = [
-                    "${mod}#label"
-                    "${mod}#data"
-                  ];
-                  drawer = {
-                    transition-duration = 500;
-                    children-class = "group-${mod}";
-                    transition-left-to-right = true;
-                    click-to-reveal = true;
-                  };
-                };
-                "${mod}#label" = {
-                  interval = 1;
-                  tooltip = true;
-                };
-                "${mod}#data" = {
-                  interval = 1;
-                  format = "{icon} {usage}%";
-                  tooltip = true;
-                };
-              })
-              mods
-            ))
-            0;
-        in
-          modAttrDefaults
+      settings = let
+        mods = ["cpu" "memory" "disk" "battery" "pulseaudio"];
+        modAttrDefaults = builtins.foldl' (a: b: a // b) {} (
+          map (mod: {
+            "group/${mod}" = {
+              orientation = "inherit";
+              modules = [
+                "${mod}#label"
+                "${mod}#data"
+              ];
+              drawer = {
+                transition-duration = 500;
+                children-class = "group-${mod}";
+                transition-left-to-right = true;
+                click-to-reveal = true;
+              };
+            };
+            "${mod}#label" = {
+              interval = lib.mkDefault 1;
+              tooltip = lib.mkDefault true;
+            };
+            "${mod}#data" = {
+              interval = lib.mkDefault 1;
+              format = lib.mkDefault "{icon} {usage}%";
+              tooltip = lib.mkDefault true;
+            };
+          })
+          mods
+        );
+      in [
+        (modAttrDefaults
           // {
             layer = "top";
             position = "top";
@@ -81,11 +82,22 @@
             };
 
             "memory#data" = {
+              format = "{icon} {percentage}%";
+              tooltip = true;
+              tooltip-format = "{used:0.1f}GiB / {total:0.1f}GiB";
               format-icons = ["▁" "▂" "▃" "▄" "▅" "▆" "▇" "█"];
             };
 
             "disk#label" = {
               format = "󰋊";
+              interval = 60;
+            };
+
+            "disk#data" = {
+              format = "{percentage_used}%";
+              tooltip = true;
+              tooltip-format = "{used} / {total}";
+              interval = 60;
             };
 
             "pulseaudio#label" = {
@@ -104,58 +116,14 @@
               };
             };
 
-            clock = {
-              interval = 1;
-              format = "󰅐 {:%H:%M:%S}";
-              tooltip = true;
-              tooltip-format = "{:%a %b %d}";
-            };
-
-            tray = {
-              icon-size = 32;
-              spacing = 10;
-            };
-
-            pulseaudio = {
-              format = "{icon} {volume}%";
-              format-muted = "󰝟 Muted";
-              format-icons = {
-                default = ["󰕿" "󰖀" "󰕾"];
-              };
-              on-click = "pavucontrol";
-              tooltip = true;
-            };
-
-            "custom/weather" = {
-              exec = "wttrbar --mph --nerd --fahrenheit --custom-indicator '{ICON} {FeelsLikeF}F'";
-              return-type = "json";
-              format = "{}";
-              tooltip = true;
-              interval = 900;
-            };
-
-            memory = {
-              interval = 1;
-              format = "󰈀 {icon} {percentage}%";
-              tooltip = true;
-              tooltip-format = "{used:0.1f}GiB / {total:0.1f}GiB";
-              format-icons = ["▁" "▂" "▃" "▄" "▅" "▆" "▇" "█"];
-            };
-
-            disk = {
-              format = "󰋊 {percentage_used}%";
-              tooltip = true;
-              tooltip-format = "{used} / {total}";
-            };
-
-            battery = {
+            "battery#label" = {
+              format = "{icon}";
               states = {
                 warning = 30;
                 critical = 15;
               };
-              format = "{icon} {capacity}%";
-              format-charging = "󰂄 {capacity}%";
-              format-plugged = "󰂄 {capacity}%";
+              format-charging = "󰂄";
+              format-plugged = "󰂄";
               format-icons = [
                 "󰁺"
                 "󰁻"
@@ -170,10 +138,56 @@
               ];
               tooltip = true;
               tooltip-format = "{timeTo}";
+              interval = 900;
             };
-          };
 
-        bottomBar = {
+            "battery#data" = {
+              format = lib.mkForce "{capacity}%";
+              states = {
+                warning = 30;
+                critical = 15;
+              };
+              format-charging = "{capacity}%";
+              format-plugged = "{capacity}%";
+              format-icons = [
+                "󰁺"
+                "󰁻"
+                "󰁼"
+                "󰁽"
+                "󰁾"
+                "󰁿"
+                "󰂀"
+                "󰂁"
+                "󰂂"
+                "󰁹"
+              ];
+              tooltip = true;
+              tooltip-format = "{timeTo}";
+              interval = 900;
+            };
+
+            clock = {
+              interval = 1;
+              format = "󰅐 {:%H:%M:%S}";
+              tooltip = true;
+              tooltip-format = "{:%a %b %d}";
+            };
+
+            tray = {
+              icon-size = 32;
+              spacing = 10;
+            };
+
+            "custom/weather" = {
+              exec = "wttrbar --mph --nerd --fahrenheit --custom-indicator '{ICON} {FeelsLikeF}F'";
+              return-type = "json";
+              format = "{}";
+              tooltip = true;
+              interval = 900;
+            };
+          })
+
+        {
           layer = "top";
           position = "bottom";
           height = 60;
@@ -215,8 +229,8 @@
               "class<Mattermost.Desktop>" = "󰭹";
             };
           };
-        };
-      };
+        }
+      ];
     };
   };
 }
