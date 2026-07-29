@@ -140,6 +140,30 @@ button:hover {
     background: rgba(224, 122, 95, 0.1);
 }
 
+/* ===== Custom CPU Max ===== */
+
+#custom-cpu_max {
+    padding: 0 14px;
+    margin: 5px 2px;
+    border-radius: 6px;
+    color: #81b29a;
+    background: rgba(255, 255, 255, 0.04);
+}
+
+#custom-cpu_max:hover {
+    background: rgba(129, 178, 154, 0.1);
+}
+
+#custom-cpu_max.warning {
+    color: #e0c078;
+    background: rgba(224, 192, 120, 0.08);
+}
+
+#custom-cpu_max.critical {
+    color: #e07a5f;
+    background: rgba(224, 122, 95, 0.1);
+}
+
 #memory {
     color: #7eb8da;
 }

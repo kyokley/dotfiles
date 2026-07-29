@@ -19,7 +19,7 @@
       systemd.enable = true;
       style = ./classy.css;
       settings = let
-        mods = ["cpu" "memory" "disk" "battery" "pulseaudio"];
+        mods = ["custom/cpu_max" "memory" "disk" "battery" "pulseaudio"];
         modAttrDefaults = builtins.foldl' (a: b: a // b) {} (
           map (mod: {
             "group/${mod}" = {
@@ -65,7 +65,6 @@
             modules-right =
               (map (mod: "group/${mod}") mods)
               ++ [
-                "cpu_graph"
                 "custom/weather"
                 "tray"
                 "clock"
@@ -84,9 +83,57 @@
               };
             };
 
-            "cpu_graph" = {
-              "interval" = 2;
-              "width" = 10;
+            "custom/cpu_max#label" = {
+              return-type = "json";
+              format = "󰍛";
+              exec = ''
+                awk '/^cpu[0-9]/ {t[$1]=$2+$3+$4+$5; i[$1]=$5}
+                  END {
+                    system("sleep 0.5")
+                    while ((getline < "/proc/stat") > 0)
+                      if ($1 ~ /^cpu[0-9]/) {
+                        td = $2+$3+$4+$5 - t[$1]
+                        id = $5 - i[$1]
+                        if (td > 0) {
+                          u = int((td - id) / td * 100 + 0.5)
+                          if (u > m) m = u
+                        }
+                      }
+                    close("/proc/stat")
+                    m = m != "" ? m : 0
+                    if (m >= 90) printf "{\"text\":\"%d%%\",\"class\":\"critical\"}\n", m
+                    else if (m >= 60) printf "{\"text\":\"%d%%\",\"class\":\"warning\"}\n", m
+                    else printf "{\"text\":\"%d%%\"}\n", m
+                  }' /proc/stat
+              '';
+              interval = 2;
+              tooltip = false;
+            };
+
+            "custom/cpu_max#data" = {
+              return-type = "json";
+              exec = ''
+                awk '/^cpu[0-9]/ {t[$1]=$2+$3+$4+$5; i[$1]=$5}
+                  END {
+                    system("sleep 0.5")
+                    while ((getline < "/proc/stat") > 0)
+                      if ($1 ~ /^cpu[0-9]/) {
+                        td = $2+$3+$4+$5 - t[$1]
+                        id = $5 - i[$1]
+                        if (td > 0) {
+                          u = int((td - id) / td * 100 + 0.5)
+                          if (u > m) m = u
+                        }
+                      }
+                    close("/proc/stat")
+                    m = m != "" ? m : 0
+                    if (m >= 90) printf "{\"text\":\"%d%%\",\"class\":\"critical\"}\n", m
+                    else if (m >= 60) printf "{\"text\":\"%d%%\",\"class\":\"warning\"}\n", m
+                    else printf "{\"text\":\"%d%%\"}\n", m
+                  }' /proc/stat
+              '';
+              interval = 2;
+              tooltip = false;
             };
 
             "memory#label" = {
@@ -202,10 +249,10 @@
               exec = ''
                 wttrbar --mph --nerd --fahrenheit --custom-indicator '{ICON} {FeelsLikeF}F' \
                   | ${pkgs.jq}/bin/jq -c '(.text | capture("(?<t>[0-9]+)F").t | tonumber) as $t
-                    | if $t >= 95 then . + {state: "hot-critical"}
-                      elif $t >= 85 then . + {state: "hot-warning"}
-                      elif $t <= 20 then . + {state: "cold-critical"}
-                      elif $t <= 32 then . + {state: "cold-warning"}
+                    | if $t >= 95 then .class = [.class, "hot-critical"]
+                      elif $t >= 85 then .class = [.class, "hot-warning"]
+                      elif $t <= 20 then .class = [.class, "cold-critical"]
+                      elif $t <= 32 then .class = [.class, "cold-warning"]
                       else . end'
               '';
               return-type = "json";
