@@ -11,6 +11,7 @@
 
     home.packages = [
       pkgs.wttrbar
+      pkgs.jq
     ];
 
     programs.waybar = {
@@ -64,6 +65,7 @@
             modules-right =
               (map (mod: "group/${mod}") mods)
               ++ [
+                "cpu_graph"
                 "custom/weather"
                 "tray"
                 "clock"
@@ -76,6 +78,15 @@
             "cpu#data" = {
               format = "{icon} {usage}%";
               format-icons = ["▁" "▂" "▃" "▄" "▅" "▆" "▇" "█"];
+              states = {
+                warning = 60;
+                critical = 90;
+              };
+            };
+
+            "cpu_graph" = {
+              "interval" = 2;
+              "width" = 10;
             };
 
             "memory#label" = {
@@ -87,6 +98,10 @@
               tooltip = true;
               tooltip-format = "{used:0.1f}GiB / {total:0.1f}GiB";
               format-icons = ["▁" "▂" "▃" "▄" "▅" "▆" "▇" "█"];
+              states = {
+                warning = 70;
+                critical = 90;
+              };
             };
 
             "disk#label" = {
@@ -99,6 +114,10 @@
               tooltip = true;
               tooltip-format = "{used} / {total}";
               interval = 60;
+              states = {
+                warning = 70;
+                critical = 90;
+              };
             };
 
             "pulseaudio#label" = {
@@ -180,7 +199,15 @@
             };
 
             "custom/weather" = {
-              exec = "wttrbar --mph --nerd --fahrenheit --custom-indicator '{ICON} {FeelsLikeF}F'";
+              exec = ''
+                wttrbar --mph --nerd --fahrenheit --custom-indicator '{ICON} {FeelsLikeF}F' \
+                  | ${pkgs.jq}/bin/jq -c '(.text | capture("(?<t>[0-9]+)F").t | tonumber) as $t
+                    | if $t >= 95 then . + {state: "hot-critical"}
+                      elif $t >= 85 then . + {state: "hot-warning"}
+                      elif $t <= 20 then . + {state: "cold-critical"}
+                      elif $t <= 32 then . + {state: "cold-warning"}
+                      else . end'
+              '';
               return-type = "json";
               format = "{}";
               tooltip = true;

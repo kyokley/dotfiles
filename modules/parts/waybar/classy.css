@@ -130,6 +130,16 @@ button:hover {
     background: rgba(129, 178, 154, 0.1);
 }
 
+#cpu.warning {
+    color: #e0c078;
+    background: rgba(224, 192, 120, 0.08);
+}
+
+#cpu.critical {
+    color: #e07a5f;
+    background: rgba(224, 122, 95, 0.1);
+}
+
 #memory {
     color: #7eb8da;
 }
@@ -138,12 +148,32 @@ button:hover {
     background: rgba(126, 184, 218, 0.1);
 }
 
+#memory.warning {
+    color: #e0c078;
+    background: rgba(224, 192, 120, 0.08);
+}
+
+#memory.critical {
+    color: #e07a5f;
+    background: rgba(224, 122, 95, 0.1);
+}
+
 #disk {
     color: #d4a574;
 }
 
 #disk:hover {
     background: rgba(212, 165, 116, 0.1);
+}
+
+#disk.warning {
+    color: #e0c078;
+    background: rgba(224, 192, 120, 0.08);
+}
+
+#disk.critical {
+    color: #e07a5f;
+    background: rgba(224, 122, 95, 0.1);
 }
 
 #pulseaudio {
@@ -418,6 +448,27 @@ label:focus {
 #custom-weather.severe {
     color: #e07a5f;
     background: rgba(224, 122, 95, 0.08);
+}
+
+/* Temperature-based hot/cold warning/critical */
+#custom-weather.hot-warning {
+    color: #e0c078;
+    background: rgba(224, 192, 120, 0.08);
+}
+
+#custom-weather.hot-critical {
+    color: #e07a5f;
+    background: rgba(224, 122, 95, 0.1);
+}
+
+#custom-weather.cold-warning {
+    color: #7eb8da;
+    background: rgba(126, 184, 218, 0.08);
+}
+
+#custom-weather.cold-critical {
+    color: #5e81ac;
+    background: rgba(94, 129, 172, 0.1);
 }
 
 /* Default fallback */
