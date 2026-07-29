@@ -124,7 +124,6 @@ button:hover {
 
 #cpu {
     color: #81b29a;
-    min-width: 90px;
 }
 
 #cpu:hover {
@@ -133,7 +132,6 @@ button:hover {
 
 #memory {
     color: #7eb8da;
-    min-width: 100px;
 }
 
 #memory:hover {
@@ -142,7 +140,6 @@ button:hover {
 
 #disk {
     color: #d4a574;
-    min-width: 80px;
 }
 
 #disk:hover {
@@ -164,7 +161,6 @@ button:hover {
 
 #battery {
     color: #b8c4d0;
-    min-width: 80px;
 }
 
 #battery:hover {

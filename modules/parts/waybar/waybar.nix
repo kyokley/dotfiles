@@ -74,6 +74,7 @@
             };
 
             "cpu#data" = {
+              format = "{icon} {usage}%";
               format-icons = ["▁" "▂" "▃" "▄" "▅" "▆" "▇" "█"];
             };
 
