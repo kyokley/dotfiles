@@ -201,16 +201,26 @@ button:hover {
 }
 
 #pulseaudio {
-    color: #c0c0c0;
+    color: #b8a0c8;
 }
 
 #pulseaudio:hover {
-    background: rgba(255, 255, 255, 0.08);
+    background: rgba(184, 160, 200, 0.1);
 }
 
 #pulseaudio.muted {
-    color: #444;
-    background: rgba(255, 255, 255, 0.02);
+    color: #6a5c78;
+    background: rgba(184, 160, 200, 0.04);
+}
+
+#pulseaudio.warning {
+    color: #e0c078;
+    background: rgba(224, 192, 120, 0.08);
+}
+
+#pulseaudio.critical {
+    color: #e07a5f;
+    background: rgba(224, 122, 95, 0.1);
 }
 
 #battery {

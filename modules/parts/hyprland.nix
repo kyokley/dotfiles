@@ -158,8 +158,20 @@
               }
               {
                 _args = [
+                  (lib.generators.mkLuaInline ''mod .. " + SHIFT + J"'')
+                  (lib.generators.mkLuaInline ''hl.dsp.window.swap({ next = true })'')
+                ];
+              }
+              {
+                _args = [
                   (lib.generators.mkLuaInline ''mod .. " + K"'')
                   (lib.generators.mkLuaInline ''hl.dsp.layout("cycleprev")'')
+                ];
+              }
+              {
+                _args = [
+                  (lib.generators.mkLuaInline ''mod .. " + SHIFT + K"'')
+                  (lib.generators.mkLuaInline ''hl.dsp.window.swap({ prev = true })'')
                 ];
               }
               {

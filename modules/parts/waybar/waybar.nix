@@ -247,7 +247,7 @@
 
             "custom/weather" = {
               exec = ''
-                wttrbar --mph --nerd --fahrenheit --custom-indicator '{ICON} {FeelsLikeF}F' \
+                wttrbar --mph --nerd --fahrenheit --custom-indicator '{ICON} {temp_F}F' \
                   | ${pkgs.jq}/bin/jq -c '(.text | capture("(?<t>[0-9]+)F").t | tonumber) as $t
                     | if $t >= 95 then .class = [.class, "hot-critical"]
                       elif $t >= 85 then .class = [.class, "hot-warning"]
