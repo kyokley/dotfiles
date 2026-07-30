@@ -221,6 +221,27 @@
               }
               {
                 _args = [
+                  "XF86AudioPlay"
+                  (lib.generators.mkLuaInline ''hl.dsp.exec_cmd("playerctl play-pause")'')
+                  {locked = true;}
+                ];
+              }
+              {
+                _args = [
+                  "XF86AudioNext"
+                  (lib.generators.mkLuaInline ''hl.dsp.exec_cmd("playerctl next")'')
+                  {locked = true;}
+                ];
+              }
+              {
+                _args = [
+                  "XF86AudioPrev"
+                  (lib.generators.mkLuaInline ''hl.dsp.exec_cmd("playerctl previous")'')
+                  {locked = true;}
+                ];
+              }
+              {
+                _args = [
                   "XF86MonBrightnessUp"
                   (lib.generators.mkLuaInline ''hl.dsp.exec_cmd("brightnessctl -s set +5%")'')
                   {locked = true;}
@@ -321,6 +342,7 @@
         packages = [
           pkgs.pamixer
           pkgs.brightnessctl
+          pkgs.playerctl
         ];
 
         pointerCursor = {
