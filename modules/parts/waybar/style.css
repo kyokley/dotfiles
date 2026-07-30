@@ -140,7 +140,7 @@ button:hover {
 /* ===== Individual Modules ===== */
 
 #clock {
-    background: rgba(12, 8, 24, 0.6);
+    background: rgb(12, 8, 24);
     color: #b8aeff;
     font-weight: 700;
     box-shadow: 0 0 10px rgba(100, 60, 255, 0.1);
