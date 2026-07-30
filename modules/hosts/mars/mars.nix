@@ -66,6 +66,10 @@ in {
         initrd.availableKernelModules = ["nvme" "xhci_pci" "thunderbolt" "uas" "sd_mod"];
         initrd.kernelModules = ["amdgpu"];
         kernelModules = ["kvm-amd" "amdgpu"];
+        # pcie_aspm=off prevents PCIe link state changes on suspend that
+        # cause the MT7921E to become unresponsive. Costs a small amount
+        # of battery — remove if you need the power savings.
+        kernelParams = ["pcie_aspm=off"];
         extraModulePackages = [];
         extraModprobeConfig = ''
           # Mediatek MT7921E can be unstable around suspend/resume with ASPM/CLC.
@@ -120,20 +124,33 @@ in {
           steam-devices-udev-rules
         ];
 
-        etc."systemd/system-sleep/99-nm-resume-reconnect" = {
+        # MT7921E often fails to reinitialize after resume — reload the module
+        # to force a clean hardware reset, then let NM reconnect automatically.
+        etc."systemd/system-sleep/99-mt7921e-reload" = {
           mode = "0755";
           text = ''
             #!${pkgs.runtimeShell}
-            if [ "$1" = "post" ]; then
-              ${pkgs.coreutils}/bin/sleep 2
-              state="$(${pkgs.networkmanager}/bin/nmcli -t -f GENERAL.STATE device show wlp1s0 2>/dev/null | ${pkgs.coreutils}/bin/cut -d: -f2 | ${pkgs.gawk}/bin/awk '{print $1}')"
-
-              if [ "$state" != "100" ]; then
+            case "$1" in
+              pre)
+                # Tear down before suspend so NM doesn't hold the device
                 ${pkgs.networkmanager}/bin/nmcli device disconnect wlp1s0 >/dev/null 2>&1 || true
-                ${pkgs.coreutils}/bin/sleep 1
+                ;;
+              post)
+                # Give PCIe subsystem time to settle
+                ${pkgs.coreutils}/bin/sleep 3
+
+                # If the device isn't responding, reload the kernel module
+                if ! ${pkgs.networkmanager}/bin/nmcli -t -f GENERAL.STATE device show wlp1s0 >/dev/null 2>&1; then
+                  ${pkgs.kmod}/bin/modprobe -r mt7921e
+                  ${pkgs.coreutils}/bin/sleep 1
+                  ${pkgs.kmod}/bin/modprobe mt7921e
+                  ${pkgs.coreutils}/bin/sleep 2
+                fi
+
+                # Let NM reconnect automatically (it will, but ensure device is available)
                 ${pkgs.networkmanager}/bin/nmcli device connect wlp1s0 >/dev/null 2>&1 || true
-              fi
-            fi
+                ;;
+            esac
           '';
         };
       };
