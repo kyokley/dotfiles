@@ -340,6 +340,7 @@
 
       home = {
         packages = [
+          pkgs.libnotify
           pkgs.pamixer
           pkgs.brightnessctl
           pkgs.playerctl
@@ -408,6 +409,29 @@
               duration = "5m";
             };
           };
+        };
+      };
+
+      systemd.user.services."spotify-song-notify" = {
+        Unit = {
+          Description = "Notify on Spotify song changes";
+          After = ["graphical-session.target"];
+          PartOf = ["graphical-session.target"];
+        };
+        Service = {
+          ExecStart = "${pkgs.writeShellScript "spotify-notify" ''
+            ${pkgs.playerctl}/bin/playerctl --player=spotify --follow metadata --format '{{title}} - {{artist}}' 2>/dev/null | \
+              while read -r line; do
+                if [ -n "$line" ]; then
+                  ${pkgs.libnotify}/bin/notify-send -i spotify "Now Playing" "$line"
+                fi
+              done
+          ''}";
+          Restart = "on-failure";
+          RestartSec = 5;
+        };
+        Install = {
+          WantedBy = ["graphical-session.target"];
         };
       };
     };

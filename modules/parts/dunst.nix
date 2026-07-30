@@ -23,7 +23,7 @@
           width = (0, 500)
           height = (0, 300)
           origin = top-right
-          offset = (25, 65)
+          offset = (25, 10)
 
           notification_limit = 5
 
