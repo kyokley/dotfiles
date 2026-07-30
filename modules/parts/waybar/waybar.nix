@@ -99,6 +99,7 @@
 
             "custom/cpu_max#data" = {
               return-type = "json";
+              format = "{}";
               exec = ''
                 awk '/^cpu[0-9]/ {t[$1]=$2+$3+$4+$5; i[$1]=$5}
                   END {
@@ -157,22 +158,30 @@
               format = "{icon}";
               format-muted = "󰝟";
               format-icons = {
-                default = ["󰕿" "󰖀" "󰕾"];
+                default = [
+                  "󰕿"
+                  "󰖀"
+                  "󰖀"
+                  "󰕾"
+                  "󰕾"
+                  "󰕾"
+                  "󰕾"
+                  "󰕾"
+                  "󰕾"
+                  "󰕾"
+                ];
               };
             };
 
             "pulseaudio#data" = {
               format = "{volume}%";
               format-muted = "󰝟 Muted";
-              format-icons = {
-                default = ["󰕿" "󰖀" "󰕾"];
-              };
             };
 
             "battery#label" = {
               format = "{icon}";
               states = {
-                warning = 30;
+                warning = 35;
                 critical = 15;
               };
               format-charging = "󰂄";
@@ -197,7 +206,7 @@
             "battery#data" = {
               format = lib.mkForce "{capacity}%";
               states = {
-                warning = 30;
+                warning = 35;
                 critical = 15;
               };
               format-charging = "{capacity}%";
