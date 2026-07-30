@@ -219,6 +219,20 @@
                   {locked = true;}
                 ];
               }
+              {
+                _args = [
+                  "XF86MonBrightnessUp"
+                  (lib.generators.mkLuaInline ''hl.dsp.exec_cmd("brightnessctl -s set +5%")'')
+                  {locked = true;}
+                ];
+              }
+              {
+                _args = [
+                  "XF86MonBrightnessDown"
+                  (lib.generators.mkLuaInline ''hl.dsp.exec_cmd("brightnessctl -s set 5%-")'')
+                  {locked = true;}
+                ];
+              }
             ]
             ++ (builtins.concatLists ws);
 
@@ -306,6 +320,7 @@
       home = {
         packages = [
           pkgs.pamixer
+          pkgs.brightnessctl
         ];
 
         pointerCursor = {
