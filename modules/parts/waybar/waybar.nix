@@ -17,7 +17,7 @@
     programs.waybar = {
       enable = true;
       systemd.enable = true;
-      style = ./classy.css;
+      style = ./style.css;
       settings = let
         mods = ["custom/cpu_max" "memory" "disk" "battery" "pulseaudio"];
         modAttrDefaults = builtins.foldl' (a: b: a // b) {} (
@@ -69,19 +69,6 @@
                 "tray"
                 "clock"
               ];
-
-            "cpu#label" = {
-              format = "󰍛";
-            };
-
-            "cpu#data" = {
-              format = "{icon} {usage}%";
-              format-icons = ["▁" "▂" "▃" "▄" "▅" "▆" "▇" "█"];
-              states = {
-                warning = 60;
-                critical = 90;
-              };
-            };
 
             "custom/cpu_max#label" = {
               return-type = "json";
@@ -141,10 +128,9 @@
             };
 
             "memory#data" = {
-              format = "{icon} {percentage}%";
+              format = "{percentage}%";
               tooltip = true;
               tooltip-format = "{used:0.1f}GiB / {total:0.1f}GiB";
-              format-icons = ["▁" "▂" "▃" "▄" "▅" "▆" "▇" "█"];
               states = {
                 warning = 70;
                 critical = 90;
