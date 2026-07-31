@@ -204,6 +204,36 @@
                 ];
               }
               {
+                # Move the window by dragging with ALT + left click (floats tiled windows)
+                _args = [
+                  (lib.generators.mkLuaInline ''mod .. " + mouse:272"'')
+                  (lib.generators.mkLuaInline ''hl.dsp.window.drag()'')
+                  {
+                    mouse = true;
+                    drag = true;
+                  }
+                ];
+              }
+              {
+                # Float the window under the cursor on ALT + left click
+                _args = [
+                  (lib.generators.mkLuaInline ''mod .. " + mouse:272"'')
+                  (lib.generators.mkLuaInline ''hl.dsp.window.float({ action = "toggle" })'')
+                  {
+                    mouse = true;
+                    click = true;
+                  }
+                ];
+              }
+              {
+                # Resize the window under the cursor with ALT + right click
+                _args = [
+                  (lib.generators.mkLuaInline ''mod .. " + mouse:273"'')
+                  (lib.generators.mkLuaInline ''hl.dsp.window.resize()'')
+                  {mouse = true;}
+                ];
+              }
+              {
                 _args = [
                   "XF86AudioRaiseVolume"
                   (lib.generators.mkLuaInline ''hl.dsp.exec_cmd("pamixer -i 5")'')
