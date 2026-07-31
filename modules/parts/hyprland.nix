@@ -106,14 +106,8 @@
           ];
 
           bind = let
-            ws =
-              builtins.genList (x: let
-                ws_id = toString (x + 1);
-                key =
-                  if x == 9
-                  then "0"
-                  else ws_id;
-              in [
+            workspaceEntries = let
+              mkWorkspace = ws_id: key: [
                 {
                   _args = [
                     (lib.generators.mkLuaInline ''mod .. " + ${key}"'')
@@ -126,8 +120,19 @@
                     (lib.generators.mkLuaInline ''hl.dsp.window.move({ workspace = "${ws_id}", follow = false })'')
                   ];
                 }
-              ])
+              ];
+              genIds = builtins.genList (x: let
+                ws_id = toString (x + 1);
+                key =
+                  if x == 9
+                  then "0"
+                  else ws_id;
+              in
+                mkWorkspace ws_id key)
               10;
+            in
+              genIds ++ [(mkWorkspace "11" "MINUS")] ++ [(mkWorkspace "12" "EQUAL")];
+            ws = builtins.concatLists workspaceEntries;
           in
             [
               {
@@ -255,7 +260,7 @@
                 ];
               }
             ]
-            ++ (builtins.concatLists ws);
+            ++ ws;
 
           define_submap = {
             _args = [
