@@ -19,7 +19,14 @@
       systemd.enable = true;
       style = ./style.css;
       settings = let
-        mods = ["custom/cpu_max" "memory" "disk" "battery" "pulseaudio"];
+        mods = [
+          "custom/cpu_max"
+          "memory"
+          "disk"
+          "battery"
+          "pulseaudio"
+          "custom/weather"
+        ];
         modAttrDefaults = builtins.foldl' (a: b: a // b) {} (
           map (mod: {
             "group/${mod}" = {
@@ -48,8 +55,8 @@
           mods
         );
       in [
-        (modAttrDefaults
-          // {
+        (lib.attrsets.recursiveUpdate modAttrDefaults
+          {
             layer = "top";
             position = "top";
             height = 60;
@@ -63,12 +70,21 @@
             };
 
             modules-right =
-              (map (mod: "group/${mod}") mods)
+              ["network"]
+              ++ (map (mod: "group/${mod}") mods)
               ++ [
-                "custom/weather"
                 "tray"
                 "clock"
               ];
+
+            network = {
+              interface = "wlp1s0";
+              format = "↓↑";
+              format-alt = "{bandwidthDownBytes} ↓↑ {bandwidthUpBytes}";
+              tooltip = true;
+              tooltip-format = "{essid}  {signalStrength}%  {ipaddr}/{cidr}";
+              interval = 2;
+            };
 
             "custom/cpu_max#label" = {
               return-type = "json";
@@ -240,9 +256,25 @@
               spacing = 10;
             };
 
-            "custom/weather" = {
+            "custom/weather#label" = {
               exec = ''
-                wttrbar --mph --nerd --fahrenheit --custom-indicator '{ICON} {temp_F}F' \
+                wttrbar --mph --nerd --fahrenheit --custom-indicator '{ICON}' \
+                  | ${pkgs.jq}/bin/jq -c '(.text | capture("(?<t>[0-9]+)F").t | tonumber) as $t
+                    | if $t >= 95 then .class = [.class, "hot-critical"]
+                      elif $t >= 85 then .class = [.class, "hot-warning"]
+                      elif $t <= 20 then .class = [.class, "cold-critical"]
+                      elif $t <= 32 then .class = [.class, "cold-warning"]
+                      else . end'
+              '';
+              return-type = "json";
+              format = "{}";
+              tooltip = true;
+              interval = 900;
+            };
+
+            "custom/weather#data" = {
+              exec = ''
+                wttrbar --mph --nerd --fahrenheit --custom-indicator '{temp_F}F' \
                   | ${pkgs.jq}/bin/jq -c '(.text | capture("(?<t>[0-9]+)F").t | tonumber) as $t
                     | if $t >= 95 then .class = [.class, "hot-critical"]
                       elif $t >= 85 then .class = [.class, "hot-warning"]
@@ -269,21 +301,6 @@
             format = "{name} {windows}";
             sort-by = "id";
             all-outputs = true;
-            format-icons = {
-              "1" = "";
-              "2" = "";
-              "3" = "";
-              "4" = "";
-              "5" = "";
-              "6" = "";
-              "7" = "";
-              "8" = "";
-              "9" = "";
-              "10" = "";
-              "0" = "";
-              # "active" = "";
-              # "default" = "";
-            };
 
             "format-window-separator" = " ";
             "window-rewrite-default" = "";
