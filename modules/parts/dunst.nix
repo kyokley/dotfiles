@@ -56,7 +56,7 @@
           frame_width = 3
 
           # Defines color of the frame around the notification window.
-          frame_color = "#aaaaaa"
+          frame_color = "#00d5ff"
 
           # Define a color for the separator.
           # possible values are:
@@ -78,7 +78,7 @@
 
           ### Text ###
 
-          font = Hack Nerd Font Mono 18
+          font = Orbitron 20
 
           # The spacing between lines.  If the height is smaller than the
           # font height, it will get raised to the font height.
@@ -214,7 +214,7 @@
           # corners.
           # The radius will be automatically lowered if it exceeds half of the
           # notification height to avoid clipping text and/or icons.
-          corner_radius = 10
+          corner_radius = 16
 
           # Ignore the dbus closeNotification message.
           # Useful to enforce the timeout set by dunst configuration. Without this
@@ -284,23 +284,25 @@
       [urgency_low]
           # IMPORTANT: colors have to be defined in quotation marks.
           # Otherwise the "#" and following would be interpreted as a comment.
-          background = "#222222"
-          foreground = "#888888"
+          background = "#000000"
+          foreground = "#b57edc"
+          frame_color = "#b57edc"
           timeout = 10
           # Icon for notifications with low urgency, uncomment to enable
           #icon = /path/to/icon
 
       [urgency_normal]
-          background = "#285577"
-          foreground = "#ffffff"
+          background = "#000000"
+          foreground = "#f2f0e6"
+          frame_color = "#00d5ff"
           timeout = 10
           # Icon for notifications with normal urgency, uncomment to enable
           #icon = /path/to/icon
 
       [urgency_critical]
-          background = "#900000"
-          foreground = "#ffffff"
-          frame_color = "#ff0000"
+          background = "#e53935"
+          foreground = "#f2f0e6"
+          frame_color = "#ff4d4d"
           timeout = 0
           # Icon for notifications with critical urgency, uncomment to enable
           #icon = /path/to/icon
