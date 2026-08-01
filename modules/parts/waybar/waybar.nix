@@ -78,9 +78,8 @@
               ];
 
             network = {
-              interface = "wlp1s0";
-              format = "↓↑";
-              format-alt = "{bandwidthDownBytes} ↓↑ {bandwidthUpBytes}";
+              format = "󰓅";
+              format-alt = "{bandwidthDownBytes} 󰓅 {bandwidthUpBytes}";
               tooltip = true;
               tooltip-format = "{essid}  {signalStrength}%  {ipaddr}/{cidr}";
               interval = 2;
