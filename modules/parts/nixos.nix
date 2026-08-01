@@ -159,6 +159,7 @@
             # nerd-fonts.corefonts
             nerd-fonts.dejavu-sans-mono
             nerd-fonts.inconsolata
+            orbitron # LCARS-style font for waybar
             # liberation_ttf
             # terminus_font
             # ttf_bitstream_vera

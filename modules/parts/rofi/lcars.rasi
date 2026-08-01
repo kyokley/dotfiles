@@ -1,0 +1,179 @@
+/*******************************************************************************
+ * LCARS theme for rofi
+ * Matches the LCARS waybar: black rail, vivid pill panels, Orbitron typeface.
+ * Orange #ff9c00  Gold #ffcc00  Teal #00d5ff  Blue #4488ff
+ * Purple #b57edc  Pink #ff7f99  Red #e53935  Cream #f2f0e6  Black #000000
+ ******************************************************************************/
+
+* {
+    font: "Orbitron 14";
+
+    black:  #000000;
+    cream:  #f2f0e6;
+    orange: #ff9c00;
+    gold:   #ffcc00;
+    teal:   #00d5ff;
+    blue:   #4488ff;
+    purple: #b57edc;
+    pink:   #ff7f99;
+    red:    #e53935;
+
+    background-color: @black;
+    text-color:       @cream;
+}
+
+window {
+    location:          center;
+    anchor:            center;
+    width:             46%;
+    background-color:  transparent;
+    children:          [ mainbox ];
+}
+
+mainbox {
+    background-color: @black;
+    border:           2px;
+    border-color:     @orange;
+    border-radius:    999px 0px 0px 999px;
+    padding:          0.75em;
+    spacing:          0.75em;
+    children:         [ inputbar, listview, message, mode-switcher ];
+}
+
+/* ===== Input (search) bar: teal LCARS entry pill ===== */
+
+inputbar {
+    background-color: @teal;
+    border-radius:    999px;
+    padding:          0.25em 0.75em;
+    spacing:          0.5em;
+    text-color:       @black;
+    children:         [ prompt, entry, case-indicator ];
+}
+
+prompt {
+    text-color: @black;
+}
+
+entry {
+    text-color:         @black;
+    caret-color:        @black;
+    placeholder-color:  #00000080;
+}
+
+case-indicator {
+    text-color: @black;
+}
+
+/* ===== Results list ===== */
+
+listview {
+    background-color: @black;
+    border:           0;
+    padding:          0.25em;
+    spacing:          0.25em;
+    scrollbar:        false;
+    columns:          1;
+    lines:            8;
+}
+
+element {
+    border:           0;
+    border-color:     transparent;
+    padding:          0.4em 0.75em;
+    border-radius:    999px;
+}
+
+element-text {
+    background-color: inherit;
+    text-color:       inherit;
+}
+
+element-icon {
+    background-color: inherit;
+    text-color:       inherit;
+}
+
+element.normal.normal {
+    background-color: transparent;
+    text-color:       @cream;
+}
+
+element.normal.urgent {
+    background-color: @red;
+    text-color:       @cream;
+}
+
+element.normal.active {
+    background-color: @purple;
+    text-color:       @black;
+}
+
+element.selected.normal {
+    background-color: @orange;
+    text-color:       @black;
+}
+
+element.selected.urgent {
+    background-color: @red;
+    text-color:       @cream;
+}
+
+element.selected.active {
+    background-color: @orange;
+    text-color:       @black;
+}
+
+element.alternate.normal {
+    background-color: transparent;
+    text-color:       @cream;
+}
+
+element.alternate.urgent {
+    background-color: @red;
+    text-color:       @cream;
+}
+
+element.alternate.active {
+    background-color: @purple;
+    text-color:       @black;
+}
+
+/* ===== Mode switcher: gold selected tab ===== */
+
+mode-switcher {
+    background-color: @black;
+    spacing:          0.5em;
+}
+
+button {
+    background-color: transparent;
+    text-color:       @cream;
+    padding:          0.25em 0.75em;
+    border-radius:    999px;
+}
+
+button selected {
+    background-color: @gold;
+    text-color:       @black;
+}
+
+/* ===== Message / error ===== */
+
+message {
+    background-color: @black;
+    border:           2px;
+    border-color:     @gold;
+    border-radius:    999px;
+    padding:          0.5em;
+    text-color:       @cream;
+}
+
+error-message {
+    background-color: @black;
+    border:           2px;
+    border-color:     @red;
+    border-radius:    999px;
+    padding:          0.5em;
+    text-color:       @red;
+}

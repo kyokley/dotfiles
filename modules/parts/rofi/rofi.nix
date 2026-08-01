@@ -17,7 +17,7 @@
         kb-cancel = "Escape,Control+bracketleft";
         drun-match-fields = "name";
       };
-      theme = ./fancy.rasi;
+      theme = ./lcars.rasi;
     };
   };
 }

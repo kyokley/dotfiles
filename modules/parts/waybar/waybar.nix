@@ -36,7 +36,7 @@
                 "${mod}#data"
               ];
               drawer = {
-                transition-duration = 500;
+                transition-duration = 1500;
                 children-class = "group-${mod}";
                 transition-left-to-right = true;
                 click-to-reveal = true;
