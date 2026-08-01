@@ -24,8 +24,24 @@ in {
         "/home/${username}/workspace"
       ];
     in {
-      imports = home_modules;
+      imports = home_modules ++ [inputs.noctalia.homeModules.default];
       programs.git.settings.user.email = "kyokley@mars";
+
+      programs.noctalia = {
+        enable = true;
+        systemd.enable = true;
+        settings = {
+          theme = {
+            mode = "dark";
+            source = "builtin";
+            builtin = "Catppuccin";
+          };
+          wallpaper = {
+            enabled = true;
+            directory = "/home/${username}/Pictures/wallpapers";
+          };
+        };
+      };
 
       home = {
         sessionVariables = {
@@ -54,6 +70,7 @@ in {
       imports =
         nixos_modules
         ++ [
+          inputs.noctalia.nixosModules.default
           (modulesPath + "/installer/scan/not-detected.nix")
         ];
 
@@ -79,6 +96,16 @@ in {
       };
 
       powerManagement.enable = true;
+
+      programs.noctalia = {
+        enable = true;
+        recommendedServices.enable = true;
+      };
+
+      # auto-cpufreq (laptop module) owns the power-profile slot on this host;
+      # without this, noctalia's recommendedServices would also enable
+      # power-profiles-daemon, which NixOS forbids.
+      services.power-profiles-daemon.enable = false;
 
       system.stateVersion = "24.05"; # Don't touch me!
 

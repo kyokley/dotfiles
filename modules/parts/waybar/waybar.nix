@@ -15,7 +15,7 @@
     ];
 
     programs.waybar = {
-      enable = true;
+      enable = false;
       systemd.enable = true;
       style = ./style.css;
       settings = let

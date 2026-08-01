@@ -58,6 +58,10 @@
       url = "github:Nomadcxx/sysc-greet";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    noctalia = {
+      # cachix branch always points to the latest commit that CI has cached.
+      url = "github:noctalia-dev/noctalia/cachix";
+    };
   };
 
   outputs = inputs:
