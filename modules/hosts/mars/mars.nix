@@ -5,6 +5,7 @@
     distributedBuilds
     systemd-services
     syncthing
+    noctalia
   ];
 
   nixos_modules = with inputs.self.modules.nixos; [
@@ -24,24 +25,8 @@ in {
         "/home/${username}/workspace"
       ];
     in {
-      imports = home_modules ++ [inputs.noctalia.homeModules.default];
+      imports = home_modules;
       programs.git.settings.user.email = "kyokley@mars";
-
-      programs.noctalia = {
-        enable = true;
-        systemd.enable = true;
-        settings = {
-          theme = {
-            mode = "dark";
-            source = "builtin";
-            builtin = "Catppuccin";
-          };
-          wallpaper = {
-            enabled = true;
-            directory = "/home/${username}/Pictures/wallpapers";
-          };
-        };
-      };
 
       home = {
         sessionVariables = {
