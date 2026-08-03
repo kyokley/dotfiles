@@ -25,16 +25,18 @@
           fill_mode = "crop";
         };
 
-        # Right-side floating bar with capsule widgets.
+        # Top floating bar with capsule widgets.
         bar.main = {
-          position = "right";
+          position = "top";
           layer = "top";
           thickness = 52;
           background_opacity = 0.9;
           scale = 1.8;
           border_width = 0;
           radius = 14;
-          margin_opposite_edge = 8;
+          margin_ends = 8;
+          margin_edge = 8;
+          margin_opposite_edge = 0;
           padding = 6;
           widget_spacing = 4;
           shadow = true;
@@ -46,7 +48,7 @@
           capsule_padding = 4;
           capsule_radius = 8;
           capsule_border = "primary";
-          # Vertical bar: start = top, center = middle, end = bottom.
+          # Horizontal bar: start = left, center = middle, end = right.
           start = ["launcher" "workspaces"];
           center = ["sysmon" "date" "media"];
           end = [
