@@ -136,6 +136,10 @@
             size = 18;
           };
         };
+
+        # Noctalia has no per-surface font size; ui_scale is the only lever that
+        # affects the control-center (it scales launcher/clipboard too, not the bar).
+        accessibility.ui_scale = 1.5;
       };
     };
   };
