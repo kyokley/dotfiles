@@ -26,40 +26,59 @@
         };
 
         # Top floating bar with capsule widgets.
-        bar.main = {
-          position = "top";
-          layer = "top";
-          thickness = 52;
-          background_opacity = 0.9;
-          scale = 1.8;
-          border_width = 0;
-          radius = 14;
-          margin_ends = 8;
-          margin_edge = 8;
-          margin_opposite_edge = 0;
-          padding = 6;
-          widget_spacing = 4;
-          shadow = true;
-          reserve_space = true;
-          font_weight = 600;
-          capsule = true;
-          capsule_fill = "primary"; # tracks the Cyberpunk gold
-          capsule_opacity = 0.25;
-          capsule_padding = 4;
-          capsule_radius = 8;
-          capsule_border = "primary";
-          # Horizontal bar: start = left, center = middle, end = right.
-          start = ["launcher" "workspaces"];
-          center = ["sysmon" "date" "media"];
-          end = [
-            "tray"
-            "volume"
-            "input_volume"
-            "brightness"
-            "battery"
-            "notifications"
-            "control-center"
-          ];
+        bar = let
+          bar_base = {
+            thickness = 52;
+            background_opacity = 0.9;
+            scale = 1.8;
+            border_width = 0;
+            radius = 14;
+            margin_ends = 8;
+            margin_edge = 8;
+            margin_opposite_edge = 0;
+            padding = 6;
+            widget_spacing = 4;
+            shadow = true;
+            reserve_space = true;
+            font_weight = 600;
+            capsule = true;
+            capsule_fill = "primary"; # tracks the Cyberpunk gold
+            capsule_opacity = 0.25;
+            capsule_padding = 4;
+            capsule_radius = 8;
+            capsule_border = "primary";
+          };
+        in {
+          main =
+            bar_base
+            // {
+              position = "top";
+              layer = "top";
+              # Horizontal bar: start = left, center = middle, end = right.
+              start = ["launcher"];
+              center = ["sysmon" "clock" "media"];
+              end = [
+                "tray"
+                "volume"
+                "input_volume"
+                "brightness"
+                "battery"
+                "notifications"
+                "control-center"
+              ];
+            };
+
+          bottom =
+            bar_base
+            // {
+              position = "bottom";
+              # layer = "top";
+              start = ["workspaces"];
+              # noctalia merges per-lane: absent center/end keep the default
+              # widget lists (clock; media/tray/notifications/.../session).
+              center = [];
+              end = [];
+            };
         };
 
         widget = {
@@ -72,10 +91,10 @@
             show_labels = true;
           };
           clock = {
-            format = "{:%H:%M}";
+            format = "{:%H:%M:%S}";
             # \\n survives TOML escaping; noctalia renders it as a line break.
-            vertical_format = "{:%H\\n%M}";
-            tooltip_format = "{:%H:%M  %a, %b %d}";
+            vertical_format = "{:%H\\n%M\\n%S}";
+            tooltip_format = "{:%a, %b %d}";
             capsule_opacity = 0.4;
             capsule_padding = 4;
           };
@@ -85,20 +104,11 @@
           brightness.show_label = false;
           battery.show_label = false;
           sysmon.show_value = false;
-          media.album_art_only = false;
+          media = {
+            hide_when_no_media = true;
+            album_art_only = false;
+          };
           tray.drawer = true;
-        };
-
-        # Remove this section if you don't want a dock.
-        dock = {
-          enabled = true;
-          position = "bottom";
-          auto_hide = true;
-          background_opacity = 0.9;
-          radius = 12;
-          reserve_space = false;
-          shadow = true;
-          icon_size = 64;
         };
 
         shell = {
