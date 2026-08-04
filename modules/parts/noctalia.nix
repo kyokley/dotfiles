@@ -55,7 +55,9 @@
               position = "top";
               layer = "top";
               # Horizontal bar: start = left, center = middle, end = right.
-              start = ["launcher"];
+              start = [
+                "control-center"
+              ];
               center = ["sysmon" "clock" "media"];
               end = [
                 "tray"
@@ -64,7 +66,7 @@
                 "brightness"
                 "battery"
                 "notifications"
-                "control-center"
+                "launcher"
               ];
             };
 
@@ -79,6 +81,16 @@
               center = [];
               end = [];
             };
+        };
+
+        notification = {
+          # Toasts anchor to the screen edge at absolute offsets, while the
+          # full-width floating top bar owns y ∈ [8, 60] on layer "top".
+          # Default offset_y = 8 puts popups behind the bar; drop them below
+          # it so notifications actually display.
+          position = "top_right";
+          offset_x = 20;
+          offset_y = 64;
         };
 
         widget = {

@@ -43,6 +43,9 @@ in {
 
         stateVersion = "24.05"; # Don't touch me!
       };
+      services.dunst = {
+        enable = false;
+      };
     };
 
     nixos.mars = {
