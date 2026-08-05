@@ -152,7 +152,13 @@
               {
                 _args = [
                   (lib.generators.mkLuaInline ''mod .. " + P"'')
-                  (lib.generators.mkLuaInline ''hl.dsp.exec_cmd("rofi -show drun")'')
+                  (lib.generators.mkLuaInline ''hl.dsp.exec_cmd("noctalia msg panel-toggle launcher")'')
+                ];
+              }
+              {
+                _args = [
+                  (lib.generators.mkLuaInline ''mod .. " + Q"'')
+                  (lib.generators.mkLuaInline ''hl.dsp.exec_cmd("noctalia msg panel-toggle control-center")'')
                 ];
               }
               {

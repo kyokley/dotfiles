@@ -25,6 +25,21 @@
           fill_mode = "crop";
         };
 
+        # Location is required for weather to resolve a forecast.
+        # auto_locate uses IP geolocation; switch to `address` (e.g. "Austin, TX")
+        # if the IP lookup is inaccurate.
+        location = {
+          auto_locate = true;
+        };
+
+        # Weather service (Open-Meteo, no API key). Adds the Weather control-center tab.
+        weather = {
+          enabled = true;
+          refresh_minutes = 30;
+          unit = "imperial";
+          effects = true;
+        };
+
         # Top floating bar with capsule widgets.
         bar = let
           bar_base = {
@@ -49,24 +64,25 @@
             capsule_border = "primary";
           };
         in {
-          main =
+          top =
             bar_base
             // {
               position = "top";
               layer = "top";
               # Horizontal bar: start = left, center = middle, end = right.
               start = [
-                "control-center"
+                "active_window"
               ];
-              center = ["sysmon" "clock" "media"];
+              center = [
+              ];
               end = [
-                "tray"
+                "cpu"
                 "volume"
-                "input_volume"
-                "brightness"
+                "weather"
                 "battery"
                 "notifications"
-                "launcher"
+                "tray"
+                "clock"
               ];
             };
 
@@ -78,7 +94,7 @@
               start = ["workspaces"];
               # noctalia merges per-lane: absent center/end keep the default
               # widget lists (clock; media/tray/notifications/.../session).
-              center = [];
+              center = ["media"];
               end = [];
             };
         };
@@ -91,9 +107,27 @@
           position = "top_right";
           offset_x = 20;
           offset_y = 64;
+          filter = {
+            spotify = {
+              enabled = true;
+              save_history = false;
+              match = "Spotify";
+            };
+          };
         };
 
         widget = {
+          cpu = {
+            type = "sysmon";
+            stat = "cpu_usage";
+            glyph = "cpu";
+            visualization = "graph";
+            show_value = true;
+          };
+          weather = {
+            show_condition = false;
+            show_temperature = true;
+          };
           workspaces = {
             active_pill_size = 1.5;
             empty_color = "surface_variant";
@@ -112,20 +146,26 @@
           };
           launcher.glyph = "rocket";
           volume.show_label = false;
-          input_volume.show_label = false;
           brightness.show_label = false;
           battery.show_label = false;
           sysmon.show_value = false;
           media = {
             hide_when_no_media = true;
             album_art_only = false;
+            # Explicit: left-click opens the control-center media panel.
+            # (This matches noctalia's built-in default for media.)
+            actions.left = "panel-toggle control-center media";
           };
-          tray.drawer = true;
+          tray.drawer = false;
         };
 
         shell = {
           font_family = "Hack Nerd Font Mono"; # installed via nerd-fonts.hack
           telemetry_enabled = false;
+          # Panels opened without a source bar (IPC panel-toggle, shortcuts, dock)
+          # attach to the first enabled bar alphabetically (`bottom` in TOML order) —
+          # pin them to the top bar instead.
+          panel_anchor_bar = "top";
           panel = {
             transparency_mode = "soft";
             launcher_placement = "attached";
