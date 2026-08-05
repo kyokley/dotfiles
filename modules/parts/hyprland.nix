@@ -326,6 +326,10 @@
               match.class = "slack";
               workspace = "8 silent";
             }
+            {
+              match.class = "brave-faolnafnngnfdaknnbpnkhgohbobgegn-Default"; # Outlook PWA
+              workspace = "9 silent";
+            }
           ];
         };
       };
