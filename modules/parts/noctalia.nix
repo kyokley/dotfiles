@@ -69,6 +69,19 @@
             capsule_radius = 8;
             capsule_border = "primary";
           };
+          mkCapsuleGroup = attrs:
+            attrs
+            // {
+              enabled = true;
+              accordion = true;
+              # Groups carry their own capsule style (they don't inherit the
+              # bar-level capsule_* keys) — mirror the bar's settings here.
+              fill = "primary";
+              opacity = 0.25;
+              radius = 8;
+              padding = 4;
+              border = "primary";
+            };
         in {
           top =
             bar_base
@@ -83,6 +96,8 @@
               ];
               end = [
                 "group:cpu"
+                "group:ram"
+                "group:disk"
                 "volume"
                 "weather"
                 "battery"
@@ -93,22 +108,27 @@
               # Capsule groups are declared on the bar as an array of tables,
               # referenced from lanes via the "group:<id>" token.
               capsule_group = [
-                {
+                (mkCapsuleGroup {
                   id = "cpu";
-                  enabled = true;
                   members = [
                     "cpu-icon"
                     "cpu-info"
                   ];
-                  accordion = true;
-                  # Groups carry their own capsule style (they don't inherit the
-                  # bar-level capsule_* keys) — mirror the bar's settings here.
-                  fill = "primary";
-                  opacity = 0.25;
-                  radius = 8;
-                  padding = 4;
-                  border = "primary";
-                }
+                })
+                (mkCapsuleGroup {
+                  id = "ram";
+                  members = [
+                    "ram-icon"
+                    "ram-info"
+                  ];
+                })
+                (mkCapsuleGroup {
+                  id = "disk";
+                  members = [
+                    "disk-icon"
+                    "disk-info"
+                  ];
+                })
               ];
             };
 
@@ -161,13 +181,41 @@
           cpu-icon = {
             type = "sysmon";
             stat = "cpu_usage";
-            glyph = "cpu";
+            glyph = "cpu-usage";
             visualization = "none";
             show_value = false;
           };
           cpu-info = {
             type = "sysmon";
             stat = "cpu_usage";
+            show_glyph = false;
+            visualization = "graph";
+            show_value = true;
+          };
+          ram-icon = {
+            type = "sysmon";
+            stat = "ram_pct";
+            glyph = "cpu";
+            visualization = "none";
+            show_value = false;
+          };
+          ram-info = {
+            type = "sysmon";
+            stat = "ram_pct";
+            show_glyph = false;
+            visualization = "graph";
+            show_value = true;
+          };
+          disk-icon = {
+            type = "sysmon";
+            stat = "disk_used_pct";
+            glyph = "database-smile";
+            visualization = "none";
+            show_value = false;
+          };
+          disk-info = {
+            type = "sysmon";
+            stat = "disk_used_pct";
             show_glyph = false;
             visualization = "graph";
             show_value = true;
