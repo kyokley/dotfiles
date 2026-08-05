@@ -12,9 +12,8 @@
 
       settings = {
         theme = {
-          mode = "dark";
-          source = "community";
-          community_palette = "Cyberpunk";
+          mode = "auto";
+          source = "wallpaper";
         };
 
         wallpaper = {
