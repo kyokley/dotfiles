@@ -14,14 +14,21 @@
         theme = {
           mode = "auto";
           source = "wallpaper";
+          wallpaper_scheme = "vibrant";
         };
 
         wallpaper = {
           enabled = true;
           directory = "/home/${username}/Pictures/wallpapers";
-          transition = ["fade"];
+          transition = ["fade" "wipe" "disc" "stripes" "zoom" "honeycomb"];
           transition_duration = 1500;
           fill_mode = "crop";
+          automation = {
+            enabled = true;
+            interval_seconds = 1800;
+            order = "random";
+            recursive = true;
+          };
         };
 
         # Location is required for weather to resolve a forecast.
@@ -93,7 +100,7 @@
               start = ["workspaces"];
               # noctalia merges per-lane: absent center/end keep the default
               # widget lists (clock; media/tray/notifications/.../session).
-              center = ["media"];
+              center = ["media" "audio_visualizer"];
               end = [];
             };
         };
@@ -109,13 +116,28 @@
           filter = {
             spotify = {
               enabled = true;
+              show_toast = false;
               save_history = false;
-              match = "Spotify";
+              play_sound = false;
+              match = "notify-send";
+              match_content = "Now Playing";
+            };
+            brave-browser = {
+              enabled = true;
+              show_toast = true;
+              save_history = true;
+              play_sound = true;
+              match = "Brave Web Browser";
+              allow_permanent = false;
             };
           };
         };
 
         widget = {
+          audio_visualizer = {
+            centered = false;
+            interactive = false;
+          };
           cpu = {
             type = "sysmon";
             stat = "cpu_usage";
@@ -146,7 +168,10 @@
           launcher.glyph = "rocket";
           volume.show_label = false;
           brightness.show_label = false;
-          battery.show_label = false;
+          battery = {
+            show_label = true;
+            display_mode = "glyph";
+          };
           sysmon.show_value = false;
           media = {
             hide_when_no_media = true;
