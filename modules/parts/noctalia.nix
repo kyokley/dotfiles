@@ -82,13 +82,33 @@
               center = [
               ];
               end = [
-                "cpu"
+                "group:cpu"
                 "volume"
                 "weather"
                 "battery"
                 "notifications"
                 "tray"
                 "clock"
+              ];
+              # Capsule groups are declared on the bar as an array of tables,
+              # referenced from lanes via the "group:<id>" token.
+              capsule_group = [
+                {
+                  id = "cpu";
+                  enabled = true;
+                  members = [
+                    "cpu-icon"
+                    "cpu-info"
+                  ];
+                  accordion = true;
+                  # Groups carry their own capsule style (they don't inherit the
+                  # bar-level capsule_* keys) — mirror the bar's settings here.
+                  fill = "primary";
+                  opacity = 0.25;
+                  radius = 8;
+                  padding = 4;
+                  border = "primary";
+                }
               ];
             };
 
@@ -138,10 +158,17 @@
             centered = false;
             interactive = false;
           };
-          cpu = {
+          cpu-icon = {
             type = "sysmon";
             stat = "cpu_usage";
             glyph = "cpu";
+            visualization = "none";
+            show_value = false;
+          };
+          cpu-info = {
+            type = "sysmon";
+            stat = "cpu_usage";
+            show_glyph = false;
             visualization = "graph";
             show_value = true;
           };
