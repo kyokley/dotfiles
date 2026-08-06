@@ -94,42 +94,38 @@
               ];
               center = [
               ];
-              end = [
-                "group:cpu"
-                "group:ram"
-                "group:disk"
-                "volume"
-                "weather"
-                "battery"
-                "notifications"
-                "tray"
-                "clock"
-              ];
+              end =
+                map (x: "group:${x}") [
+                  "cpu"
+                  "ram"
+                  "disk"
+                  "battery"
+                ] # Above are "grouped" widgets. Below are singular.
+                ++ [
+                  "volume"
+                  "tray"
+                  "notifications"
+                  "weather"
+                  "clock"
+                ];
               # Capsule groups are declared on the bar as an array of tables,
               # referenced from lanes via the "group:<id>" token.
-              capsule_group = [
-                (mkCapsuleGroup {
-                  id = "cpu";
-                  members = [
-                    "cpu-icon"
-                    "cpu-info"
-                  ];
-                })
-                (mkCapsuleGroup {
-                  id = "ram";
-                  members = [
-                    "ram-icon"
-                    "ram-info"
-                  ];
-                })
-                (mkCapsuleGroup {
-                  id = "disk";
-                  members = [
-                    "disk-icon"
-                    "disk-info"
-                  ];
-                })
-              ];
+              capsule_group =
+                map (x:
+                  mkCapsuleGroup
+                  {
+                    id = x;
+                    members = [
+                      "${x}-icon"
+                      "${x}-info"
+                    ];
+                  })
+                [
+                  "cpu"
+                  "ram"
+                  "disk"
+                  "battery"
+                ];
             };
 
           bottom =
@@ -174,6 +170,10 @@
         };
 
         widget = {
+          active_window = {
+            max_length = 400;
+            title_scroll = "on_hover";
+          };
           audio_visualizer = {
             centered = false;
             interactive = false;
@@ -219,6 +219,16 @@
             show_glyph = false;
             visualization = "graph";
             show_value = true;
+          };
+          battery-icon = {
+            type = "battery";
+            display_mode = "glyph";
+            show_label = false;
+          };
+          battery-info = {
+            type = "battery";
+            display_mode = "none";
+            show_label = true;
           };
           weather = {
             show_condition = false;
