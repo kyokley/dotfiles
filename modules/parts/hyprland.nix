@@ -311,6 +311,16 @@
               border_size = 3;
             }
             {
+              match = {
+                class = "zoom";
+                title = "annotate_toolbar";
+              };
+              float = true;
+              # expression vec2 splits on whitespace only; "200, 200" would
+              # parse "200," as the x expression and fail
+              size = "200 200";
+            }
+            {
               match.class = "zoom";
               workspace = "5 silent";
             }
