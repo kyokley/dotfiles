@@ -1,10 +1,26 @@
 {
   flake.modules.homeManager.noctalia = {
     inputs,
+    pkgs,
+    lib,
+    config,
     username,
     ...
-  }: {
+  }: let
+    krillPlugin = ./krill;
+  in {
     imports = [inputs.noctalia.homeModules.default];
+
+    # Krill is a hand-placed local plugin: noctalia auto-discovers
+    # ~/.local/share/noctalia/plugins/<plugin>/ as a built-in local source.
+    home.file = {
+      ".local/share/noctalia/plugins/krill/plugin.toml" = {
+        source = krillPlugin + "/plugin.toml";
+      };
+      ".local/share/noctalia/plugins/krill/widget.luau" = {
+        source = krillPlugin + "/widget.luau";
+      };
+    };
 
     programs.noctalia = {
       enable = true;
@@ -133,7 +149,7 @@
               # noctalia merges per-lane: absent center/end keep the default
               # widget lists (clock; media/tray/notifications/.../session).
               center = ["media" "audio_visualizer"];
-              end = [];
+              end = ["krill"];
             };
         };
 
@@ -271,6 +287,11 @@
             actions.left = "panel-toggle control-center media";
           };
           tray.drawer = false;
+          # Runtime-updatable krill headline (plugin entry "yokley/krill:krill").
+          # Pushed via: noctalia msg plugin yokley/krill:krill all set "<text>"
+          krill = {
+            type = "yokley/krill:krill";
+          };
         };
 
         shell = {
@@ -294,6 +315,41 @@
         # Noctalia has no per-surface font size; ui_scale is the only lever that
         # affects the control-center (it scales launcher/clipboard too, not the bar).
         accessibility.ui_scale = 1.5;
+      };
+    };
+
+    # Push a random krill headline to the bar widget on a timer.
+    systemd.user = {
+      services.krill-bar = {
+        Unit = {
+          Description = "Push a random krill headline to the noctalia bar";
+          After = ["graphical-session.target"];
+        };
+        Service = {
+          Type = "oneshot";
+          ExecStart = toString (pkgs.writeShellScript "krill-bar" ''
+            set -uo pipefail
+            title=$(${pkgs.docker}/bin/docker run --rm -t --cpus=.25 --net=host \
+              --env KRILL_PROXY=''${KRILL_PROXY:-} \
+              kyokley/krill -S /app/sources.txt --snapshot 2>/dev/null \
+              | ${pkgs.jq}/bin/jq -r 'select(.title != null) | .title' \
+              | ${pkgs.coreutils}/bin/shuf -n1) || true
+            if [ -n "''${title:-}" ]; then
+              ${config.programs.noctalia.package}/bin/noctalia msg plugin yokley/krill:krill all set "$title" || true
+            fi
+          '');
+        };
+        Install.WantedBy = ["graphical-session.target"];
+      };
+
+      timers.krill-bar = {
+        Unit.Description = "Refresh the krill bar widget";
+        Timer = {
+          OnCalendar = "*-*-* *:0/30:00";
+          Persistent = true;
+          Unit = "krill-bar.service";
+        };
+        Install.WantedBy = ["timers.target"];
       };
     };
   };

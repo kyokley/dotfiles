@@ -1,0 +1,11 @@
+id          = "yokley/krill"
+name        = "krill"
+version     = "0.1.0"
+plugin_api  = 3
+author      = "yokley"
+license     = "MIT"
+description = "Krill headlines on the noctalia bar"
+
+[[widget]]
+id    = "krill"
+entry = "widget.luau"
