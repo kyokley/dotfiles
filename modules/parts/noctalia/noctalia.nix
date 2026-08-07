@@ -26,6 +26,17 @@
       systemd.enable = true;
 
       settings = {
+        calendar = {
+          enabled = true;
+          refresh_minutes = 15;
+          account = {
+            personal_google = {
+              type = "google";
+              name = "Personal";
+            };
+          };
+        };
+
         theme = {
           mode = "auto";
           source = "wallpaper";
@@ -275,7 +286,7 @@
             show_labels = true;
           };
           clock = {
-            format = "{:%H:%M:%S}";
+            format = "{:%b %d %H:%M:%S}";
             # \\n survives TOML escaping; noctalia renders it as a line break.
             vertical_format = "{:%H\\n%M\\n%S}";
             tooltip_format = "{:%a, %b %d}";

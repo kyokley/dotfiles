@@ -141,10 +141,13 @@
 
         security = {
           rtkit.enable = true;
-          pam.services = {
-            login.enableGnomeKeyring = true;
-          };
         };
+
+        # The gnome-keyring module sets login PAM (unlock at login) AND adds
+        # gnome-keyring to systemPackages/dbus.packages + a setuid wrapper, so
+        # the daemon is in PATH for pam_gnome_keyring auto_start and can be
+        # D-Bus-activated (org.freedesktop.secrets) if it ever dies mid-session.
+        services.gnome.gnome-keyring.enable = true;
 
         # Enable touchpad support (enabled default in most desktopManager).
         # services.xserver.libinput.enable = true;
@@ -285,10 +288,7 @@
 
         home = {
           packages = with pkgs; [
-            arandr
-            dunst
             inputs.nixpkgs-stable.legacyPackages.${pkgs.stdenv.hostPlatform.system}.libreoffice
-            nitrogen
             python3Packages.bpython
             thunderbird
             nerd-fonts.hack

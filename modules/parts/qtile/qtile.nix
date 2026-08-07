@@ -27,7 +27,10 @@ in {
         home = {
           packages = [
             force-lock-screen
+            pkgs.nitrogen
             pkgs.librsvg
+            pkgs.arandr
+            pkgs.dunst
           ];
 
           file = {
