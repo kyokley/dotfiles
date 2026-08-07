@@ -284,7 +284,7 @@
           };
           tray.drawer = false;
           # Runtime-updatable krill headline (plugin entry "yokley/krill:krill").
-          # Pushed via: noctalia msg plugin yokley/krill:krill all set "<text>"
+          # Pushed via: noctalia msg plugin yokley/krill:krill all set "<text>" "<url>"
           krill = {
             type = "yokley/krill:krill";
             # Per-widget scale MULTIPLIES the bar's 1.8 (clamped 0.2–2.5), so
@@ -336,10 +336,7 @@
             if [ -n "''${item:-}" ]; then
               title=$(${pkgs.jq}/bin/jq -r '.title' <<<"$item")
               link=$(${pkgs.jq}/bin/jq -r '.link // empty' <<<"$item")
-              ${config.programs.noctalia.package}/bin/noctalia msg plugin yokley/krill:krill all set "$title" || true
-              if [ -n "$link" ]; then
-                ${config.programs.noctalia.package}/bin/noctalia msg plugin yokley/krill:krill all link "$link" || true
-              fi
+              ${config.programs.noctalia.package}/bin/noctalia msg plugin yokley/krill:krill all set "$title" "$link" || true
             fi
           '');
         };
