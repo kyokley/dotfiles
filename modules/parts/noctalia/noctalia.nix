@@ -37,7 +37,7 @@
           enabled = true;
           directory = "/home/${username}/Pictures/wallpapers";
           transition = ["fade" "wipe" "disc" "stripes" "zoom" "honeycomb"];
-          transition_duration = 1500;
+          transition_duration = 2000;
           fill_mode = "crop";
           automation = {
             enabled = true;
@@ -274,10 +274,6 @@
           };
           launcher.glyph = "rocket";
           brightness.show_label = false;
-          battery = {
-            show_label = true;
-            display_mode = "glyph";
-          };
           sysmon.show_value = false;
           media = {
             hide_when_no_media = true;
@@ -291,6 +287,9 @@
           # Pushed via: noctalia msg plugin yokley/krill:krill all set "<text>"
           krill = {
             type = "yokley/krill:krill";
+            # Per-widget scale MULTIPLIES the bar's 1.8 (clamped 0.2–2.5), so
+            # 0.8 × 1.8 = 1.44 renders the headline ~20% smaller.
+            scale = 0.8;
           };
         };
 
