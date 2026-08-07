@@ -329,13 +329,18 @@
           Type = "oneshot";
           ExecStart = toString (pkgs.writeShellScript "krill-bar" ''
             set -uo pipefail
-            title=$(${pkgs.docker}/bin/docker run --rm -t --cpus=.25 --net=host \
+            item=$(${pkgs.docker}/bin/docker run --rm -t --cpus=.25 --net=host \
               --env KRILL_PROXY=''${KRILL_PROXY:-} \
               kyokley/krill -S /app/sources.txt --snapshot 2>/dev/null \
-              | ${pkgs.jq}/bin/jq -r 'select(.title != null) | .title' \
+              | ${pkgs.jq}/bin/jq -c 'select(.title != null)' \
               | ${pkgs.coreutils}/bin/shuf -n1) || true
-            if [ -n "''${title:-}" ]; then
+            if [ -n "''${item:-}" ]; then
+              title=$(${pkgs.jq}/bin/jq -r '.title' <<<"$item")
+              link=$(${pkgs.jq}/bin/jq -r '.link // empty' <<<"$item")
               ${config.programs.noctalia.package}/bin/noctalia msg plugin yokley/krill:krill all set "$title" || true
+              if [ -n "$link" ]; then
+                ${config.programs.noctalia.package}/bin/noctalia msg plugin yokley/krill:krill all link "$link" || true
+              fi
             fi
           '');
         };
