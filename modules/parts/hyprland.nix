@@ -311,6 +311,10 @@
               border_size = 3;
             }
             {
+              match.class = "zoom";
+              workspace = "5 silent";
+            }
+            {
               match.class = "brave-browser";
               workspace = "6 silent";
             }
