@@ -43,6 +43,8 @@ local function splitPayload(payload)
 end
 
 -- Prepend the newest item, dropping the oldest once history is full.
+-- An item already in history (same title + link) is not inserted again;
+-- it stays in place but is shown as the current headline.
 local function push(payload, link)
   local title, url = splitPayload(payload)
   if link ~= nil and link ~= "" then
@@ -51,6 +53,13 @@ local function push(payload, link)
   local item = { title = title }
   if url ~= nil and url ~= "" then
     item.link = url
+  end
+  for _, existing in ipairs(history) do
+    if existing.title == item.title and existing.link == item.link then
+      index = 1
+      display(existing)
+      return
+    end
   end
   table.insert(history, 1, item)
   if #history > MAX_HISTORY then
