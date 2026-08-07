@@ -2,6 +2,7 @@
   flake.modules.homeManager.noctalia = {
     inputs,
     pkgs,
+    lib,
     config,
     username,
     ...
@@ -64,8 +65,7 @@
         # Top floating bar with capsule widgets.
         bar = let
           mkCapsuleGroup = attrs:
-            attrs
-            // {
+            {
               enabled = true;
               accordion = true;
               # Groups carry their own capsule style (they don't inherit the
@@ -75,7 +75,8 @@
               radius = 8;
               padding = 4;
               border = "primary";
-            };
+            }
+            // attrs;
           bar_base = {
             thickness = 52;
             background_opacity = 0.9;
@@ -158,6 +159,7 @@
                       "media"
                       "audio_visualizer"
                     ];
+                    accordion = false;
                   }
                 )
               ];
