@@ -2,7 +2,6 @@
   flake.modules.homeManager.noctalia = {
     inputs,
     pkgs,
-    lib,
     config,
     username,
     ...
@@ -148,8 +147,20 @@
               start = ["workspaces"];
               # noctalia merges per-lane: absent center/end keep the default
               # widget lists (clock; media/tray/notifications/.../session).
-              center = ["media" "audio_visualizer"];
+              center = ["group:media"];
               end = ["krill"];
+              capsule_group = [
+                (
+                  mkCapsuleGroup
+                  {
+                    id = "media";
+                    members = [
+                      "media"
+                      "audio_visualizer"
+                    ];
+                  }
+                )
+              ];
             };
         };
 
