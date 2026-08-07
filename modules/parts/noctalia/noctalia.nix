@@ -178,6 +178,14 @@
               match = "Brave Web Browser";
               allow_permanent = false;
             };
+            slack = {
+              enabled = true;
+              show_toast = true;
+              save_history = false;
+              play_sound = true;
+              match = "Slack";
+              allow_permanent = false;
+            };
           };
         };
 
