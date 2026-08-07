@@ -257,7 +257,7 @@
             show_temperature = true;
           };
           workspaces = {
-            active_pill_size = 1.5;
+            active_pill_size = 2.0;
             empty_color = "surface_variant";
             occupied_color = "secondary"; # Cyberpunk red
             hide_when_empty = true;
@@ -345,7 +345,7 @@
       timers.krill-bar = {
         Unit.Description = "Refresh the krill bar widget";
         Timer = {
-          OnCalendar = "*-*-* *:0/30:00";
+          OnCalendar = "*-*-* *:*:00";
           Persistent = true;
           Unit = "krill-bar.service";
         };
