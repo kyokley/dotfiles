@@ -313,6 +313,13 @@
             {
               match = {
                 class = "zoom";
+                float = true;
+              };
+              size = "638 510";
+            }
+            {
+              match = {
+                class = "zoom";
                 title = "annotate_toolbar";
               };
               float = true;
