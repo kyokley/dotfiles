@@ -2,8 +2,10 @@
 -- Left-click opens the current headline's link; scrolling up/down moves
 -- through previous headlines in history.
 --
---   noctalia msg plugin yokley/krill:krill all set "<headline>" "<url>"
+--   noctalia msg plugin yokley/krill:krill all set "<headline>|<url>"
 --
+-- The IPC runtime delivers a single string payload, so the url travels in
+-- the same payload, separated from the headline by "|" (see splitPayload).
 -- The top level runs once when the plugin loads.
 
 local MAX_LENGTH = 50
@@ -25,11 +27,30 @@ local function display(item)
   barWidget.setTooltip(item.title) -- full headline on hover
 end
 
+-- A single IPC "set" payload carries both fields as "<headline>|<url>".
+-- The headline itself may contain "|", so it is split at the LAST separator;
+-- an empty url keeps the item linkless. Payloads without a separator are
+-- treated as a bare headline (legacy single-field pushes).
+local function splitPayload(payload)
+  local title, url = payload:match("^(.*)|(.*)$")
+  if title == nil then
+    return payload, nil
+  end
+  if url == "" then
+    url = nil
+  end
+  return title, url
+end
+
 -- Prepend the newest item, dropping the oldest once history is full.
-local function push(title, link)
-  local item = { title = title }
+local function push(payload, link)
+  local title, url = splitPayload(payload)
   if link ~= nil and link ~= "" then
-    item.link = link
+    url = link -- an explicit link argument wins if the runtime ever grows one
+  end
+  local item = { title = title }
+  if url ~= nil and url ~= "" then
+    item.link = url
   end
   table.insert(history, 1, item)
   if #history > MAX_HISTORY then
@@ -58,8 +79,9 @@ function onScroll(axis, steps, startsGesture)
     return
   end
   -- a wheel burst counts as one move; scroll down = older items,
-  -- scroll up = back toward the newest
-  index = math.clamp(index + (steps > 0 and 1 or -1), 1, #history)
+  -- scroll up = back toward the newest; either end wraps around
+  local count = #history
+  index = (index + (steps > 0 and 1 or -1) - 1 + count) % count + 1
   display(history[index])
 end
 
