@@ -2,7 +2,6 @@
   flake.modules.homeManager.noctalia = {
     inputs,
     pkgs,
-    lib,
     config,
     username,
     ...
@@ -121,8 +120,7 @@
               start = [
                 "active_window"
               ];
-              center = [
-              ];
+              center = ["media"];
               end =
                 (map (x: "group:${x}") grouped_widgets) # Above are "grouped" widgets. Below are singular.
                 ++ single_widgets;
@@ -148,20 +146,9 @@
               start = ["workspaces"];
               # noctalia merges per-lane: absent center/end keep the default
               # widget lists (clock; media/tray/notifications/.../session).
-              center = ["group:media"];
+              center = ["audio_visualizer"];
               end = ["krill"];
               capsule_group = [
-                (
-                  mkCapsuleGroup
-                  {
-                    id = "media";
-                    members = [
-                      "media"
-                      "audio_visualizer"
-                    ];
-                    accordion = false;
-                  }
-                )
               ];
             };
         };
@@ -202,6 +189,8 @@
           audio_visualizer = {
             centered = false;
             interactive = false;
+            width = 200;
+            bands = 32;
           };
           cpu-icon = {
             type = "sysmon";
@@ -294,6 +283,7 @@
             # Explicit: left-click opens the control-center media panel.
             # (This matches noctalia's built-in default for media.)
             actions.left = "panel-toggle control-center media";
+            title_scroll = "always";
           };
           tray.drawer = false;
           # Runtime-updatable krill headline (plugin entry "yokley/krill:krill").
