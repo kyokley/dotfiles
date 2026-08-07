@@ -37,6 +37,10 @@
           };
         };
 
+        battery = {
+          warning_threshold = 25;
+        };
+
         theme = {
           mode = "auto";
           source = "wallpaper";

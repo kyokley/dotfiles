@@ -204,9 +204,7 @@
           htop
           git
           docker
-          rofi
           xclip
-          feh
           alsa-utils
           slack
           zoom-us

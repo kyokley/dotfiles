@@ -194,7 +194,7 @@
               {
                 _args = [
                   (lib.generators.mkLuaInline ''mod .. " + CONTROL + Q"'')
-                  (lib.generators.mkLuaInline ''hl.dsp.exec_cmd("rofi -show power-menu -modi power-menu:rofi-power-menu")'')
+                  (lib.generators.mkLuaInline ''hl.dsp.exec_cmd("noctalia msg panel-toggle session")'')
                 ];
               }
               {
