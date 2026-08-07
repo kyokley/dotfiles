@@ -48,6 +48,19 @@
 
         # Top floating bar with capsule widgets.
         bar = let
+          mkCapsuleGroup = attrs:
+            attrs
+            // {
+              enabled = true;
+              accordion = true;
+              # Groups carry their own capsule style (they don't inherit the
+              # bar-level capsule_* keys) — mirror the bar's settings here.
+              fill = "primary";
+              opacity = 0.25;
+              radius = 8;
+              padding = 4;
+              border = "primary";
+            };
           bar_base = {
             thickness = 52;
             background_opacity = 0.9;
@@ -69,19 +82,19 @@
             capsule_radius = 8;
             capsule_border = "primary";
           };
-          mkCapsuleGroup = attrs:
-            attrs
-            // {
-              enabled = true;
-              accordion = true;
-              # Groups carry their own capsule style (they don't inherit the
-              # bar-level capsule_* keys) — mirror the bar's settings here.
-              fill = "primary";
-              opacity = 0.25;
-              radius = 8;
-              padding = 4;
-              border = "primary";
-            };
+          grouped_widgets = [
+            "cpu"
+            "ram"
+            "disk"
+            "battery"
+            "volume"
+          ];
+          single_widgets = [
+            "tray"
+            "notifications"
+            "weather"
+            "clock"
+          ];
         in {
           top =
             bar_base
@@ -95,37 +108,20 @@
               center = [
               ];
               end =
-                map (x: "group:${x}") [
-                  "cpu"
-                  "ram"
-                  "disk"
-                  "battery"
-                ] # Above are "grouped" widgets. Below are singular.
-                ++ [
-                  "volume"
-                  "tray"
-                  "notifications"
-                  "weather"
-                  "clock"
-                ];
+                (map (x: "group:${x}") grouped_widgets) # Above are "grouped" widgets. Below are singular.
+                ++ single_widgets;
               # Capsule groups are declared on the bar as an array of tables,
               # referenced from lanes via the "group:<id>" token.
-              capsule_group =
-                map (x:
-                  mkCapsuleGroup
-                  {
-                    id = x;
-                    members = [
-                      "${x}-icon"
-                      "${x}-info"
-                    ];
-                  })
-                [
-                  "cpu"
-                  "ram"
-                  "disk"
-                  "battery"
-                ];
+              capsule_group = map (x:
+                mkCapsuleGroup
+                {
+                  id = x;
+                  members = [
+                    "${x}-icon"
+                    "${x}-info"
+                  ];
+                })
+              grouped_widgets;
             };
 
           bottom =
@@ -230,6 +226,16 @@
             display_mode = "none";
             show_label = true;
           };
+          volume-icon = {
+            type = "volume";
+            show_label = false;
+          };
+          volume-info = {
+            type = "volume";
+            glyph = "none";
+            custom_image = "none";
+            show_label = true;
+          };
           weather = {
             show_condition = false;
             show_temperature = true;
@@ -251,7 +257,6 @@
             capsule_padding = 4;
           };
           launcher.glyph = "rocket";
-          volume.show_label = false;
           brightness.show_label = false;
           battery = {
             show_label = true;
