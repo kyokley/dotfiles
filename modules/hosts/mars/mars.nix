@@ -5,14 +5,12 @@
     distributedBuilds
     systemd-services
     syncthing
-    noctalia
   ];
 
   nixos_modules = with inputs.self.modules.nixos; [
     laptop
     distributedBuilds
     tailscale
-    noctalia
   ];
 in {
   flake.modules = {

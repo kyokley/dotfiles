@@ -5,6 +5,10 @@
       pkgs,
       ...
     }: {
+      imports = with inputs.self.modules.nixos; [
+        noctalia
+      ];
+
       systemd = {
         services."lock-on-sleep" = {
           description = "Lock screen before sleep";
@@ -59,7 +63,7 @@
       ...
     }: {
       imports = with inputs.self.modules.homeManager; [
-        waybar
+        noctalia
       ];
 
       wayland.windowManager.hyprland = {
