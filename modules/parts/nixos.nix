@@ -248,12 +248,6 @@
         pkgs,
         ...
       }: let
-        reboot-kexec = pkgs.writeScriptBin "reboot-kexec" ''
-          #!${pkgs.stdenv.shell}
-          cmdline="init=$(readlink -f /nix/var/nix/profiles/system/init) $(cat /nix/var/nix/profiles/system/kernel-params)"
-          sudo kexec -l /nix/var/nix/profiles/system/kernel --initrd=/nix/var/nix/profiles/system/initrd --append="$cmdline"
-          sudo systemctl kexec
-        '';
         open-all = pkgs.writeScriptBin "open" ''
           for file in "$@"
           do
@@ -275,7 +269,6 @@
             thunderbird
             nerd-fonts.hack
             vlc
-            reboot-kexec
             open-all
             inputs.fastfetch-config.packages.${pkgs.stdenv.hostPlatform.system}.default
           ];

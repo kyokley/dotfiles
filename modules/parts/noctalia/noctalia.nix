@@ -362,33 +362,6 @@
               enabled = true;
               size = 18;
             };
-            session = {
-              grid = true;
-              grid_columns = 2;
-              actions = [
-                {
-                  action = "shutdown";
-                  countdown_seconds = 10;
-                  variant = "destructive";
-                  shortcut = "1";
-                }
-                {
-                  action = "reboot";
-                  countdown_seconds = 10;
-                  shortcut = "2";
-                }
-                {
-                  action = "lock";
-                  variant = "secondary";
-                  shortcut = "3";
-                }
-                {
-                  action = "logout";
-                  countdown_seconds = 10;
-                  shortcut = "4";
-                }
-              ];
-            };
           };
 
           # Noctalia has no per-surface font size; ui_scale is the only lever that
