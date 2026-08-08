@@ -263,7 +263,6 @@
       in {
         imports = with inputs.self.modules.homeManager; [
           terminator
-          rofi
           # qtile
           hyprland
           kitty

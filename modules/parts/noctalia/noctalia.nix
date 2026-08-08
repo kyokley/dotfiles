@@ -27,6 +27,32 @@
         systemd.enable = true;
 
         settings = {
+          idle = {
+            behavior_order = [
+              "screen-off"
+              "lock"
+              "suspend"
+            ];
+            behavior = {
+              screen-off = {
+                enabled = true;
+                timeout = 600;
+                action = "screen_off";
+              };
+              lock = {
+                enabled = true;
+                timeout = 610;
+                action = "lock";
+              };
+              suspend = {
+                enabled = true;
+                timeout = 900;
+                action = "suspend";
+                lock_before_suspend = false;
+              };
+            };
+          };
+
           calendar = {
             enabled = true;
             refresh_minutes = 15;
@@ -336,12 +362,54 @@
               enabled = true;
               size = 18;
             };
+            session = {
+              grid = true;
+              grid_columns = 2;
+              actions = [
+                {
+                  action = "shutdown";
+                  countdown_seconds = 10;
+                  variant = "destructive";
+                  shortcut = "1";
+                }
+                {
+                  action = "reboot";
+                  countdown_seconds = 10;
+                  shortcut = "2";
+                }
+                {
+                  action = "lock";
+                  variant = "secondary";
+                  shortcut = "3";
+                }
+                {
+                  action = "logout";
+                  countdown_seconds = 10;
+                  shortcut = "4";
+                }
+              ];
+            };
           };
 
           # Noctalia has no per-surface font size; ui_scale is the only lever that
           # affects the control-center (it scales launcher/clipboard too, not the bar).
           accessibility.ui_scale = 1.5;
         };
+      };
+
+      wayland.windowManager.hyprland = {
+        settings.layer_rule = [
+          {
+            name = "noctalia";
+            match = {
+              namespace = "^noctalia-(bar-.+|notification|dock|panel|attached-panel|osd|window-switcher)$";
+            };
+            no_anim = true;
+            ignore_alpha = 0.5;
+            blur = true;
+            blur_popups = true;
+          }
+        ];
       };
 
       # Push a random krill headline to the bar widget on a timer.
