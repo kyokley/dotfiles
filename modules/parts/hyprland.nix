@@ -99,6 +99,12 @@
             decoration = {
               rounding = 10;
             };
+
+            # Distinguish click from drag for the ALT + LMB bindings above:
+            # a release within this many px counts as a click, beyond it as a drag.
+            binds = {
+              drag_threshold = 10;
+            };
           };
 
           gesture = [
@@ -218,21 +224,18 @@
                 _args = [
                   (lib.generators.mkLuaInline ''mod .. " + mouse:272"'')
                   (lib.generators.mkLuaInline ''hl.dsp.window.drag()'')
-                  {
-                    mouse = true;
-                    drag = true;
-                  }
+                  {mouse = true;}
                 ];
               }
               {
-                # Float the window under the cursor on ALT + left click
+                # Float the window under the cursor on ALT + click (no drag past drag_threshold)
+                # NOTE: "mouse" and "click"/"drag" are mutually exclusive in hl.bind
+                # (click/drag imply release). Use mouse=true for the drag bind and
+                # a plain click bind for the click action.
                 _args = [
                   (lib.generators.mkLuaInline ''mod .. " + mouse:272"'')
                   (lib.generators.mkLuaInline ''hl.dsp.window.float({ action = "toggle" })'')
-                  {
-                    mouse = true;
-                    click = true;
-                  }
+                  {click = true;}
                 ];
               }
               {
