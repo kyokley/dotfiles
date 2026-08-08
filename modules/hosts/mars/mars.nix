@@ -82,11 +82,6 @@ in {
 
       powerManagement.enable = true;
 
-      programs.noctalia = {
-        enable = true;
-        recommendedServices.enable = true;
-      };
-
       # auto-cpufreq (laptop module) owns the power-profile slot on this host;
       # without this, noctalia's recommendedServices would also enable
       # power-profiles-daemon, which NixOS forbids.
