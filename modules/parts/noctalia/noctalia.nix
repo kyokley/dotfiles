@@ -24,7 +24,6 @@
 
       programs.noctalia = {
         enable = true;
-        recommendedServices.enable = true;
         systemd.enable = true;
 
         settings = {
@@ -345,11 +344,6 @@
         };
       };
 
-      # auto-cpufreq (laptop module) owns the power-profile slot on this host;
-      # without this, noctalia's recommendedServices would also enable
-      # power-profiles-daemon, which NixOS forbids.
-      services.power-profiles-daemon.enable = false;
-
       # Push a random krill headline to the bar widget on a timer.
       systemd.user = {
         services.krill-bar = {
@@ -400,6 +394,16 @@
           extra-trusted-public-keys = ["noctalia.cachix.org-1:pCOR47nnMEo5thcxNDtzWpOxNFQsBRglJzxWPp3dkU4="];
         };
       };
+
+      programs.noctalia = {
+        enable = true;
+        recommendedServices.enable = true;
+      };
+
+      # auto-cpufreq (laptop module) owns the power-profile slot on this host;
+      # without this, noctalia's recommendedServices would also enable
+      # power-profiles-daemon, which NixOS forbids.
+      services.power-profiles-daemon.enable = false;
     };
   };
 }
