@@ -1,6 +1,7 @@
 {
   flake.modules.homeManager.dunst = {
     pkgs,
+    lib,
     username,
     ...
   }: let
@@ -424,11 +425,70 @@
       #    appname = "some_volume_notifiers"
       #    set_stack_tag = "volume"
     '';
+        homeDir = "/home/${username}";
   in {
     services.dunst = {
       enable = true;
       configFile = builtins.toFile "dunstrc" dunst_config;
     };
+        services = {
+          xidlehook = {
+            enable = true;
+            detect-sleep = true;
+            not-when-fullscreen = true;
+            timers = [
+              {
+                delay = 590;
+                command = "${pkgs.dunst}/bin/dunstify 'Locking screen in 10 secs' -t 10";
+              }
+              {
+                delay = 20; # Add an extra 10 secs to allow waking up after screen blank
+                command = "${pkgs.betterlockscreen}/bin/betterlockscreen --lock";
+              }
+            ];
+          };
+        };
+
+        systemd = {
+          user = {
+            targets.tray = {
+              Unit = {
+                Description = "Home Manager System Tray";
+                Requires = ["graphical-session-pre.target"];
+              };
+            };
+
+            services = {
+              update-lockscreen = {
+                Unit.Description = "Update lockscreen background image";
+                Service = {
+                  Type = "oneshot";
+                  ExecStart = toString (
+                    pkgs.writeShellScript "betterlockscreen-update-script" ''
+                      PATH=$PATH:${lib.makeBinPath [pkgs.nix pkgs.coreutils pkgs.busybox pkgs.xrdb]}
+                      ${pkgs.betterlockscreen}/bin/betterlockscreen -u ${homeDir}/Pictures/wallpapers --fx ""
+                    ''
+                  );
+                };
+              };
+            };
+
+            timers = {
+              update-lockscreen = {
+                Unit = {
+                  Description = "Update betterlockscreen";
+                  After = ["network.target"];
+                };
+                Timer = {
+                  OnCalendar = "*-*-* *:0/5:00";
+                  Persistent = true;
+                  Unit = "update-lockscreen.service";
+                };
+                Install.WantedBy = ["timers.target"];
+              };
+            };
+          };
+        };
 
     home = {
       packages = [

@@ -247,24 +247,13 @@
       nixos = {
         inputs,
         pkgs,
-        lib,
-        username,
         ...
       }: let
-        homeDir = "/home/${username}";
         reboot-kexec = pkgs.writeScriptBin "reboot-kexec" ''
           #!${pkgs.stdenv.shell}
           cmdline="init=$(readlink -f /nix/var/nix/profiles/system/init) $(cat /nix/var/nix/profiles/system/kernel-params)"
           sudo kexec -l /nix/var/nix/profiles/system/kernel --initrd=/nix/var/nix/profiles/system/initrd --append="$cmdline"
           sudo systemctl kexec
-        '';
-        toggle-picom = pkgs.writeScriptBin "toggle-picom" ''
-          #!${pkgs.stdenv.shell}
-          if systemctl --user status picom | grep 'running'; then
-            systemctl --user stop picom
-          else
-            systemctl --user start picom
-          fi
         '';
         open-all = pkgs.writeScriptBin "open" ''
           for file in "$@"
@@ -275,7 +264,6 @@
       in {
         imports = with inputs.self.modules.homeManager; [
           terminator
-          dunst
           rofi
           # qtile
           hyprland
@@ -290,15 +278,11 @@
             nerd-fonts.hack
             vlc
             reboot-kexec
-            toggle-picom
             open-all
             inputs.fastfetch-config.packages.${pkgs.stdenv.hostPlatform.system}.default
           ];
 
           file = {
-            ".config/picom/picom-custom.conf" = {
-              source = ./picom.conf;
-            };
             ".config/nixpkgs/config.nix" = {
               text = "{ allowUnfree = true; }";
             };
@@ -321,72 +305,7 @@
         };
 
         services = {
-          xidlehook = {
-            enable = false;
-            detect-sleep = true;
-            not-when-fullscreen = true;
-            timers = [
-              {
-                delay = 590;
-                command = "${pkgs.dunst}/bin/dunstify 'Locking screen in 10 secs' -t 10";
-              }
-              {
-                delay = 20; # Add an extra 10 secs to allow waking up after screen blank
-                command = "${pkgs.betterlockscreen}/bin/betterlockscreen --lock";
-              }
-            ];
-          };
-
           network-manager-applet.enable = true;
-        };
-
-        systemd = {
-          user = {
-            targets.tray = {
-              Unit = {
-                Description = "Home Manager System Tray";
-                Requires = ["graphical-session-pre.target"];
-              };
-            };
-
-            services = {
-              update-lockscreen = {
-                Unit.Description = "Update lockscreen background image";
-                Service = {
-                  Type = "oneshot";
-                  ExecStart = toString (
-                    pkgs.writeShellScript "betterlockscreen-update-script" ''
-                      PATH=$PATH:${lib.makeBinPath [pkgs.nix pkgs.coreutils pkgs.busybox pkgs.xrdb]}
-                      ${pkgs.betterlockscreen}/bin/betterlockscreen -u ${homeDir}/Pictures/wallpapers --fx ""
-                    ''
-                  );
-                };
-              };
-            };
-
-            timers = {
-              update-lockscreen = {
-                Unit = {
-                  Description = "Update betterlockscreen";
-                  After = ["network.target"];
-                };
-                Timer = {
-                  OnCalendar = "*-*-* *:0/5:00";
-                  Persistent = true;
-                  Unit = "update-lockscreen.service";
-                };
-                Install.WantedBy = ["timers.target"];
-              };
-            };
-          };
-        };
-
-        services = {
-          picom = {
-            enable = false;
-            extraArgs = ["--config=${homeDir}/.config/picom/picom-custom.conf"];
-          };
-
           mpris-proxy.enable = true;
         };
       };

@@ -82,11 +82,6 @@ in {
 
       powerManagement.enable = true;
 
-      # auto-cpufreq (laptop module) owns the power-profile slot on this host;
-      # without this, noctalia's recommendedServices would also enable
-      # power-profiles-daemon, which NixOS forbids.
-      services.power-profiles-daemon.enable = false;
-
       system.stateVersion = "24.05"; # Don't touch me!
 
       virtualisation.docker.daemon.settings = {
