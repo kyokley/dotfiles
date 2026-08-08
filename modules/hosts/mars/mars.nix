@@ -12,6 +12,7 @@
     laptop
     distributedBuilds
     tailscale
+    noctalia
   ];
 in {
   flake.modules = {
@@ -43,9 +44,6 @@ in {
 
         stateVersion = "24.05"; # Don't touch me!
       };
-      services.dunst = {
-        enable = false;
-      };
     };
 
     nixos.mars = {
@@ -58,7 +56,6 @@ in {
       imports =
         nixos_modules
         ++ [
-          inputs.noctalia.nixosModules.default
           (modulesPath + "/installer/scan/not-detected.nix")
         ];
 

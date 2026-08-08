@@ -1,7 +1,6 @@
 {
   flake.modules.homeManager.dunst = {
     pkgs,
-    lib,
     username,
     ...
   }: let
@@ -427,7 +426,7 @@
     '';
   in {
     services.dunst = {
-      enable = lib.mkDefault true;
+      enable = true;
       configFile = builtins.toFile "dunstrc" dunst_config;
     };
 

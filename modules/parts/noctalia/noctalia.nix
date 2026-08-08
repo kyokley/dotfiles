@@ -384,7 +384,10 @@
         };
       };
     };
-    nixos.noctalia = {
+    nixos.noctalia = {inputs, ...}: {
+      imports = [
+        inputs.noctalia.nixosModules.default
+      ];
       nix = {
         settings = {
           extra-substituters = ["https://noctalia.cachix.org"];
