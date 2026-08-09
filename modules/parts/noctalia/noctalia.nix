@@ -22,11 +22,31 @@
         };
       };
 
+      # evtest feeds keyboard events to the bongo cat widget.
+      home.packages = [pkgs.evtest];
+
       programs.noctalia = {
         enable = true;
         systemd.enable = true;
 
         settings = {
+          # Plugins enabled declaratively. Both ids must live here:
+          #   - noctalia/bongocat — official plugin (the `official` git source
+          #     ships by default; enabling the id fetches + activates it)
+          #   - yokley/krill — local plugin placed under
+          #     ~/.local/share/noctalia/plugins/krill (built-in local source)
+          #
+          # NOTE: the app keeps a `[plugins]` override in
+          # ~/.local/state/noctalia/settings.toml (written when you enable or
+          # disable a plugin from the GUI/IPC) that WINS over this list until
+          # removed. If a plugin added here doesn't load, check that file.
+          plugins = {
+            enabled = [
+              "noctalia/bongocat"
+              "yokley/krill"
+            ];
+          };
+
           idle = {
             behavior_order = [
               "screen-off"
@@ -160,6 +180,7 @@
                 layer = "top";
                 # Horizontal bar: start = left, center = middle, end = right.
                 start = [
+                  "bongocat"
                   "active_window"
                 ];
                 center = ["media"];
@@ -344,6 +365,22 @@
               # 0.8 × 1.8 = 1.44 renders the headline ~20% smaller.
               scale = 0.8;
             };
+
+            # Bongo cat (official plugin noctalia/bongocat). Reads keyboard
+            # events via evtest (installed via home.packages below; the user is
+            # in the `input` group so the session can open /dev/input/*). The
+            # stable by-path glob matches the internal i8042 keyboard and any
+            # USB/Bluetooth keyboard that exposes a by-path symlink.
+            #
+            # enabled = false hides the cat from the bar (v5 has no IPC for
+            # per-widget visibility); flip it to true to bring it back.
+            bongocat = {
+              type = "noctalia/bongocat:cat";
+              input_devices = [
+                "/dev/input/by-path/*-event-kbd"
+              ];
+              enabled = true;
+            };
           };
 
           shell = {
@@ -425,7 +462,11 @@
         };
       };
     };
-    nixos.noctalia = {inputs, ...}: {
+    nixos.noctalia = {
+      inputs,
+      username,
+      ...
+    }: {
       imports = [
         inputs.noctalia.nixosModules.default
       ];
@@ -445,6 +486,10 @@
       # without this, noctalia's recommendedServices would also enable
       # power-profiles-daemon, which NixOS forbids.
       services.power-profiles-daemon.enable = false;
+
+      # Bongo cat reads /dev/input/event* (root:input, mode 660) via evtest —
+      # membership in `input` lets the session open the devices.
+      users.users.${username}.extraGroups = ["input"];
     };
   };
 }
