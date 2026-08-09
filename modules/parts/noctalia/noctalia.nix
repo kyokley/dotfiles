@@ -163,7 +163,7 @@
               capsule_border = "primary";
             };
             grouped_widgets = [
-              "cpu"
+              # "cpu"
               "ram"
               "disk"
               "battery"
