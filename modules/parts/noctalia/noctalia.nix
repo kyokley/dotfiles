@@ -30,9 +30,11 @@
         systemd.enable = true;
 
         settings = {
-          # Plugins enabled declaratively. Both ids must live here:
+          # Plugins enabled declaratively. These ids must live here:
           #   - noctalia/bongocat — official plugin (the `official` git source
           #     ships by default; enabling the id fetches + activates it)
+          #   - dotnetrob/cat — community plugin (the `community` git source
+          #     ships by default, same as `official`)
           #   - yokley/krill — local plugin placed under
           #     ~/.local/share/noctalia/plugins/krill (built-in local source)
           #
@@ -43,6 +45,7 @@
           plugins = {
             enabled = [
               "noctalia/bongocat"
+              "dotnetrob/cat"
               "yokley/krill"
             ];
           };
@@ -185,7 +188,9 @@
                 ];
                 center = ["media"];
                 end =
-                  (map (x: "group:${x}") grouped_widgets) # Above are "grouped" widgets. Below are singular.
+                  # Community CPU cat on the right side of the top bar.
+                  ["cat-cpu"]
+                  ++ (map (x: "group:${x}") grouped_widgets) # Above are "grouped" widgets. Below are singular.
                   ++ single_widgets;
                 # Capsule groups are declared on the bar as an array of tables,
                 # referenced from lanes via the "group:<id>" token.
@@ -379,6 +384,16 @@
               input_devices = [
                 "/dev/input/by-path/*-event-kbd"
               ];
+              enabled = true;
+            };
+
+            # Community CPU cat (dotnetrob/cat): an animated cat that sleeps
+            # on idle CPU, walks as load picks up, and sprints when busy.
+            # Named "cat-cpu" because the plugin's widget entry id ("cat")
+            # would collide with the bongo cat above. Tuning knobs: cat_size,
+            # show_cpu_percent, walk_threshold, run_threshold, poll_interval.
+            "cat-cpu" = {
+              type = "dotnetrob/cat:cat";
               enabled = true;
             };
           };
