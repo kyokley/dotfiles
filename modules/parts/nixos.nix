@@ -10,6 +10,7 @@
         ...
       }: {
         imports = with inputs.self.modules.nixos; [
+          # Choose one of qtile or hyprland. Must match homeManager selection below.
           # qtile
           hyprland
 
@@ -256,9 +257,11 @@
         '';
       in {
         imports = with inputs.self.modules.homeManager; [
-          terminator
+          # Choose one of qtile or hyprland. Must match homeManager selection below.
           # qtile
           hyprland
+
+          terminator
           kitty
         ];
 
