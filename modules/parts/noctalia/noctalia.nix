@@ -163,7 +163,7 @@
               capsule_border = "primary";
             };
             grouped_widgets = [
-              # "cpu"
+              "cpu"
               "ram"
               "disk"
               "battery"
@@ -188,9 +188,7 @@
                 ];
                 center = ["media"];
                 end =
-                  # Community CPU cat on the right side of the top bar.
-                  ["cat-cpu"]
-                  ++ (map (x: "group:${x}") grouped_widgets) # Above are "grouped" widgets. Below are singular.
+                  (map (x: "group:${x}") grouped_widgets)
                   ++ single_widgets;
                 # Capsule groups are declared on the bar as an array of tables,
                 # referenced from lanes via the "group:<id>" token.
@@ -269,11 +267,8 @@
               bands = 32;
             };
             cpu-icon = {
-              type = "sysmon";
-              stat = "cpu_usage";
-              glyph = "cpu-usage";
-              visualization = "none";
-              show_value = false;
+              type = "dotnetrob/cat:cat";
+              enabled = true;
             };
             cpu-info = {
               type = "sysmon";
@@ -386,16 +381,6 @@
               ];
               enabled = true;
             };
-
-            # Community CPU cat (dotnetrob/cat): an animated cat that sleeps
-            # on idle CPU, walks as load picks up, and sprints when busy.
-            # Named "cat-cpu" because the plugin's widget entry id ("cat")
-            # would collide with the bongo cat above. Tuning knobs: cat_size,
-            # show_cpu_percent, walk_threshold, run_threshold, poll_interval.
-            "cat-cpu" = {
-              type = "dotnetrob/cat:cat";
-              enabled = true;
-            };
           };
 
           shell = {
@@ -413,6 +398,18 @@
             screen_corners = {
               enabled = true;
               size = 18;
+            };
+          };
+
+          system = {
+            monitor = {
+              enabled = true;
+              cpu_usage_activity_threshold = 50;
+              cpu_usage_critical_threshold = 90;
+              ram_pct_activity_threshold = 60;
+              ram_pct_critical_threshold = 90;
+              disk_used_pct_activity_threshold = 80;
+              disk_used_pct_critical_threshold = 90;
             };
           };
 
