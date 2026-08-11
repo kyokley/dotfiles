@@ -105,6 +105,14 @@
             binds = {
               drag_threshold = 10;
             };
+
+            # Disable Hyprland's built-in default wallpapers (3 images picked
+            # at random at compositor start). They flash on screen before
+            # noctalia loads its wallpaper; the screen instead stays at
+            # background_color (default 0x111111) until noctalia takes over.
+            misc = {
+              disable_hyprland_logo = true;
+            };
           };
 
           gesture = [
