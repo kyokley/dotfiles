@@ -328,19 +328,25 @@
             {
               match = {
                 class = "zoom";
-                float = true;
+                title = "annotate_toolbar";
               };
-              size = "638 510";
+              float = true;
+              size = "200 200";
             }
             {
               match = {
                 class = "zoom";
-                title = "annotate_toolbar";
+                title = "Leave meeting panel";
+                float = true;
               };
-              float = true;
-              # expression vec2 splits on whitespace only; "200, 200" would
-              # parse "200," as the x expression and fail
-              size = "200 200";
+              size = "200 100";
+            }
+            {
+              match = {
+                class = "zoom";
+                float = true;
+              };
+              size = "638 510";
             }
             {
               match.class = "zoom";
