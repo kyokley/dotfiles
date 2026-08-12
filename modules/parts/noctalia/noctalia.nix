@@ -472,6 +472,49 @@
           };
           Install.WantedBy = ["timers.target"];
         };
+
+        # Noctalia has no config key to auto-inhibit idle while media plays;
+        # caffeine (its idle inhibitor) is manual-only (IPC or widget). Watch
+        # MPRIS playback (playerctl follows the default player, i.e. Spotify
+        # when it's the one playing) and mirror "Playing"/not-Playing to the
+        # caffeine IPC so the machine never sleeps mid-song. Caffeine blocks
+        # ALL idle behaviors (screen-off, lock, suspend), which is the point:
+        # otherwise the screen would still go dark and lock under the music.
+        services.noctalia-caffeine = {
+          Unit = {
+            Description = "Enable noctalia caffeine while media is playing";
+            After = ["graphical-session.target"];
+          };
+          Service = {
+            Type = "simple";
+            ExecStart = toString (pkgs.writeShellScript "noctalia-caffeine" ''
+              set -uo pipefail
+
+              while true; do
+                # playerctld pins a stable "default player" across app
+                # switches; without it --follow only tracks the first player
+                # seen. `daemon` activates it via D-Bus and exits.
+                ${pkgs.playerctl}/bin/playerctld daemon || true
+
+                # Each line is the default player's status: "Playing",
+                # "Paused" or "Stopped". playerctl exits when no players
+                # exist, so re-attach after a short delay.
+                ${pkgs.playerctl}/bin/playerctl --follow status 2>/dev/null \
+                  | while read -r status; do
+                      if [ "$status" = "Playing" ]; then
+                        ${config.programs.noctalia.package}/bin/noctalia msg caffeine-enable || true
+                      else
+                        ${config.programs.noctalia.package}/bin/noctalia msg caffeine-disable || true
+                      fi
+                    done
+
+                sleep 5
+              done
+            '');
+            Restart = "on-failure";
+          };
+          Install.WantedBy = ["graphical-session.target"];
+        };
       };
     };
     nixos.noctalia = {
