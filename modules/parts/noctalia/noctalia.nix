@@ -76,6 +76,13 @@
             };
           };
 
+          # Native ext-session-lock lockscreen. Also arms the logind sleep-delay
+          # inhibit so noctalia locks the screen before ANY suspend, including
+          # lid-triggered HandleLidSwitch=suspend from logind.
+          lockscreen = {
+            enabled = true;
+          };
+
           calendar = {
             enabled = true;
             refresh_minutes = 15;

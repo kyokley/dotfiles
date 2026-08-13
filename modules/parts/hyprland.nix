@@ -10,14 +10,6 @@
       ];
 
       systemd = {
-        services."lock-on-sleep" = {
-          description = "Lock screen before sleep";
-          before = ["sleep.target"];
-          wantedBy = ["sleep.target"];
-          unitConfig.Type = "oneshot";
-          serviceConfig.ExecStart = "loginctl lock-session";
-        };
-
         # Ensure the greeter home directories exist before greetd/cagebreak
         # starts.  kitty (used by sysc-greet) needs .cache/kitty to write to,
         # but systemd-tmpfiles refuses to create dirs inside a non-root home
