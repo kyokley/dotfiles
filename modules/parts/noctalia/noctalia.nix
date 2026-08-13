@@ -243,12 +243,34 @@
                 match = "notify-send";
                 match_content = "Now Playing";
               };
+              # Named "aaa-…" so it sorts before the generic `brave-browser`
+              # filter (the generated TOML and noctalia's parser both order
+              # filter tables by name, and resolveNotificationFilter returns the
+              # FIRST match). The generic filter must not swallow Proton VPN
+              # notifications before this specific one can see them.
+              aaa-brave-proton = {
+                enabled = true;
+                show_toast = true;
+                save_history = false;
+                play_sound = true;
+                match = "brave";
+                match_content = "Proton VPN";
+                allow_permanent = false;
+              };
               brave-browser = {
                 enabled = true;
                 show_toast = true;
                 save_history = true;
                 play_sound = true;
-                match = "Brave Web Browser";
+                match = "brave";
+                allow_permanent = false;
+              };
+              network-manager = {
+                enabled = true;
+                show_toast = true;
+                save_history = false;
+                play_sound = true;
+                match = "networkmanager";
                 allow_permanent = false;
               };
               slack = {
@@ -256,7 +278,7 @@
                 show_toast = true;
                 save_history = false;
                 play_sound = true;
-                match = "Slack";
+                match = "slack";
                 allow_permanent = false;
               };
             };
