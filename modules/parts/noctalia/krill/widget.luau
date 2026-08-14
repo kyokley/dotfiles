@@ -1,6 +1,7 @@
 -- Krill bar widget: shows a headline, updated via IPC pushes.
 -- Left-click opens the current headline's link; scrolling up/down moves
--- through previous headlines in history.
+-- through previous headlines in history; right-click toggles the headline
+-- text (the news glyph always stays visible).
 --
 --   noctalia msg plugin yokley/krill:krill all set "<headline>|<url>"
 --
@@ -13,6 +14,7 @@ local MAX_HISTORY = 100
 
 local history = {} -- array of { title = string, link = string }, newest first
 local index = 1 -- currently displayed item (1 = newest)
+local textVisible = true -- right-click toggles; the glyph always stays
 
 -- Right-side truncation that never splits a UTF-8 sequence.
 local function truncate(text)
@@ -22,9 +24,27 @@ local function truncate(text)
   return string.sub(text, 1, MAX_LENGTH) .. "..."
 end
 
+-- Render the currently selected item. When text is toggled off, only the
+-- glyph shows; the tooltip still carries the full headline so it stays
+-- reachable on hover.
 local function display(item)
-  barWidget.setText(truncate(item.title))
+  if textVisible then
+    barWidget.setText(truncate(item.title))
+  else
+    barWidget.setText("")
+  end
   barWidget.setTooltip(item.title) -- full headline on hover
+end
+
+-- Right-click flips the headline text on/off. The glyph set at load time is
+-- never touched, so it stays visible in either state.
+local function toggleText()
+  textVisible = not textVisible
+  if #history > 0 then
+    display(history[index])
+  else
+    barWidget.setText(textVisible and "Loading..." or "")
+  end
 end
 
 -- A single IPC "set" payload carries both fields as "<headline>|<url>".
@@ -92,6 +112,10 @@ function onScroll(axis, steps, startsGesture)
   local count = #history
   index = (index + (steps > 0 and 1 or -1) - 1 + count) % count + 1
   display(history[index])
+end
+
+function onRightClick()
+  toggleText()
 end
 
 function onClick()
