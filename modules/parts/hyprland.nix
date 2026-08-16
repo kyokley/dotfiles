@@ -143,7 +143,7 @@
                 {
                   _args = [
                     (lib.generators.mkLuaInline ''mod .. " + ${key}"'')
-                    (lib.generators.mkLuaInline ''function() local ws = hl.get_active_workspace(); if ws and ws.id == ${ws_id} then hl.dispatch(hl.dsp.focus({ workspace = "previous" })) else hl.dispatch(hl.dsp.focus({ workspace = "${ws_id}" })) end end'')
+                    (lib.generators.mkLuaInline ''function() local ws = hl.get_active_workspace(); if ws and ws.id == ${ws_id} then hl.dispatch(hl.dsp.focus({ workspace = "previous", on_current_monitor = true })) else hl.dispatch(hl.dsp.focus({ workspace = "${ws_id}", on_current_monitor = true })) end end'')
                   ];
                 }
                 {
@@ -167,6 +167,24 @@
             ws = builtins.concatLists workspaceEntries;
           in
             [
+              {
+                _args = [
+                  (lib.generators.mkLuaInline ''mod .. " + w"'')
+                  (lib.generators.mkLuaInline ''hl.dsp.focus({monitor = 1})'')
+                ];
+              }
+              {
+                _args = [
+                  (lib.generators.mkLuaInline ''mod .. " + e"'')
+                  (lib.generators.mkLuaInline ''hl.dsp.focus({monitor = 2})'')
+                ];
+              }
+              {
+                _args = [
+                  (lib.generators.mkLuaInline ''mod .. " + r"'')
+                  (lib.generators.mkLuaInline ''hl.dsp.focus({monitor = 0})'')
+                ];
+              }
               {
                 _args = [
                   (lib.generators.mkLuaInline ''mod .. " + SHIFT + C"'')
