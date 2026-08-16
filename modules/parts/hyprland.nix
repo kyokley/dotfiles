@@ -169,24 +169,6 @@
             [
               {
                 _args = [
-                  (lib.generators.mkLuaInline ''mod .. " + w"'')
-                  (lib.generators.mkLuaInline ''hl.dsp.focus({monitor = 1})'')
-                ];
-              }
-              {
-                _args = [
-                  (lib.generators.mkLuaInline ''mod .. " + e"'')
-                  (lib.generators.mkLuaInline ''hl.dsp.focus({monitor = 2})'')
-                ];
-              }
-              {
-                _args = [
-                  (lib.generators.mkLuaInline ''mod .. " + r"'')
-                  (lib.generators.mkLuaInline ''hl.dsp.focus({monitor = 0})'')
-                ];
-              }
-              {
-                _args = [
                   (lib.generators.mkLuaInline ''mod .. " + SHIFT + C"'')
                   # "SUPER + C"
                   (lib.generators.mkLuaInline "hl.dsp.window.close()")
