@@ -18,11 +18,18 @@ in {
       pkgs,
       lib,
       username,
+      config,
       ...
     }: let
       cd_paths = [
         "/home/${username}/workspace"
       ];
+      n64 = pkgs.writeShellApplication {
+        name = "n64";
+        text = ''
+          exec ${pkgs.mupen64plus}/bin/mupen64plus --datadir "${config.home.homeDirectory}/.local/share/mupen64plus/data" "$@"
+        '';
+      };
     in {
       imports = home_modules;
       programs.git.settings.user.email = "kyokley@mars";
@@ -38,6 +45,8 @@ in {
           pkgs.mattermost-desktop
           pkgs.lutris
           pkgs.steam
+          pkgs.mupen64plus
+          n64
         ];
 
         stateVersion = "24.05"; # Don't touch me!
