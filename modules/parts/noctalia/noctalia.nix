@@ -365,6 +365,7 @@
               hide_when_empty = true;
               label_source = "id";
               show_labels = true;
+              focused_output_only = true;
             };
             clock = {
               format = "{:%b %d %H:%M:%S}";
