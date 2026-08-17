@@ -53,20 +53,21 @@
           idle = {
             pre_action_fade_seconds = 30.0;
             behavior_order = [
-              "screen-off"
               "lock"
+              "screen-off"
               "suspend"
             ];
             behavior = {
+              lock = {
+                enabled = true;
+                timeout = 600;
+                action = "lock";
+              };
               screen-off = {
                 enabled = true;
                 timeout = 600;
                 action = "screen_off";
-              };
-              lock = {
-                enabled = true;
-                timeout = 610;
-                action = "lock";
+                locked_timeout = 30;
               };
               suspend = {
                 enabled = true;
