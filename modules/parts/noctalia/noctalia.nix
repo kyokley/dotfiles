@@ -51,6 +51,7 @@
           };
 
           idle = {
+            pre_action_fade_seconds = 30.0;
             behavior_order = [
               "screen-off"
               "lock"

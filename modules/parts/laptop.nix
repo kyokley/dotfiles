@@ -1,9 +1,6 @@
 {
   flake.modules.nixos = {
-    laptop = {
-      pkgs,
-      ...
-    }: {
+    laptop = {pkgs, ...}: {
       services = {
         auto-cpufreq = {
           enable = true;
@@ -30,7 +27,7 @@
       };
       systemd.services.logind-ac-idle-inhibitor = {
         description = "Inhibit logind idle suspend while on AC power";
-        wantedBy = [ "multi-user.target" ];
+        wantedBy = ["multi-user.target"];
         serviceConfig = {
           ExecStart = pkgs.writeShellScript "logind-ac-idle-inhibitor" ''
             ac_online() {
@@ -52,7 +49,7 @@
 
             while :; do
               if ac_online; then
-                ${pkgs.systemd}/bin/systemd-inhibit --what=idle --mode=block \
+                ${pkgs.systemd}/bin/systemd-inhibit --what=sleep --mode=block \
                   --who=logind-ac-idle-inhibitor \
                   --why="AC power is connected" \
                   "$0" --inhibit-watcher
