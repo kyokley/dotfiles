@@ -59,6 +59,7 @@ in {
       specialArgs = {inherit inputs username nixvim-output hostName;};
       modules = [
         inputs.home-manager.nixosModules.home-manager
+        inputs.sysc-greet.nixosModules.default
         {
           home-manager = {
             users.${username} = inputs.nixpkgs.lib.mkMerge [

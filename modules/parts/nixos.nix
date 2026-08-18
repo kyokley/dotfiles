@@ -9,22 +9,20 @@
         inputs,
         ...
       }: {
-        imports = [
-          inputs.self.modules.nixos.qtile
-          # inputs.self.modules.nixos.flatpak
+        imports = with inputs.self.modules.nixos; [
+          # Choose one of qtile or hyprland. Must match homeManager selection below.
+          # qtile
+          hyprland
 
           # Uncomment below to set default password for build-vm
-          # (
-          #   ({
-          #     options,
-          #     lib,
-          #     ...
-          #   }:
-          #     lib.mkIf (options ? virtualisation.memorySize) {
-          #       users.users.${username}.password = "wert66";
-          #     })
-          #   {inherit options lib;}
-          # )
+          ({
+            options,
+            lib,
+            ...
+          }:
+            lib.mkIf (options ? virtualisation.memorySize) {
+              users.users.${username}.password = "wert66";
+            })
         ];
 
         nix = {
@@ -62,12 +60,6 @@
         systemd = {
           services.NetworkManager-wait-online.enable = true;
           network.wait-online.enable = false;
-
-          # Needed to resolve a bug where nixos and HM both set ExecStart for blueman-applet
-          user.services.blueman-applet.serviceConfig.ExecStart = lib.mkForce [
-            ""
-            "${pkgs.blueman}/bin/blueman-applet"
-          ];
         };
 
         boot = {
@@ -88,15 +80,11 @@
           automatic-timezoned.enable = true;
           geoclue2.enable = true;
 
-          # Enable the XFCE Desktop Environment.
+          # Keyboard layout
           xserver = {
             enable = true;
             xkb.layout = "us";
             xkb.variant = "";
-
-            displayManager.lightdm = {
-              enable = true;
-            };
           };
 
           # Enable CUPS to print documents.
@@ -151,11 +139,13 @@
 
         security = {
           rtkit.enable = true;
-          pam.services = {
-            login.enableGnomeKeyring = true;
-            lightdm.enableGnomeKeyring = true;
-          };
         };
+
+        # The gnome-keyring module sets login PAM (unlock at login) AND adds
+        # gnome-keyring to systemPackages/dbus.packages + a setuid wrapper, so
+        # the daemon is in PATH for pam_gnome_keyring auto_start and can be
+        # D-Bus-activated (org.freedesktop.secrets) if it ever dies mid-session.
+        services.gnome.gnome-keyring.enable = true;
 
         # Enable touchpad support (enabled default in most desktopManager).
         # services.xserver.libinput.enable = true;
@@ -212,9 +202,7 @@
           htop
           git
           docker
-          rofi
           xclip
-          feh
           alsa-utils
           slack
           zoom-us
@@ -231,9 +219,15 @@
             vimAlias = true;
           };
 
-          # Needed to make screen locker work
-          i3lock.enable = true;
           zsh.enable = true;
+
+          nix-ld = {
+            enable = true;
+            libraries = [
+              # Add any missing dynamic libraries for unpackaged programs
+              # here, NOT in environment.systemPackages
+            ];
+          };
         };
 
         environment.variables = {
@@ -261,25 +255,8 @@
       nixos = {
         inputs,
         pkgs,
-        lib,
-        username,
         ...
       }: let
-        homeDir = "/home/${username}";
-        reboot-kexec = pkgs.writeScriptBin "reboot-kexec" ''
-          #!${pkgs.stdenv.shell}
-          cmdline="init=$(readlink -f /nix/var/nix/profiles/system/init) $(cat /nix/var/nix/profiles/system/kernel-params)"
-          sudo kexec -l /nix/var/nix/profiles/system/kernel --initrd=/nix/var/nix/profiles/system/initrd --append="$cmdline"
-          sudo systemctl kexec
-        '';
-        toggle-picom = pkgs.writeScriptBin "toggle-picom" ''
-          #!${pkgs.stdenv.shell}
-          if systemctl --user status picom | grep 'running'; then
-            systemctl --user stop picom
-          else
-            systemctl --user start picom
-          fi
-        '';
         open-all = pkgs.writeScriptBin "open" ''
           for file in "$@"
           do
@@ -288,33 +265,26 @@
         '';
       in {
         imports = with inputs.self.modules.homeManager; [
+          # Choose one of qtile or hyprland. Must match homeManager selection below.
+          # qtile
+          hyprland
+
           terminator
-          dunst
-          rofi
-          qtile
           kitty
         ];
 
         home = {
           packages = with pkgs; [
-            arandr
-            dunst
             inputs.nixpkgs-stable.legacyPackages.${pkgs.stdenv.hostPlatform.system}.libreoffice
-            nitrogen
             python3Packages.bpython
             thunderbird
             nerd-fonts.hack
             vlc
-            reboot-kexec
-            toggle-picom
             open-all
             inputs.fastfetch-config.packages.${pkgs.stdenv.hostPlatform.system}.default
           ];
 
           file = {
-            ".config/picom/picom-custom.conf" = {
-              source = ./picom.conf;
-            };
             ".config/nixpkgs/config.nix" = {
               text = "{ allowUnfree = true; }";
             };
@@ -337,72 +307,7 @@
         };
 
         services = {
-          xidlehook = {
-            enable = true;
-            detect-sleep = true;
-            not-when-fullscreen = true;
-            timers = [
-              {
-                delay = 590;
-                command = "${pkgs.dunst}/bin/dunstify 'Locking screen in 10 secs' -t 10";
-              }
-              {
-                delay = 20; # Add an extra 10 secs to allow waking up after screen blank
-                command = "${pkgs.betterlockscreen}/bin/betterlockscreen --lock";
-              }
-            ];
-          };
-
           network-manager-applet.enable = true;
-        };
-
-        systemd = {
-          user = {
-            targets.tray = {
-              Unit = {
-                Description = "Home Manager System Tray";
-                Requires = ["graphical-session-pre.target"];
-              };
-            };
-
-            services = {
-              update-lockscreen = {
-                Unit.Description = "Update lockscreen background image";
-                Service = {
-                  Type = "oneshot";
-                  ExecStart = toString (
-                    pkgs.writeShellScript "betterlockscreen-update-script" ''
-                      PATH=$PATH:${lib.makeBinPath [pkgs.nix pkgs.coreutils pkgs.busybox pkgs.xrdb]}
-                      ${pkgs.betterlockscreen}/bin/betterlockscreen -u ${homeDir}/Pictures/wallpapers --fx ""
-                    ''
-                  );
-                };
-              };
-            };
-
-            timers = {
-              update-lockscreen = {
-                Unit = {
-                  Description = "Update betterlockscreen";
-                  After = ["network.target"];
-                };
-                Timer = {
-                  OnCalendar = "*-*-* *:0/5:00";
-                  Persistent = true;
-                  Unit = "update-lockscreen.service";
-                };
-                Install.WantedBy = ["timers.target"];
-              };
-            };
-          };
-        };
-
-        services = {
-          picom = {
-            enable = true;
-            extraArgs = ["--config=${homeDir}/.config/picom/picom-custom.conf"];
-          };
-
           mpris-proxy.enable = true;
         };
       };

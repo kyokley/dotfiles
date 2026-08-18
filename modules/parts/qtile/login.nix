@@ -1,5 +1,5 @@
 {
-  flake.modules.nixos.common = {pkgs, ...}: let
+  flake.modules.nixos.qtile = {pkgs, ...}: let
     background_file = "/etc/login/login.jpg";
     wallpapers_dir = "/home/yokley/Pictures/wallpapers";
   in {

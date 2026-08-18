@@ -1,16 +1,23 @@
 {
   pkgs,
   inputs,
+  lib,
   ...
 }: {
   # https://devenv.sh/basics/
   # env.GREET = "devenv";
 
   # https://devenv.sh/packages/
-  packages = [
-    pkgs.bun
-    inputs.bun2nix.packages.${pkgs.stdenv.hostPlatform.system}.default
-  ];
+  packages =
+    [
+      pkgs.bun
+      inputs.bun2nix.packages.${pkgs.stdenv.hostPlatform.system}.default
+    ]
+    ++ (
+      if pkgs.stdenv.hostPlatform.isLinux
+      then [inputs.sysc-greet.packages.${pkgs.stdenv.hostPlatform.system}.default]
+      else []
+    );
 
   # https://devenv.sh/languages/
   # languages.rust.enable = true;

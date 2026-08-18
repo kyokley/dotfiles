@@ -1,0 +1,636 @@
+* {
+    font-family: FontAwesome, "JetBrains Mono", Roboto, Helvetica, Arial, sans-serif;
+    font-size: 30px;
+    min-height: 0;
+}
+
+window#waybar {
+    background: transparent;
+    color: #9b4dca;
+    border: none;
+}
+
+window#waybar.hidden {
+    opacity: 0.15;
+}
+
+button {
+    box-shadow: none;
+    border: none;
+    border-radius: 0;
+    background: transparent;
+}
+
+button:hover {
+    background: inherit;
+}
+
+/* ===== Workspace Buttons ===== */
+
+#workspaces {
+    margin: 8px 4px;
+    background: rgba(13, 0, 26, 0.9);
+    border-radius: 16px;
+    padding: 4px 0;
+}
+
+#workspaces button {
+    padding: 0 14px;
+    min-width: 38px;
+    color: #9b4dca;
+    border-radius: 12px;
+    margin: 2px 4px;
+    background: transparent;
+}
+
+#workspaces button:hover {
+    color: #f1c40f;
+    background: rgba(155, 77, 202, 0.15);
+    box-shadow: 0 0 14px rgba(155, 77, 202, 0.25);
+}
+
+#workspaces button.focused,
+#workspaces button.active {
+    color: #0d001a;
+    background: #f1c40f;
+    box-shadow: 0 0 20px rgba(241, 196, 15, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+#workspaces button.focused:hover,
+#workspaces button.active:hover {
+    background: #ffd700;
+    box-shadow: 0 0 30px rgba(241, 196, 15, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+}
+
+#workspaces button.urgent {
+    color: #ffffff;
+    background: rgba(46, 204, 113, 0.35);
+    box-shadow: 0 0 20px rgba(46, 204, 113, 0.4);
+}
+
+#mode {
+    background: rgba(46, 204, 113, 0.2);
+    color: #2ecc71;
+    font-weight: 700;
+    box-shadow: 0 0 18px rgba(46, 204, 113, 0.3);
+}
+
+/* ===== Modules Base ===== */
+
+#window {
+    margin: 6px 4px;
+    padding: 0 16px;
+    font-weight: 600;
+    color: #9b4dca;
+    background: rgba(13, 0, 26, 0.9);
+    border-radius: 14px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.modules-left > widget:first-child > #workspaces {
+    margin-left: 0;
+}
+
+.modules-right > widget:last-child > #workspaces {
+    margin-right: 0;
+}
+
+#clock,
+#battery,
+#cpu,
+#memory,
+#disk,
+#temperature,
+#backlight,
+#network,
+#pulseaudio,
+#wireplumber,
+#custom-media,
+#tray,
+#mode,
+#idle_inhibitor,
+#scratchpad,
+#power-profiles-daemon,
+#mpd,
+#custom-cpu_max,
+#custom-weather {
+    padding: 0 16px;
+    margin: 6px 3px;
+    border-radius: 14px;
+    color: #9b4dca;
+    background: rgba(13, 0, 26, 0.9);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+#clock:hover,
+#battery:hover,
+#cpu:hover,
+#memory:hover,
+#disk:hover,
+#pulseaudio:hover,
+#tray:hover,
+#temperature:hover,
+#network:hover,
+#backlight:hover,
+#custom-weather:hover,
+#custom-cpu_max:hover {
+    background: rgba(13, 0, 26, 0.9);
+}
+
+/* ===== Individual Modules ===== */
+
+#clock {
+    background: rgba(13, 0, 26, 0.9);
+    color: #9b4dca;
+    font-weight: 700;
+    box-shadow: 0 0 10px rgba(155, 77, 202, 0.15);
+}
+
+#clock:hover {
+    background: rgba(13, 0, 26, 0.8);
+    box-shadow: 0 0 16px rgba(155, 77, 202, 0.2);
+}
+
+#cpu {
+    color: #9b4dca;
+}
+
+#cpu:hover {
+    box-shadow: 0 0 10px rgba(155, 77, 202, 0.1);
+}
+
+#cpu.warning {
+    color: #ffbf00;
+    background: rgb(128, 96, 0);
+    box-shadow: 0 0 14px rgba(255, 191, 0, 0.35);
+    font-weight: 700;
+}
+
+#cpu.critical {
+    color: #ffffff;
+    background: rgb(229, 57, 53);
+    box-shadow: 0 0 18px rgba(229, 57, 53, 0.35);
+    font-weight: 700;
+}
+
+#custom-cpu_max {
+    color: #9b4dca;
+}
+
+#custom-cpu_max.warning {
+    color: #ffbf00;
+    background: rgb(128, 96, 0);
+    box-shadow: 0 0 14px rgba(255, 191, 0, 0.35);
+    font-weight: 700;
+}
+
+#custom-cpu_max.critical {
+    color: #ffffff;
+    background: rgb(229, 57, 53);
+    box-shadow: 0 0 18px rgba(229, 57, 53, 0.35);
+    font-weight: 700;
+}
+
+#memory {
+    color: #9b4dca;
+}
+
+#memory:hover {
+    box-shadow: 0 0 10px rgba(155, 77, 202, 0.1);
+}
+
+#memory.warning {
+    color: #ffbf00;
+    background: rgb(128, 96, 0);
+    box-shadow: 0 0 14px rgba(255, 191, 0, 0.35);
+    font-weight: 700;
+}
+
+#memory.critical {
+    color: #ffffff;
+    background: rgb(229, 57, 53);
+    box-shadow: 0 0 18px rgba(229, 57, 53, 0.35);
+    font-weight: 700;
+}
+
+#disk {
+    color: #9b4dca;
+}
+
+#disk:hover {
+    box-shadow: 0 0 10px rgba(155, 77, 202, 0.1);
+}
+
+#disk.warning {
+    color: #ffbf00;
+    background: rgb(128, 96, 0);
+    box-shadow: 0 0 14px rgba(255, 191, 0, 0.35);
+    font-weight: 700;
+}
+
+#disk.critical {
+    color: #ffffff;
+    background: rgb(229, 57, 53);
+    box-shadow: 0 0 18px rgba(229, 57, 53, 0.35);
+    font-weight: 700;
+}
+
+#pulseaudio {
+    color: #9b4dca;
+}
+
+#pulseaudio:hover {
+    box-shadow: 0 0 10px rgba(155, 77, 202, 0.1);
+}
+
+#pulseaudio.muted {
+    color: #4a2360;
+    background: rgba(13, 0, 26, 0.9);
+}
+
+#pulseaudio.warning {
+    color: #ffbf00;
+    background: rgb(128, 96, 0);
+    box-shadow: 0 0 14px rgba(255, 191, 0, 0.35);
+    font-weight: 700;
+}
+
+#pulseaudio.critical {
+    color: #ffffff;
+    background: rgb(229, 57, 53);
+    box-shadow: 0 0 18px rgba(229, 57, 53, 0.35);
+    font-weight: 700;
+}
+
+#battery {
+    color: #9b4dca;
+}
+
+#battery:hover {
+    box-shadow: 0 0 10px rgba(155, 77, 202, 0.1);
+}
+
+#battery.charging,
+#battery.plugged {
+    color: #f1c40f;
+    box-shadow: 0 0 10px rgba(241, 196, 15, 0.1);
+}
+
+#battery.warning {
+    color: #ffbf00;
+    background: rgb(128, 96, 0);
+    box-shadow: 0 0 14px rgba(255, 191, 0, 0.35);
+    font-weight: 700;
+}
+
+#battery.critical {
+    color: #ffffff;
+    background: rgb(229, 57, 53);
+    box-shadow: 0 0 18px rgba(229, 57, 53, 0.35);
+    font-weight: 700;
+}
+
+#tray {
+    background: rgba(13, 0, 26, 0.9);
+    border-radius: 14px;
+    padding: 0 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+#tray > .passive {
+    -gtk-icon-effect: dim;
+}
+
+#tray > .needs-attention {
+    -gtk-icon-effect: highlight;
+    background: rgba(155, 77, 202, 0.25);
+}
+
+#network {
+    color: #9b4dca;
+}
+
+#network:hover {
+    box-shadow: 0 0 10px rgba(155, 77, 202, 0.1);
+}
+
+#network.disconnected {
+    color: #9b4dca;
+    background: rgba(155, 77, 202, 0.15);
+}
+
+#temperature {
+    color: #9b4dca;
+}
+
+#temperature:hover {
+    box-shadow: 0 0 10px rgba(155, 77, 202, 0.1);
+}
+
+#temperature.critical {
+    color: #ffffff;
+    background: rgb(229, 57, 53);
+    box-shadow: 0 0 18px rgba(229, 57, 53, 0.35);
+    font-weight: 700;
+}
+
+#backlight {
+    color: #9b4dca;
+}
+
+#backlight:hover {
+    box-shadow: 0 0 10px rgba(155, 77, 202, 0.1);
+}
+
+#power-profiles-daemon {
+    padding-right: 14px;
+}
+
+#power-profiles-daemon.performance {
+    color: #9b4dca;
+    background: rgba(155, 77, 202, 0.2);
+}
+
+#power-profiles-daemon.balanced {
+    color: #9b4dca;
+}
+
+#power-profiles-daemon.power-saver {
+    color: #2ecc71;
+    background: rgba(46, 204, 113, 0.15);
+}
+
+label:focus {
+    background: transparent;
+}
+
+/* ===== Idle Inhibitor ===== */
+
+#idle_inhibitor {
+    color: #4a2360;
+}
+
+#idle_inhibitor.activated {
+    color: #f1c40f;
+    background: rgba(13, 0, 26, 0.7);
+    box-shadow: 0 0 12px rgba(241, 196, 15, 0.15);
+}
+
+/* ===== MPD ===== */
+
+#mpd {
+    color: #9b4dca;
+}
+
+#mpd:hover {
+    box-shadow: 0 0 10px rgba(155, 77, 202, 0.1);
+}
+
+#mpd.disconnected {
+    color: #9b4dca;
+    background: rgba(155, 77, 202, 0.15);
+}
+
+#mpd.stopped {
+    color: #4a2360;
+}
+
+#mpd.paused {
+    color: #f1c40f;
+}
+
+/* ===== Language & Keyboard ===== */
+
+#language {
+    color: #9b4dca;
+    padding: 0 8px;
+    margin: 6px 3px;
+    min-width: 16px;
+    border-radius: 14px;
+    background: rgba(13, 0, 26, 0.9);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+#keyboard-state {
+    background: rgba(13, 0, 26, 0.9);
+    color: #9b4dca;
+    padding: 0 8px;
+    margin: 6px 3px;
+    min-width: 16px;
+    border-radius: 14px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+#keyboard-state > label {
+    padding: 0 5px;
+}
+
+#keyboard-state > label.locked {
+    background: rgba(155, 77, 202, 0.2);
+    color: #f1c40f;
+    border-radius: 8px;
+    box-shadow: 0 0 6px rgba(241, 196, 15, 0.15);
+}
+
+/* ===== Scratchpad ===== */
+
+#scratchpad {
+    background: rgba(13, 0, 26, 0.9);
+    border-radius: 14px;
+    margin: 6px 3px;
+    padding: 0 16px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+#scratchpad.empty {
+    background: transparent;
+    box-shadow: none;
+}
+
+/* ===== Privacy ===== */
+
+#privacy {
+    padding: 0;
+}
+
+#privacy-item {
+    padding: 0 8px;
+    color: #9b4dca;
+    border-radius: 10px;
+    margin: 6px 2px;
+}
+
+#privacy-item.screenshare {
+    background: rgba(155, 77, 202, 0.2);
+    color: #9b4dca;
+    box-shadow: 0 0 8px rgba(155, 77, 202, 0.1);
+}
+
+#privacy-item.audio-in {
+    background: rgba(46, 204, 113, 0.15);
+    color: #2ecc71;
+    box-shadow: 0 0 8px rgba(46, 204, 113, 0.1);
+}
+
+#privacy-item.audio-out {
+    background: rgba(241, 196, 15, 0.15);
+    color: #f1c40f;
+    box-shadow: 0 0 8px rgba(241, 196, 15, 0.1);
+}
+
+#privacy-item.location {
+    background: rgba(155, 77, 202, 0.15);
+    color: #9b4dca;
+    box-shadow: 0 0 8px rgba(155, 77, 202, 0.1);
+}
+
+/* ===== Custom Media ===== */
+
+#custom-media {
+    color: #9b4dca;
+    min-width: 80px;
+    border-radius: 14px;
+}
+
+#custom-media.custom-spotify {
+    color: #2ecc71;
+}
+
+#custom-media.custom-vlc {
+    color: #9b4dca;
+}
+
+/* ===== Custom Weather ===== */
+
+#custom-weather {
+    color: #9b4dca;
+    background: rgba(13, 0, 26, 0.9);
+}
+
+#custom-weather:hover {
+    background: rgba(13, 0, 26, 0.9);
+}
+
+#custom-weather.sunnyDay {
+    color: #f1c40f;
+}
+
+#custom-weather.clearNight {
+    color: #9b4dca;
+}
+
+#custom-weather.cloudyFoggyDay,
+#custom-weather.cloudyFoggyNight {
+    color: #4a2360;
+}
+
+#custom-weather.rainyDay,
+#custom-weather.rainyNight {
+    color: #9b4dca;
+}
+
+#custom-weather.showyIcyDay,
+#custom-weather.snowyIcyNight {
+    color: #2ecc71;
+}
+
+#custom-weather.severe {
+    color: #ffffff;
+    background: rgb(229, 57, 53);
+    box-shadow: 0 0 14px rgba(229, 57, 53, 0.3);
+    font-weight: 700;
+}
+
+#custom-weather.hot-warning {
+    color: #ffbf00;
+    background: rgb(128, 96, 0);
+    box-shadow: 0 0 14px rgba(255, 191, 0, 0.35);
+    font-weight: 700;
+}
+
+#custom-weather.hot-critical {
+    color: #ffffff;
+    background: rgb(229, 57, 53);
+    box-shadow: 0 0 14px rgba(229, 57, 53, 0.3);
+    font-weight: 700;
+}
+
+#custom-weather.cold-warning {
+    color: #ffbf00;
+    background: rgb(128, 96, 0);
+    box-shadow: 0 0 14px rgba(255, 191, 0, 0.35);
+    font-weight: 700;
+}
+
+#custom-weather.cold-critical {
+    color: #ffffff;
+    background: rgb(229, 57, 53);
+    box-shadow: 0 0 14px rgba(229, 57, 53, 0.3);
+    font-weight: 700;
+}
+
+#custom-weather.default {
+    color: #9b4dca;
+}
+
+/* ===== Tooltip Style ===== */
+
+tooltip {
+    background: rgba(13, 0, 26, 0.95);
+    border: 1px solid rgba(155, 77, 202, 0.3);
+    border-radius: 14px;
+    box-shadow: 0 0 20px rgba(155, 77, 202, 0.15);
+}
+
+tooltip label {
+    color: #d8bfe8;
+    font-size: 14px;
+}
+
+/* ===== Warning & Critical Animations ===== */
+
+@keyframes blink-warning {
+    to {
+        background-color: rgb(255, 191, 0);
+        color: #0d001a;
+    }
+}
+
+@keyframes blink-critical {
+    to {
+        background-color: #ffffff;
+        color: rgb(229, 57, 53);
+    }
+}
+
+#cpu.warning,
+#custom-cpu_max.warning,
+#memory.warning,
+#disk.warning,
+#pulseaudio.warning,
+#battery.warning,
+#custom-weather.hot-warning,
+#custom-weather.cold-warning {
+    animation-name: blink-warning;
+    animation-duration: 0.9s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+
+#cpu.critical,
+#custom-cpu_max.critical,
+#memory.critical,
+#disk.critical,
+#pulseaudio.critical,
+#battery.critical,
+#temperature.critical,
+#custom-weather.severe,
+#custom-weather.hot-critical,
+#custom-weather.cold-critical {
+    animation-name: blink-critical;
+    animation-duration: 0.5s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}

@@ -98,11 +98,11 @@
               model = "opencode/big-pickle";
               variant = "max";
             };
-            librarian = {model = "opencode/minimax-m2.7";};
-            explorer = {model = "opencode/minimax-m2.7";};
-            designer = {model = "opencode/kimi-k2.6";};
+            librarian = {model = "opencode/big-pickle";};
+            explorer = {model = "opencode/big-pickle";};
+            designer = {model = "opencode/big-pickle";};
             fixer = {
-              model = "opencode/deepseek-v4-flash";
+              model = "opencode/big-pickle";
               variant = "high";
             };
             council = {model = "opencode/big-pickle";};
@@ -165,6 +165,7 @@
             '';
           };
           settings = {
+            autoupdate = false;
             provider = {
               opencode = {
                 options = {

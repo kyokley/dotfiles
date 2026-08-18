@@ -14,6 +14,7 @@ in {
   flake.modules = {
     homeManager = {
       qtile = {
+        inputs,
         pkgs,
         lib,
         ...
@@ -24,10 +25,17 @@ in {
         '';
         gdkPixbufLoadersCache = mkGdkPixbufLoadersCache pkgs;
       in {
+        imports = with inputs.self.modules.homeManager; [
+          dunst
+          rofi
+        ];
+
         home = {
           packages = [
             force-lock-screen
+            pkgs.nitrogen
             pkgs.librsvg
+            pkgs.arandr
           ];
 
           file = {
@@ -52,8 +60,14 @@ in {
       }: let
         gdkPixbufLoadersCache = mkGdkPixbufLoadersCache pkgs;
       in {
-        environment.sessionVariables = {
-          GDK_PIXBUF_MODULE_FILE = "${gdkPixbufLoadersCache}/lib/gdk-pixbuf-2.0/2.10.0/loaders.cache";
+        environment = {
+          sessionVariables = {
+            GDK_PIXBUF_MODULE_FILE = "${gdkPixbufLoadersCache}/lib/gdk-pixbuf-2.0/2.10.0/loaders.cache";
+          };
+
+          systemPackages = with pkgs; [
+            feh
+          ];
         };
 
         services = {

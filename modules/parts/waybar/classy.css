@@ -1,0 +1,511 @@
+* {
+    font-family: FontAwesome, "JetBrains Mono", Roboto, Helvetica, Arial, sans-serif;
+    font-size: 30px;
+}
+
+window#waybar {
+    background-color: rgba(15, 15, 20, 0.92);
+    color: #e0e0e0;
+    border: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+window#waybar.hidden {
+    opacity: 0.2;
+}
+
+button {
+    box-shadow: none;
+    border: none;
+    border-radius: 0;
+    background: transparent;
+}
+
+button:hover {
+    background: inherit;
+}
+
+/* ===== Workspace Buttons ===== */
+
+#workspaces button {
+    padding: 0 16px;
+    min-width: 50px;
+    color: #555;
+    border-radius: 6px;
+    margin: 5px 2px;
+}
+
+#workspaces button:hover {
+    color: #bbb;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+#workspaces button.focused,
+#workspaces button.active {
+    color: #e0e0e0;
+    background: rgba(255, 255, 255, 0.08);
+    box-shadow: inset 0 -2px 0 #c9a86c;
+}
+
+#workspaces button.urgent {
+    color: #e07a5f;
+    background: rgba(224, 122, 95, 0.12);
+}
+
+#mode {
+    background-color: #c9a86c;
+    color: #0f0f14;
+    border-radius: 6px;
+}
+
+/* ===== Modules ===== */
+
+#window,
+#workspaces {
+    margin: 4px;
+}
+
+.modules-left > widget:first-child > #workspaces {
+    margin-left: 0;
+}
+
+.modules-right > widget:last-child > #workspaces {
+    margin-right: 0;
+}
+
+#clock,
+#battery,
+#cpu,
+#memory,
+#disk,
+#temperature,
+#backlight,
+#network,
+#pulseaudio,
+#wireplumber,
+#custom-media,
+#tray,
+#mode,
+#idle_inhibitor,
+#scratchpad,
+#power-profiles-daemon,
+#mpd {
+    padding: 0 14px;
+    margin: 5px 2px;
+    border-radius: 6px;
+    color: #c0c0c0;
+    background: rgba(255, 255, 255, 0.04);
+}
+
+#clock:hover,
+#battery:hover,
+#cpu:hover,
+#memory:hover,
+#disk:hover,
+#pulseaudio:hover,
+#tray:hover,
+#temperature:hover,
+#network:hover,
+#backlight:hover {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+/* ===== Individual Modules ===== */
+
+#clock {
+    background: rgba(201, 168, 108, 0.12);
+    color: #c9a86c;
+    font-weight: bold;
+}
+
+#clock:hover {
+    background: rgba(201, 168, 108, 0.2);
+}
+
+#cpu {
+    color: #81b29a;
+}
+
+#cpu:hover {
+    background: rgba(129, 178, 154, 0.1);
+}
+
+#cpu.warning {
+    color: #e0c078;
+    background: rgba(224, 192, 120, 0.08);
+}
+
+#cpu.critical {
+    color: #e07a5f;
+    background: rgba(224, 122, 95, 0.1);
+}
+
+/* ===== Custom CPU Max ===== */
+
+#custom-cpu_max {
+    padding: 0 14px;
+    margin: 5px 2px;
+    border-radius: 6px;
+    color: #81b29a;
+    background: rgba(255, 255, 255, 0.04);
+}
+
+#custom-cpu_max:hover {
+    background: rgba(129, 178, 154, 0.1);
+}
+
+#custom-cpu_max.warning {
+    color: #e0c078;
+    background: rgba(224, 192, 120, 0.08);
+}
+
+#custom-cpu_max.critical {
+    color: #e07a5f;
+    background: rgba(224, 122, 95, 0.1);
+}
+
+#memory {
+    color: #7eb8da;
+}
+
+#memory:hover {
+    background: rgba(126, 184, 218, 0.1);
+}
+
+#memory.warning {
+    color: #e0c078;
+    background: rgba(224, 192, 120, 0.08);
+}
+
+#memory.critical {
+    color: #e07a5f;
+    background: rgba(224, 122, 95, 0.1);
+}
+
+#disk {
+    color: #d4a574;
+}
+
+#disk:hover {
+    background: rgba(212, 165, 116, 0.1);
+}
+
+#disk.warning {
+    color: #e0c078;
+    background: rgba(224, 192, 120, 0.08);
+}
+
+#disk.critical {
+    color: #e07a5f;
+    background: rgba(224, 122, 95, 0.1);
+}
+
+#pulseaudio {
+    color: #b8a0c8;
+}
+
+#pulseaudio:hover {
+    background: rgba(184, 160, 200, 0.1);
+}
+
+#pulseaudio.muted {
+    color: #6a5c78;
+    background: rgba(184, 160, 200, 0.04);
+}
+
+#pulseaudio.warning {
+    color: #e0c078;
+    background: rgba(224, 192, 120, 0.08);
+}
+
+#pulseaudio.critical {
+    color: #e07a5f;
+    background: rgba(224, 122, 95, 0.1);
+}
+
+#battery {
+    color: #b8c4d0;
+}
+
+#battery:hover {
+    background: rgba(184, 196, 208, 0.1);
+}
+
+#battery.charging,
+#battery.plugged {
+    color: #81b29a;
+}
+
+#battery.warning {
+    color: #e0c078;
+    background: rgba(224, 192, 120, 0.08);
+}
+
+#battery.critical {
+    color: #e07a5f;
+    background: rgba(224, 122, 95, 0.1);
+    animation: blink-critical 1s ease-in-out infinite;
+}
+
+@keyframes blink-critical {
+    from { opacity: 1; }
+    to { opacity: 0.4; }
+}
+
+#tray {
+    background: rgba(255, 255, 255, 0.04);
+}
+
+#tray > .passive {
+    -gtk-icon-effect: dim;
+}
+
+#tray > .needs-attention {
+    -gtk-icon-effect: highlight;
+    background: rgba(224, 122, 95, 0.12);
+    color: #e07a5f;
+}
+
+#network {
+    color: #7eb8da;
+}
+
+#network:hover {
+    background: rgba(126, 184, 218, 0.1);
+}
+
+#network.disconnected {
+    color: #e07a5f;
+    background: rgba(224, 122, 95, 0.08);
+}
+
+#temperature {
+    color: #d4a574;
+}
+
+#temperature:hover {
+    background: rgba(212, 165, 116, 0.1);
+}
+
+#temperature.critical {
+    color: #e07a5f;
+    background: rgba(224, 122, 95, 0.1);
+}
+
+#backlight {
+    color: #c9a86c;
+}
+
+#backlight:hover {
+    background: rgba(201, 168, 108, 0.1);
+}
+
+#power-profiles-daemon {
+    padding-right: 15px;
+}
+
+#power-profiles-daemon.performance {
+    color: #e07a5f;
+    background: rgba(224, 122, 95, 0.08);
+}
+
+#power-profiles-daemon.balanced {
+    color: #c0c0c0;
+}
+
+#power-profiles-daemon.power-saver {
+    color: #81b29a;
+    background: rgba(129, 178, 154, 0.06);
+}
+
+label:focus {
+    background-color: transparent;
+}
+
+/* ===== Idle Inhibitor ===== */
+
+#idle_inhibitor {
+    color: #444;
+}
+
+#idle_inhibitor.activated {
+    color: #c9a86c;
+    background: rgba(201, 168, 108, 0.1);
+}
+
+/* ===== MPD ===== */
+
+#mpd {
+    color: #81b29a;
+}
+
+#mpd.disconnected {
+    color: #e07a5f;
+    background: rgba(224, 122, 95, 0.08);
+}
+
+#mpd.stopped {
+    color: #444;
+}
+
+#mpd.paused {
+    color: #c9a86c;
+}
+
+/* ===== Language & Keyboard ===== */
+
+#language {
+    color: #c0c0c0;
+    padding: 0 5px;
+    margin: 5px 2px;
+    min-width: 16px;
+    border-radius: 6px;
+}
+
+#keyboard-state {
+    background: rgba(255, 255, 255, 0.04);
+    color: #c0c0c0;
+    padding: 0 5px;
+    margin: 5px 2px;
+    min-width: 16px;
+    border-radius: 6px;
+}
+
+#keyboard-state > label {
+    padding: 0 5px;
+}
+
+#keyboard-state > label.locked {
+    background: rgba(224, 122, 95, 0.12);
+    color: #e07a5f;
+}
+
+/* ===== Scratchpad ===== */
+
+#scratchpad {
+    background: rgba(255, 255, 255, 0.04);
+    border-radius: 6px;
+    margin: 5px 2px;
+}
+
+#scratchpad.empty {
+    background-color: transparent;
+}
+
+/* ===== Privacy ===== */
+
+#privacy {
+    padding: 0;
+}
+
+#privacy-item {
+    padding: 0 5px;
+    color: #c0c0c0;
+    border-radius: 6px;
+}
+
+#privacy-item.screenshare {
+    background: rgba(212, 165, 116, 0.12);
+}
+
+#privacy-item.audio-in {
+    background: rgba(129, 178, 154, 0.12);
+}
+
+#privacy-item.audio-out {
+    background: rgba(126, 184, 218, 0.12);
+}
+
+#privacy-item.location {
+    background: rgba(201, 168, 108, 0.12);
+}
+
+/* ===== Custom Media ===== */
+
+#custom-media {
+    color: #81b29a;
+    min-width: 100px;
+    border-radius: 6px;
+}
+
+#custom-media.custom-spotify {
+    color: #81b29a;
+}
+
+#custom-media.custom-vlc {
+    color: #e07a5f;
+}
+
+/* ===== Custom Weather (wttrbar) ===== */
+
+#custom-weather {
+    color: #c0c0c0;
+    padding: 0 14px;
+    margin: 5px 2px;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.04);
+}
+
+#custom-weather:hover {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+/* Sunny/clear day - warm gold */
+#custom-weather.sunnyDay {
+    color: #c9a86c;
+}
+
+/* Clear night - cool blue */
+#custom-weather.clearNight {
+    color: #7eb8da;
+}
+
+/* Cloudy/foggy - muted gray */
+#custom-weather.cloudyFoggyDay,
+#custom-weather.cloudyFoggyNight {
+    color: #8b8b8b;
+}
+
+/* Rainy - teal green */
+#custom-weather.rainyDay,
+#custom-weather.rainyNight {
+    color: #81b29a;
+}
+
+/* Snow/ice - light cyan */
+#custom-weather.showyIcyDay,
+#custom-weather.snowyIcyNight {
+    color: #b8c4d0;
+}
+
+/* Severe weather - alert red */
+#custom-weather.severe {
+    color: #e07a5f;
+    background: rgba(224, 122, 95, 0.08);
+}
+
+/* Temperature-based hot/cold warning/critical */
+#custom-weather.hot-warning {
+    color: #e0c078;
+    background: rgba(224, 192, 120, 0.08);
+}
+
+#custom-weather.hot-critical {
+    color: #e07a5f;
+    background: rgba(224, 122, 95, 0.1);
+}
+
+#custom-weather.cold-warning {
+    color: #7eb8da;
+    background: rgba(126, 184, 218, 0.08);
+}
+
+#custom-weather.cold-critical {
+    color: #5e81ac;
+    background: rgba(94, 129, 172, 0.1);
+}
+
+/* Default fallback */
+#custom-weather.default {
+    color: #c0c0c0;
+}

@@ -1,9 +1,5 @@
 {
-  flake.modules.homeManager.gitoc = {
-    pkgs,
-    inputs,
-    ...
-  }: let
+  flake.modules.homeManager.gitoc = {pkgs, ...}: let
     gitoc = pkgs.writeShellScriptBin "gitoc" ''
       # Parse command line arguments
       add_all=false
