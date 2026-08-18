@@ -33,6 +33,18 @@
           name = "starfox";
           rom = "${config.home.homeDirectory}/Games/N64/Starfox_64_USA-MSFTUG/Msftug34.v64";
         }
+        {
+          name = "tetrisphere";
+          rom = "${config.home.homeDirectory}/Games/tetrisphere/Tetris.v64";
+        }
+        {
+          name = "hockey";
+          rom = "${config.home.homeDirectory}/Games/wayne-gretzkys-3d-hockey/As-wg3dh.v64";
+        }
+        {
+          name = "wcw";
+          rom = "${config.home.homeDirectory}/Games/wcwnwo-revenge/AGS-WCWR.V64";
+        }
       ]);
   };
 }
