@@ -20,7 +20,6 @@
     home.packages = with pkgs;
       [
         n64
-        goldeneye
         lutris
         steam
         mupen64plus
