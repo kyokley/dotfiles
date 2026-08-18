@@ -485,10 +485,9 @@
               if [ -n "''${item:-}" ]; then
                 title=$(${pkgs.jq}/bin/jq -r '.title' <<<"$item")
                 link=$(${pkgs.jq}/bin/jq -r '.link // empty' <<<"$item")
-                # "|" separates the headline from its url inside the single IPC
-                # payload (the runtime passes onIpc exactly one payload string);
-                # the widget splits at the last "|" so urls never contain one.
-                ${config.programs.noctalia.package}/bin/noctalia msg plugin yokley/krill:krill all set "$title|$link" || true
+                # Unit separator (0x1F) joins title and url in the single IPC
+                # payload — it never appears in headlines or URLs, unlike "|".
+                ${config.programs.noctalia.package}/bin/noctalia msg plugin yokley/krill:krill all set "$title"$'\x1f'"$link" || true
               fi
             '');
           };
