@@ -31,7 +31,7 @@
         }
         {
           name = "starfox";
-          rom = "${config.home.homeDirectory}/Games/Nintendo64-N64.SCENE.ARCHIVE.-.COMPLETE/Starfox_64_USA-MSFTUG/Msftug34.v64";
+          rom = "${config.home.homeDirectory}/Games/N64/Starfox_64_USA-MSFTUG/Msftug34.v64";
         }
       ]);
   };
