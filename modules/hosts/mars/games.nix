@@ -46,6 +46,10 @@
           name = "wcw";
           rom = "${gameDir}/wcwnwo-revenge/AGS-WCWR.V64";
         }
+        {
+          name = "zelda";
+          rom = "${gameDir}/Legend_of_Zelda-Ocarina_of_Time_v1.2_USA-TC/tc-zld12.rom";
+        }
       ]);
   };
 }
