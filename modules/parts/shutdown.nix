@@ -1,60 +1,90 @@
 {
   flake.modules = {
     homeManager = let
-      reboot-kexec-attrs = {
-        name = "reboot-kexec";
-        text = ''
-          cmdline="init=$(readlink -f /nix/var/nix/profiles/system/init) $(cat /nix/var/nix/profiles/system/kernel-params)"
-          sudo kexec -l /nix/var/nix/profiles/system/kernel --initrd=/nix/var/nix/profiles/system/initrd --append="$cmdline"
-          sudo systemctl kexec
-        '';
-      };
+      reboot-kexec = pkgs:
+        pkgs.writeShellApplication {
+          name = "reboot-kexec";
+          text = ''
+            cmdline="init=$(readlink -f /nix/var/nix/profiles/system/init) $(cat /nix/var/nix/profiles/system/kernel-params)"
+            sudo kexec -l /nix/var/nix/profiles/system/kernel --initrd=/nix/var/nix/profiles/system/initrd --append="$cmdline"
+            sudo systemctl kexec
+          '';
+        };
+
+      noctalia_shutdown_actions = pkgs: [
+        {
+          action = "shutdown";
+          countdown_seconds = 10;
+          variant = "destructive";
+          shortcut = "1";
+        }
+        {
+          action = "reboot";
+          countdown_seconds = 10;
+          shortcut = "2";
+        }
+        {
+          action = "lock";
+          variant = "secondary";
+          shortcut = "3";
+        }
+        {
+          action = "logout";
+          countdown_seconds = 10;
+          shortcut = "4";
+        }
+      ];
+      noctalia_shutdown_actions_with_kexec = pkgs: [
+        {
+          action = "shutdown";
+          countdown_seconds = 10;
+          variant = "destructive";
+          shortcut = "1";
+        }
+        {
+          action = "reboot";
+          countdown_seconds = 10;
+          shortcut = "2";
+          command = "${reboot-kexec pkgs}/bin/reboot-kexec";
+        }
+        {
+          action = "lock";
+          variant = "secondary";
+          shortcut = "3";
+        }
+        {
+          action = "logout";
+          countdown_seconds = 10;
+          shortcut = "4";
+        }
+      ];
     in {
-      nixos = {pkgs, ...}: let
-        reboot-kexec = pkgs.writeShellApplication reboot-kexec-attrs;
-      in {
+      nixos = {pkgs, ...}: {
         home = {
           packages = [
-            reboot-kexec
+            (reboot-kexec pkgs)
           ];
         };
       };
 
-      noctalia = {pkgs, ...}: let
-        reboot-kexec = pkgs.writeShellApplication reboot-kexec-attrs;
-      in {
+      noctalia = {pkgs, ...}: {
         programs.noctalia = {
           settings.shell = {
             session = {
               grid = true;
               grid_columns = 2;
-              actions = [
-                {
-                  action = "shutdown";
-                  countdown_seconds = 10;
-                  variant = "destructive";
-                  shortcut = "1";
-                }
-                {
-                  action = "reboot";
-                  countdown_seconds = 10;
-                  shortcut = "2";
-                  command = "${reboot-kexec}/bin/reboot-kexec";
-                }
-                {
-                  action = "lock";
-                  variant = "secondary";
-                  shortcut = "3";
-                }
-                {
-                  action = "logout";
-                  countdown_seconds = 10;
-                  shortcut = "4";
-                }
-              ];
+              actions = noctalia_shutdown_actions pkgs;
             };
           };
         };
+      };
+
+      saturn = {
+        pkgs,
+        lib,
+        ...
+      }: {
+        programs.noctalia.settings.shell.session.actions = lib.mkForce (noctalia_shutdown_actions_with_kexec pkgs);
       };
     };
 

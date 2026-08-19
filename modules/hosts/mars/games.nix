@@ -4,7 +4,7 @@
     config,
     ...
   }: let
-    gameDir = "${gameDir}";
+    gameDir = "${config.home.homeDirectory}/Games";
     n64 = pkgs.writeShellApplication {
       name = "n64";
       text = ''
