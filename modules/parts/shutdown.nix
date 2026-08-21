@@ -79,7 +79,7 @@
         };
       };
 
-      saturn = {
+      "yokley@mars" = {
         pkgs,
         lib,
         ...
