@@ -804,11 +804,11 @@
         "nixvim": "nixvim_2"
       },
       "locked": {
-        "lastModified": 1787366813,
-        "narHash": "sha256-24Dej87LqXB7rQrgWofWl6A3o6kBpIRm0KExMPuBwQI=",
+        "lastModified": 1787412478,
+        "narHash": "sha256-V0OD3gsywqHIwot0SwaXS8BMSmRICjs56/nlcD4Zd7U=",
         "owner": "kyokley",
         "repo": "nixvim",
-        "rev": "1b8a466ade6d4450760b6dea21095db67cc6d538",
+        "rev": "6ee24b0884e88ca1cf21a692d6458ced862b0020",
         "type": "github"
       },
       "original": {
