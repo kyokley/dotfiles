@@ -171,6 +171,8 @@
                 options = {
                   apiKey = "{file:${zen_key_path}}";
                   baseUrl = "https://opencode.ai/zen/v1";
+                  timeout = 600000;
+                  headerTimeout = 600000;
                 };
               };
             };
