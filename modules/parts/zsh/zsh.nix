@@ -183,6 +183,10 @@
             if [ -f "$HOME/.zpriv" ]; then
                 source "$HOME/.zpriv"
             fi
+
+            if [ -f "$HOME/.config/age/plugin-identity.txt" ]; then
+              export AGE_IDENTITY=$(cat $HOME/.config/age/plugin-identity.txt)
+            fi
           ''
         ];
       };
