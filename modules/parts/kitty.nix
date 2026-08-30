@@ -1,7 +1,17 @@
 {
-  flake.modules.homeManager.kitty = {
+  flake.modules.homeManager.kitty = {pkgs, ...}: {
     programs.kitty = {
       enable = true;
+      package = pkgs.kitty.overrideAttrs (old: {
+        postPatch =
+          (old.postPatch or "")
+          + ''
+            # Zsh permits preexec's history text ($1) to be empty. Use the
+            # expanded command ($2) so notify_on_cmd_finish can populate %c.
+            substituteInPlace shell-integration/zsh/kitty-integration \
+              --replace-fail ' -- "$1"' ' -- "$2"'
+          '';
+      });
       font = {
         name = "Hack Nerd Font Mono";
         size = 16;
@@ -25,10 +35,7 @@
         tab_bar_min_tabs = 1;
         tab_bar_align = "center";
         tab_title_template = " {index} : {title} ";
-        # Zsh doesn't seem to set the cmdline var correctly for Kitty
-        # Re-enable notifications once this functionality is fixed
-        # notify_on_cmd_finish = ''invisible 10.0 command dunstify "job finished => %s" "%c"'';
-        # notify_on_cmd_finish = ''unfocused 5.0 command dunstify "%c job finished with status: %s"'';
+        notify_on_cmd_finish = ''unfocused 10.0 command notify-send "Command finished" "%c exited with status %s"'';
         active_tab_foreground = "#2c7dff";
         active_tab_background = "#000";
         active_tab_font_style = "bold-italic";

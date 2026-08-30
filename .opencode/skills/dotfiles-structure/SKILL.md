@@ -224,6 +224,9 @@ is uncertain.
 - `stateVersion` comments say "Don't touch me!" — obey.
 - `nixvim-output` (`"default"` | `"minimal"`) selects the neovim package from
   the `kyokley/nixvim` fork input.
+- Kitty's Zsh integration is patched in `kitty.nix` to use `preexec` argument
+  `$2`; Zsh permits Kitty's upstream `$1` history text to be empty, which leaves
+  `%c` blank in command-finish notifications.
 - The repo is expected at `~/dotfiles` on hosts (`nh` default).
 - This skill self-maintains: after any structure-relevant change, follow the
   Maintenance protocol above. `AGENTS.md` at the repo root reminds every
