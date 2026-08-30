@@ -79,6 +79,22 @@
         "type": "github"
       }
     },
+    "caveman": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1788039956,
+        "narHash": "sha256-KuOJYB+HH/vhQLEDOuHEETNUNtHSHdDuxvb5xFjk7Jc=",
+        "owner": "JuliusBrussee",
+        "repo": "caveman",
+        "rev": "df2ccd85c94ec3c8289cb62ac020d241ccfb0c60",
+        "type": "github"
+      },
+      "original": {
+        "owner": "JuliusBrussee",
+        "repo": "caveman",
+        "type": "github"
+      }
+    },
     "darwin": {
       "inputs": {
         "nixpkgs": [
@@ -882,6 +898,7 @@
       "inputs": {
         "agenix": "agenix",
         "bun2nix": "bun2nix",
+        "caveman": "caveman",
         "darwin": "darwin_2",
         "fastfetch-config": "fastfetch-config",
         "flake-parts": "flake-parts_2",

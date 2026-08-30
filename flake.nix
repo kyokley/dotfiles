@@ -62,6 +62,11 @@
       # cachix branch always points to the latest commit that CI has cached.
       url = "github:noctalia-dev/noctalia/cachix";
     };
+
+    caveman = {
+      url = "github:JuliusBrussee/caveman";
+      flake = false;
+    };
   };
 
   outputs = inputs:

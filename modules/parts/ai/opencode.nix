@@ -124,6 +124,9 @@
       programs = {
         opencode = {
           enable = true;
+          skills = {
+            caveman = "${inputs.caveman}/plugins/caveman/skills/caveman/SKILL.md";
+          };
           commands = {
             commit = ./conventional-commit-with-gitmoji-ai-prompt.md;
             review = ./review_code.md;
