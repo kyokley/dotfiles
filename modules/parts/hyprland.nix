@@ -73,6 +73,9 @@
 
       wayland.windowManager.hyprland = {
         enable = true;
+        plugins = [
+          # inputs.hyprland-plugins.packages.${pkgs.stdenv.hostPlatform.system}.hyprfocus
+        ];
         package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
         portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
         configType = "lua";
@@ -202,7 +205,12 @@
               {
                 _args = [
                   (lib.generators.mkLuaInline ''mod .. " + SHIFT + J"'')
-                  (lib.generators.mkLuaInline ''hl.dsp.window.swap({ next = true })'')
+                  # Master-layout swapnext/swapprev, NOT hl.dsp.window.swap({next/prev}):
+                  # window.swap cycles the global window list (creation order) anchored
+                  # at m_lastCycledWindow (the window last swapped with), so after the
+                  # first swap both directions pick the same target (Hyprland #14757).
+                  # Layout variants use the visual stack order and the focused window.
+                  (lib.generators.mkLuaInline ''hl.dsp.layout("swapnext")'')
                 ];
               }
               {
@@ -214,7 +222,7 @@
               {
                 _args = [
                   (lib.generators.mkLuaInline ''mod .. " + SHIFT + K"'')
-                  (lib.generators.mkLuaInline ''hl.dsp.window.swap({ prev = true })'')
+                  (lib.generators.mkLuaInline ''hl.dsp.layout("swapprev")'')
                 ];
               }
               {
