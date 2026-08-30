@@ -127,6 +127,13 @@
         };
 
         module = "package.json";
+        dontUseBunBuild = true;
+        dontRunLifecycleScripts = true;
+        installPhase = ''
+          runHook preInstall
+          cp -R node_modules "$out"
+          runHook postInstall
+        '';
       };
 
       opencode_notify = pkgs.fetchFromGitHub {

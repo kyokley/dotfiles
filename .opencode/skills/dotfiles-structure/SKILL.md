@@ -65,7 +65,7 @@ The `common` keys are baselines every host inherits; platform keys
 | `flake.nix` | Inputs, flake-parts setup, import-tree wiring |
 | `devenv.nix` / `devenv.yaml` / `.envrc` | Dev shell (direnv + devenv), pre-commit hooks config |
 | `.pre-commit-config.yaml` | **GENERATED** by git-hooks.nix — never edit |
-| `.github/workflows/test.yml` | CI: builds every host config on PR / push to main |
+| `.github/workflows/test.yml` | CI: evaluates flake checks plus every NixOS and standalone home-manager config on PR / push to main |
 | `devenv.lock`, `flake.lock` | Lockfiles |
 
 ### `modules/lib/`
@@ -161,8 +161,9 @@ The `common` keys are baselines every host inherits; platform keys
 - home-manager-only host: `home-manager-switch` → `nh home switch`
   (`nh` flake defaults to `~/dotfiles`, where the repo lives on hosts).
 - macOS: `darwin-rebuild switch --flake .#dioxygen`.
-- CI builds every host on PR/push to main — a green check means all
-  configurations evaluate and build.
+- CI evaluates every NixOS and standalone home-manager config on PR/push to
+  main — a green check means configurations evaluate, not that their complete
+  system closures build.
 
 ### Dev shell & formatting
 
@@ -180,7 +181,8 @@ agents, settings), oh-my-opencode-slim presets, zen key from the
 `opencode_zen.age` secret, third-party plugin sources pinned with Nix, and node
 deps built with **bun2nix** from `package.json` + `_bun.nix`. When
 `package.json` changes, regenerate `_bun.nix` with `bun2nix` in the devenv
-shell.
+shell. Its derivation explicitly copies the installed `node_modules` tree;
+the default bun2nix install phase only emits the package executable.
 
 ## Maintenance protocol (this skill self-updates)
 
