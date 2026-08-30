@@ -95,14 +95,14 @@
           opencode-free = mkPreset {
             orchestrator = {model = "opencode/big-pickle";};
             oracle = {
-              model = "opencode/big-pickle";
+              model = "opencode/nemotron-3-ultra-free";
               variant = "max";
             };
-            librarian = {model = "opencode/big-pickle";};
-            explorer = {model = "opencode/big-pickle";};
-            designer = {model = "opencode/big-pickle";};
+            librarian = {model = "opencode/mimo-v2.5-free";};
+            explorer = {model = "opencode/ling-3.0-flash-fin-free";};
+            designer = {model = "opencode/muse-spark-1.2-contributor-free";};
             fixer = {
-              model = "opencode/big-pickle";
+              model = "opencode/nemotron-3.5-lightning-free";
               variant = "high";
             };
             council = {model = "opencode/big-pickle";};
