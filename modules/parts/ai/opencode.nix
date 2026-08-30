@@ -54,7 +54,7 @@
       mkPreset = presetConfigs: lib.mapAttrs (name: config: agentDefaults.${name} // config) presetConfigs;
 
       oh_my_opencode_slim = {
-        preset = "opencode-free";
+        preset = "opencode-zen";
         presets = {
           openai = mkPreset {
             orchestrator = {model = "opencode/gpt-5.5";};
@@ -77,23 +77,32 @@
             };
             council = {model = "opencode/gpt-5.5";};
           };
-          opencode-go = mkPreset {
-            orchestrator = {model = "opencode/glm-5.1";};
-            oracle = {
-              model = "opencode/glm-5.1";
+          opencode-zen = mkPreset {
+            orchestrator = {
+              model = "opencode/glm-5.2";
               variant = "max";
             };
-            librarian = {model = "opencode/minimax-m2.7";};
-            explorer = {model = "opencode/minimax-m2.7";};
-            designer = {model = "opencode/kimi-k2.6";};
-            fixer = {
-              model = "opencode/deepseek-v4-flash";
-              variant = "high";
+            oracle = {
+              model = "opencode/glm-5.2";
             };
-            council = {model = "opencode/glm-5.1";};
+            librarian = {
+              model = "opencode/deepseek-v4-flash";
+            };
+            explorer = {
+              model = "opencode/deepseek-v4-flash";
+            };
+            designer = {
+              model = "opencode/glm-5.2";
+            };
+            fixer = {
+              model = "opencode/deepseek-v4-pro";
+            };
+            council = {
+              model = "opencode/glm-5.2";
+            };
           };
           opencode-free = mkPreset {
-            orchestrator = {model = "opencode/big-pickle";};
+            orchestrator = {model = "opencode/mimo-v2.5-free";};
             oracle = {
               model = "opencode/nemotron-3-ultra-free";
               variant = "max";
@@ -105,7 +114,7 @@
               model = "opencode/nemotron-3.5-lightning-free";
               variant = "high";
             };
-            council = {model = "opencode/big-pickle";};
+            council = {model = "opencode/mimo-v2.5-free";};
           };
         };
       };
@@ -176,8 +185,8 @@
                 };
               };
             };
-            model = "opencode/big-pickle";
-            small_model = "opencode/big-pickle";
+            model = "opencode/gpt-5.6-luna";
+            small_model = "opencode/gpt-5-nano";
             agent = {
               explore.disable = true;
               general.disable = true;

@@ -5,7 +5,7 @@
     "": {
       "name": "opencode",
       "dependencies": {
-        "oh-my-opencode-slim": "^2.2.14",
+        "oh-my-opencode-slim": "^2.2.17",
         "opencode-skill-creator": "^0.2.25",
       },
     },
@@ -491,7 +491,7 @@
 
     "object-inspect": ["object-inspect@1.13.4", "", {}, "sha512-W67iLl4J2EXEGTbfeHCffrjDfitvLANg0UlX3wFUUSTx92KXRFegMHUVgSqE+wvhAbi4WqjGg9czysTV2Epbew=="],
 
-    "oh-my-opencode-slim": ["oh-my-opencode-slim@2.2.14", "", { "dependencies": { "@ast-grep/cli": "^0.44.1", "@modelcontextprotocol/sdk": "^1.30.0", "@mozilla/readability": "^0.6.0", "@opencode-ai/plugin": "1.18.13", "@opencode-ai/sdk": "1.18.13", "jsdom": "^29.0.0", "lru-cache": "^11.5.2", "turndown": "^7.2.4" }, "optionalDependencies": { "@opentui/solid": "^0.1.97" }, "peerDependencies": { "zod": "^4.0.0" }, "bin": { "oh-my-opencode-slim": "dist/cli/index.js" } }, "sha512-DnV0iDgwCCjwg+iOIlzb/KRvkpJNbftc2uulWb8HyOkRii0dLXvUB4nysE2f8Kx+Tv31COXoHTbcXZCJFz0Zag=="],
+    "oh-my-opencode-slim": ["oh-my-opencode-slim@2.2.17", "", { "dependencies": { "@ast-grep/cli": "^0.44.1", "@modelcontextprotocol/sdk": "^1.30.0", "@mozilla/readability": "^0.6.0", "@opencode-ai/plugin": "1.18.13", "@opencode-ai/sdk": "1.18.13", "jsdom": "^29.0.0", "lru-cache": "^11.5.2", "turndown": "^7.2.4" }, "optionalDependencies": { "@opentui/solid": "^0.1.97" }, "peerDependencies": { "zod": "^4.0.0" }, "bin": { "oh-my-opencode-slim": "dist/cli/index.js" } }, "sha512-FzUic8aD+pF+K1pWJK83B1g8fZO22eg+OMDjuAkSfWWuSUJb+Wfu09+eR7EVJXNgCMBnVyoo9Si0DxzIRfwfXA=="],
 
     "omggif": ["omggif@1.0.10", "", {}, "sha512-LMJTtvgc/nugXj0Vcrrs68Mn2D1r0zf630VNtqtpI1FEO7e+O9FP4gqs9AcnBaSEeoHIPm28u6qgPR0oyEpGSw=="],
 
