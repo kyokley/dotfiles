@@ -1,19 +1,23 @@
 {
-  flake.modules.homeManager.common = {lib, ...}: {
+  flake.modules.homeManager.common = {pkgs, ...}: {
     programs.zsh = {
       enable = true;
-      initContent = lib.mkOrder 800 ''
-        # Powerlevel10k otherwise emits its own empty OSC 133 command marker,
-        # overwriting Kitty's marker before notify_on_cmd_finish reads it.
-        if [[ -n "$KITTY_INSTALLATION_DIR" ]]; then
-          unset KITTY_SHELL_INTEGRATION
-        fi
-      '';
       # enableCompletion = true;
       # syntaxHighlighting.enable = true;
       # zprof.enable = true;
       prezto = {
         enable = true;
+        package = pkgs.zsh-prezto.overrideAttrs (old: {
+          postPatch =
+            (old.postPatch or "")
+            + ''
+              # Include P10k's saved command in the OSC 133 marker it emits
+              # after Kitty's marker, preserving notify_on_cmd_finish's %c.
+              substituteInPlace modules/prompt/external/powerlevel10k/internal/p10k.zsh \
+                --replace-fail "  [[ -t 1 ]] && builtin print -n '\e]133;C;\a'" \
+                  "  [[ -t 1 ]] && builtin print -n -f '\e]133;C;cmdline=%q\a' -- \"\$_p9k__preexec_cmd\""
+            '';
+        });
         caseSensitive = false;
         syntaxHighlighting.highlighters = [
           "main"
