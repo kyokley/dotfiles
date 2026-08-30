@@ -1,7 +1,14 @@
 {
-  flake.modules.homeManager.common = {
+  flake.modules.homeManager.common = {lib, ...}: {
     programs.zsh = {
       enable = true;
+      initContent = lib.mkOrder 800 ''
+        # Powerlevel10k otherwise emits its own empty OSC 133 command marker,
+        # overwriting Kitty's marker before notify_on_cmd_finish reads it.
+        if [[ -n "$KITTY_INSTALLATION_DIR" ]]; then
+          unset KITTY_SHELL_INTEGRATION
+        fi
+      '';
       # enableCompletion = true;
       # syntaxHighlighting.enable = true;
       # zprof.enable = true;
