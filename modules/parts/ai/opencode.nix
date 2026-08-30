@@ -114,6 +114,13 @@
         module = "package.json";
       };
 
+      opencode_notify = pkgs.fetchFromGitHub {
+        owner = "kdcokenny";
+        repo = "ocx";
+        rev = "636dc2dbd10a780ef9f4b7a0bbf175aacd742e8c";
+        hash = "sha256-e2GbBB0RG8AjEZPwDkP1z94+K+vZ9hx1gq9OpHKWlh0=";
+      };
+
       zen_key_path = "${config.home.homeDirectory}/.config/opencode/zen.key";
     in {
       imports = [inputs.self.modules.homeManager.gitoc];
@@ -230,6 +237,15 @@
           };
           ".config/opencode/node_modules" = {
             source = npm_deps;
+            recursive = true;
+          };
+          ".config/opencode/plugins/notify.ts".source = "${opencode_notify}/workers/kdco-registry/files/plugins/notify.ts";
+          ".config/opencode/plugins/notify" = {
+            source = "${opencode_notify}/workers/kdco-registry/files/plugins/notify";
+            recursive = true;
+          };
+          ".config/opencode/plugins/kdco-primitives" = {
+            source = "${opencode_notify}/workers/kdco-registry/files/plugins/kdco-primitives";
             recursive = true;
           };
         };
