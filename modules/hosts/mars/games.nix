@@ -48,7 +48,7 @@
         }
         {
           name = "zelda";
-          rom = "${gameDir}/Legend_of_Zelda-Ocarina_of_Time_v1.2_USA-TC/tc-zld12.rom";
+          rom = "${gameDir}/N64/Legend_of_Zelda-Ocarina_of_Time_v1.2_USA-TC/tc-zld12.rom";
         }
       ]);
   };
