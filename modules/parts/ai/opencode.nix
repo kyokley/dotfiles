@@ -43,15 +43,30 @@
     };
 
     oh_my_opencode_slim = {
-      preset = "openai";
+      preset = "opencode-zen";
       presets = {
         openai = mkPreset {
-          orchestrator.model = "openai/gpt-5.6-sol";
-          oracle.model = "openai/gpt-5.6-terra";
-          librarian.model = "openai/gpt-5.6-luna";
-          explorer.model = "openai/gpt-5.6-luna";
+          orchestrator = {
+            model = "openai/gpt-5.6-terra";
+            variant = "high";
+          };
+          oracle = {
+            model = "openai/gpt-5.6-sol";
+            variant = "high";
+          };
+          librarian = {
+            model = "openai/gpt-5.6-luna";
+            variant = "low";
+          };
+          explorer = {
+            model = "openai/gpt-5.6-luna";
+            variant = "low";
+          };
           designer.model = "openai/gpt-5.6-luna";
-          fixer.model = "openai/gpt-5.6-luna";
+          fixer = {
+            model = "openai/gpt-5.6-luna";
+            variant = "high";
+          };
           council.model = "openai/gpt-5.6-terra";
         };
         opencode-zen = mkPreset {
@@ -246,5 +261,6 @@
     };
 
     "yokley@mars" = mkPresetOverride "openai";
+    "yokley@dioxygen" = mkPresetOverride "openai";
   };
 }
