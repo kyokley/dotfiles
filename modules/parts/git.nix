@@ -17,7 +17,8 @@
           ${pkgs.git}/bin/git clone --bare "$1" "$dir"/.bare
 
           # 2. Tell the root folder where the Git history is hidden
-          echo "gitdir: $dir/.bare" > .git
+          cd "$dir"
+          echo "gitdir: ./.bare" > .git
 
           # 3. Fix the fetch configuration to see all remote branches
           ${pkgs.git}/bin/git config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"

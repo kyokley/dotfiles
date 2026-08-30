@@ -2,6 +2,7 @@
   flake.modules = {
     darwin.common = {username, ...}: {
       nixpkgs.config.allowBroken = true;
+      homebrew.brews = ["alerter"];
 
       # Disable documentation to avoid nixos-render-docs compatibility
       # issues (--toc-depth removed in latest nixpkgs, nix-darwin#718).

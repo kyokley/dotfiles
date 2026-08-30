@@ -233,6 +233,9 @@ is uncertain.
   command in the later OSC 133 marker; upstream emits an empty marker that
   leaves `%c` blank in command-finish notifications.
 - The repo is expected at `~/dotfiles` on hosts (`nh` default).
+- Nix-managed OpenCode plugins resolve imports from their canonical Nix store
+  path, not the Home Manager symlink path. Bundle each plugin with a sibling
+  `node_modules` link when it has runtime dependencies.
 - This skill self-maintains: after any structure-relevant change, follow the
   Maintenance protocol above. `AGENTS.md` at the repo root reminds every
   session of this duty.

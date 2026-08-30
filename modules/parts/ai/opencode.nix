@@ -143,6 +143,12 @@
         hash = "sha256-e2GbBB0RG8AjEZPwDkP1z94+K+vZ9hx1gq9OpHKWlh0=";
       };
 
+      opencode_notify_plugin = pkgs.runCommand "opencode-notify-plugin" {} ''
+        mkdir -p "$out/plugins"
+        cp -R ${opencode_notify}/workers/kdco-registry/files/plugins/. "$out/plugins"
+        ln -s ${npm_deps} "$out/node_modules"
+      '';
+
       zen_key_path = "${config.home.homeDirectory}/.config/opencode/zen.key";
     in {
       imports = [inputs.self.modules.homeManager.gitoc];
@@ -261,21 +267,23 @@
             source = npm_deps;
             recursive = true;
           };
-          ".config/opencode/plugins/notify.ts".source = "${opencode_notify}/workers/kdco-registry/files/plugins/notify.ts";
+          ".config/opencode/plugins/notify.ts".source = "${opencode_notify_plugin}/plugins/notify.ts";
           ".config/opencode/plugins/notify" = {
-            source = "${opencode_notify}/workers/kdco-registry/files/plugins/notify";
+            source = "${opencode_notify_plugin}/plugins/notify";
             recursive = true;
           };
           ".config/opencode/plugins/kdco-primitives" = {
-            source = "${opencode_notify}/workers/kdco-registry/files/plugins/kdco-primitives";
+            source = "${opencode_notify_plugin}/plugins/kdco-primitives";
             recursive = true;
           };
         };
 
-        packages = with pkgs; [
-          glow
-          nixd
-        ];
+        packages =
+          (with pkgs; [
+            glow
+            nixd
+          ])
+          ++ lib.optionals pkgs.stdenv.hostPlatform.isLinux [pkgs.libnotify];
 
         shellAliases = {
           review = "opencode --command review run | if [ -t 1 ]; then glow --tui -; else cat; fi";
