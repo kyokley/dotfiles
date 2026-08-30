@@ -1,10 +1,105 @@
-{
-  flake.modules.homeManager = {
+{lib, ...}: {
+  flake.modules.homeManager = let
+    agentDefaults = {
+      orchestrator = {
+        skills = ["*"];
+        mcps = ["*" "!context7"];
+      };
+      oracle = {
+        skills = ["simplify"];
+        mcps = [];
+      };
+      council = {
+        variant = "high";
+        skills = [];
+        mcps = [];
+      };
+      librarian = {
+        skills = [];
+        mcps = ["websearch" "context7" "grep_app"];
+      };
+      explorer = {
+        skills = [];
+        mcps = [];
+      };
+      designer = {
+        variant = "medium";
+        skills = [];
+        mcps = [];
+      };
+      fixer = {
+        skills = [];
+        mcps = [];
+      };
+    };
+    mkPreset = presetConfigs: lib.mapAttrs (name: config: agentDefaults.${name} // config) presetConfigs;
+    mkPresetOverride = preset: {
+      home.file.".config/opencode/oh-my-opencode-slim.json" = lib.mkForce {
+        text = builtins.toJSON (oh_my_opencode_slim
+          // {
+            inherit preset;
+          });
+      };
+    };
+
+    oh_my_opencode_slim = {
+      preset = "openai";
+      presets = {
+        openai = mkPreset {
+          orchestrator.model = "openai/gpt-5.6-sol";
+          oracle.model = "openai/gpt-5.6-terra";
+          librarian.model = "openai/gpt-5.6-luna";
+          explorer.model = "openai/gpt-5.6-luna";
+          designer.model = "openai/gpt-5.6-luna";
+          fixer.model = "openai/gpt-5.6-luna";
+          council.model = "openai/gpt-5.6-terra";
+        };
+        opencode-zen = mkPreset {
+          orchestrator = {
+            model = "opencode/glm-5.2";
+            variant = "max";
+          };
+          oracle = {
+            model = "opencode/glm-5.2";
+          };
+          librarian = {
+            model = "opencode/deepseek-v4-flash";
+          };
+          explorer = {
+            model = "opencode/deepseek-v4-flash";
+          };
+          designer = {
+            model = "opencode/glm-5.2";
+          };
+          fixer = {
+            model = "opencode/deepseek-v4-pro";
+          };
+          council = {
+            model = "opencode/glm-5.2";
+          };
+        };
+        opencode-free = mkPreset {
+          orchestrator = {model = "opencode/mimo-v2.5-free";};
+          oracle = {
+            model = "opencode/nemotron-3-ultra-free";
+            variant = "max";
+          };
+          librarian = {model = "opencode/mimo-v2.5-free";};
+          explorer = {model = "opencode/ling-3.0-flash-fin-free";};
+          designer = {model = "opencode/muse-spark-1.2-contributor-free";};
+          fixer = {
+            model = "opencode/nemotron-3.5-lightning-free";
+            variant = "high";
+          };
+          council = {model = "opencode/mimo-v2.5-free";};
+        };
+      };
+    };
+  in {
     opencode = {
       pkgs,
       inputs,
       config,
-      lib,
       ...
     }: let
       bun2nix-lib = inputs.bun2nix.packages.${pkgs.stdenv.hostPlatform.system}.default;
@@ -19,105 +114,6 @@
         module = "package.json";
       };
 
-      agentDefaults = {
-        orchestrator = {
-          skills = ["*"];
-          mcps = ["*" "!context7"];
-        };
-        oracle = {
-          skills = ["simplify"];
-          mcps = [];
-        };
-        council = {
-          variant = "high";
-          skills = [];
-          mcps = [];
-        };
-        librarian = {
-          skills = [];
-          mcps = ["websearch" "context7" "grep_app"];
-        };
-        explorer = {
-          skills = [];
-          mcps = [];
-        };
-        designer = {
-          variant = "medium";
-          skills = [];
-          mcps = [];
-        };
-        fixer = {
-          skills = [];
-          mcps = [];
-        };
-      };
-      mkPreset = presetConfigs: lib.mapAttrs (name: config: agentDefaults.${name} // config) presetConfigs;
-
-      oh_my_opencode_slim = {
-        preset = "opencode-zen";
-        presets = {
-          openai = mkPreset {
-            orchestrator = {model = "opencode/gpt-5.5";};
-            oracle = {
-              model = "opencode/gpt-5.5";
-              variant = "high";
-            };
-            librarian = {
-              model = "opencode/gpt-5.4-mini";
-              variant = "low";
-            };
-            explorer = {
-              model = "opencode/gpt-5.4-mini";
-              variant = "low";
-            };
-            designer = {model = "opencode/gpt-5.4-mini";};
-            fixer = {
-              model = "opencode/gpt-5.4-mini";
-              variant = "low";
-            };
-            council = {model = "opencode/gpt-5.5";};
-          };
-          opencode-zen = mkPreset {
-            orchestrator = {
-              model = "opencode/glm-5.2";
-              variant = "max";
-            };
-            oracle = {
-              model = "opencode/glm-5.2";
-            };
-            librarian = {
-              model = "opencode/deepseek-v4-flash";
-            };
-            explorer = {
-              model = "opencode/deepseek-v4-flash";
-            };
-            designer = {
-              model = "opencode/glm-5.2";
-            };
-            fixer = {
-              model = "opencode/deepseek-v4-pro";
-            };
-            council = {
-              model = "opencode/glm-5.2";
-            };
-          };
-          opencode-free = mkPreset {
-            orchestrator = {model = "opencode/mimo-v2.5-free";};
-            oracle = {
-              model = "opencode/nemotron-3-ultra-free";
-              variant = "max";
-            };
-            librarian = {model = "opencode/mimo-v2.5-free";};
-            explorer = {model = "opencode/ling-3.0-flash-fin-free";};
-            designer = {model = "opencode/muse-spark-1.2-contributor-free";};
-            fixer = {
-              model = "opencode/nemotron-3.5-lightning-free";
-              variant = "high";
-            };
-            council = {model = "opencode/mimo-v2.5-free";};
-          };
-        };
-      };
       zen_key_path = "${config.home.homeDirectory}/.config/opencode/zen.key";
     in {
       imports = [inputs.self.modules.homeManager.gitoc];
@@ -185,6 +181,12 @@
                   headerTimeout = 600000;
                 };
               };
+              openai = {
+                options = {
+                  timeout = 600000;
+                  headerTimeout = 600000;
+                };
+              };
             };
             model = "opencode/gpt-5.6-luna";
             small_model = "opencode/gpt-5-nano";
@@ -221,29 +223,28 @@
         };
       };
 
-      home =
-        if config.programs.opencode.enable
-        then {
-          file = {
-            ".config/opencode/oh-my-opencode-slim.json" = {
-              text = builtins.toJSON oh_my_opencode_slim;
-            };
-            ".config/opencode/node_modules" = {
-              source = npm_deps;
-              recursive = true;
-            };
+      home = {
+        file = {
+          ".config/opencode/oh-my-opencode-slim.json" = {
+            text = builtins.toJSON oh_my_opencode_slim;
           };
-
-          packages = with pkgs; [
-            glow
-            nixd
-          ];
-
-          shellAliases = {
-            review = "opencode --command review run | if [ -t 1 ]; then glow --tui -; else cat; fi";
+          ".config/opencode/node_modules" = {
+            source = npm_deps;
+            recursive = true;
           };
-        }
-        else {};
+        };
+
+        packages = with pkgs; [
+          glow
+          nixd
+        ];
+
+        shellAliases = {
+          review = "opencode --command review run | if [ -t 1 ]; then glow --tui -; else cat; fi";
+        };
+      };
     };
+
+    "yokley@mars" = mkPresetOverride "openai";
   };
 }
