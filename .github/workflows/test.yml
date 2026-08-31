@@ -16,7 +16,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: cachix/install-nix-action@v31
       - name: Evaluate flake checks
-        run: nix flake check --no-build --keep-going
+        run: nix flake check --keep-going
       - name: Evaluate NixOS configurations
         run: |
           for host in mars mercury; do
