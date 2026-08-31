@@ -1,6 +1,10 @@
 {inputs, ...}: {
   flake.modules.homeManager = {
-    dev = {pkgs, config, ...}: let
+    dev = {
+      pkgs,
+      config,
+      ...
+    }: let
       AGE_DIR = "${config.home.homeDirectory}/.config/age";
       AGE_IDENTITY_FILE = "${AGE_DIR}/plugin-identity.txt";
       AGE_KEYS_FILE = "${AGE_DIR}/keys.txt";
@@ -30,6 +34,7 @@
         pkgs.devenv
         pkgs.direnv
         inputs.usql.packages.${pkgs.stdenv.hostPlatform.system}.default
+        inputs.ai-browser.packages.${pkgs.stdenv.hostPlatform.system}.default
       ];
 
       home.file = {

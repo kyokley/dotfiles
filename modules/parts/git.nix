@@ -25,7 +25,7 @@
           ${pkgs.git}/bin/git fetch origin
 
           # 4. Create first worktree (the main branch)
-          ${pkgs.git}/bin/git worktree add main
+          ${pkgs.git}/bin/git worktree add main || ${pkgs.git}/bin/git worktree add master
         '';
       };
     in {
