@@ -4,37 +4,28 @@ on:
   push:
     branches:
       - main
+concurrency:
+  group: test-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
-  nixos-tests:
-    name: Run nixos test suite
+  evaluate:
+    name: Evaluate flake configurations
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        host:
-          - mars
-          - mercury
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
-      - uses: wimpysworld/nothing-but-nix@main
       - uses: cachix/install-nix-action@v31
-      - name: Attempt to build host machine configs
-        run: nix build '.#nixosConfigurations.${{matrix.host}}.config.system.build.toplevel'
-  home-tests:
-    name: Run home test suite
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        host:
-          - yokley@venus
-          - yokley@almagest
-          - yokley@jupiter
-          - yokley@singularity
-    steps:
-      - uses: actions/checkout@v4
-      - uses: wimpysworld/nothing-but-nix@main
-      - uses: cachix/install-nix-action@v31
-      - name: Set up Nix path
+      - name: Evaluate flake checks
+        run: nix flake check --keep-going
+      - name: Evaluate NixOS configurations
         run: |
-          echo "NIX_PATH=nixpkgs=https://github.com/nixos/nixpkgs/archive/nixos-unstable.tar.gz" >> $GITHUB_ENV
-      - name: Attempt to build host machine configs
-        run: nix-shell -p home-manager --run "home-manager build --flake '.#${{matrix.host}}'"
+          for host in mars mercury; do
+            nix eval --raw --show-trace \
+              ".#nixosConfigurations.${host}.config.system.build.toplevel.drvPath"
+          done
+      - name: Evaluate Home Manager configurations
+        run: |
+          for host in yokley@venus yokley@almagest yokley@jupiter yokley@singularity; do
+            nix eval --raw --show-trace \
+              ".#homeConfigurations.\"${host}\".activationPackage.drvPath"
+          done

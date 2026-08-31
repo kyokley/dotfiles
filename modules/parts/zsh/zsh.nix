@@ -1,5 +1,5 @@
 {
-  flake.modules.homeManager.common = {
+  flake.modules.homeManager.common = {pkgs, ...}: {
     programs.zsh = {
       enable = true;
       # enableCompletion = true;
@@ -7,6 +7,17 @@
       # zprof.enable = true;
       prezto = {
         enable = true;
+        package = pkgs.zsh-prezto.overrideAttrs (old: {
+          postPatch =
+            (old.postPatch or "")
+            + ''
+              # Include P10k's saved command in the OSC 133 marker it emits
+              # after Kitty's marker, preserving notify_on_cmd_finish's %c.
+              substituteInPlace modules/prompt/external/powerlevel10k/internal/p10k.zsh \
+                --replace-fail "  [[ -t 1 ]] && builtin print -n '\e]133;C;\a'" \
+                  "  [[ -t 1 ]] && builtin print -n -f '\e]133;C;cmdline=%q\a' -- \"\$_p9k__preexec_cmd\""
+            '';
+        });
         caseSensitive = false;
         syntaxHighlighting.highlighters = [
           "main"

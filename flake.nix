@@ -67,6 +67,11 @@
       url = "github:JuliusBrussee/caveman";
       flake = false;
     };
+
+    ai-browser = {
+      url = "github:kyokley/ai-browser";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = inputs:

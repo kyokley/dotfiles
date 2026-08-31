@@ -245,6 +245,14 @@
                 match = "notify-send";
                 match_content = "Now Playing";
               };
+              opencode = {
+                enabled = true;
+                show_toast = false;
+                save_history = false;
+                play_sound = false;
+                match = "notify-send";
+                match_content = "Task";
+              };
               # Named "aaa-…" so it sorts before the generic `brave-browser`
               # filter (the generated TOML and noctalia's parser both order
               # filter tables by name, and resolveNotificationFilter returns the

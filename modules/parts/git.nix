@@ -4,9 +4,34 @@
       pkgs,
       lib,
       ...
-    }: {
+    }: let
+      clone-worktree = pkgs.writeShellApplication {
+        name = "clone-worktree";
+        runtimeInputs = [pkgs.git];
+        text = ''
+          # All credit to https://dev.to/metal3d/git-worktree-like-a-boss-2j1b
+          # for this awesome setup
+          dir=$(echo "$1" | grep -Po '(?<=/)\w+(?=($|\.git$))')
+
+          # 1. Clone the repo into a hidden .bare folder
+          ${pkgs.git}/bin/git clone --bare "$1" "$dir"/.bare
+
+          # 2. Tell the root folder where the Git history is hidden
+          cd "$dir"
+          echo "gitdir: ./.bare" > .git
+
+          # 3. Fix the fetch configuration to see all remote branches
+          ${pkgs.git}/bin/git config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
+          ${pkgs.git}/bin/git fetch origin
+
+          # 4. Create first worktree (the main branch)
+          ${pkgs.git}/bin/git worktree add main || ${pkgs.git}/bin/git worktree add master
+        '';
+      };
+    in {
       home.packages = [
         pkgs.fzf
+        clone-worktree
       ];
 
       programs = {

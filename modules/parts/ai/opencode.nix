@@ -127,7 +127,27 @@
         };
 
         module = "package.json";
+        dontUseBunBuild = true;
+        dontRunLifecycleScripts = true;
+        installPhase = ''
+          runHook preInstall
+          cp -R node_modules "$out"
+          runHook postInstall
+        '';
       };
+
+      opencode_notify = pkgs.fetchFromGitHub {
+        owner = "kdcokenny";
+        repo = "ocx";
+        rev = "636dc2dbd10a780ef9f4b7a0bbf175aacd742e8c";
+        hash = "sha256-e2GbBB0RG8AjEZPwDkP1z94+K+vZ9hx1gq9OpHKWlh0=";
+      };
+
+      opencode_notify_plugin = pkgs.runCommand "opencode-notify-plugin" {} ''
+        mkdir -p "$out/plugins"
+        cp -R ${opencode_notify}/workers/kdco-registry/files/plugins/. "$out/plugins"
+        ln -s ${npm_deps} "$out/node_modules"
+      '';
 
       zen_key_path = "${config.home.homeDirectory}/.config/opencode/zen.key";
     in {
@@ -243,16 +263,30 @@
           ".config/opencode/oh-my-opencode-slim.json" = {
             text = builtins.toJSON oh_my_opencode_slim;
           };
+          ".config/opencode/kdco-notify.json" = {
+            text = builtins.toJSON {timeout = 15;};
+          };
           ".config/opencode/node_modules" = {
             source = npm_deps;
             recursive = true;
           };
+          ".config/opencode/plugins/notify.ts".source = "${opencode_notify_plugin}/plugins/notify.ts";
+          ".config/opencode/plugins/notify" = {
+            source = "${opencode_notify_plugin}/plugins/notify";
+            recursive = true;
+          };
+          ".config/opencode/plugins/kdco-primitives" = {
+            source = "${opencode_notify_plugin}/plugins/kdco-primitives";
+            recursive = true;
+          };
         };
 
-        packages = with pkgs; [
-          glow
-          nixd
-        ];
+        packages =
+          (with pkgs; [
+            glow
+            nixd
+          ])
+          ++ lib.optionals pkgs.stdenv.hostPlatform.isLinux [pkgs.libnotify];
 
         shellAliases = {
           review = "opencode --command review run | if [ -t 1 ]; then glow --tui -; else cat; fi";
