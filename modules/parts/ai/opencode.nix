@@ -263,6 +263,9 @@
           ".config/opencode/oh-my-opencode-slim.json" = {
             text = builtins.toJSON oh_my_opencode_slim;
           };
+          ".config/opencode/kdco-notify.json" = {
+            text = builtins.toJSON {timeout = 30;};
+          };
           ".config/opencode/node_modules" = {
             source = npm_deps;
             recursive = true;

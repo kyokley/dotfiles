@@ -177,7 +177,8 @@ The `common` keys are baselines every host inherits; platform keys
 ### opencode config
 
 `modules/parts/ai/opencode.nix` — `programs.opencode` (skills, commands,
-agents, settings), oh-my-opencode-slim presets, zen key from the
+agents, settings), oh-my-opencode-slim presets, kdco notification timeout
+config, zen key from the
 `opencode_zen.age` secret, third-party plugin sources pinned with Nix, and node
 deps built with **bun2nix** from `package.json` + `_bun.nix`. When
 `package.json` changes, regenerate `_bun.nix` with `bun2nix` in the devenv
