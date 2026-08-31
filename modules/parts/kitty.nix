@@ -35,7 +35,7 @@
         tab_bar_min_tabs = 1;
         tab_bar_align = "center";
         tab_title_template = " {index} : {title} ";
-        notify_on_cmd_finish = ''unfocused 30.0 command notify-send "Command finished" "%c exited with status %s"'';
+        notify_on_cmd_finish = ''unfocused 15.0 command notify-send "Command finished" "%c exited with status %s"'';
         active_tab_foreground = "#2c7dff";
         active_tab_background = "#000";
         active_tab_font_style = "bold-italic";

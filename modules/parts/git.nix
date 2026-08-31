@@ -22,6 +22,7 @@
 
           # 3. Fix the fetch configuration to see all remote branches
           ${pkgs.git}/bin/git config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
+          ${pkgs.git}/bin/git fetch origin
 
           # 4. Create first worktree (the main branch)
           ${pkgs.git}/bin/git worktree add main
