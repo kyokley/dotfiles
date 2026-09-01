@@ -38,6 +38,7 @@
             "github-copilot-cli"
             "steam"
             "steam-unwrapped"
+            "obsidian"
           ];
       };
 

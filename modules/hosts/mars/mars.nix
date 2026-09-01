@@ -5,6 +5,7 @@
     distributedBuilds
     systemd-services
     syncthing
+    obsidian
   ];
 
   nixos_modules = with inputs.self.modules.nixos; [

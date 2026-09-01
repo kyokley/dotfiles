@@ -6,6 +6,7 @@
         distributedBuilds
         opencode
         syncthing
+        obsidian
       ];
 
       home = {
