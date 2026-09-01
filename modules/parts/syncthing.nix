@@ -1,6 +1,5 @@
 {
   flake.modules.homeManager.syncthing = {
-    pkgs,
     config,
     hostName,
     ...
@@ -69,6 +68,15 @@
               "saturn"
             ];
             path = "${config.home.homeDirectory}/Pictures/wallpapers";
+            type = "sendreceive";
+          };
+          obsidian = {
+            id = "obsidian";
+            devices = [
+              "mars"
+              "dioxygen"
+            ];
+            path = "${config.home.homeDirectory}/Documents/my_docs";
             type = "sendreceive";
           };
         };
