@@ -33,11 +33,14 @@
       };
     };
     mkPreset = presetConfigs: lib.mapAttrs (name: config: agentDefaults.${name} // config) presetConfigs;
-    mkPresetOverride = preset: {
+    mkPresetOverride = {
+      preset,
+      disabled_mcps ? [],
+    }: {
       home.file.".config/opencode/oh-my-opencode-slim.json" = lib.mkForce {
         text = builtins.toJSON (oh_my_opencode_slim
           // {
-            inherit preset;
+            inherit preset disabled_mcps;
           });
       };
     };
@@ -151,6 +154,8 @@
 
       zen_key_path = "${config.home.homeDirectory}/.config/opencode/zen.key";
     in {
+      _module.args.opencode_npm_deps = npm_deps;
+
       imports = [inputs.self.modules.homeManager.gitoc];
       programs = {
         opencode = {
@@ -159,51 +164,6 @@
           commands = {
             commit = ./conventional-commit-with-gitmoji-ai-prompt.md;
             review = ./review_code.md;
-          };
-          agents = {
-            code-reviewer = ''
-              # Code Reviewer Agent
-
-              You are a senior software engineer specializing in code reviews.
-              Focus on code quality, security, and maintainability.
-
-              ## Guidelines
-              - Review for potential bugs and edge cases
-              - Check for security vulnerabilities
-              - Ensure code follows best practices
-              - Suggest improvements for readability and performance
-            '';
-            documentation = ''
-              # Documentation Agent
-
-              You are an expert technical writer focused on creating clear and concise documentation.
-              Your goal is to help developers understand how to use the code effectively.
-
-              ## Guidelines
-              - Create user-friendly documentation
-              - Include examples and use cases
-              - Explain complex concepts in simple terms
-              - Ensure accuracy and completeness
-            '';
-            security-auditor = ''
-              ---
-              description: Reviews code for quality and best practices
-              mode: primary
-              temperature: 0.1
-              permission:
-                write: deny
-                edit: deny
-                bash: deny
-              ---
-              You are a cybersecurity expert specializing in code security audits.
-              Your primary focus is identifying and mitigating security risks in codebases.
-
-              ## Guidelines
-              - Identify potential security vulnerabilities
-              - Assess the impact and likelihood of each vulnerability
-              - Provide actionable recommendations for mitigation
-              - Stay up-to-date with the latest security threats and best practices
-            '';
           };
           settings = {
             autoupdate = false;
@@ -294,7 +254,16 @@
       };
     };
 
-    "yokley@mars" = mkPresetOverride "openai";
-    "yokley@dioxygen" = mkPresetOverride "openai";
+    "yokley@mars" = mkPresetOverride {preset = "openai";};
+    "yokley@dioxygen" = mkPresetOverride {preset = "openai";};
+    "yokley@saturn" = mkPresetOverride {
+      preset = "openai";
+      disabled_mcps = [
+        "websearch"
+        "grep_app"
+        "context7"
+        "gh_grep"
+      ];
+    };
   };
 }
