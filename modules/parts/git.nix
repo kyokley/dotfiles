@@ -55,6 +55,7 @@
               ls-merges = ''!git log --merges --pretty=format:'%h %<(10,trunc)%aN %C(white)%<(15)%ar%Creset %C(red bold)%<(15)%D%Creset %s' -n 1000'';
 
               fzf = ''!echo "$(git branch | awk '{print $NF}')" "\n" "$(git branch -r | grep -v HEAD | awk '{print $NF}' | sed -E 's!^[^/]+/!!')" | sort -u | ${pkgs.fzf}/bin/fzf | xargs -r git switch'';
+              prune-merged = "!git branch --merged | grep -Ev '(^\*|^\+|main|master|develop)' | xargs --no-run-if-empty git branch -d";
             };
           };
           ignores = [
