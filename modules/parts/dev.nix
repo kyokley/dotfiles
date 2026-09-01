@@ -2,6 +2,7 @@
   flake.modules.homeManager = {
     dev = {
       pkgs,
+      lib,
       config,
       ...
     }: let
@@ -34,8 +35,8 @@
         pkgs.devenv
         pkgs.direnv
         inputs.usql.packages.${pkgs.stdenv.hostPlatform.system}.default
-        inputs.ai-browser.packages.${pkgs.stdenv.hostPlatform.system}.default
-      ];
+      ] ++ lib.optionals pkgs.stdenv.hostPlatform.isLinux
+        [inputs.ai-browser.packages.${pkgs.stdenv.hostPlatform.system}.default];
 
       home.file = {
         pdbpp = {
