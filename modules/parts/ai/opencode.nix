@@ -46,6 +46,7 @@
     };
 
     oh_my_opencode_slim = {
+      autoUpdate = false;
       preset = "opencode-zen";
       presets = {
         openai = mkPreset {
