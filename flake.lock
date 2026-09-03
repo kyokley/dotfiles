@@ -892,11 +892,11 @@
         "nixvim": "nixvim_2"
       },
       "locked": {
-        "lastModified": 1788378112,
-        "narHash": "sha256-RYbECvXB5tvDavM/NIqeAm2+AQMqaQCgy3tMEFnIb/g=",
+        "lastModified": 1788399187,
+        "narHash": "sha256-7O/zOqXstXRfy280qotCG+5cyrq0SUw1H4CBjbPMnf0=",
         "owner": "kyokley",
         "repo": "nixvim",
-        "rev": "2ae858a71c6648cb0b2c4a848beb5cf0de3228a0",
+        "rev": "203efaa39a1f196b15b50db4c2a2cdf41719f182",
         "type": "github"
       },
       "original": {
