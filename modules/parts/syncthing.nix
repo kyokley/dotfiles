@@ -75,6 +75,7 @@
             devices = [
               "mars"
               "dioxygen"
+              "mercury"
             ];
             path = "${config.home.homeDirectory}/Documents/my_docs";
             type = "sendreceive";
