@@ -33,11 +33,11 @@
         "treefmt-nix": "treefmt-nix"
       },
       "locked": {
-        "lastModified": 1788138757,
-        "narHash": "sha256-hPQpB4ZcT5QdN9JsSgG1hU8/QzW0OkPe73YrU5Jh2EM=",
+        "lastModified": 1788400633,
+        "narHash": "sha256-diTC9f4kXKg/ybtqTPjbbnVBh1rJAvBOq57cIi7wdS4=",
         "owner": "kyokley",
         "repo": "ai-browser",
-        "rev": "281b46a54440d48acefe8f6b7b13ad616df07570",
+        "rev": "8a0d136f0835b4532556bb2990b939d374f7968d",
         "type": "github"
       },
       "original": {
