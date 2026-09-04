@@ -91,15 +91,6 @@
         '';
 
         settings = {
-          monitor = [
-            {
-              output = "eDP-1";
-              mode = "2256x1504@60";
-              position = "0x0";
-              scale = "1";
-            }
-          ];
-
           mod = {
             # _var = "SUPER";
             _var = "ALT";
@@ -393,6 +384,10 @@
             {
               match.class = "brave-faolnafnngnfdaknnbpnkhgohbobgegn-Default"; # Outlook PWA
               workspace = "9 silent";
+            }
+            {
+              match.class = "md.Obsidian";
+              workspace = "11 silent";
             }
           ];
         };
