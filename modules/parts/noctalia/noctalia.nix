@@ -506,7 +506,7 @@
           Unit.Description = "Refresh the krill bar widget";
           Timer = {
             OnCalendar = "*-*-* *:*:00";
-            Persistent = true;
+            Persistent = false;
             Unit = "krill-bar.service";
           };
           Install.WantedBy = ["timers.target"];
