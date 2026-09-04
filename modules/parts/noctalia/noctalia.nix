@@ -8,6 +8,7 @@
       ...
     }: let
       krillPlugin = ./krill;
+      workspaceLayoutPlugin = ./workspace-layout;
     in {
       imports = [inputs.noctalia.homeModules.default];
 
@@ -19,6 +20,12 @@
         };
         ".local/share/noctalia/plugins/krill/widget.luau" = {
           source = krillPlugin + "/widget.luau";
+        };
+        ".local/share/noctalia/plugins/workspace-layout/plugin.toml" = {
+          source = workspaceLayoutPlugin + "/plugin.toml";
+        };
+        ".local/share/noctalia/plugins/workspace-layout/widget.luau" = {
+          source = workspaceLayoutPlugin + "/widget.luau";
         };
       };
 
@@ -47,6 +54,7 @@
               "noctalia/bongocat"
               "dotnetrob/cat"
               "yokley/krill"
+              "yokley/workspace-layout"
             ];
           };
 
@@ -218,7 +226,10 @@
               // {
                 position = "bottom";
                 # layer = "top";
-                start = ["workspaces"];
+                start = [
+                  "workspaces"
+                  "workspace_layout"
+                ];
                 # noctalia merges per-lane: absent center/end keep the default
                 # widget lists (clock; media/tray/notifications/.../session).
                 center = ["audio_visualizer"];
@@ -404,6 +415,9 @@
               # Per-widget scale MULTIPLIES the bar's 1.8 (clamped 0.2–2.5), so
               # 0.8 × 1.8 = 1.44 renders the headline ~20% smaller.
               scale = 0.8;
+            };
+            workspace_layout = {
+              type = "yokley/workspace-layout:workspace-layout";
             };
 
             # Bongo cat (official plugin noctalia/bongocat). Reads keyboard

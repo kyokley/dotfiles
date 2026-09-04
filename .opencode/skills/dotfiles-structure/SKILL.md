@@ -84,7 +84,7 @@ The `common` keys are baselines every host inherits; platform keys
 | `dev.nix` | `homeManager.dev` | Dev tools: age (+`init-age`/`show-age`), devenv, direnv, usql, tig, jq |
 | `git.nix`, `bitwarden.nix`, `clamav.nix`, `flatpak.nix`, `shutdown.nix` | various | Single-purpose parts, names say it all |
 | `syncthing.nix`, `systemd.nix` (`systemd-services`), `tailscale.nix`, `distributed_builds.nix`, `laptop.nix` | various | Services / system integration parts |
-| `hyprland.nix`, `qtile/`, `waybar/`, `rofi/`, `dunst.nix`, `picom.nix` (+ `picom.conf`), `noctalia/` | various | Window managers / desktop |
+| `hyprland.nix`, `qtile/`, `waybar/`, `rofi/`, `dunst.nix`, `picom.nix` (+ `picom.conf`), `noctalia/` | various | Window managers / desktop; Noctalia includes local bar plugins such as `krill/` and `workspace-layout/` |
 | `kitty.nix`, `terminator.nix`, `tmux.nix`, `vim.nix`, `zsh/` (zsh.nix + powerlevel10k config) | `homeManager.*` | Terminal / editor / shell |
 | `ai/` | `homeManager.opencode`, `.fabric`, `.gitoc` | AI tooling — see "opencode config" below |
 | `_secrets/` | **not imported** | agenix secrets: `secrets.nix` (definitions), `*.age` (encrypted), `syncthing/<host>/` certs+keys |

@@ -1,0 +1,11 @@
+id          = "yokley/workspace-layout"
+name        = "Workspace Layout"
+version     = "0.1.0"
+plugin_api  = 3
+author      = "yokley"
+license     = "MIT"
+description = "Current Hyprland layout on the noctalia bar"
+
+[[widget]]
+id    = "workspace-layout"
+entry = "widget.luau"

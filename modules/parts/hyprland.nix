@@ -132,6 +132,20 @@
           ];
 
           bind = let
+            cycleWorkspaceLayout = lib.generators.mkLuaInline ''
+              function()
+                local layouts = {"master", "dwindle", "scrolling", "monocle"}
+                local current = hl.get_config("general.layout")
+                local nextLayout = layouts[1]
+                for i, layout in ipairs(layouts) do
+                  if current == layout then
+                    nextLayout = layouts[(i % #layouts) + 1]
+                    break
+                  end
+                end
+                hl.config({ general = { layout = nextLayout } })
+              end
+            '';
             workspaceEntries = let
               mkWorkspace = ws_id: key: [
                 {
@@ -185,6 +199,12 @@
                 _args = [
                   (lib.generators.mkLuaInline ''mod .. " + Q"'')
                   (lib.generators.mkLuaInline ''hl.dsp.exec_cmd("noctalia msg panel-toggle control-center")'')
+                ];
+              }
+              {
+                _args = [
+                  (lib.generators.mkLuaInline ''mod .. " + SPACE"'')
+                  cycleWorkspaceLayout
                 ];
               }
               {
