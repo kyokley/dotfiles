@@ -210,7 +210,17 @@
               {
                 _args = [
                   (lib.generators.mkLuaInline ''mod .. " + J"'')
-                  (lib.generators.mkLuaInline ''hl.dsp.layout("cyclenext")'')
+                  (lib.generators.mkLuaInline ''
+                    function()
+                      local current = hl.get_config("general.layout")
+
+                      if current == "master" then
+                        hl.dispatch(hl.dsp.layout("cyclenext"))
+                      elseif current == "scrolling" then
+                        hl.dispatch(hl.dsp.layout("move +col"))
+                      end
+                    end
+                  '')
                 ];
               }
               {
@@ -227,7 +237,17 @@
               {
                 _args = [
                   (lib.generators.mkLuaInline ''mod .. " + K"'')
-                  (lib.generators.mkLuaInline ''hl.dsp.layout("cycleprev")'')
+                  (lib.generators.mkLuaInline ''
+                    function()
+                      local current = hl.get_config("general.layout")
+
+                      if current == "master" then
+                        hl.dispatch(hl.dsp.layout("cycleprev"))
+                      elseif current == "scrolling" then
+                        hl.dispatch(hl.dsp.layout("move -col"))
+                      end
+                    end
+                  '')
                 ];
               }
               {
@@ -251,13 +271,33 @@
               {
                 _args = [
                   (lib.generators.mkLuaInline ''mod .. " + H"'')
-                  (lib.generators.mkLuaInline ''hl.dsp.layout("mfact -0.1")'')
+                  (lib.generators.mkLuaInline ''
+                    function()
+                      local current = hl.get_config("general.layout")
+
+                      if current == "master" then
+                        hl.dispatch(hl.dsp.layout("mfact -0.1"))
+                      elseif current == "scrolling" then
+                        hl.dispatch(hl.dsp.layout("colresize -0.2"))
+                      end
+                    end
+                  '')
                 ];
               }
               {
                 _args = [
                   (lib.generators.mkLuaInline ''mod .. " + L"'')
-                  (lib.generators.mkLuaInline ''hl.dsp.layout("mfact +0.1")'')
+                  (lib.generators.mkLuaInline ''
+                    function()
+                      local current = hl.get_config("general.layout")
+
+                      if current == "master" then
+                        hl.dispatch(hl.dsp.layout("mfact +0.1"))
+                      elseif current == "scrolling" then
+                        hl.dispatch(hl.dsp.layout("colresize +0.2"))
+                      end
+                    end
+                  '')
                 ];
               }
               {
