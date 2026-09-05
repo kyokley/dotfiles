@@ -214,7 +214,7 @@
                     function()
                       local current = hl.get_config("general.layout")
 
-                      if current == "master" then
+                      if current == "master" or current == "monacle" then
                         hl.dispatch(hl.dsp.layout("cyclenext"))
                       elseif current == "scrolling" then
                         hl.dispatch(hl.dsp.layout("move +col"))
@@ -241,7 +241,7 @@
                     function()
                       local current = hl.get_config("general.layout")
 
-                      if current == "master" then
+                      if current == "master" or current == "monacle" then
                         hl.dispatch(hl.dsp.layout("cycleprev"))
                       elseif current == "scrolling" then
                         hl.dispatch(hl.dsp.layout("move -col"))
@@ -286,6 +286,20 @@
               }
               {
                 _args = [
+                  (lib.generators.mkLuaInline ''mod .. " + SHIFT + H"'')
+                  (lib.generators.mkLuaInline ''
+                    function()
+                      local current = hl.get_config("general.layout")
+
+                      if current == "scrolling" then
+                        hl.dispatch(hl.dsp.layout("swapcol r"))
+                      end
+                    end
+                  '')
+                ];
+              }
+              {
+                _args = [
                   (lib.generators.mkLuaInline ''mod .. " + L"'')
                   (lib.generators.mkLuaInline ''
                     function()
@@ -295,6 +309,20 @@
                         hl.dispatch(hl.dsp.layout("mfact +0.1"))
                       elseif current == "scrolling" then
                         hl.dispatch(hl.dsp.layout("colresize +0.2"))
+                      end
+                    end
+                  '')
+                ];
+              }
+              {
+                _args = [
+                  (lib.generators.mkLuaInline ''mod .. " + SHIFT + L"'')
+                  (lib.generators.mkLuaInline ''
+                    function()
+                      local current = hl.get_config("general.layout")
+
+                      if current == "scrolling" then
+                        hl.dispatch(hl.dsp.layout("swapcol l"))
                       end
                     end
                   '')
