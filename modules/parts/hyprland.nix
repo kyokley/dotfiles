@@ -134,7 +134,8 @@
           bind = let
             cycleWorkspaceLayout = lib.generators.mkLuaInline ''
               function()
-                local layouts = {"master", "dwindle", "scrolling", "monocle"}
+                -- local layouts = {"master", "dwindle", "scrolling", "monocle"}
+                local layouts = {"master", "scrolling", "monocle"}
                 local current = hl.get_config("general.layout")
                 local nextLayout = layouts[1]
                 for i, layout in ipairs(layouts) do
@@ -214,7 +215,7 @@
                     function()
                       local current = hl.get_config("general.layout")
 
-                      if current == "master" or current == "monacle" then
+                      if current == "master" or current == "monocle" then
                         hl.dispatch(hl.dsp.layout("cyclenext"))
                       elseif current == "scrolling" then
                         hl.dispatch(hl.dsp.layout("move +col"))
@@ -241,7 +242,7 @@
                     function()
                       local current = hl.get_config("general.layout")
 
-                      if current == "master" or current == "monacle" then
+                      if current == "master" or current == "monocle" then
                         hl.dispatch(hl.dsp.layout("cycleprev"))
                       elseif current == "scrolling" then
                         hl.dispatch(hl.dsp.layout("move -col"))
