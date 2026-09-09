@@ -8,7 +8,7 @@
         useRoutingFeatures = "both";
       };
       networking.nameservers = [
-        "100.124.31.71"
+        # "100.124.31.71"
       ];
 
       # Enable trayscale once added to home-manager
