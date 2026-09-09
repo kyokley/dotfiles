@@ -13,6 +13,7 @@
   in {
     homeManager."yokley@mercury" = {
       pkgs,
+      lib,
       config,
       username,
       inputs,
@@ -22,6 +23,13 @@
     in {
       imports = home_imports;
       programs.git.settings.user.email = "kyokley@mercury";
+      programs.noctalia.settings.idle.behavior = {
+        screen-off = {
+          timeout = lib.mkForce 1800;
+          locked_timeout = lib.mkForce 1800;
+        };
+        suspend.enabled = lib.mkForce false;
+      };
 
       home = {
         sessionVariables = {
