@@ -51,27 +51,27 @@
       presets = {
         openai = mkPreset {
           orchestrator = {
-            model = "openai/gpt-5.6-terra";
+            model = "openai/gpt-6-astra";
             variant = "high";
           };
           oracle = {
-            model = "openai/gpt-5.6-sol";
+            model = "openai/gpt-6-astra";
             variant = "high";
           };
           librarian = {
-            model = "openai/gpt-5.6-luna";
+            model = "openai/gpt-5.6-terra";
             variant = "low";
           };
           explorer = {
-            model = "openai/gpt-5.6-luna";
+            model = "openai/gpt-5.6-terra";
             variant = "low";
           };
-          designer.model = "openai/gpt-5.6-luna";
+          designer.model = "openai/gpt-5.6-terra";
           fixer = {
-            model = "openai/gpt-5.6-luna";
+            model = "openai/gpt-5.6-terra";
             variant = "high";
           };
-          council.model = "openai/gpt-5.6-terra";
+          council.model = "openai/gpt-5.6-sol";
         };
         opencode-zen = mkPreset {
           orchestrator = {
