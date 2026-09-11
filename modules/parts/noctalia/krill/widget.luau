@@ -92,10 +92,10 @@ local function push(payload)
   if url ~= nil and url ~= "" then
     item.link = url
   end
-  for _, existing in ipairs(history) do
+  for existingIndex, existing in ipairs(history) do
     local eNorm = normalizeUrl(existing.link)
     if existing.title == item.title and eNorm == norm then
-      index = 1
+      index = existingIndex
       display(existing)
       return
     end

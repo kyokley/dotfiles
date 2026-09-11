@@ -66,6 +66,7 @@ The `common` keys are baselines every host inherits; platform keys
 | `devenv.nix` / `devenv.yaml` / `.envrc` | Dev shell (direnv + devenv), pre-commit hooks config |
 | `.pre-commit-config.yaml` | **GENERATED** by git-hooks.nix — never edit |
 | `.github/workflows/test.yml` | CI: evaluates flake checks plus every NixOS and standalone home-manager config on PR / push to main |
+| `tests/krill-widget.lua` | Standalone Lua regression tests for the Noctalia Krill widget; see "Lua widget tests" |
 | `devenv.lock`, `flake.lock` | Lockfiles |
 
 ### `modules/lib/`
@@ -174,6 +175,23 @@ The `common` keys are baselines every host inherits; platform keys
 - `.pre-commit-config.yaml` is generated from `devenv.nix` `git-hooks` —
   change hooks there, never in the yaml.
 
+### Lua widget tests
+
+Run the Krill regression tests from the repository root:
+
+```sh
+nix shell nixpkgs#lua5_4 --command lua tests/krill-widget.lua
+```
+
+`tests/krill-widget.lua` loads `modules/parts/noctalia/krill/widget.luau`
+with stubbed `barWidget` and `noctalia` APIs, so no desktop session or browser
+is needed. It covers title/URL synchronization for repeated headlines,
+history deduplication and scrolling, text toggling, fresh pushes, and linkless
+headlines. The widget currently uses a Lua-compatible subset of Luau; this
+test does not validate Noctalia runtime integration. Use Lua 5.4 explicitly:
+the default `nixpkgs#lua` may reject the `\u{...}` escapes. These tests run
+manually and are not wired into flake checks or CI.
+
 ### opencode config
 
 `modules/parts/ai/opencode.nix` — `programs.opencode` (skills, commands,
@@ -203,6 +221,7 @@ did so. `AGENTS.md` at the repo root points every session here.
 | New flake input in `flake.nix` | Root table, or the workflow that uses it |
 | `generators.nix` composition changed | "How the flake assembles" |
 | devenv hooks / dev tooling changed | "Dev shell & formatting" |
+| Test files or test commands added, removed, or changed | Root directory map and the relevant test workflow |
 | Rebuild aliases or commands changed | "Rebuild / switch" |
 | opencode / ai config layout changed | "opencode config" |
 | A non-obvious behavior you had to discover the hard way | "Conventions & gotchas" — capture it so future sessions don't rediscover it |
