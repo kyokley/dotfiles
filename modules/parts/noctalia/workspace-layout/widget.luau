@@ -4,6 +4,7 @@
 local refreshing = false
 
 local function render(layout)
+  layout = layout == "master" and "primary" or layout
   barWidget.setText(layout)
   barWidget.setTooltip("Hyprland layout: " .. layout)
 end
