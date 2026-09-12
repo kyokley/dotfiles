@@ -157,7 +157,10 @@
     in {
       _module.args.opencode_npm_deps = npm_deps;
 
-      imports = [inputs.self.modules.homeManager.gitoc];
+      imports = [
+        inputs.self.modules.homeManager.gitoc
+        inputs.self.modules.homeManager.jitoc
+      ];
       programs = {
         opencode = {
           enable = true;
