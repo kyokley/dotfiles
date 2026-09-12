@@ -8,6 +8,15 @@
   inherit (generators) mkHomeConfiguration mkNixosConfiguration mkDarwinConfiguration;
 in {
   flake = {
+    modules = let
+      module_args = {
+        _module.args = {inherit constants;};
+      };
+    in {
+      nixos.common = module_args;
+      homeManager.common = module_args;
+    };
+
     nixosConfigurations = rec {
       mars = mkNixosConfiguration {
         hostName = "mars";
