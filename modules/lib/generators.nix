@@ -2,20 +2,25 @@
   inputs,
   constants,
 }: let
-  inherit (constants) defaultUsername;
+  inherit (constants) defaultUsername defaultEmail defaultFullName;
   inherit (constants.systems) x86_linux aarch64_darwin;
 in {
   mkHomeConfiguration = {
     system ? x86_linux,
     nixvim-output ? "default",
     hostName,
+    fullName ? defaultFullName,
     username ? defaultUsername,
-  }:
+    email ? defaultEmail,
+  }:let
+      specArgs = {inherit inputs fullName email username nixvim-output hostName;};
+  in
+
     inputs.home-manager.lib.homeManagerConfiguration {
       pkgs = import inputs.nixpkgs {
         inherit system;
       };
-      extraSpecialArgs = {inherit inputs username nixvim-output hostName;};
+      extraSpecialArgs = specArgs;
       modules = [
         inputs.self.modules.homeManager."${username}@${hostName}"
         inputs.self.modules.homeManager.common
@@ -26,11 +31,15 @@ in {
     system ? aarch64_darwin,
     nixvim-output ? "default",
     hostName,
+    fullName ? defaultFullName,
     username ? defaultUsername,
-  }:
+    email ? defaultEmail,
+  }: let
+      specArgs = {inherit inputs fullName email username nixvim-output hostName;};
+  in
     inputs.darwin.lib.darwinSystem {
       inherit system;
-      specialArgs = {inherit inputs username nixvim-output hostName;};
+      specialArgs = specArgs;
       modules = [
         inputs.home-manager.darwinModules.home-manager
         {
@@ -40,7 +49,7 @@ in {
               inputs.self.modules.homeManager.common
               inputs.self.modules.homeManager.darwin
             ];
-            extraSpecialArgs = {inherit inputs username nixvim-output hostName;};
+            extraSpecialArgs = specArgs;
           };
         }
         inputs.self.modules.darwin.${hostName}
@@ -52,11 +61,15 @@ in {
     system ? x86_linux,
     nixvim-output ? "default",
     hostName,
+    fullName ? defaultFullName,
     username ? defaultUsername,
-  }:
+    email ? defaultEmail,
+  }: let
+      specArgs = {inherit inputs fullName email username nixvim-output hostName;};
+  in
     inputs.nixpkgs.lib.nixosSystem {
       inherit system;
-      specialArgs = {inherit inputs username nixvim-output hostName;};
+      specialArgs = specArgs;
       modules = [
         inputs.home-manager.nixosModules.home-manager
         inputs.sysc-greet.nixosModules.default
@@ -67,7 +80,7 @@ in {
               inputs.self.modules.homeManager.common
               inputs.self.modules.homeManager.nixos
             ];
-            extraSpecialArgs = {inherit inputs username nixvim-output hostName;};
+            extraSpecialArgs = specArgs;
           };
         }
         inputs.self.modules.nixos.${hostName}

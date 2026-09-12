@@ -2,7 +2,8 @@
   flake.modules.homeManager = {
     common = {
       pkgs,
-      lib,
+      fullName,
+      email,
       ...
     }: let
       clone-worktree = pkgs.writeShellApplication {
@@ -42,8 +43,7 @@
             init = {
               defaultBranch = "main";
             };
-            user.name = "Kevin Yokley";
-            user.email = lib.mkDefault "kyokley2@gmail.com";
+            user = {inherit fullName email;};
             alias = {
               mt = "!nvim -c DiffviewOpen";
               lol = ''log --graph --decorate --pretty=oneline --abbrev-commit --max-count=1000'';
