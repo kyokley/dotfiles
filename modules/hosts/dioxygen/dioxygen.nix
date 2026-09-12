@@ -1,6 +1,6 @@
 {
   flake.modules = {
-    homeManager."yokley@dioxygen" = {inputs, ...}: {
+    homeManager."yokley@dioxygen" = {inputs, constants, ...}: {
       imports = with inputs.self.modules.homeManager; [
         dev
         distributedBuilds
@@ -20,10 +20,10 @@
 
         ssh.extraConfig = ''
           Host saturn
-            HostName 192.168.50.126
+            HostName ${constants.saturn-ip}
             Port 10101
           Host saturn-wifi
-            HostName 192.168.50.96
+            HostName ${constants.saturn-wifi-ip}
             Port 10101
         '';
       };
@@ -31,6 +31,7 @@
 
     darwin.dioxygen = {
       system.stateVersion = 7;
+      networking.hostName = "dioxygen";
     };
   };
 }

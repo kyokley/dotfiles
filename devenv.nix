@@ -11,6 +11,7 @@
   packages =
     [
       pkgs.bun
+      pkgs.jujutsu
       inputs.bun2nix.packages.${pkgs.stdenv.hostPlatform.system}.default
     ]
     ++ (
