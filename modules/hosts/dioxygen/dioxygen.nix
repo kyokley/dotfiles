@@ -31,6 +31,7 @@
 
     darwin.dioxygen = {
       system.stateVersion = 7;
+      networking.hostName = "dioxygen";
     };
   };
 }
