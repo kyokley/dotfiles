@@ -196,9 +196,11 @@ manually and are not wired into flake checks or CI.
 
 The `opencode` module imports `gitoc` and `jitoc`. Both use its `commit`
 command to generate messages; `jitoc` feeds `jj diff --git -r @` into that
-command and applies the result with `jj describe`. `jitoc --dry-run` prints
-the generated description without applying it (jj may still snapshot the
-working copy).
+command and applies the result with `jj commit` by default. Use
+`jitoc -d` / `jitoc --describe` to run `jj describe -r @` instead, without
+creating a new working-copy change. `jitoc --dry-run` prints the generated
+description without committing or describing, including with `--describe`
+(jj may still snapshot the working copy).
 
 `modules/parts/ai/opencode.nix` — `programs.opencode` (skills, commands,
 agents, settings), oh-my-opencode-slim presets, kdco notification timeout

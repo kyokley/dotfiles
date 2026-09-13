@@ -4,6 +4,7 @@
       set -euo pipefail
 
       dry_run=false
+      describe=false
       show_help=false
       while [[ $# -gt 0 ]]; do
         case "$1" in
@@ -15,6 +16,10 @@
             dry_run=true
             shift
             ;;
+          -d|--describe)
+            describe=true
+            shift
+            ;;
           *)
             printf 'Unknown option: %s\n' "$1" >&2
             exit 2
@@ -24,10 +29,11 @@
 
       if [[ "$show_help" == true ]]; then
         printf '%s\n' "Usage: jitoc [OPTIONS]"
-        printf '%s\n' "Describe current jj working copy with an AI-generated message."
+        printf '%s\n' "Commit current jj working copy with an AI-generated message."
         printf '%s\n' ""
         printf '%s\n' "Options:"
-        printf '%s\n' "  -n, --dry-run  Generate description but do not run 'jj describe'"
+        printf '%s\n' "  -d, --describe Update description instead of committing"
+        printf '%s\n' "  -n, --dry-run  Generate description but do not commit or describe"
         printf '%s\n' "  -h, --help     Show this help message"
         printf '%s\n' ""
         printf '%s\n' "jj may create snapshots while inspecting working copy."
@@ -60,7 +66,11 @@
         exit 0
       fi
 
-      ${pkgs.jujutsu}/bin/jj describe -r @ -m "$message"
+      if [[ "$describe" == true ]]; then
+        ${pkgs.jujutsu}/bin/jj describe -r @ -m "$message"
+      else
+        ${pkgs.jujutsu}/bin/jj commit -m "$message"
+      fi
       printf '%s\n' "$message"
     '';
   in {
