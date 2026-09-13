@@ -1,6 +1,5 @@
 {
   defaultUsername = "yokley";
-  defaultEmail = "kyokley2@gmail.com";
   defaultFullName = "Kevin Yokley";
   systems = {
     aarch64_darwin = "aarch64-darwin";

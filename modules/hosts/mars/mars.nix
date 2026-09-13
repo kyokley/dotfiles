@@ -24,13 +24,8 @@ in {
       cd_paths = [
         "${config.home.homeDirectory}/workspace"
       ];
-      vcs_email = "kyokley@mars";
     in {
       imports = home_modules;
-      programs = {
-        git.settings.user.email = lib.mkForce vcs_email;
-        jujutsu.settings.user.email = lib.mkForce vcs_email;
-      };
 
       home = {
         sessionVariables = {

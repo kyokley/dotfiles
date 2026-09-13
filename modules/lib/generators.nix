@@ -2,7 +2,7 @@
   inputs,
   constants,
 }: let
-  inherit (constants) defaultUsername defaultEmail defaultFullName;
+  inherit (constants) defaultUsername defaultFullName;
   inherit (constants.systems) x86_linux aarch64_darwin;
 in {
   mkHomeConfiguration = {
@@ -11,9 +11,8 @@ in {
     hostName,
     fullName ? defaultFullName,
     username ? defaultUsername,
-    email ? defaultEmail,
   }:let
-      specArgs = {inherit inputs fullName email username nixvim-output hostName;};
+      specArgs = {inherit inputs fullName username nixvim-output hostName;};
   in
 
     inputs.home-manager.lib.homeManagerConfiguration {
@@ -33,9 +32,8 @@ in {
     hostName,
     fullName ? defaultFullName,
     username ? defaultUsername,
-    email ? defaultEmail,
   }: let
-      specArgs = {inherit inputs fullName email username nixvim-output hostName;};
+      specArgs = {inherit inputs fullName username nixvim-output hostName;};
   in
     inputs.darwin.lib.darwinSystem {
       inherit system;
@@ -63,9 +61,8 @@ in {
     hostName,
     fullName ? defaultFullName,
     username ? defaultUsername,
-    email ? defaultEmail,
   }: let
-      specArgs = {inherit inputs fullName email username nixvim-output hostName;};
+      specArgs = {inherit inputs fullName username nixvim-output hostName;};
   in
     inputs.nixpkgs.lib.nixosSystem {
       inherit system;

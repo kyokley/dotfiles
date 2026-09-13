@@ -1,8 +1,10 @@
 {
   flake.modules.homeManager.common = {
+    lib,
     fullName,
-    email,
     pkgs,
+    username,
+    hostName,
     ...
   }: {
     home.packages = [
@@ -12,8 +14,8 @@
       enable = true;
       settings = {
         user = {
-          inherit email;
-          name = fullName;
+              email = lib.mkDefault "${username}@${hostName}";
+              name = lib.mkDefault fullName;
         };
       };
     };

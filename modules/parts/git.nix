@@ -2,8 +2,10 @@
   flake.modules.homeManager = {
     common = {
       pkgs,
+      lib,
       fullName,
-      email,
+      username,
+      hostName,
       ...
     }: let
       clone-worktree = pkgs.writeShellApplication {
@@ -44,8 +46,8 @@
               defaultBranch = "main";
             };
             user = {
-              inherit email;
-              name = fullName;
+              email = lib.mkDefault "${username}@${hostName}";
+              name = lib.mkDefault fullName;
             };
             alias = {
               mt = "!nvim -c DiffviewOpen";
