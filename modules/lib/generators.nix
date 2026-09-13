@@ -11,10 +11,9 @@ in {
     hostName,
     fullName ? defaultFullName,
     username ? defaultUsername,
-  }:let
-      specArgs = {inherit inputs fullName username nixvim-output hostName;};
+  }: let
+    specArgs = {inherit inputs fullName username nixvim-output hostName;};
   in
-
     inputs.home-manager.lib.homeManagerConfiguration {
       pkgs = import inputs.nixpkgs {
         inherit system;
@@ -33,7 +32,7 @@ in {
     fullName ? defaultFullName,
     username ? defaultUsername,
   }: let
-      specArgs = {inherit inputs fullName username nixvim-output hostName;};
+    specArgs = {inherit inputs fullName username nixvim-output hostName;};
   in
     inputs.darwin.lib.darwinSystem {
       inherit system;
@@ -62,7 +61,7 @@ in {
     fullName ? defaultFullName,
     username ? defaultUsername,
   }: let
-      specArgs = {inherit inputs fullName username nixvim-output hostName;};
+    specArgs = {inherit inputs fullName username nixvim-output hostName;};
   in
     inputs.nixpkgs.lib.nixosSystem {
       inherit system;
