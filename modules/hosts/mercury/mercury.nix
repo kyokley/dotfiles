@@ -20,9 +20,13 @@
       ...
     }: let
       MATTERMOST_CLEANUP_RETENTION_WINDOW = "90 days";
+      vcs_email = "kyokley@mercury";
     in {
       imports = home_imports;
-      programs.git.settings.user.email = "kyokley@mercury";
+      programs = {
+        git.settings.user.email = lib.mkForce vcs_email;
+        jujutsu.settings.user.email = lib.mkForce vcs_email;
+      };
       programs.noctalia.settings.idle.behavior = {
         screen-off = {
           timeout = lib.mkForce 1800;
