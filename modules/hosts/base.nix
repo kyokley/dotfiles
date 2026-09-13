@@ -11,6 +11,7 @@ in {
     nixosConfigurations = rec {
       mars = mkNixosConfiguration {
         hostName = "mars";
+        email = "kyokley@mars";
       };
 
       mercury = mkNixosConfiguration {
