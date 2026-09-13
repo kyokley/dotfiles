@@ -19,6 +19,7 @@ Output must contain only the final commit message text:
 - no markdown code fences
 - no metadata labels
 - no "here is" style phrasing
+- never include emoji or gitmoji shortcodes anywhere in the commit message (subject, body, or footer)
 
 Commits should follow the Conventional Commits 1.0.0 specification and be further refined using the rules outlined below.
 
@@ -49,7 +50,7 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 ### Single Type Changes
 
 ```
-<emoji> <type>[optional (<branch>)][optional (<scope>)]: <description>
+<type>[optional (<branch>)][optional (<scope>)]: <description>
 <BLANK LINE>
 [optional <body>]
 <BLANK LINE>
@@ -61,19 +62,19 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 When the provided diff contains changes that address SEPARATE, UNRELATED concerns, use this format to document each distinct change with its own subject line:
 
 ```
-<emoji> <type>[optional (<branch>)][optional (<scope>)]: <description>
+<type>[optional (<branch>)][optional (<scope>)]: <description>
 <BLANK LINE>
 [optional <body> of type 1]
 <BLANK LINE>
 [optional <footer(s)> of type 1]
 <BLANK LINE>
 <BLANK LINE>
-<emoji> <type>[optional (<branch>)][optional (<scope>)]: <description>
+<type>[optional (<branch>)][optional (<scope>)]: <description>
 <BLANK LINE>
 [optional <body> of type 2]
 <BLANK LINE>
 [optional <footer(s)> of type 2]
-<emoji> <type>[optional (<branch>)][optional (<scope>)]: <description>
+<type>[optional (<branch>)][optional (<scope>)]: <description>
 <BLANK LINE>
 [optional <body> of type 3]
 <BLANK LINE>
@@ -82,16 +83,16 @@ When the provided diff contains changes that address SEPARATE, UNRELATED concern
 
 **Use this format ONLY when changes are UNRELATED:**
 
-- ✅ Bug fix in authentication + New feature in payment module + Update README
-- ✅ Fix broken login form + Add new API endpoint + Refactor database schema
-- ✅ Update dependency + Fix unrelated bug + Add documentation
+- Bug fix in authentication + New feature in payment module + Update README
+- Fix broken login form + Add new API endpoint + Refactor database schema
+- Update dependency + Fix unrelated bug + Add documentation
 
 **Do NOT use this format when:**
 
-- ❌ All changes serve one purpose: "refactor code style" affecting 3 files → Use SINGLE format
-- ❌ Changes are related: "add user profile feature" affecting multiple files → Use SINGLE format
-- ❌ Same type of work in multiple areas: "fix validation bugs in auth, payments, checkout" → Use SINGLE format
-- ❌ Related file changes: updating package.json AND pnpm-lock.yaml for dependencies → Use SINGLE format (these are part of one logical change)
+- All changes serve one purpose: "refactor code style" affecting 3 files → Use SINGLE format
+- Changes are related: "add user profile feature" affecting multiple files → Use SINGLE format
+- Same type of work in multiple areas: "fix validation bugs in auth, payments, checkout" → Use SINGLE format
+- Related file changes: updating package.json AND pnpm-lock.yaml for dependencies → Use SINGLE format (these are part of one logical change)
 
 **Key question:** Can the changes be described under ONE logical purpose/concern?
 
@@ -100,20 +101,20 @@ When the provided diff contains changes that address SEPARATE, UNRELATED concern
 
 ## Type Reference
 
-| Type     | Title                    | Emoji | Description                                                                                            | Example Scopes (non-exaustive)                                |
-| -------- | ------------------------ | ----- | ------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------- |
-| build    | Builds                   | 🏗️    | Changes that affect the build system or external dependencies                                          | gulp, broccoli, npm                                           |
-| chore    | Chores                   | 🔧    | Other changes that don't modify src or test files                                                      | scripts, config                                               |
-| ci       | Continuous Integrations  | 👷    | Changes to our CI configuration files and scripts                                                      | Travis, Circle, BrowserStack, SauceLabs,github actions, husky |
-| docs     | Documentation            | 📝    | Documentation only changes                                                                             | README, API                                                   |
-| feat     | Features                 | ✨    | A new feature                                                                                          | user, payment, gallery                                        |
-| fix      | Bug Fixes                | 🐛    | A bug fix                                                                                              | auth, data                                                    |
-| perf     | Performance Improvements | ⚡️   | A code change that improves performance                                                                | query, cache                                                  |
-| refactor | Code Refactoring         | ♻️    | A code change that neither fixes a bug nor adds a feature                                              | utils, helpers                                                |
-| revert   | Reverts                  | ⏪️   | Reverts a previous commit                                                                              | query, utils,                                                 |
-| style    | Styles                   | 💄    | Changes that do not affect the meaning of the code (white-space, formatting, missing semi-colons, etc) | formatting                                                    |
-| test     | Tests                    | ✅    | Adding missing tests or correcting existing tests                                                      | unit, e2e                                                     |
-| i18n     |                          | 🌐    | Internationalization                                                                                   | locale, translation                                           |
+| Type     | Title                    | Description                                                                                            | Example Scopes (non-exaustive)                                |
+| -------- | ------------------------ | ------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------- |
+| build    | Builds                   | Changes that affect the build system or external dependencies                                          | gulp, broccoli, npm                                           |
+| chore    | Chores                   | Other changes that don't modify src or test files                                                      | scripts, config                                               |
+| ci       | Continuous Integrations  | Changes to our CI configuration files and scripts                                                      | Travis, Circle, BrowserStack, SauceLabs,github actions, husky |
+| docs     | Documentation            | Documentation only changes                                                                             | README, API                                                   |
+| feat     | Features                 | A new feature                                                                                          | user, payment, gallery                                        |
+| fix      | Bug Fixes                | A bug fix                                                                                              | auth, data                                                    |
+| perf     | Performance Improvements | A code change that improves performance                                                                | query, cache                                                  |
+| refactor | Code Refactoring         | A code change that neither fixes a bug nor adds a feature                                              | utils, helpers                                                |
+| revert   | Reverts                  | Reverts a previous commit                                                                              | query, utils,                                                 |
+| style    | Styles                   | Changes that do not affect the meaning of the code (white-space, formatting, missing semi-colons, etc) | formatting                                                    |
+| test     | Tests                    | Adding missing tests or correcting existing tests                                                      | unit, e2e                                                     |
+| i18n     |                          | Internationalization                                                                                   | locale, translation                                           |
 
 ## More information about types
 
@@ -169,7 +170,7 @@ This type is used for commits that involve changes related to internationalizati
 
 ### Subject Line
 
-Format: `<emoji> <type>[optional (<branch>)][optional (<scope>)]: <description>`
+Format: `<type>[optional (<branch>)][optional (<scope>)]: <description>`
 
 - Scope and branch must be in English
 - Imperative mood
@@ -361,7 +362,7 @@ Examples of lockfiles: `pnpm-lock.yaml`, `package-lock.json`, `yarn.lock`, `Carg
 
 1. Output ONLY the generated commit message
 2. Write ONLY in English
-3. ALWAYS add the emoji to the beginning of first line
+3. NEVER include emoji or gitmoji shortcodes anywhere in the generated commit message (subject, body, or footer)
 4. NO additional text or explanations
 5. NO questions or comments
 6. NO formatting instructions or metadata
@@ -405,7 +406,7 @@ n });
 **EXAMPLE OUTPUT:**
 
 ```
-♻️ refactor(server): use environment variable for port configuration
+refactor(server): use environment variable for port configuration
 
 - rename port variable from lowercase to uppercase (PORT)
 - use process.env.PORT with fallback to PORT constant (7799)
@@ -438,7 +439,7 @@ index af76bc0..781d472 100644
 **EXAMPLE OUTPUT:**
 
 ```
-🔧 chore: update lint-staged config file extension from ts to mjs
+chore: update lint-staged config file extension from ts to mjs
 
 - change lint-staged.config.ts reference to lint-staged.config.mjs in package.json script
 ```
@@ -478,7 +479,7 @@ diff --git a/pnpm-lock.yaml b/pnpm-lock.yaml
 **EXAMPLE OUTPUT:**
 
 ```
-🔧 chore(deps): update @tanstack/react-router packages
+chore(deps): update @tanstack/react-router packages
 
 - @tanstack/react-router: 1.133.15 → 1.133.21
 - @tanstack/router-cli: 1.133.15 → 1.133.20
@@ -546,7 +547,7 @@ index 5160b59..aa9c5bd 100644
 **EXAMPLE OUTPUT:**
 
 ```
-🔧 chore(deps): update playwright to 1.56.1
+chore(deps): update playwright to 1.56.1
 ```
 
 **Explanation:** Even though the lockfile shows many transitive changes (playwright-core, @vitest/browser references, etc.), we only document the single direct dependency that was intentionally updated in package.json. The lockfile changes are an automatic consequences of this update.
@@ -677,22 +678,22 @@ return (
 **EXAMPLE OUTPUT:**
 
 ```
-🔧 chore(gitignore): update to use comprehensive gitignore template
+chore(gitignore): update to use comprehensive gitignore template
 
 - replace basic macOS section with complete template from toptal.com/developers/gitignore
 - add macOS-specific files (DS_Store, Spotlight, Thumbnails, iCloud files)
 - add React-specific ignores (node_modules, bower_components, sublime files)
 - remove .vscode directory from gitignore to track IDE settings
 
-📝 docs(main): remove redundant comment from mainWindow configuration
+docs(main): remove redundant comment from mainWindow configuration
 
 - remove "Add this line" comment from backgroundThrottling setting
 
-💄 style(demo): adjust navbar background opacity
+style(demo): adjust navbar background opacity
 
 - change background opacity from /10 to /15 in DemoMenu navbar
 
-♻️ refactor(db): improve database backup console message
+refactor(db): improve database backup console message
 
 - add "Database" prefix to backup completion and file path messages
 ```
@@ -726,7 +727,7 @@ index 1234567..abcdefg 100644
 **EXAMPLE OUTPUT:**
 
 ```
-✨ feat(feature/user-authentication)(auth): add JWT token generation to login
+feat(feature/user-authentication)(auth): add JWT token generation to login
 
 - generate authentication token upon successful login
 - include token in login response alongside user object
@@ -757,7 +758,7 @@ index 1234567..abcdef0 100644
 **EXAMPLE OUTPUT:**
 
 ```
-📝 docs(main): add usage notes to readme
+docs(main): add usage notes to readme
 ```
 
 ### Example 8 - No Identifiable Branch
@@ -765,8 +766,8 @@ index 1234567..abcdef0 100644
 When branch detection fails, returns empty output, or HEAD is detached, omit branch parentheses.
 
 ```
-🐛 fix(auth): handle expired session tokens
-🔧 chore: update repository tooling
+fix(auth): handle expired session tokens
+chore: update repository tooling
 ```
 
 **━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━**

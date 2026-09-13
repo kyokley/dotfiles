@@ -26,7 +26,6 @@ in {
       ];
     in {
       imports = home_modules;
-      programs.git.settings.user.email = "kyokley@mars";
 
       home = {
         sessionVariables = {

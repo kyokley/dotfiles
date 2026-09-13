@@ -8,7 +8,6 @@ in {
     ];
 
     programs = {
-      git.settings.user.email = "${host}";
       nh.flake = "github:kyokley/dotfiles";
     };
 

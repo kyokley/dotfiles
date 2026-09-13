@@ -3,6 +3,9 @@
     common = {
       pkgs,
       lib,
+      fullName,
+      username,
+      hostName,
       ...
     }: let
       clone-worktree = pkgs.writeShellApplication {
@@ -42,8 +45,10 @@
             init = {
               defaultBranch = "main";
             };
-            user.name = "Kevin Yokley";
-            user.email = lib.mkDefault "kyokley2@gmail.com";
+            user = {
+              email = lib.mkDefault "${username}@${hostName}";
+              name = lib.mkDefault fullName;
+            };
             alias = {
               mt = "!nvim -c DiffviewOpen";
               lol = ''log --graph --decorate --pretty=oneline --abbrev-commit --max-count=1000'';

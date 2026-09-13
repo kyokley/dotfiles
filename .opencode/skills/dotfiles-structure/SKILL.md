@@ -87,7 +87,8 @@ The `common` keys are baselines every host inherits; platform keys
 | `syncthing.nix`, `systemd.nix` (`systemd-services`), `tailscale.nix`, `distributed_builds.nix`, `laptop.nix` | various | Services / system integration parts |
 | `hyprland.nix`, `qtile/`, `waybar/`, `rofi/`, `dunst.nix`, `picom.nix` (+ `picom.conf`), `noctalia/` | various | Window managers / desktop; Noctalia includes local bar plugins such as `krill/` and `workspace-layout/` |
 | `kitty.nix`, `terminator.nix`, `tmux.nix`, `vim.nix`, `zsh/` (zsh.nix + powerlevel10k config) | `homeManager.*` | Terminal / editor / shell |
-| `ai/` | `homeManager.opencode`, `.fabric`, `.gitoc` | AI tooling — see "opencode config" below |
+| `ai/` | `homeManager.opencode`, `.fabric`, `.gitoc`, `.jitoc` | AI tooling; `jitoc.nix` generates descriptions for the current jj working copy — see "opencode config" below |
+| `ai/conventional-commit-ai-prompt.md` | N/A | Emoji-free Conventional Commit prompt used by the OpenCode `commit` command, `gitoc`, and `jitoc` |
 | `_secrets/` | **not imported** | agenix secrets: `secrets.nix` (definitions), `*.age` (encrypted), `syncthing/<host>/` certs+keys |
 
 ### `modules/hosts/` (auto-imported)
@@ -193,6 +194,15 @@ the default `nixpkgs#lua` may reject the `\u{...}` escapes. These tests run
 manually and are not wired into flake checks or CI.
 
 ### opencode config
+
+The `opencode` module imports `gitoc` and `jitoc`. Both use its `commit`
+command, backed by `conventional-commit-ai-prompt.md`, to generate emoji-free
+messages; `jitoc` feeds `jj diff --git -r @` into that
+command and applies the result with `jj commit` by default. Use
+`jitoc -d` / `jitoc --describe` to run `jj describe -r @` instead, without
+creating a new working-copy change. `jitoc --dry-run` prints the generated
+description without committing or describing, including with `--describe`
+(jj may still snapshot the working copy).
 
 `modules/parts/ai/opencode.nix` — `programs.opencode` (skills, commands,
 agents, settings), oh-my-opencode-slim presets, kdco notification timeout

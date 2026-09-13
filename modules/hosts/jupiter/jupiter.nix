@@ -106,8 +106,6 @@
     };
 
     programs = {
-      git.settings.user.email = "kyokley@jupiter";
-
       borgmatic = {
         enable = true;
         backups = {

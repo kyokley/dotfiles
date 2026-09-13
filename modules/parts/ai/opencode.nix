@@ -157,13 +157,16 @@
     in {
       _module.args.opencode_npm_deps = npm_deps;
 
-      imports = [inputs.self.modules.homeManager.gitoc];
+      imports = [
+        inputs.self.modules.homeManager.gitoc
+        inputs.self.modules.homeManager.jitoc
+      ];
       programs = {
         opencode = {
           enable = true;
           context = builtins.readFile "${inputs.caveman}/plugins/caveman/skills/caveman/SKILL.md";
           commands = {
-            commit = ./conventional-commit-with-gitmoji-ai-prompt.md;
+            commit = ./conventional-commit-ai-prompt.md;
             review = ./review_code.md;
           };
           settings = {

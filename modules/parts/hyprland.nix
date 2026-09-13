@@ -227,12 +227,21 @@
               {
                 _args = [
                   (lib.generators.mkLuaInline ''mod .. " + SHIFT + J"'')
-                  # Master-layout swapnext/swapprev, NOT hl.dsp.window.swap({next/prev}):
+                  # Scrolling swaps individual windows spatially, not whole columns.
+                  # Other layouts retain swapnext/swapprev, NOT window.swap({next/prev}):
                   # window.swap cycles the global window list (creation order) anchored
                   # at m_lastCycledWindow (the window last swapped with), so after the
                   # first swap both directions pick the same target (Hyprland #14757).
                   # Layout variants use the visual stack order and the focused window.
-                  (lib.generators.mkLuaInline ''hl.dsp.layout("swapnext")'')
+                  (lib.generators.mkLuaInline ''
+                    function()
+                      if hl.get_config("general.layout") == "scrolling" then
+                        hl.dispatch(hl.dsp.window.swap({ direction = "left" }))
+                      else
+                        hl.dispatch(hl.dsp.layout("swapnext"))
+                      end
+                    end
+                  '')
                 ];
               }
               {
@@ -254,7 +263,15 @@
               {
                 _args = [
                   (lib.generators.mkLuaInline ''mod .. " + SHIFT + K"'')
-                  (lib.generators.mkLuaInline ''hl.dsp.layout("swapprev")'')
+                  (lib.generators.mkLuaInline ''
+                    function()
+                      if hl.get_config("general.layout") == "scrolling" then
+                        hl.dispatch(hl.dsp.window.swap({ direction = "right" }))
+                      else
+                        hl.dispatch(hl.dsp.layout("swapprev"))
+                      end
+                    end
+                  '')
                 ];
               }
               {
@@ -293,7 +310,7 @@
                       local current = hl.get_config("general.layout")
 
                       if current == "scrolling" then
-                        hl.dispatch(hl.dsp.layout("swapcol r"))
+                        hl.dispatch(hl.dsp.layout("swapcol l"))
                       end
                     end
                   '')
@@ -323,7 +340,7 @@
                       local current = hl.get_config("general.layout")
 
                       if current == "scrolling" then
-                        hl.dispatch(hl.dsp.layout("swapcol l"))
+                        hl.dispatch(hl.dsp.layout("swapcol r"))
                       end
                     end
                   '')
