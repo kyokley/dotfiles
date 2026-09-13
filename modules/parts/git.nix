@@ -43,7 +43,10 @@
             init = {
               defaultBranch = "main";
             };
-            user = {inherit fullName email;};
+            user = {
+              inherit email;
+              name = fullName;
+            };
             alias = {
               mt = "!nvim -c DiffviewOpen";
               lol = ''log --graph --decorate --pretty=oneline --abbrev-commit --max-count=1000'';

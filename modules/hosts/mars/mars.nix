@@ -29,7 +29,7 @@ in {
       imports = home_modules;
       programs = {
         git.settings.user.email = lib.mkForce vcs_email;
-        jujutsu.settings.email = lib.mkForce vcs_email;
+        jujutsu.settings.user.email = lib.mkForce vcs_email;
       };
 
       home = {
