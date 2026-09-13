@@ -166,7 +166,7 @@
           enable = true;
           context = builtins.readFile "${inputs.caveman}/plugins/caveman/skills/caveman/SKILL.md";
           commands = {
-            commit = ./conventional-commit-with-gitmoji-ai-prompt.md;
+            commit = ./conventional-commit-ai-prompt.md;
             review = ./review_code.md;
           };
           settings = {
