@@ -49,7 +49,7 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 ### Single Type Changes
 
 ```
-<emoji> <type>(<branch>)[optional (<scope>)]: <description>
+<emoji> <type>[optional (<branch>)][optional (<scope>)]: <description>
 <BLANK LINE>
 [optional <body>]
 <BLANK LINE>
@@ -61,19 +61,19 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 When the provided diff contains changes that address SEPARATE, UNRELATED concerns, use this format to document each distinct change with its own subject line:
 
 ```
-<emoji> <type>(<branch>)[optional (<scope>)]: <description>
+<emoji> <type>[optional (<branch>)][optional (<scope>)]: <description>
 <BLANK LINE>
 [optional <body> of type 1]
 <BLANK LINE>
 [optional <footer(s)> of type 1]
 <BLANK LINE>
 <BLANK LINE>
-<emoji> <type>(<branch>)[optional (<scope>)]: <description>
+<emoji> <type>[optional (<branch>)][optional (<scope>)]: <description>
 <BLANK LINE>
 [optional <body> of type 2]
 <BLANK LINE>
 [optional <footer(s)> of type 2]
-<emoji> <type>(<branch>)[optional (<scope>)]: <description>
+<emoji> <type>[optional (<branch>)][optional (<scope>)]: <description>
 <BLANK LINE>
 [optional <body> of type 3]
 <BLANK LINE>
@@ -169,7 +169,7 @@ This type is used for commits that involve changes related to internationalizati
 
 ### Subject Line
 
-Format: `<emoji> <type>(<branch>)[optional (<scope>)]: <description>`
+Format: `<emoji> <type>[optional (<branch>)][optional (<scope>)]: <description>`
 
 - Scope and branch must be in English
 - Imperative mood
@@ -177,7 +177,12 @@ Format: `<emoji> <type>(<branch>)[optional (<scope>)]: <description>`
 - No period at the end
 - Maximum of 100 characters per line including any spaces or special characters
 - Must be in English
-- Use "!`git branch --show-current | tr -d '\n'`" as <branch>
+- Detect branch with "!`git branch --show-current 2>/dev/null | tr -d '\n' || true`".
+- Use detected current branch only when valid and nonempty.
+- If branch detection is unavailable, fails, returns empty output, or HEAD is detached, omit the entire branch parentheses.
+- For jj repositories without an identifiable branch, omit the entire branch parentheses.
+- Never guess a branch or use `unknown-branch`, `HEAD`, or empty branch parentheses.
+- Scope is independent: include or omit scope according to scope rules whether or not a branch is present.
 
 **When to include scope:**
 
@@ -400,7 +405,7 @@ n });
 **EXAMPLE OUTPUT:**
 
 ```
-♻️ refactor(unknown-branch)(server): use environment variable for port configuration
+♻️ refactor(server): use environment variable for port configuration
 
 - rename port variable from lowercase to uppercase (PORT)
 - use process.env.PORT with fallback to PORT constant (7799)
@@ -433,7 +438,7 @@ index af76bc0..781d472 100644
 **EXAMPLE OUTPUT:**
 
 ```
-🔧 chore(unknown-branch): update lint-staged config file extension from ts to mjs
+🔧 chore: update lint-staged config file extension from ts to mjs
 
 - change lint-staged.config.ts reference to lint-staged.config.mjs in package.json script
 ```
@@ -473,7 +478,7 @@ diff --git a/pnpm-lock.yaml b/pnpm-lock.yaml
 **EXAMPLE OUTPUT:**
 
 ```
-🔧 chore(unknown-branch)(deps): update @tanstack/react-router packages
+🔧 chore(deps): update @tanstack/react-router packages
 
 - @tanstack/react-router: 1.133.15 → 1.133.21
 - @tanstack/router-cli: 1.133.15 → 1.133.20
@@ -541,7 +546,7 @@ index 5160b59..aa9c5bd 100644
 **EXAMPLE OUTPUT:**
 
 ```
-🔧 chore(deps)(unknown-branch): update playwright to 1.56.1
+🔧 chore(deps): update playwright to 1.56.1
 ```
 
 **Explanation:** Even though the lockfile shows many transitive changes (playwright-core, @vitest/browser references, etc.), we only document the single direct dependency that was intentionally updated in package.json. The lockfile changes are an automatic consequences of this update.
@@ -672,22 +677,22 @@ return (
 **EXAMPLE OUTPUT:**
 
 ```
-🔧 chore(unknown-branch)(gitignore): update to use comprehensive gitignore template
+🔧 chore(gitignore): update to use comprehensive gitignore template
 
 - replace basic macOS section with complete template from toptal.com/developers/gitignore
 - add macOS-specific files (DS_Store, Spotlight, Thumbnails, iCloud files)
 - add React-specific ignores (node_modules, bower_components, sublime files)
 - remove .vscode directory from gitignore to track IDE settings
 
-📝 docs(unknown-branch)(main): remove redundant comment from mainWindow configuration
+📝 docs(main): remove redundant comment from mainWindow configuration
 
 - remove "Add this line" comment from backgroundThrottling setting
 
-💄 style(unknown-branch)(demo): adjust navbar background opacity
+💄 style(demo): adjust navbar background opacity
 
 - change background opacity from /10 to /15 in DemoMenu navbar
 
-♻️ refactor(unknown-branch)(db): improve database backup console message
+♻️ refactor(db): improve database backup console message
 
 - add "Database" prefix to backup completion and file path messages
 ```
@@ -753,6 +758,15 @@ index 1234567..abcdef0 100644
 
 ```
 📝 docs(main): add usage notes to readme
+```
+
+### Example 8 - No Identifiable Branch
+
+When branch detection fails, returns empty output, or HEAD is detached, omit branch parentheses.
+
+```
+🐛 fix(auth): handle expired session tokens
+🔧 chore: update repository tooling
 ```
 
 **━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━**
