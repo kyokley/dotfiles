@@ -310,7 +310,7 @@
                       local current = hl.get_config("general.layout")
 
                       if current == "scrolling" then
-                        hl.dispatch(hl.dsp.layout("swapcol r"))
+                        hl.dispatch(hl.dsp.layout("swapcol l"))
                       end
                     end
                   '')
@@ -340,7 +340,7 @@
                       local current = hl.get_config("general.layout")
 
                       if current == "scrolling" then
-                        hl.dispatch(hl.dsp.layout("swapcol l"))
+                        hl.dispatch(hl.dsp.layout("swapcol r"))
                       end
                     end
                   '')
