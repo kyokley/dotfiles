@@ -67,6 +67,7 @@ The `common` keys are baselines every host inherits; platform keys
 | `.pre-commit-config.yaml` | **GENERATED** by git-hooks.nix — never edit |
 | `.github/workflows/test.yml` | CI: evaluates flake checks plus every NixOS and standalone home-manager config on PR / push to main |
 | `tests/krill-widget.lua` | Standalone Lua regression tests for the Noctalia Krill widget; see "Lua widget tests" |
+| `tests/powerlevel10k-jj.zsh`, `tests/powerlevel10k-jj-integration.zsh` | JJ prompt regression tests and real Powerlevel10k rendering tests |
 | `devenv.lock`, `flake.lock` | Lockfiles |
 
 ### `modules/lib/`
@@ -86,7 +87,8 @@ The `common` keys are baselines every host inherits; platform keys
 | `git.nix`, `bitwarden.nix`, `clamav.nix`, `flatpak.nix`, `shutdown.nix` | various | Single-purpose parts, names say it all |
 | `syncthing.nix`, `systemd.nix` (`systemd-services`), `tailscale.nix`, `distributed_builds.nix`, `laptop.nix` | various | Services / system integration parts |
 | `hyprland.nix`, `qtile/`, `waybar/`, `rofi/`, `dunst.nix`, `picom.nix` (+ `picom.conf`), `noctalia/` | various | Window managers / desktop; Noctalia includes local bar plugins such as `krill/` and `workspace-layout/` |
-| `kitty.nix`, `terminator.nix`, `tmux.nix`, `vim.nix`, `zsh/` (zsh.nix + powerlevel10k config) | `homeManager.*` | Terminal / editor / shell |
+| `kitty.nix`, `terminator.nix`, `tmux.nix`, `vim.nix` | `homeManager.*` | Terminal / editor |
+| `zsh/` (`zsh.nix`, `powerlevel10k_config.zsh`, `powerlevel10k_jj.zsh`) | `homeManager.common` | Prezto shell and Powerlevel10k prompt, with JJ status replacing Git in JJ workspaces |
 | `ai/` | `homeManager.opencode`, `.fabric`, `.gitoc`, `.jitoc` | AI tooling; `jitoc.nix` generates descriptions for the current jj working copy — see "opencode config" below |
 | `ai/conventional-commit-ai-prompt.md` | N/A | Emoji-free Conventional Commit prompt used by the OpenCode `commit` command, `gitoc`, and `jitoc` |
 | `_secrets/` | **not imported** | agenix secrets: `secrets.nix` (definitions), `*.age` (encrypted), `syncthing/<host>/` certs+keys |
@@ -193,6 +195,20 @@ test does not validate Noctalia runtime integration. Use Lua 5.4 explicitly:
 the default `nixpkgs#lua` may reject the `\u{...}` escapes. These tests run
 manually and are not wired into flake checks or CI.
 
+### Powerlevel10k JJ tests
+
+Run `zsh -f tests/powerlevel10k-jj.zsh` from the repository root. The test
+creates isolated real JJ and Git repositories, stubs P10k rendering, and checks
+the cached JJ segment does not snapshot the working copy. Requires `zsh`, `jj`,
+and `git` on PATH.
+
+Run the real rendering test with
+`P10K_THEME=/path/to/powerlevel10k.zsh-theme zsh -f tests/powerlevel10k-jj-integration.zsh`.
+Prezto bundles this theme at
+`share/zsh-prezto/modules/prompt/external/powerlevel10k/powerlevel10k.zsh-theme`
+inside its package. The test checks first-prompt freshness, Git fallback,
+redraw caching, and metadata escaping. Both suites run manually, not in CI.
+
 ### opencode config
 
 The `opencode` module imports `gitoc` and `jitoc`. Both use its `commit`
@@ -263,6 +279,11 @@ is uncertain.
   command in the later OSC 133 marker; upstream emits an empty marker that
   leaves `%c` blank in command-finish notifications.
 - The repo is expected at `~/dotfiles` on hosts (`nh` default).
+- Powerlevel10k builds segments before `p10k-on-pre-prompt` runs. The JJ
+  segment uses deferred variable references so this hook's refreshed text
+  appears immediately. It uses `--ignore-working-copy`, so status reflects
+  the last JJ snapshot rather than unsnapshotted edits. JJ is omitted from
+  instant prompt; the serialized hook guards against an unavailable helper.
 - Nix-managed OpenCode plugins resolve imports from their canonical Nix store
   path, not the Home Manager symlink path. Bundle each plugin with a sibling
   `node_modules` link when it has runtime dependencies.

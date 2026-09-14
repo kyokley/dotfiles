@@ -34,6 +34,7 @@
     # =========================[ Line #1 ]=========================
     os_icon                 # os identifier
     dir                     # current directory
+    jj                      # Jujutsu working-copy summary
     vcs                     # git status
     # =========================[ Line #2 ]=========================
     newline                 # \n

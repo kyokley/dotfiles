@@ -53,6 +53,7 @@
         ];
         tmux.autoStartRemote = true;
         extraConfig = builtins.concatStringsSep "\n" [
+          (builtins.readFile ./powerlevel10k_jj.zsh)
           (builtins.readFile ./powerlevel10k_config.zsh)
           ''
 

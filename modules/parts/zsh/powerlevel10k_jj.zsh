@@ -1,0 +1,56 @@
+# Refresh this once per prompt. Rendering must only use this cached text.
+typeset -g _dotfiles_jj_text=
+
+function _dotfiles_jj_update() {
+  emulate -L zsh
+  setopt no_aliases
+
+  typeset -g _dotfiles_jj_text=
+  (( $+commands[jj] )) || { (( $+functions[p10k] )) && p10k display '*/vcs'=show; return 0; }
+
+  local directory=${PWD:A} found=
+  while true; do
+    # A colocated repo has both markers; .jj takes precedence.
+    [[ -d $directory/.jj ]] && { found=1; break; }
+    # Do not leak an enclosing JJ repo into a nested Git worktree.
+    [[ -d $directory/.git || -f $directory/.git ]] && break
+    [[ $directory == / ]] && break
+    directory=${directory:h}
+  done
+  [[ -n $found ]] || { (( $+functions[p10k] )) && p10k display '*/vcs'=show; return 0; }
+
+  # Based on https://github.com/jj-vcs/jj/wiki/Starship.
+  # --ignore-working-copy reads the last snapshot. Unsnapshotted edits appear after the next jj command.
+  local template='
+separate(" ",
+  change_id.shortest(4),
+  bookmarks.map(|x| truncate_end(10, x.name(), "…")).join(" "),
+  tags.map(|x| "#" ++ truncate_end(10, x.name(), "…")).join(" "),
+  coalesce(truncate_end(29, description.first_line(), "…"), "(no description)"),
+  surround("[", "]", separate(",",
+    if(conflict, "conflict"),
+    if(divergent, "divergent"),
+    if(hidden, "hidden"),
+    if(immutable, "immutable"),
+    if(empty, "empty"))))
+'
+  local output
+  output=$(command jj log -r @ --limit 1 --ignore-working-copy --no-graph --color never --no-pager \
+    --template "$template" 2>/dev/null) || { (( $+functions[p10k] )) && p10k display '*/vcs'=show; return 0; }
+  [[ -n $output ]] || { (( $+functions[p10k] )) && p10k display '*/vcs'=show; return 0; }
+
+  # Make control bytes visible and prevent prompt expansion of JJ metadata.
+  output=${(V)output}
+  typeset -g _dotfiles_jj_text=${output//\%/%%}
+  (( $+functions[p10k] )) && p10k display '*/vcs'=hide
+}
+
+# P10k serializes this hook for instant prompt, before this helper may exist.
+function p10k-on-pre-prompt() {
+  (( $+functions[_dotfiles_jj_update] )) || return 0
+  _dotfiles_jj_update
+}
+
+function prompt_jj() {
+  p10k segment -b 6 -f 0 -i jj -c '${_dotfiles_jj_text}' -e -t '${_dotfiles_jj_text}'
+}
