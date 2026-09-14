@@ -1,4 +1,4 @@
-{
+{constants, ...}: {
   flake.modules = {
     homeManager."yokley@mars" = {
       programs.ssh = {
@@ -16,8 +16,8 @@
 
     nixos.mars = {
       networking.extraHosts = ''
-        192.168.50.126 saturn # ethernet
-        192.168.50.96 saturn-wifi # wifi
+        ${constants.saturn-ip} saturn # ethernet
+        ${constants.saturn-wifi-ip} saturn-wifi # wifi
       '';
     };
   };
