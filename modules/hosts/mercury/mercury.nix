@@ -29,10 +29,6 @@
       };
 
       home = {
-        sessionVariables = {
-          QTILE_NET_INTERFACE = "enp14s0";
-        };
-
         packages = [
           pkgs.mattermost-desktop
         ];
