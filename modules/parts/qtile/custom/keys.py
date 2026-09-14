@@ -5,13 +5,13 @@ try:
 except ImportError:
     from libqtile.command import lazy  # Soon to be deprecated
 from custom.constants import (
-    MOD,
-    SHIFT,
-    CONTROL,
-    SPACE,
-    PERIOD,
     COMMA,
+    CONTROL,
     ENTER,
+    MOD,
+    PERIOD,
+    SHIFT,
+    SPACE,
 )
 
 QTILE_CONFIG_DIRECTORY = "~/.config/qtile"

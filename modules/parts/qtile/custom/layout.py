@@ -1,5 +1,7 @@
 import functools
-from libqtile import hook, widget, layout
+
+from libqtile import hook, layout, widget
+
 from custom.default import extension_defaults
 
 

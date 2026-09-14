@@ -4,33 +4,32 @@ import os
 import random
 import re
 import shlex
-import subprocess
 import shutil
-import psutil
-
+import subprocess
 from dataclasses import dataclass
 from datetime import datetime, timedelta
 from enum import StrEnum
 from pathlib import Path
 
+import psutil
 import requests
 from dateutil import tz
+from libqtile import hook, qtile
 from libqtile.log_utils import logger
 from libqtile.widget import (
-    WidgetBox,
-    Battery,
-    Volume,
-    TextBox,
-    base,
-    Net,
     DF,
-    MemoryGraph,
+    Battery,
     CPUGraph,
     Image,
+    MemoryGraph,
+    Net,
+    TextBox,
+    Volume,
+    WidgetBox,
+    base,
 )
 from libqtile.widget.battery import BatteryState
 from libqtile.widget.generic_poll_text import GenPollText
-from libqtile import qtile, hook
 
 from custom.default import extension_defaults
 from custom.utils import determine_browser
@@ -60,7 +59,7 @@ BUTTON_RIGHT = 3
 
 GCAL_CMD = (
     "docker run --rm "
-    f"-v {str(Path.home())}/.gcalcli_oauth:/root/.gcalcli_oauth "
+    f"-v {Path.home()!s}/.gcalcli_oauth:/root/.gcalcli_oauth "
     "kyokley/gcalcli"
 )
 KRILL_CMD = f"docker run --rm -t --cpus=.25 --net=host --env KRILL_PROXY={KRILL_PROXY} kyokley/krill -S /app/sources.txt --snapshot"
@@ -79,7 +78,7 @@ class DebugWidgetMixin:
     def _print(self, msg, level=LogLevel.WARNING):
         log_cmd = logger.warning if level == LogLevel.WARNING else logger.exception
         if self.debug:
-            log_cmd("{}: {}".format(str(self.__class__), msg))
+            log_cmd(f"{self.__class__!s}: {msg}")
 
 
 class DebugGenPollText(GenPollText, DebugWidgetMixin):

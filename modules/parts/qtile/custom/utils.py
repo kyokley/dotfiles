@@ -1,8 +1,7 @@
-import shlex
 import platform
+import shlex
 import subprocess
 from enum import Enum, auto
-
 
 FLATPAK_EXECUTABLE = "flatpak"
 POSSIBLE_BROWSERS = (

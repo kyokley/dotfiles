@@ -1,10 +1,11 @@
 from libqtile.config import (
+    DropDown,
     Group,
+    Key,
     Match,
     ScratchPad,
-    DropDown,
-    Key,
 )
+
 from custom.constants import MOD, SHIFT
 
 try:

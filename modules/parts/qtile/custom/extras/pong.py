@@ -124,10 +124,10 @@ class Paddle(_PongObject):
 
     def move(self, ball):
         """Basic control to move paddle up or down."""
-        if abs(ball.x - self.x) > self.react_distance:
-            self.velocity.y = 0
-        elif (self.left and ball.x < self.x) or (
-            not self.left and ball.x > self.x + self.width
+        if (
+            abs(ball.x - self.x) > self.react_distance
+            or (self.left and ball.x < self.x)
+            or (not self.left and ball.x > self.x + self.width)
         ):
             self.velocity.y = 0
         elif ball.y < self.y:

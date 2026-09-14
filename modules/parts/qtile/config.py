@@ -26,9 +26,10 @@
 
 
 from itertools import chain
+
 from libqtile.config import (
-    Drag,
     Click,
+    Drag,
     Match,
 )
 
@@ -37,12 +38,12 @@ try:
 except ImportError:
     from libqtile.command import lazy  # Soon to be deprecated
 
-from libqtile import layout, hook
+from custom.groups import GROUP_KEYS, GROUPS
+from custom.keys import KEYS, MOD
+from custom.layout import LAYOUTS
 from custom.screen import SCREENS
 from custom.utils import run_command
-from custom.keys import KEYS, MOD
-from custom.groups import GROUPS, GROUP_KEYS
-from custom.layout import LAYOUTS
+from libqtile import hook, layout
 
 try:
     from typing import List  # noqa: F401
