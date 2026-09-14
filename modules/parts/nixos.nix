@@ -10,8 +10,6 @@
         ...
       }: {
         imports = with inputs.self.modules.nixos; [
-          # Choose one of qtile or hyprland. Must match homeManager selection below.
-          # qtile
           hyprland
 
           # Uncomment below to set default password for build-vm
@@ -265,8 +263,6 @@
         '';
       in {
         imports = with inputs.self.modules.homeManager; [
-          # Choose one of qtile or hyprland. Must match homeManager selection below.
-          # qtile
           hyprland
 
           terminator

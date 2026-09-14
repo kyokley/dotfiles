@@ -86,7 +86,7 @@ The `common` keys are baselines every host inherits; platform keys
 | `dev.nix` | `homeManager.dev` | Dev tools: age (+`init-age`/`show-age`), devenv, direnv, usql, tig, jq |
 | `git.nix`, `bitwarden.nix`, `clamav.nix`, `flatpak.nix`, `shutdown.nix` | various | Single-purpose parts, names say it all |
 | `syncthing.nix`, `systemd.nix` (`systemd-services`), `tailscale.nix`, `distributed_builds.nix`, `laptop.nix` | various | Services / system integration parts |
-| `hyprland.nix`, `qtile/`, `waybar/`, `rofi/`, `dunst.nix`, `picom.nix` (+ `picom.conf`), `noctalia/` | various | Window managers / desktop; Noctalia includes local bar plugins such as `krill/` and `workspace-layout/` |
+| `hyprland.nix`, `waybar/`, `rofi/`, `dunst.nix`, `picom.nix` (+ `picom.conf`), `noctalia/` | various | Window managers / desktop; Noctalia includes local bar plugins such as `krill/` and `workspace-layout/` |
 | `kitty.nix`, `terminator.nix`, `tmux.nix`, `vim.nix` | `homeManager.*` | Terminal / editor |
 | `zsh/` (`zsh.nix`, `powerlevel10k_config.zsh`, `powerlevel10k_jj.zsh`) | `homeManager.common` | Prezto shell and Powerlevel10k prompt, with JJ status replacing Git in JJ workspaces |
 | `ai/` | `homeManager.opencode`, `.fabric`, `.gitoc`, `.jitoc` | AI tooling; `jitoc.nix` generates descriptions for the current jj working copy — see "opencode config" below |

@@ -29,7 +29,6 @@ in {
 
       home = {
         sessionVariables = {
-          QTILE_NET_INTERFACE = "wlp1s0";
           CDPATH = lib.concatStringsSep ":" cd_paths;
         };
 
