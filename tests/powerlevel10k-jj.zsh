@@ -123,10 +123,16 @@ prompt_jj
 assert_eq "$(calls)" $queried
 assert_contains "$(last_display)" '-b 6 -f 0 -i jj -c ${_dotfiles_jj_text} -e -t ${_dotfiles_jj_text}'
 
-# No description, failed JJ, and missing JJ leave normal Git display active.
+# Nonempty descriptions display and truncate.
+jj --quiet describe -m '123456789012345678901234567890'
+_dotfiles_jj_update
+assert_contains $_dotfiles_jj_text '1234567890123456789012345678…'
+
+# Absent descriptions omit placeholder and separator; failed and missing JJ show Git.
 jj --quiet describe -m ''
 _dotfiles_jj_update
-assert_contains $_dotfiles_jj_text '(no description)'
+[[ $_dotfiles_jj_text != *'(no description)'* ]] || fail 'absent description rendered placeholder'
+[[ $_dotfiles_jj_text != *'  '* ]] || fail 'absent description rendered extra separator'
 export JJ_FAIL=1
 _dotfiles_jj_update
 unset JJ_FAIL
@@ -145,12 +151,13 @@ p10k_calls=()
 prompt_jj
 assert_contains "$(last_display)" '-b 6 -f 0 -i jj -c ${_dotfiles_jj_text} -e -t ${_dotfiles_jj_text}'
 
-# --ignore-working-copy must not snapshot unsnapshotted edits or create an operation.
+# First prompt after a file edit reads live state, clearing empty and creating a snapshot operation.
 before_operation=$(command jj op log --ignore-working-copy --limit 1 --no-graph --template 'id.short()')
 print unsnapshotted >$test_root/colocated/unsnapshotted
 _dotfiles_jj_update
 after_operation=$(command jj op log --ignore-working-copy --limit 1 --no-graph --template 'id.short()')
-assert_eq $after_operation $before_operation
+[[ $_dotfiles_jj_text != *empty* ]] || fail 'unsnapshotted file edit still rendered empty'
+[[ $after_operation != $before_operation ]] || fail 'live prompt query did not create snapshot operation'
 
 # P10k's serialized instant hook can run before helper definition.
 unfunction _dotfiles_jj_update

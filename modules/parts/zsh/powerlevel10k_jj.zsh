@@ -20,13 +20,13 @@ function _dotfiles_jj_update() {
   [[ -n $found ]] || { (( $+functions[p10k] )) && p10k display '*/vcs'=show; return 0; }
 
   # Based on https://github.com/jj-vcs/jj/wiki/Starship.
-  # --ignore-working-copy reads the last snapshot. Unsnapshotted edits appear after the next jj command.
+  # Read live working-copy snapshots once per prompt. Redraws use cached text.
   local template='
 separate(" ",
   change_id.shortest(4),
   bookmarks.map(|x| truncate_end(10, x.name(), "…")).join(" "),
   tags.map(|x| "#" ++ truncate_end(10, x.name(), "…")).join(" "),
-  coalesce(truncate_end(29, description.first_line(), "…"), "(no description)"),
+  truncate_end(29, description.first_line(), "…"),
   surround("[", "]", separate(",",
     if(conflict, "conflict"),
     if(divergent, "divergent"),
@@ -35,7 +35,7 @@ separate(" ",
     if(empty, "empty"))))
 '
   local output
-  output=$(command jj log -r @ --limit 1 --ignore-working-copy --no-graph --color never --no-pager \
+  output=$(command jj log -r @ --limit 1 --no-graph --color never --no-pager \
     --template "$template" 2>/dev/null) || { (( $+functions[p10k] )) && p10k display '*/vcs'=show; return 0; }
   [[ -n $output ]] || { (( $+functions[p10k] )) && p10k display '*/vcs'=show; return 0; }
 
