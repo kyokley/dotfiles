@@ -199,8 +199,9 @@ manually and are not wired into flake checks or CI.
 
 Run `zsh -f tests/powerlevel10k-jj.zsh` from the repository root. The test
 creates isolated real JJ and Git repositories, stubs P10k rendering, and checks
-the cached JJ segment does not snapshot the working copy. Requires `zsh`, `jj`,
-and `git` on PATH.
+prompt refresh snapshots working-copy edits while redraws use cached text.
+It also checks description truncation and omission of unset descriptions without extra spacing.
+Requires `zsh`, `jj`, and `git` on PATH.
 
 Run the real rendering test with
 `P10K_THEME=/path/to/powerlevel10k.zsh-theme zsh -f tests/powerlevel10k-jj-integration.zsh`.
@@ -281,8 +282,8 @@ is uncertain.
 - The repo is expected at `~/dotfiles` on hosts (`nh` default).
 - Powerlevel10k builds segments before `p10k-on-pre-prompt` runs. The JJ
   segment uses deferred variable references so this hook's refreshed text
-  appears immediately. It uses `--ignore-working-copy`, so status reflects
-  the last JJ snapshot rather than unsnapshotted edits. JJ is omitted from
+  appears immediately. It snapshots the working copy once per prompt refresh
+  so status reflects file edits; redraws use cached text. JJ is omitted from
   instant prompt; the serialized hook guards against an unavailable helper.
 - Nix-managed OpenCode plugins resolve imports from their canonical Nix store
   path, not the Home Manager symlink path. Bundle each plugin with a sibling
