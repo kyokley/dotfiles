@@ -261,6 +261,12 @@
             xdg-open "$file"
           done
         '';
+        shot = pkgs.writeShellApplication {
+          name = "shot";
+          text = ''
+            ${pkgs.grim}/bin/grim -g "$(${pkgs.slurp}/bin/slurp)" "$@"
+          '';
+        };
       in {
         imports = with inputs.self.modules.homeManager; [
           hyprland
@@ -276,6 +282,7 @@
             thunderbird
             nerd-fonts.hack
             vlc
+            shot
             open-all
             inputs.fastfetch-config.packages.${pkgs.stdenv.hostPlatform.system}.default
           ];
