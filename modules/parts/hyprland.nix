@@ -459,28 +459,13 @@
               match.class = "kitty";
               border_size = 3;
             }
+            # Let Zoom choose window sizes; only force the annotation toolbar to float.
             {
               match = {
                 class = "zoom";
                 title = "annotate_toolbar";
               };
               float = true;
-              size = "200 200";
-            }
-            {
-              match = {
-                class = "zoom";
-                title = "Leave meeting panel";
-                float = true;
-              };
-              size = "200 100";
-            }
-            {
-              match = {
-                class = "zoom";
-                float = true;
-              };
-              size = "638 510";
             }
             {
               match.class = "zoom";
