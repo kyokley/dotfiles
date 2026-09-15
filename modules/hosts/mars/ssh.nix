@@ -8,8 +8,6 @@
               Port 10101
           Host saturn-wifi
               Port 10101
-          Host saturn-eth
-              Port 10101
         '';
       };
     };
