@@ -179,7 +179,6 @@
               {
                 _args = [
                   (lib.generators.mkLuaInline ''mod .. " + SHIFT + C"'')
-                  # "SUPER + C"
                   (lib.generators.mkLuaInline "hl.dsp.window.close()")
                   {locked = true;}
                 ];
@@ -429,6 +428,22 @@
                   {locked = true;}
                 ];
               }
+              {
+                _args = [
+                  "Print"
+                  (lib.generators.mkLuaInline ''
+                    hl.dsp.exec_cmd('${pkgs.grim}/bin/grim -g "$(${pkgs.slurp}/bin/slurp)" - | ${pkgs.swappy}/bin/swappy -f -')
+                  '')
+                ];
+              }
+              {
+                _args = [
+                  (lib.generators.mkLuaInline ''mod .. " + PRINT"'')
+                  (lib.generators.mkLuaInline ''
+                    hl.dsp.exec_cmd('${pkgs.grim}/bin/grim -g "$(${pkgs.slurp}/bin/slurp -d)" - | ${pkgs.wl-clipboard}/bin/wl-copy')
+                  '')
+                ];
+              }
             ]
             ++ ws;
 
@@ -523,11 +538,15 @@
       };
 
       home = {
-        packages = [
-          pkgs.libnotify
-          pkgs.pamixer
-          pkgs.brightnessctl
-          pkgs.playerctl
+        packages = with pkgs; [
+          libnotify
+          pamixer
+          brightnessctl
+          playerctl
+          grim
+          slurp
+          swappy
+          wl-clipboard
         ];
 
         pointerCursor = {
