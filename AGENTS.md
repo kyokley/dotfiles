@@ -19,3 +19,5 @@ Nix flake-parts dotfiles: NixOS + nix-darwin + standalone home-manager hosts.
   `git commit -m "<message>"`.
 - Always include a commit message summarizing the most significant changes.
   Review the status and diff first; never include unrelated changes or secrets.
+- Immediately before each commit, display the full, exact commit message in
+  a user-visible message. Do not rely only on tool calls or command output.
