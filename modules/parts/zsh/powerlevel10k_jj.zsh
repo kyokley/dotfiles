@@ -1,11 +1,13 @@
 # Refresh this once per prompt. Rendering must only use this cached text.
 typeset -g _dotfiles_jj_text=
+typeset -g _dotfiles_jj_empty=
 
 function _dotfiles_jj_update() {
   emulate -L zsh
   setopt no_aliases
 
   typeset -g _dotfiles_jj_text=
+  typeset -g _dotfiles_jj_empty=
   (( $+commands[jj] )) || { (( $+functions[p10k] )) && p10k display '*/vcs'=show; return 0; }
 
   local directory=${PWD:A} found=
@@ -22,7 +24,7 @@ function _dotfiles_jj_update() {
   # Based on https://github.com/jj-vcs/jj/wiki/Starship.
   # Read live working-copy snapshots once per prompt. Redraws use cached text.
   local template='
-separate(" ",
+if(empty, "empty|", "nonempty|") ++ separate(" ",
   change_id.shortest(4),
   bookmarks.map(|x| truncate_end(10, x.name(), "…")).join(" "),
   tags.map(|x| "#" ++ truncate_end(10, x.name(), "…")).join(" "),
@@ -37,11 +39,27 @@ separate(" ",
   local output
   output=$(command jj log -r @ --limit 1 --no-graph --color never --no-pager \
     --template "$template" 2>/dev/null) || { (( $+functions[p10k] )) && p10k display '*/vcs'=show; return 0; }
+  local empty
+  case $output in
+    empty\|*)
+      empty=1
+      output=${output#empty\|}
+      ;;
+    nonempty\|*)
+      empty=0
+      output=${output#nonempty\|}
+      ;;
+    *)
+      (( $+functions[p10k] )) && p10k display '*/vcs'=show
+      return 0
+      ;;
+  esac
   [[ -n $output ]] || { (( $+functions[p10k] )) && p10k display '*/vcs'=show; return 0; }
 
   # Make control bytes visible and prevent prompt expansion of JJ metadata.
   output=${(V)output}
   typeset -g _dotfiles_jj_text=${output//\%/%%}
+  typeset -g _dotfiles_jj_empty=$empty
   (( $+functions[p10k] )) && p10k display '*/vcs'=hide
 }
 
@@ -52,5 +70,6 @@ function p10k-on-pre-prompt() {
 }
 
 function prompt_jj() {
-  p10k segment -b 6 -f 0 -i jj -c '${_dotfiles_jj_text}' -e -t '${_dotfiles_jj_text}'
+  p10k segment -b 2 -f 0 -i jj -c '${_dotfiles_jj_text:+${_dotfiles_jj_empty:#0}}' -e -t '${_dotfiles_jj_text}'
+  p10k segment -b 3 -f 0 -i jj -c '${_dotfiles_jj_text:+${_dotfiles_jj_empty:#1}}' -e -t '${_dotfiles_jj_text}'
 }
