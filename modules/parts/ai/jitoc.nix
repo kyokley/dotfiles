@@ -1,5 +1,9 @@
 {
-  flake.modules.homeManager.jitoc = {pkgs, ...}: let
+  flake.modules.homeManager.jitoc = {
+    config,
+    pkgs,
+    ...
+  }: let
     jitoc = pkgs.writeShellScriptBin "jitoc" ''
       set -euo pipefail
 
@@ -50,7 +54,7 @@
       fi
 
       if ! message="$(
-        printf '%s\n' "$diff" | ${pkgs.opencode}/bin/opencode --log-level INFO run --command commit 2>/dev/null
+        printf '%s\n' "$diff" | ${config.programs.opencode.package}/bin/opencode --log-level INFO run --command commit
       )"; then
         printf '%s\n' "Failed to generate description" >&2
         exit 1

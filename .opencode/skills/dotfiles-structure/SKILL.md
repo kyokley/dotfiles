@@ -292,6 +292,10 @@ is uncertain.
 - Nix-managed OpenCode plugins resolve imports from their canonical Nix store
   path, not the Home Manager symlink path. Bundle each plugin with a sibling
   `node_modules` link when it has runtime dependencies.
+- `gitoc` and `jitoc` use `config.programs.opencode.package`, not
+  `pkgs.opencode`, so package overrides also apply to commit generation.
+  Their baked-in store paths do not follow the shell's `opencode` executable.
+  `jitoc` preserves OpenCode stderr so generation failures remain visible.
 - This skill self-maintains: after any structure-relevant change, follow the
   Maintenance protocol above. `AGENTS.md` at the repo root reminds every
   session of this duty.

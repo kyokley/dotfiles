@@ -1,5 +1,9 @@
 {
-  flake.modules.homeManager.gitoc = {pkgs, ...}: let
+  flake.modules.homeManager.gitoc = {
+    config,
+    pkgs,
+    ...
+  }: let
     gitoc = pkgs.writeShellScriptBin "gitoc" ''
       # Parse command line arguments
       add_all=false
@@ -50,14 +54,14 @@
       fi
 
       if [[ "$dry_run" != true ]]; then
-          message="$(git diff --staged | ${pkgs.opencode}/bin/opencode --log-level INFO run --command commit 2>/dev/null)"
+          message="$(git diff --staged | ${config.programs.opencode.package}/bin/opencode --log-level INFO run --command commit 2>/dev/null)"
           echo "$message"
           echo
           echo
           git commit -m "$message"
       else
           echo -e "\033[33mDry run: No changes will be made. Commit message would be:\033[0m"
-          printf "$(${pkgs.opencode}/bin/opencode --log-level INFO run --command commit 2>/dev/null)"
+          printf "$(${config.programs.opencode.package}/bin/opencode --log-level INFO run --command commit 2>/dev/null)"
       fi
     '';
   in {
