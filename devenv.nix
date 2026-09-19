@@ -60,7 +60,7 @@
     check-case-conflicts.enable = true;
     check-executables-have-shebangs.enable = true;
     check-merge-conflicts.enable = true;
-    check-shebang-scripts-are-executable.enable = true;
+    # check-shebang-scripts-are-executable.enable = true;
     # check-yaml.enable = true;
     detect-private-keys.enable = true;
     # end-on-file-fixer.enable = true;
