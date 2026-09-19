@@ -43,8 +43,15 @@ function last_display() { print -r -- ${p10k_calls[-1]}; }
 function reset_recorder() { : >$JJ_CALLS; p10k_calls=(); }
 function assert_jj_segments() {
   assert_eq ${#p10k_calls} 2
-  assert_contains ${p10k_calls[1]} '-b 2 -f 0 -i jj -c ${_dotfiles_jj_text:+${_dotfiles_jj_undescribed_nonempty:#1}} -e -t ${_dotfiles_jj_text}'
-  assert_contains ${p10k_calls[2]} '-b 3 -f 0 -i jj -c ${_dotfiles_jj_text:+${_dotfiles_jj_undescribed_nonempty:#0}} -e -t ${_dotfiles_jj_text}'
+  assert_contains ${p10k_calls[1]} '-b 2 -f 0 -i jj -c ${_dotfiles_jj_text:+${_dotfiles_jj_warning:#1}} -e -t ${_dotfiles_jj_text}'
+  assert_contains ${p10k_calls[2]} '-b 3 -f 0 -i jj -c ${_dotfiles_jj_text:+${_dotfiles_jj_warning:#0}} -e -t ${_dotfiles_jj_text}'
+}
+function assert_warning() {
+  local expected=$1
+  reset_recorder
+  _dotfiles_jj_update
+  assert_eq "$(calls)" 1
+  assert_eq $_dotfiles_jj_warning $expected
 }
 
 # Plain and Git-only paths never start JJ.
@@ -54,7 +61,7 @@ reset_recorder
 _dotfiles_jj_update
 assert_eq "$(calls)" 0
 assert_eq $_dotfiles_jj_text ''
-assert_eq $_dotfiles_jj_undescribed_nonempty ''
+assert_eq $_dotfiles_jj_warning ''
 assert_contains "$(last_display)" '*/vcs=show'
 
 git init -q $test_root/git-only
@@ -62,7 +69,7 @@ cd $test_root/git-only
 reset_recorder
 _dotfiles_jj_update
 assert_eq "$(calls)" 0
-assert_eq $_dotfiles_jj_undescribed_nonempty ''
+assert_eq $_dotfiles_jj_warning ''
 assert_eq $_dotfiles_jj_text ''
 
 # Colocated and native JJ repos, including descendants, use JJ over Git.
@@ -84,7 +91,7 @@ assert_contains $_dotfiles_jj_text '%%F{red}'
 assert_contains $_dotfiles_jj_text '$()'
 assert_contains $_dotfiles_jj_text '`x`'
 assert_contains $_dotfiles_jj_text empty
-assert_eq $_dotfiles_jj_undescribed_nonempty 0
+assert_eq $_dotfiles_jj_warning 1
 assert_contains "$(last_display)" '*/vcs=hide'
 
 cd $test_root
@@ -147,14 +154,14 @@ export JJ_FAIL=1
 _dotfiles_jj_update
 unset JJ_FAIL
 assert_eq $_dotfiles_jj_text ''
-assert_eq $_dotfiles_jj_undescribed_nonempty ''
+assert_eq $_dotfiles_jj_warning ''
 assert_contains "$(last_display)" '*/vcs=show'
 saved_path=$PATH
 PATH=$test_root/empty-bin
 rehash
 _dotfiles_jj_update
 assert_eq $_dotfiles_jj_text ''
-assert_eq $_dotfiles_jj_undescribed_nonempty ''
+assert_eq $_dotfiles_jj_warning ''
 PATH=$saved_path
 rehash
 
@@ -163,32 +170,50 @@ p10k_calls=()
 prompt_jj
 assert_jj_segments
 
-# Green applies except nonempty, undescribed working copies. State comes from JJ, never prompt text.
+# Warning state comes from JJ metadata, never prompt text.
 cd $test_root/colocated
 jj --quiet new -m ''
-reset_recorder
-_dotfiles_jj_update
-assert_eq "$(calls)" 1
-assert_eq $_dotfiles_jj_undescribed_nonempty 0
+assert_warning 0 # Empty, undescribed, unbookmarked.
+
+# Adding and removing a bookmark changes an empty working copy immediately.
+jj --quiet bookmark create empty-undescribed -r @
+assert_warning 1 # Empty, undescribed, bookmarked.
+jj --quiet bookmark delete empty-undescribed
+assert_warning 0
+
+# Empty working copies with descriptions warn only when bookmarked.
+jj --quiet describe -m 'empty description'
+assert_warning 0 # Empty, described, unbookmarked.
+jj --quiet bookmark create empty-described -r @
+assert_warning 1 # Empty, described, bookmarked.
+
+# A bookmark on @- must not affect an unbookmarked empty @.
+jj --quiet new -m ''
+jj --quiet bookmark create parent-bookmark -r @-
+assert_warning 0
+
+# Nonempty working copies warn when undescribed, regardless of bookmarks.
+print matrix-nonempty >$test_root/colocated/matrix-nonempty
+assert_warning 1 # Nonempty, undescribed, unbookmarked.
+jj --quiet describe -m 'nonempty description'
+assert_warning 0 # Nonempty, described, unbookmarked.
+jj --quiet bookmark create nonempty-described -r @
+assert_warning 0 # Nonempty, described, bookmarked.
+jj --quiet describe -m ''
+assert_warning 1 # Nonempty, undescribed, bookmarked.
 p10k_calls=()
 prompt_jj
 assert_jj_segments
 
-# Describing an empty working copy remains green.
-jj --quiet describe -m 'empty description'
-reset_recorder
-_dotfiles_jj_update
-assert_eq "$(calls)" 1
-assert_eq $_dotfiles_jj_undescribed_nonempty 0
-
 # First prompt after a file edit reads live state, creating a snapshot operation.
+jj --quiet describe -m 'nonempty description'
 before_operation=$(command jj op log --ignore-working-copy --limit 1 --no-graph --template 'id.short()')
 print unsnapshotted >$test_root/colocated/unsnapshotted
 reset_recorder
 _dotfiles_jj_update
 after_operation=$(command jj op log --ignore-working-copy --limit 1 --no-graph --template 'id.short()')
 [[ $_dotfiles_jj_text != *'[empty]'* ]] || fail 'unsnapshotted file edit still rendered empty'
-assert_eq $_dotfiles_jj_undescribed_nonempty 0
+assert_eq $_dotfiles_jj_warning 0
 [[ $after_operation != $before_operation ]] || fail 'live prompt query did not create snapshot operation'
 p10k_calls=()
 prompt_jj
@@ -199,20 +224,20 @@ jj --quiet describe -m ''
 reset_recorder
 _dotfiles_jj_update
 assert_eq "$(calls)" 1
-assert_eq $_dotfiles_jj_undescribed_nonempty 1
+assert_eq $_dotfiles_jj_warning 1
 
 # Restoring a description transitions it back to green immediately.
 jj --quiet describe -m 'empty| hostile description'
 reset_recorder
 _dotfiles_jj_update
 assert_eq "$(calls)" 1
-assert_eq $_dotfiles_jj_undescribed_nonempty 0
+assert_eq $_dotfiles_jj_warning 0
 
 jj --quiet new -m ''
 reset_recorder
 _dotfiles_jj_update
 assert_eq "$(calls)" 1
-assert_eq $_dotfiles_jj_undescribed_nonempty 0
+assert_eq $_dotfiles_jj_warning 0
 p10k_calls=()
 prompt_jj
 assert_jj_segments

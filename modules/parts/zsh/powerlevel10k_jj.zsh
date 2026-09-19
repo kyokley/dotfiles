@@ -1,13 +1,13 @@
 # Refresh this once per prompt. Rendering must only use this cached text.
 typeset -g _dotfiles_jj_text=
-typeset -g _dotfiles_jj_undescribed_nonempty=
+typeset -g _dotfiles_jj_warning=
 
 function _dotfiles_jj_update() {
   emulate -L zsh
   setopt no_aliases
 
   typeset -g _dotfiles_jj_text=
-  typeset -g _dotfiles_jj_undescribed_nonempty=
+  typeset -g _dotfiles_jj_warning=
   (( $+commands[jj] )) || { (( $+functions[p10k] )) && p10k display '*/vcs'=show; return 0; }
 
   local directory=${PWD:A} found=
@@ -24,7 +24,7 @@ function _dotfiles_jj_update() {
   # Based on https://github.com/jj-vcs/jj/wiki/Starship.
   # Read live working-copy snapshots once per prompt. Redraws use cached text.
   local template='
-if(empty || description, "green|", "yellow|") ++ separate(" ",
+if((!empty && !description) || (empty && bookmarks.len() > 0), "yellow|", "green|") ++ separate(" ",
   change_id.shortest(4),
   bookmarks.map(|x| truncate_end(10, x.name(), "…")).join(" "),
   tags.map(|x| "#" ++ truncate_end(10, x.name(), "…")).join(" "),
@@ -39,14 +39,14 @@ if(empty || description, "green|", "yellow|") ++ separate(" ",
   local output
   output=$(command jj log -r @ --limit 1 --no-graph --color never --no-pager \
     --template "$template" 2>/dev/null) || { (( $+functions[p10k] )) && p10k display '*/vcs'=show; return 0; }
-  local undescribed_nonempty
+  local warning
   case $output in
     green\|*)
-      undescribed_nonempty=0
+      warning=0
       output=${output#green\|}
       ;;
     yellow\|*)
-      undescribed_nonempty=1
+      warning=1
       output=${output#yellow\|}
       ;;
     *)
@@ -59,7 +59,7 @@ if(empty || description, "green|", "yellow|") ++ separate(" ",
   # Make control bytes visible and prevent prompt expansion of JJ metadata.
   output=${(V)output}
   typeset -g _dotfiles_jj_text=${output//\%/%%}
-  typeset -g _dotfiles_jj_undescribed_nonempty=$undescribed_nonempty
+  typeset -g _dotfiles_jj_warning=$warning
   (( $+functions[p10k] )) && p10k display '*/vcs'=hide
 }
 
@@ -70,6 +70,6 @@ function p10k-on-pre-prompt() {
 }
 
 function prompt_jj() {
-  p10k segment -b 2 -f 0 -i jj -c '${_dotfiles_jj_text:+${_dotfiles_jj_undescribed_nonempty:#1}}' -e -t '${_dotfiles_jj_text}'
-  p10k segment -b 3 -f 0 -i jj -c '${_dotfiles_jj_text:+${_dotfiles_jj_undescribed_nonempty:#0}}' -e -t '${_dotfiles_jj_text}'
+  p10k segment -b 2 -f 0 -i jj -c '${_dotfiles_jj_text:+${_dotfiles_jj_warning:#1}}' -e -t '${_dotfiles_jj_text}'
+  p10k segment -b 3 -f 0 -i jj -c '${_dotfiles_jj_text:+${_dotfiles_jj_warning:#0}}' -e -t '${_dotfiles_jj_text}'
 }

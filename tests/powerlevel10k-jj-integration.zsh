@@ -42,6 +42,20 @@ function assert_not_contains() { [[ $1 != *$2* ]] || fail "[$1] contains [$2]"; 
 function assert_eq() { [[ $1 == $2 ]] || fail "expected [$2], got [$1]"; }
 function calls() { print -r -- ${#$(<$JJ_CALLS)}; }
 function reset_calls() { : >$JJ_CALLS; }
+function assert_working_copy_color() {
+  local expected=$1 prompt
+  reset_calls
+  _p9k_precmd
+  prompt=$(print -rP -- "$PROMPT")
+  assert_eq "$(calls)" 1
+  if [[ $expected == yellow ]]; then
+    assert_contains $prompt $yellow_background
+    assert_not_contains $prompt $green_background
+  else
+    assert_contains $prompt $green_background
+    assert_not_contains $prompt $yellow_background
+  fi
+}
 green_background=$(print -P -- '%K{2}')
 yellow_background=$(print -P -- '%K{3}')
 
@@ -146,22 +160,36 @@ assert_eq "$(calls)" 1
 assert_contains $hostile_marker $green_background
 assert_not_contains $hostile_marker $yellow_background
 
-# New empty, undescribed working copies remain green.
+# Color uses JJ metadata across every empty/nonempty, described/undescribed,
+# and bookmarked/unbookmarked combination.
 jj --quiet new -m '' >/dev/null
-reset_calls
-_p9k_precmd
-empty_again=$(print -rP -- "$PROMPT")
-assert_eq "$(calls)" 1
-assert_contains $empty_again $green_background
-assert_not_contains $empty_again $yellow_background
+assert_working_copy_color green # Empty, undescribed, unbookmarked.
 
-# Describing an empty working copy remains green.
+# Bookmark add/remove must update background on the next prompt.
+jj --quiet bookmark create empty-undescribed -r @ >/dev/null
+assert_working_copy_color yellow # Empty, undescribed, bookmarked.
+jj --quiet bookmark delete empty-undescribed >/dev/null
+assert_working_copy_color green
+
+# Empty described working copies only warn when they have an @ bookmark.
 jj --quiet describe -m 'empty description' >/dev/null
-reset_calls
-_p9k_precmd
-empty_described=$(print -rP -- "$PROMPT")
-assert_eq "$(calls)" 1
-assert_contains $empty_described $green_background
-assert_not_contains $empty_described $yellow_background
+assert_working_copy_color green # Empty, described, unbookmarked.
+jj --quiet bookmark create empty-described -r @ >/dev/null
+assert_working_copy_color yellow # Empty, described, bookmarked.
+
+# A bookmark on parent must not affect unbookmarked empty @.
+jj --quiet new -m '' >/dev/null
+jj --quiet bookmark create parent-bookmark -r @- >/dev/null
+assert_working_copy_color green
+
+# Nonempty working copies only ignore bookmarks when they have descriptions.
+print matrix-nonempty >matrix-nonempty
+assert_working_copy_color yellow # Nonempty, undescribed, unbookmarked.
+jj --quiet describe -m 'nonempty description' >/dev/null
+assert_working_copy_color green # Nonempty, described, unbookmarked.
+jj --quiet bookmark create nonempty-described -r @ >/dev/null
+assert_working_copy_color green # Nonempty, described, bookmarked.
+jj --quiet describe -m '' >/dev/null
+assert_working_copy_color yellow # Nonempty, undescribed, bookmarked.
 
 print 'powerlevel10k-jj-integration: ok'
