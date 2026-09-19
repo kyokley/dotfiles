@@ -42,8 +42,8 @@ function assert_not_contains() { [[ $1 != *$2* ]] || fail "[$1] contains [$2]"; 
 function assert_eq() { [[ $1 == $2 ]] || fail "expected [$2], got [$1]"; }
 function calls() { print -r -- ${#$(<$JJ_CALLS)}; }
 function reset_calls() { : >$JJ_CALLS; }
-empty_background=$(print -P -- '%K{2}')
-nonempty_background=$(print -P -- '%K{3}')
+green_background=$(print -P -- '%K{2}')
+yellow_background=$(print -P -- '%K{3}')
 
 source $helper
 typeset -g POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(jj vcs)
@@ -70,8 +70,8 @@ first=$(print -rP -- "$PROMPT")
 assert_eq "$(calls)" 1
 assert_contains $first 'first description'
 assert_not_contains $first git-visible
-assert_contains $first $empty_background
-assert_not_contains $first $nonempty_background
+assert_contains $first $green_background
+assert_not_contains $first $yellow_background
 
 jj --quiet describe -m 'refreshed description' >/dev/null
 reset_calls
@@ -80,8 +80,8 @@ refreshed=$(print -rP -- "$PROMPT")
 assert_eq "$(calls)" 1
 assert_contains $refreshed 'refreshed description'
 assert_not_contains $refreshed 'first description'
-assert_contains $refreshed $empty_background
-assert_not_contains $refreshed $nonempty_background
+assert_contains $refreshed $green_background
+assert_not_contains $refreshed $yellow_background
 
 # A redraw expands cached text only; it never starts another JJ process.
 print -rP -- "$PROMPT" >/dev/null
@@ -119,31 +119,49 @@ assert_not_contains $failed 'refreshed description'
 assert_not_contains $failed PWNED
 assert_contains $failed git-visible
 
-# File edits make the working copy nonempty on the very next prompt.
+# File edits keep described working copies green on the very next prompt.
 print unsnapshotted >unsnapshotted
 reset_calls
 _p9k_precmd
-nonempty=$(print -rP -- "$PROMPT")
+nonempty_described=$(print -rP -- "$PROMPT")
 assert_eq "$(calls)" 1
-assert_contains $nonempty $nonempty_background
-assert_not_contains $nonempty $empty_background
+assert_contains $nonempty_described $green_background
+assert_not_contains $nonempty_described $yellow_background
 
-# A hostile description containing the empty-state marker cannot select color.
+# Clearing a nonempty working-copy description turns the prompt yellow immediately.
+jj --quiet describe -m '' >/dev/null
+reset_calls
+_p9k_precmd
+nonempty_undescribed=$(print -rP -- "$PROMPT")
+assert_eq "$(calls)" 1
+assert_contains $nonempty_undescribed $yellow_background
+assert_not_contains $nonempty_undescribed $green_background
+
+# Describing it again turns the prompt green immediately, regardless of description text.
 jj --quiet describe -m 'empty| hostile description' >/dev/null
 reset_calls
 _p9k_precmd
 hostile_marker=$(print -rP -- "$PROMPT")
 assert_eq "$(calls)" 1
-assert_contains $hostile_marker $nonempty_background
-assert_not_contains $hostile_marker $empty_background
+assert_contains $hostile_marker $green_background
+assert_not_contains $hostile_marker $yellow_background
 
-# A new working copy is empty again on the next prompt.
+# New empty, undescribed working copies remain green.
 jj --quiet new -m '' >/dev/null
 reset_calls
 _p9k_precmd
 empty_again=$(print -rP -- "$PROMPT")
 assert_eq "$(calls)" 1
-assert_contains $empty_again $empty_background
-assert_not_contains $empty_again $nonempty_background
+assert_contains $empty_again $green_background
+assert_not_contains $empty_again $yellow_background
+
+# Describing an empty working copy remains green.
+jj --quiet describe -m 'empty description' >/dev/null
+reset_calls
+_p9k_precmd
+empty_described=$(print -rP -- "$PROMPT")
+assert_eq "$(calls)" 1
+assert_contains $empty_described $green_background
+assert_not_contains $empty_described $yellow_background
 
 print 'powerlevel10k-jj-integration: ok'

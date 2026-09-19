@@ -67,7 +67,7 @@ The `common` keys are baselines every host inherits; platform keys
 | `.pre-commit-config.yaml` | **GENERATED** by git-hooks.nix — never edit |
 | `.github/workflows/test.yml` | CI: evaluates flake checks plus every NixOS and standalone home-manager config on PR / push to main |
 | `tests/krill-widget.lua` | Standalone Lua regression tests for the Noctalia Krill widget; see "Lua widget tests" |
-| `tests/powerlevel10k-jj.zsh`, `tests/powerlevel10k-jj-integration.zsh` | JJ prompt regression tests and real Powerlevel10k rendering tests, including empty/nonempty colors |
+| `tests/powerlevel10k-jj.zsh`, `tests/powerlevel10k-jj-integration.zsh` | JJ prompt regression tests and real Powerlevel10k rendering tests, including working-copy and description color states |
 | `devenv.lock`, `flake.lock` | Lockfiles |
 
 ### `modules/lib/`
@@ -201,7 +201,7 @@ Run `zsh -f tests/powerlevel10k-jj.zsh` from the repository root. The test
 creates isolated real JJ and Git repositories, stubs P10k rendering, and checks
 prompt refresh snapshots working-copy edits while redraws use cached text.
 It also checks description truncation, omission of unset descriptions without extra spacing,
-and cached empty/nonempty state independent of description text.
+and cached color state across all combinations of empty/nonempty and described/undescribed working copies.
 Requires `zsh`, `jj`, and `git` on PATH.
 
 Run the real rendering test with
@@ -209,8 +209,9 @@ Run the real rendering test with
 Prezto bundles this theme at
 `share/zsh-prezto/modules/prompt/external/powerlevel10k/powerlevel10k.zsh-theme`
 inside its package. The test checks first-prompt freshness, Git fallback,
-redraw caching, metadata escaping, and immediate green (empty) / yellow (nonempty)
-background transitions. Both suites run manually, not in CI.
+redraw caching, metadata escaping, and immediate background transitions: yellow
+only for nonempty working copies without a description, green otherwise.
+Both suites run manually, not in CI.
 
 ### opencode config
 
@@ -285,8 +286,9 @@ is uncertain.
 - Powerlevel10k builds segments before `p10k-on-pre-prompt` runs. The JJ
   segment uses deferred variable references so this hook's refreshed text
   appears immediately. Two fixed-color segments use mutually exclusive deferred
-  conditions so background changes also appear immediately: green for JJ's
-  `empty` state, yellow otherwise. It snapshots the working copy once per prompt refresh
+  conditions so background changes also appear immediately: yellow only when
+  JJ's working copy is nonempty and has no description, green otherwise.
+  It snapshots the working copy once per prompt refresh
   so status reflects file edits; redraws use cached text. JJ is omitted from
   instant prompt; the serialized hook guards against an unavailable helper.
 - Nix-managed OpenCode plugins resolve imports from their canonical Nix store
