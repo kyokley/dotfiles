@@ -10,6 +10,7 @@
     home.packages = with pkgs; [
       lazyjj
       jjui
+      difftastic
     ];
     programs = {
       jujutsu = {
@@ -18,6 +19,13 @@
           user = {
             email = lib.mkDefault "${username}@${hostName}";
             name = lib.mkDefault fullName;
+          };
+          ui = {
+            default-command = "log";
+            diff-editor = ":builtin";
+            # pager = "delta";
+            # diff-formatter = ":git";
+            diff-formatter = ["difft" "--color=always" "$left" "$right"];
           };
         };
       };
