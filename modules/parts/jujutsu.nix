@@ -13,6 +13,7 @@
       difftastic
       alejandra
       ruff
+      delta
     ];
     programs = {
       jujutsu = {
@@ -25,7 +26,7 @@
           ui = {
             default-command = "log";
             diff-editor = ":builtin";
-            # pager = "delta";
+            pager = "${pkgs.delta}/bin/delta";
             # diff-formatter = ":git";
             diff-formatter = ["difft" "--color=always" "$left" "$right"];
           };
@@ -42,6 +43,9 @@
               command = "${pkgs.alejandra}/bin/alejandra -";
               patterns = ["glob:'**/*.nix'"];
             };
+          };
+          revset-aliases = {
+            "closest_pushable(to)" = ''heads(::to & mutable() & ~description(exact:"") & (~empty() | merges()))'';
           };
         };
       };
