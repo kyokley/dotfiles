@@ -66,6 +66,16 @@
               action = "ui.preview_scroll_up";
               scope = "ui.preview";
             }
+            {
+              key = "ctrl+down";
+              action = "ui.preview_scroll_down";
+              scope = "ui.preview";
+            }
+            {
+              key = "ctrl+up";
+              action = "ui.preview_scroll_up";
+              scope = "ui.preview";
+            }
           ];
         };
       };
