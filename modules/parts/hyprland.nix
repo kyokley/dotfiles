@@ -209,6 +209,12 @@
               }
               {
                 _args = [
+                  (lib.generators.mkLuaInline ''mod .. " + T"'')
+                  (lib.generators.mkLuaInline ''hl.dsp.window.float({ action = "toggle" })'')
+                ];
+              }
+              {
+                _args = [
                   (lib.generators.mkLuaInline ''mod .. " + J"'')
                   (lib.generators.mkLuaInline ''
                     function()
