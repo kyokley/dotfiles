@@ -24,7 +24,7 @@
             name = lib.mkDefault fullName;
           };
           ui = {
-            default-command = "log";
+            default-command = "st";
             diff-editor = ":builtin";
             pager = "${pkgs.delta}/bin/delta";
             # diff-formatter = ":git";
