@@ -1,9 +1,12 @@
 {
   pkgs,
   inputs,
-  lib,
   ...
 }: {
+  cachix = {
+    pull = ["horus"];
+  };
+
   # https://devenv.sh/basics/
   # env.GREET = "devenv";
 
