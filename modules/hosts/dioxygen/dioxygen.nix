@@ -32,11 +32,29 @@
           };
         };
       };
+
+      nix.settings = {
+        substituters = [
+          "https://horus.cachix.org"
+        ];
+        trusted-public-keys = [
+          "horus.cachix.org-1:YZ4tQYAoKH+zkKbD4aqFcMHgZxIM7Uo4dPEfwUrubT4="
+        ];
+      };
     };
 
     darwin.dioxygen = {
       system.stateVersion = 7;
       networking.hostName = "dioxygen";
+
+      nix.settings = {
+        substituters = [
+          "https://horus.cachix.org"
+        ];
+        trusted-public-keys = [
+          "horus.cachix.org-1:YZ4tQYAoKH+zkKbD4aqFcMHgZxIM7Uo4dPEfwUrubT4="
+        ];
+      };
     };
   };
 }
