@@ -26,9 +26,9 @@
           ui = {
             default-command = "st";
             diff-editor = ":builtin";
-            pager = "${pkgs.delta}/bin/delta";
+            pager = "less";
             # diff-formatter = ":git";
-            diff-formatter = ["difft" "--color=always" "$left" "$right"];
+            diff-formatter = ["${pkgs.delta}/bin/delta" "$left" "$right"];
           };
           fix.tools = {
             "1-ruff-lint" = {
