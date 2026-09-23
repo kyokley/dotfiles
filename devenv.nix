@@ -4,6 +4,7 @@
   ...
 }: {
   cachix = {
+    push = "horus";
     pull = ["horus"];
   };
 
@@ -32,12 +33,17 @@
   # services.postgres.enable = true;
 
   # https://devenv.sh/scripts/
-  scripts.hello.exec = ''
-    echo
-    echo "Welcome to"
-    echo "Yokley's Dots" | ${pkgs.figlet}/bin/figlet -f slant | ${pkgs.lolcat}/bin/lolcat
-    echo
-  '';
+  scripts = {
+    hello.exec = ''
+      echo
+      echo "Welcome to"
+      echo "Yokley's Dots" | ${pkgs.figlet}/bin/figlet -f slant | ${pkgs.lolcat}/bin/lolcat
+      echo
+    '';
+    nh.exec = ''
+      secretspec run --provider keyring -- ${pkgs.nh}/bin/nh $@
+    '';
+  };
 
   enterShell = ''
     hello

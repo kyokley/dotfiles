@@ -20,4 +20,4 @@ allowUnfree: true
 secretspec:
   enable: true
   provider: keyring
-  cachix_auth_token: true
+  cachix_auth_token: false
