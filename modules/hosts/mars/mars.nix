@@ -57,6 +57,7 @@ in {
       lib,
       config,
       modulesPath,
+      username,
       ...
     }: {
       imports =
@@ -64,6 +65,13 @@ in {
         ++ [
           (modulesPath + "/installer/scan/not-detected.nix")
         ];
+
+      # Reuse Mercury's existing outputs, not just its remote build capacity.
+      # Trust unsigned outputs from this SSH-authenticated store only; other
+      # substituters still require trusted signatures. Prefer public caches.
+      nix.settings.extra-substituters = [
+        "ssh-ng://${username}@bangup.dyndns.org?trusted=true&priority=50"
+      ];
 
       # Bootloader.
       boot = {

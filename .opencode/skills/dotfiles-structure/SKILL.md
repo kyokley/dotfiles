@@ -286,6 +286,15 @@ is uncertain.
   command in the later OSC 133 marker; upstream emits an empty marker that
   leaves `%c` blank in command-finish notifications.
 - The repo is expected at `~/dotfiles` on hosts (`nh` default).
+- Remote builders are not automatically substituters. Mars explicitly queries
+  Mercury's existing store over `ssh-ng` in `modules/hosts/mars/mars.nix` with
+  priority 50, below the default public cache. `trusted=true` accepts Mercury's unsigned
+  outputs over authenticated SSH without disabling signature checks for other
+  caches. This reuses the daemon's root SSH identity and the system SSH settings
+  for `bangup.dyndns.org:10101`; `mars/ssh.nix` sets a 10-second SSH connection
+  and initial-handshake timeout, not a DNS or total substitution timeout.
+  Mercury needs no additional cache service. Only paths still present
+  in Mercury's store can be reused; remote garbage collection can remove them.
 - Powerlevel10k builds segments before `p10k-on-pre-prompt` runs. The JJ
   segment uses deferred variable references so this hook's refreshed text
   appears immediately. Two fixed-color segments use mutually exclusive deferred
