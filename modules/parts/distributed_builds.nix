@@ -4,7 +4,7 @@
       inherit hostName sshUser;
       systems = ["x86_64-linux"];
       protocol = "ssh";
-      maxJobs = 3;
+      maxJobs = 5;
       speedFactor = 2;
       supportedFeatures = ["nixos-test" "benchmark" "big-parallel" "kvm"];
     };
