@@ -40,9 +40,9 @@
       echo "Yokley's Dots" | ${pkgs.figlet}/bin/figlet -f slant | ${pkgs.lolcat}/bin/lolcat
       echo
     '';
-    nh.exec = ''
-      secretspec run --provider keyring -- ${pkgs.nh}/bin/nh $@
-    '';
+    # nh.exec = ''
+    #   secretspec run --provider keyring -- ${pkgs.nh}/bin/nh $@
+    # '';
   };
 
   enterShell = ''
