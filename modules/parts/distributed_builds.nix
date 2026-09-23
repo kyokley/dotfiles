@@ -14,10 +14,11 @@
           HostName bangup.dyndns.org
           Port 10101
           StrictHostKeyChecking=accept-new
+          ConnectTimeout 10
     '';
-
+  in {
     # Daemon-level settings — only applies in NixOS context where user is trusted
-    nixos_distributed_build_conf = {username, ...}: {
+    nixos.distributedBuilds = {username, ...}: {
       nix = {
         buildMachines = [
           (mkMachine username "bangup.dyndns.org")
@@ -35,7 +36,7 @@
 
     # User-level settings only — daemon settings like buildMachines, builders-use-substitutes
     # require trusted-user status and can't be set via home-manager on non-NixOS systems
-    hm_distributed_build_conf = {username, ...}: {
+    homeManager.distributedBuilds = {
       programs.ssh = {
         enable = true;
         extraConfig = ssh_conf;
@@ -54,8 +55,5 @@
         };
       };
     };
-  in {
-    nixos.distributedBuilds = nixos_distributed_build_conf;
-    homeManager.distributedBuilds = hm_distributed_build_conf;
   };
 }
