@@ -805,22 +805,6 @@
         "type": "github"
       }
     },
-    "nixpkgs-master": {
-      "locked": {
-        "lastModified": 1790190416,
-        "narHash": "sha256-1RVE5IbIuXI6S5Nb+JQtZbqnigrG3c9OHxAFiNiQtuw=",
-        "owner": "nixos",
-        "repo": "nixpkgs",
-        "rev": "76043f7b7a89abd1ec754f0689dfb66e0194086c",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nixos",
-        "ref": "master",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
     "nixpkgs-stable": {
       "locked": {
         "lastModified": 1790113641,
@@ -996,7 +980,6 @@
         "hyprland-plugins": "hyprland-plugins",
         "import-tree": "import-tree",
         "nixpkgs": "nixpkgs_3",
-        "nixpkgs-master": "nixpkgs-master",
         "nixpkgs-stable": "nixpkgs-stable",
         "nixvim": "nixvim",
         "noctalia": "noctalia",

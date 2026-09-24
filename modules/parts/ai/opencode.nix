@@ -163,7 +163,6 @@
       ];
       programs = {
         opencode = {
-          package = inputs.nixpkgs-master.legacyPackages.${pkgs.stdenv.hostPlatform.system}.opencode;
           enable = true;
           context = builtins.readFile "${inputs.caveman}/plugins/caveman/skills/caveman/SKILL.md";
           commands = {
