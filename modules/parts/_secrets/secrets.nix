@@ -8,6 +8,8 @@ let
     saturn = builtins.readFile ../../hosts/mercury/saturn.pub;
   };
 
+  mkPublicKeys = hosts: map (host: identities.${host}) hosts;
+
   syncthing-hosts = [
     "dioxygen"
     "jupiter"
@@ -32,7 +34,7 @@ let
       value = builtins.listToAttrs (map (host: {
           name = "syncthing/${host}/${builtins.substring 0 ((builtins.stringLength var) - 1) var}.age";
           value = {
-            publicKeys = [identities.${host}];
+            publicKeys = mkPublicKeys [host];
             armor = true;
           };
         })
@@ -44,12 +46,20 @@ in
   // syncthing-attrs.syncthing-keys
   // {
     "opencode_zen.age" = {
-      publicKeys = map (host: identities.${host}) [
+      publicKeys = mkPublicKeys [
         "dioxygen"
         "jupiter"
         "mars"
         "mercury"
         "venus"
+      ];
+      armor = true;
+    };
+    "cachix.age" = {
+      publicKeys = mkPublicKeys [
+        "dioxygen"
+        "mars"
+        "mercury"
       ];
       armor = true;
     };

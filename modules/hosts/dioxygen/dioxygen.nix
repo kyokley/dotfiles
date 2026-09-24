@@ -6,6 +6,7 @@
         opencode
         syncthing
         obsidian
+        cachix
       ];
 
       home = {
