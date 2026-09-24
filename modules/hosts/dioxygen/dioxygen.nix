@@ -33,15 +33,6 @@
           };
         };
       };
-
-      nix.settings = {
-        extra-substituters = [
-          "https://horus.cachix.org"
-        ];
-        extra-trusted-public-keys = [
-          "horus.cachix.org-1:YZ4tQYAoKH+zkKbD4aqFcMHgZxIM7Uo4dPEfwUrubT4="
-        ];
-      };
     };
 
     darwin.dioxygen = {
