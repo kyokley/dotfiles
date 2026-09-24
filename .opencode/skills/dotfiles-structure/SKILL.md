@@ -286,6 +286,11 @@ is uncertain.
   command in the later OSC 133 marker; upstream emits an empty marker that
   leaves `%c` blank in command-finish notifications.
 - The repo is expected at `~/dotfiles` on hosts (`nh` default).
+- Add custom Nix caches with `nix.settings.extra-substituters` and
+  `extra-trusted-public-keys`, as Dioxygen does for Horus. Home Manager's
+  user-level `substituters` and `trusted-public-keys` replace system settings;
+  a Horus-only list hides `cache.nixos.org` and causes unnecessary source builds.
+  Check the effective configuration with `nix config show substituters`.
 - Remote builders are not automatically substituters. Mars explicitly queries
   Mercury's existing store over `ssh-ng` in `modules/hosts/mars/mars.nix` with
   priority 50, below the default public cache. `trusted=true` accepts Mercury's unsigned

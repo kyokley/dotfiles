@@ -37,6 +37,13 @@
             download-buffer-size = 524288000;
             experimental-features = ["nix-command" "flakes"];
             auto-optimise-store = true;
+
+            extra-substituters = [
+              "https://horus.cachix.org"
+            ];
+            extra-trusted-public-keys = [
+              "horus.cachix.org-1:YZ4tQYAoKH+zkKbD4aqFcMHgZxIM7Uo4dPEfwUrubT4="
+            ];
           };
         };
 

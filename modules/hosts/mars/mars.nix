@@ -6,6 +6,7 @@
     systemd-services
     syncthing
     obsidian
+    cachix
   ];
 
   nixos_modules = with inputs.self.modules.nixos; [

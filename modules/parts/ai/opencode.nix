@@ -59,16 +59,16 @@
             variant = "high";
           };
           librarian = {
-            model = "openai/gpt-6-luna";
+            model = "openai/gpt-5.6-terra";
             variant = "low";
           };
           explorer = {
-            model = "openai/gpt-6-luna";
+            model = "openai/gpt-5.6-terra";
             variant = "low";
           };
-          designer.model = "openai/gpt-6-luna";
+          designer.model = "openai/gpt-5.6-terra";
           fixer = {
-            model = "openai/gpt-6-sol";
+            model = "openai/gpt-5.6-terra";
             variant = "high";
           };
           council.model = "openai/gpt-5.6-sol";

@@ -1,9 +1,14 @@
 {
   pkgs,
   inputs,
-  lib,
   ...
-}: {
+}: let
+  cacheName = "horus";
+in {
+  cachix = {
+    pull = [cacheName];
+  };
+
   # https://devenv.sh/basics/
   # env.GREET = "devenv";
 
@@ -29,12 +34,20 @@
   # services.postgres.enable = true;
 
   # https://devenv.sh/scripts/
-  scripts.hello.exec = ''
-    echo
-    echo "Welcome to"
-    echo "Yokley's Dots" | ${pkgs.figlet}/bin/figlet -f slant | ${pkgs.lolcat}/bin/lolcat
-    echo
-  '';
+  scripts = {
+    hello.exec = ''
+      echo
+      echo "Welcome to"
+      echo "Yokley's Dots" | ${pkgs.figlet}/bin/figlet -f slant | ${pkgs.lolcat}/bin/lolcat
+      echo
+    '';
+    # nh.exec = ''
+    #   secretspec run --provider keyring -- ${pkgs.nh}/bin/nh $@
+    # '';
+    push-cache.exec = ''
+      nix flake archive --json | jq -r '.path,(.inputs|to_entries[].value.path)' | cachix push ${cacheName}
+    '';
+  };
 
   enterShell = ''
     hello
