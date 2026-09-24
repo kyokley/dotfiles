@@ -2,10 +2,11 @@
   pkgs,
   inputs,
   ...
-}: {
+}: let
+  cacheName = "horus";
+in {
   cachix = {
-    push = "horus";
-    pull = ["horus"];
+    pull = [cacheName];
   };
 
   # https://devenv.sh/basics/
@@ -43,6 +44,9 @@
     # nh.exec = ''
     #   secretspec run --provider keyring -- ${pkgs.nh}/bin/nh $@
     # '';
+    push-cache.exec = ''
+      nix flake archive --json | jq -r '.path,(.inputs|to_entries[].value.path)' | cachix push ${cacheName}
+    '';
   };
 
   enterShell = ''
