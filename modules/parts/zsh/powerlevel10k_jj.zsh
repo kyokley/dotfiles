@@ -24,7 +24,7 @@ function _dotfiles_jj_update() {
   # Based on https://github.com/jj-vcs/jj/wiki/Starship.
   # Read live working-copy snapshots once per prompt. Redraws use cached text.
   local template='
-if((!empty && !description) || (empty && bookmarks.len() > 0), "yellow|", "green|") ++ separate(" ",
+if(conflict, "red|", if((!empty && !description) || (empty && bookmarks.len() > 0), "yellow|", "green|")) ++ separate(" ",
   change_id.shortest(4),
   bookmarks.map(|x| truncate_end(10, x.name(), "…")).join(" "),
   tags.map(|x| "#" ++ truncate_end(10, x.name(), "…")).join(" "),
@@ -41,6 +41,10 @@ if((!empty && !description) || (empty && bookmarks.len() > 0), "yellow|", "green
     --template "$template" 2>/dev/null) || { (( $+functions[p10k] )) && p10k display '*/vcs'=show; return 0; }
   local warning
   case $output in
+    red\|*)
+      warning=2
+      output=${output#red\|}
+      ;;
     green\|*)
       warning=0
       output=${output#green\|}
@@ -70,6 +74,7 @@ function p10k-on-pre-prompt() {
 }
 
 function prompt_jj() {
-  p10k segment -b 2 -f 0 -i jj -c '${_dotfiles_jj_text:+${_dotfiles_jj_warning:#1}}' -e -t '${_dotfiles_jj_text}'
-  p10k segment -b 3 -f 0 -i jj -c '${_dotfiles_jj_text:+${_dotfiles_jj_warning:#0}}' -e -t '${_dotfiles_jj_text}'
+  p10k segment -b 1 -f 0 -i jj -c '${_dotfiles_jj_text:+${(M)_dotfiles_jj_warning:#2}}' -e -t '${_dotfiles_jj_text}'
+  p10k segment -b 2 -f 0 -i jj -c '${_dotfiles_jj_text:+${(M)_dotfiles_jj_warning:#0}}' -e -t '${_dotfiles_jj_text}'
+  p10k segment -b 3 -f 0 -i jj -c '${_dotfiles_jj_text:+${(M)_dotfiles_jj_warning:#1}}' -e -t '${_dotfiles_jj_text}'
 }

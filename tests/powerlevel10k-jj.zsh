@@ -38,13 +38,27 @@ source $helper
 function fail() { print -u2 "FAIL: $*"; exit 1; }
 function assert_eq() { [[ $1 == $2 ]] || fail "expected [$2], got [$1]"; }
 function assert_contains() { [[ $1 == *$2* ]] || fail "[$1] lacks [$2]"; }
+function assert_not_contains() { [[ $1 != *$2* ]] || fail "[$1] contains [$2]"; }
 function calls() { print -r -- ${#$(<$JJ_CALLS)}; }
 function last_display() { print -r -- ${p10k_calls[-1]}; }
 function reset_recorder() { : >$JJ_CALLS; p10k_calls=(); }
 function assert_jj_segments() {
-  assert_eq ${#p10k_calls} 2
-  assert_contains ${p10k_calls[1]} '-b 2 -f 0 -i jj -c ${_dotfiles_jj_text:+${_dotfiles_jj_warning:#1}} -e -t ${_dotfiles_jj_text}'
-  assert_contains ${p10k_calls[2]} '-b 3 -f 0 -i jj -c ${_dotfiles_jj_text:+${_dotfiles_jj_warning:#0}} -e -t ${_dotfiles_jj_text}'
+  assert_eq ${#p10k_calls} 3
+  assert_contains ${p10k_calls[1]} '-b 1 -f 0 -i jj -c ${_dotfiles_jj_text:+${(M)_dotfiles_jj_warning:#2}} -e -t ${_dotfiles_jj_text}'
+  assert_contains ${p10k_calls[2]} '-b 2 -f 0 -i jj -c ${_dotfiles_jj_text:+${(M)_dotfiles_jj_warning:#0}} -e -t ${_dotfiles_jj_text}'
+  assert_contains ${p10k_calls[3]} '-b 3 -f 0 -i jj -c ${_dotfiles_jj_text:+${(M)_dotfiles_jj_warning:#1}} -e -t ${_dotfiles_jj_text}'
+}
+function assert_deferred_segment_conditions() {
+  local expected=$1 red yellow green
+  red=${_dotfiles_jj_text:+${(M)_dotfiles_jj_warning:#2}}
+  yellow=${_dotfiles_jj_text:+${(M)_dotfiles_jj_warning:#1}}
+  green=${_dotfiles_jj_text:+${(M)_dotfiles_jj_warning:#0}}
+  assert_eq $(( ${#red} + ${#yellow} + ${#green} )) 1
+  case $expected in
+    0) assert_eq $green 0; assert_eq $yellow ''; assert_eq $red '' ;;
+    1) assert_eq $yellow 1; assert_eq $green ''; assert_eq $red '' ;;
+    2) assert_eq $red 2; assert_eq $green ''; assert_eq $yellow '' ;;
+  esac
 }
 function assert_warning() {
   local expected=$1
@@ -52,6 +66,7 @@ function assert_warning() {
   _dotfiles_jj_update
   assert_eq "$(calls)" 1
   assert_eq $_dotfiles_jj_warning $expected
+  assert_deferred_segment_conditions $expected
 }
 
 # Plain and Git-only paths never start JJ.
@@ -138,7 +153,7 @@ prompt_jj
 assert_jj_segments
 prompt_jj
 assert_eq "$(calls)" $queried
-assert_eq ${#p10k_calls} 4
+assert_eq ${#p10k_calls} 6
 
 # Nonempty descriptions display and truncate.
 jj --quiet describe -m '123456789012345678901234567890'
@@ -263,9 +278,27 @@ right=$(jj log -r @ --no-graph --template 'change_id')
 jj --quiet new "$left" "$right" -m merge >/dev/null
 _dotfiles_jj_update
 assert_contains $_dotfiles_jj_text '[conflict,empty]'
+assert_eq $_dotfiles_jj_warning 2 # Conflict takes precedence over described, unbookmarked empty state.
+assert_deferred_segment_conditions 2
 print nonempty >extra
 jj --quiet describe -m merge >/dev/null
 _dotfiles_jj_update
 assert_contains $_dotfiles_jj_text '[conflict]'
+assert_eq $_dotfiles_jj_warning 2
+assert_deferred_segment_conditions 2
+jj --quiet bookmark create conflict-bookmark -r @
+assert_warning 2 # Conflict takes precedence over described, bookmarked state.
+jj --quiet describe -m ''
+assert_warning 2 # Conflict takes precedence over undescribed, bookmarked state.
+jj --quiet bookmark delete conflict-bookmark
+assert_warning 2 # Conflict takes precedence over undescribed, unbookmarked state.
+jj --quiet bookmark create conflict-bookmark -r @
+jj --quiet resolve --tool :ours
+assert_warning 1 # Resolving conflict restores yellow for an undescribed, bookmarked state.
+assert_not_contains $_dotfiles_jj_text '[conflict'
+jj --quiet describe -m resolved
+assert_warning 0 # Adding a description restores green after conflict resolution.
+jj --quiet bookmark delete conflict-bookmark
+assert_warning 0
 
 print 'powerlevel10k-jj: ok'

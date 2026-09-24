@@ -48,7 +48,11 @@ function assert_working_copy_color() {
   _p9k_precmd
   prompt=$(print -rP -- "$PROMPT")
   assert_eq "$(calls)" 1
-  if [[ $expected == yellow ]]; then
+  if [[ $expected == red ]]; then
+    assert_contains $prompt $red_background
+    assert_not_contains $prompt $yellow_background
+    assert_not_contains $prompt $green_background
+  elif [[ $expected == yellow ]]; then
     assert_contains $prompt $yellow_background
     assert_not_contains $prompt $green_background
   else
@@ -58,6 +62,7 @@ function assert_working_copy_color() {
 }
 green_background=$(print -P -- '%K{2}')
 yellow_background=$(print -P -- '%K{3}')
+red_background=$(print -P -- '%K{1}')
 
 source $helper
 typeset -g POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(jj vcs)
@@ -191,5 +196,41 @@ jj --quiet bookmark create nonempty-described -r @ >/dev/null
 assert_working_copy_color green # Nonempty, described, bookmarked.
 jj --quiet describe -m '' >/dev/null
 assert_working_copy_color yellow # Nonempty, undescribed, bookmarked.
+
+# Conflict state takes precedence over every normal green/yellow condition.
+jj --quiet git init --colocate $test_root/conflict >/dev/null
+cd $test_root/conflict
+print base >file
+jj --quiet describe -m base >/dev/null
+jj --quiet new -m left >/dev/null
+print left >file
+jj --quiet describe -m left >/dev/null
+left=$(jj log -r @ --no-graph --template 'change_id')
+jj --quiet new @- -m right >/dev/null
+print right >file
+jj --quiet describe -m right >/dev/null
+right=$(jj log -r @ --no-graph --template 'change_id')
+jj --quiet new "$left" "$right" -m merge >/dev/null
+assert_working_copy_color red # Described, unbookmarked, empty conflict.
+reset_calls
+_p9k_precmd
+conflict_cached=$(print -rP -- "$PROMPT")
+assert_eq "$(calls)" 1
+assert_contains $conflict_cached $red_background
+print -rP -- "$PROMPT" >/dev/null
+assert_eq "$(calls)" 1 # Red conflict redraw uses cached JJ state.
+jj --quiet bookmark create conflict-bookmark -r @ >/dev/null
+assert_working_copy_color red # Described, bookmarked, empty conflict.
+jj --quiet describe -m '' >/dev/null
+assert_working_copy_color red # Undescribed, bookmarked, empty conflict.
+jj --quiet bookmark delete conflict-bookmark >/dev/null
+assert_working_copy_color red # Undescribed, unbookmarked, empty conflict.
+jj --quiet bookmark create conflict-bookmark -r @ >/dev/null
+jj --quiet resolve --tool :ours >/dev/null
+assert_working_copy_color yellow # Resolution restores yellow immediately.
+jj --quiet describe -m resolved >/dev/null
+assert_working_copy_color green # Describing resolved working copy restores green immediately.
+jj --quiet bookmark delete conflict-bookmark >/dev/null
+assert_working_copy_color green
 
 print 'powerlevel10k-jj-integration: ok'
