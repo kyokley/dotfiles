@@ -34,10 +34,10 @@
       };
 
       nix.settings = {
-        substituters = [
+        extra-substituters = [
           "https://horus.cachix.org"
         ];
-        trusted-public-keys = [
+        extra-trusted-public-keys = [
           "horus.cachix.org-1:YZ4tQYAoKH+zkKbD4aqFcMHgZxIM7Uo4dPEfwUrubT4="
         ];
       };
@@ -48,10 +48,10 @@
       networking.hostName = "dioxygen";
 
       nix.settings = {
-        substituters = [
+        extra-substituters = [
           "https://horus.cachix.org"
         ];
-        trusted-public-keys = [
+        extra-trusted-public-keys = [
           "horus.cachix.org-1:YZ4tQYAoKH+zkKbD4aqFcMHgZxIM7Uo4dPEfwUrubT4="
         ];
       };
