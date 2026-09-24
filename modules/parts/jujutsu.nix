@@ -26,9 +26,13 @@
           ui = {
             default-command = "st";
             diff-editor = ":builtin";
-            pager = "less";
+            pager = "less -FRSX";
             # diff-formatter = ":git";
-            diff-formatter = ["${pkgs.delta}/bin/delta" "$left" "$right"];
+            diff-formatter = "delta";
+          };
+          merge-tools.delta = {
+            diff-command = ["${pkgs.delta}/bin/delta" "$left" "$right"];
+            diff-expected-exit-codes = [0 1];
           };
           fix.tools = {
             "1-ruff-lint" = {
