@@ -56,6 +56,8 @@
           (builtins.readFile ./powerlevel10k_jj.zsh)
           (builtins.readFile ./powerlevel10k_config.zsh)
           ''
+            # Disable zsh hash symbol (#) globbing to better support nix flake attr selection
+            disable -p '#'
 
             function init-psql() {
                 touch $HOME/.psql_history
