@@ -187,8 +187,8 @@
                 };
               };
             };
-            model = "opencode/gpt-5.6-luna";
-            small_model = "opencode/gpt-5-nano";
+            model = "opencode/gpt-6-sol";
+            small_model = "opencode/gpt-6-luna";
             agent = {
               explore.disable = true;
               general.disable = true;
