@@ -15,6 +15,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: cachix/install-nix-action@v31
+      - uses: cachix/cachix-action@v14
+        with:
+          name: horus
+          authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
       - name: Evaluate flake checks
         run: nix flake check --keep-going
       - name: Evaluate NixOS configurations
@@ -29,3 +33,61 @@ jobs:
             nix eval --raw --show-trace \
               ".#homeConfigurations.\"${host}\".activationPackage.drvPath"
           done
+  build-linux:
+    name: Build ${{ matrix.name }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: NixOS mars
+            attribute: '.#nixosConfigurations.mars.config.system.build.toplevel'
+          - name: NixOS mercury
+            attribute: '.#nixosConfigurations.mercury.config.system.build.toplevel'
+          - name: Home Manager mars
+            attribute: '.#homeConfigurations.default.activationPackage'
+          - name: Home Manager venus
+            attribute: '.#homeConfigurations."yokley@venus".activationPackage'
+          - name: Home Manager almagest
+            attribute: '.#homeConfigurations."yokley@almagest".activationPackage'
+          - name: Home Manager jupiter
+            attribute: '.#homeConfigurations."yokley@jupiter".activationPackage'
+          - name: Home Manager singularity
+            attribute: '.#homeConfigurations."yokley@singularity".activationPackage'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: cachix/install-nix-action@v31
+      - uses: cachix/cachix-action@v14
+        with:
+          name: horus
+          authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
+      - name: Build configuration
+        run: nix build --no-link --print-build-logs '${{ matrix.attribute }}'
+  build-darwin:
+    name: Build Darwin dioxygen
+    runs-on: macos-15-arm
+    timeout-minutes: 360
+    steps:
+      - uses: actions/checkout@v4
+      - uses: cachix/install-nix-action@v31
+      - uses: cachix/cachix-action@v14
+        with:
+          name: horus
+          authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
+      - name: Build configuration
+        run: nix build --no-link --print-build-logs '.#darwinConfigurations.dioxygen.system'
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: cachix/install-nix-action@v31
+        with:
+          nix_path: nixpkgs=channel:nixos-unstable
+      - uses: cachix/cachix-action@v14
+        with:
+          name: horus
+          # If you chose API tokens for write access OR if you have a private cache
+          authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
+      - run: nix-build
+      - run: nix-shell --run "echo OK"
