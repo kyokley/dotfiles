@@ -65,7 +65,7 @@ The `common` keys are baselines every host inherits; platform keys
 | `flake.nix` | Inputs, flake-parts setup, import-tree wiring |
 | `devenv.nix` / `devenv.yaml` / `.envrc` | Dev shell (direnv + devenv), pre-commit hooks config |
 | `.pre-commit-config.yaml` | **GENERATED** by git-hooks.nix — never edit |
-| `.github/workflows/test.yml` | CI: evaluates flake checks and configurations, builds every unique NixOS and standalone home-manager output on Linux plus the nix-darwin output on ARM macOS, and pushes builds to Horus Cachix when a write token is available |
+| `.github/workflows/test.yml` | CI: evaluates flake checks and configurations, builds every unique NixOS and standalone home-manager output on Linux plus the nix-darwin output on ARM macOS, and pushes builds to Horus Cachix when a write token is available; there is no separate legacy `nix-build`/`nix-shell` test job |
 | `tests/krill-widget.lua` | Standalone Lua regression tests for the Noctalia Krill widget; see "Lua widget tests" |
 | `tests/powerlevel10k-jj.zsh`, `tests/powerlevel10k-jj-integration.zsh` | JJ prompt regression tests and real Powerlevel10k rendering tests, including working-copy, description, bookmark, and conflict color states |
 | `devenv.lock`, `flake.lock` | Lockfiles |
