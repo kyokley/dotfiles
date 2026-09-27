@@ -168,7 +168,8 @@ The `common` keys are baselines every host inherits; platform keys
 - macOS: `darwin-rebuild switch --flake .#dioxygen`.
 - CI evaluates flake checks and configurations, then builds each distinct
   NixOS and standalone home-manager configuration on Linux and the nix-darwin
-  system on ARM macOS for PRs and pushes to main. Cachix uploads require
+  system on ARM macOS for PRs and pushes to main. Linux jobs pin Ubuntu 24.04
+  rather than following `ubuntu-latest` migrations. Cachix uploads require
   `CACHIX_AUTH_TOKEN`; fork PRs do not receive repository secrets. The NixOS
   `default` alias shares the `mars` build output.
 
