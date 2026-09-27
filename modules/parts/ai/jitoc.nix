@@ -75,6 +75,7 @@
         else
           ${pkgs.jujutsu}/bin/jj commit -m "$message"
         fi
+        echo
         printf '%s\n' "$message"
       '';
     };
