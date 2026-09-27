@@ -35,6 +35,7 @@ jobs:
           done
   build-linux:
     name: Build ${{ matrix.name }}
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-24.04
     timeout-minutes: 360
     strategy:
@@ -66,6 +67,7 @@ jobs:
         run: nix build --no-link --print-build-logs '${{ matrix.attribute }}'
   build-darwin:
     name: Build Darwin dioxygen
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: macos-15
     timeout-minutes: 360
     steps:
