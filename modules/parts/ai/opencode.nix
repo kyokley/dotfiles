@@ -194,7 +194,7 @@
               general.disable = true;
             };
             plugin = [
-              "oh-my-opencode-slim"
+              "${npm_deps}/oh-my-opencode-slim/dist/index.js"
               "opencode-skill-creator"
             ];
             permission = {
@@ -223,6 +223,7 @@
       };
 
       home = {
+        sessionVariables.OPENCODE_EXPERIMENTAL_BACKGROUND_SUBAGENTS = "true";
         file = {
           ".config/opencode/oh-my-opencode-slim.json" = {
             text = builtins.toJSON oh_my_opencode_slim;

@@ -234,8 +234,11 @@ config, zen key from the
 `opencode_zen.age` secret, third-party plugin sources pinned with Nix, and node
 deps built with **bun2nix** from `package.json` + `_bun.nix`. When
 `package.json` changes, regenerate `_bun.nix` with `bun2nix` in the devenv
-shell. Its derivation explicitly copies the installed `node_modules` tree;
-the default bun2nix install phase only emits the package executable.
+shell. OpenCode loads oh-my-opencode-slim from this Nix-built tree, rather
+than its separate npm plugin cache. Its native background tasks require
+`OPENCODE_EXPERIMENTAL_BACKGROUND_SUBAGENTS=true` in the session environment.
+The derivation explicitly copies the installed `node_modules` tree; the
+default bun2nix install phase only emits the package executable.
 
 ## Maintenance protocol (this skill self-updates)
 
@@ -314,6 +317,11 @@ is uncertain.
 - Nix-managed OpenCode plugins resolve imports from their canonical Nix store
   path, not the Home Manager symlink path. Bundle each plugin with a sibling
   `node_modules` link when it has runtime dependencies.
+- An unversioned OpenCode plugin name can load a stale `@latest` cache instead
+  of the version pinned in `ai/package.json`. Reference its Nix-built entry
+  point in `programs.opencode.settings.plugin` when using the pinned version.
+  oh-my-opencode-slim 2.2.24 uses native background tasks; its old
+  `fallback.timeoutMs` option does not set their deadline.
 - `gitoc` and `jitoc` use `config.programs.opencode.package`, not
   `pkgs.opencode`, so package overrides also apply to commit generation.
   Their baked-in store paths do not follow the shell's `opencode` executable.
