@@ -65,7 +65,7 @@ The `common` keys are baselines every host inherits; platform keys
 | `flake.nix` | Inputs, flake-parts setup, import-tree wiring |
 | `devenv.nix` / `devenv.yaml` / `.envrc` | Dev shell (direnv + devenv), pre-commit hooks config |
 | `.pre-commit-config.yaml` | **GENERATED** by git-hooks.nix — never edit |
-| `.github/workflows/test.yml` | CI: evaluates flake checks plus every NixOS and standalone home-manager config on PR / push to main |
+| `.github/workflows/test.yml` | CI: evaluates flake checks and configurations, builds every unique NixOS and standalone home-manager output on Linux plus the nix-darwin output on ARM macOS, and pushes builds to Horus Cachix when a write token is available |
 | `tests/krill-widget.lua` | Standalone Lua regression tests for the Noctalia Krill widget; see "Lua widget tests" |
 | `tests/powerlevel10k-jj.zsh`, `tests/powerlevel10k-jj-integration.zsh` | JJ prompt regression tests and real Powerlevel10k rendering tests, including working-copy, description, bookmark, and conflict color states |
 | `devenv.lock`, `flake.lock` | Lockfiles |
@@ -146,7 +146,8 @@ The `common` keys are baselines every host inherits; platform keys
 3. Register in `modules/hosts/base.nix` with the right generator
    (`mkNixosConfiguration` / `mkDarwinConfiguration` / `mkHomeConfiguration`).
 4. Add the identity to `modules/parts/_secrets/secrets.nix` and the host to
-   the CI matrix in `.github/workflows/test.yml`.
+   the appropriate build matrix/job in `.github/workflows/test.yml` (and the
+   evaluation loops for NixOS or standalone home-manager hosts).
 5. Set `home.stateVersion` (and `system.stateVersion`) on first deploy — then
    never touch them.
 
@@ -165,9 +166,11 @@ The `common` keys are baselines every host inherits; platform keys
 - home-manager-only host: `home-manager-switch` → `nh home switch`
   (`nh` flake defaults to `~/dotfiles`, where the repo lives on hosts).
 - macOS: `darwin-rebuild switch --flake .#dioxygen`.
-- CI evaluates every NixOS and standalone home-manager config on PR/push to
-  main — a green check means configurations evaluate, not that their complete
-  system closures build.
+- CI evaluates flake checks and configurations, then builds each distinct
+  NixOS and standalone home-manager configuration on Linux and the nix-darwin
+  system on ARM macOS for PRs and pushes to main. Cachix uploads require
+  `CACHIX_AUTH_TOKEN`; fork PRs do not receive repository secrets. The NixOS
+  `default` alias shares the `mars` build output.
 
 ### Dev shell & formatting
 
