@@ -66,7 +66,7 @@ jobs:
         run: nix build --no-link --print-build-logs '${{ matrix.attribute }}'
   build-darwin:
     name: Build Darwin dioxygen
-    runs-on: macos-15-arm
+    runs-on: macos-15
     timeout-minutes: 360
     steps:
       - uses: actions/checkout@v4
