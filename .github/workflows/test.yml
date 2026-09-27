@@ -10,12 +10,12 @@ concurrency:
 jobs:
   evaluate:
     name: Evaluate flake configurations
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: cachix/install-nix-action@v31
-      - uses: cachix/cachix-action@v14
+      - uses: cachix/cachix-action@v17
         with:
           name: horus
           authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
@@ -35,7 +35,7 @@ jobs:
           done
   build-linux:
     name: Build ${{ matrix.name }}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 360
     strategy:
       fail-fast: false
@@ -56,9 +56,9 @@ jobs:
           - name: Home Manager singularity
             attribute: '.#homeConfigurations."yokley@singularity".activationPackage'
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: cachix/install-nix-action@v31
-      - uses: cachix/cachix-action@v14
+      - uses: cachix/cachix-action@v17
         with:
           name: horus
           authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
@@ -69,9 +69,9 @@ jobs:
     runs-on: macos-15
     timeout-minutes: 360
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: cachix/install-nix-action@v31
-      - uses: cachix/cachix-action@v14
+      - uses: cachix/cachix-action@v17
         with:
           name: horus
           authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
