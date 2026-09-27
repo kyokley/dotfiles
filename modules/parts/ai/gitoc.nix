@@ -55,6 +55,7 @@
 
       if [[ "$dry_run" != true ]]; then
           message="$(git diff --staged | ${config.programs.opencode.package}/bin/opencode --log-level INFO run --command commit 2>/dev/null)"
+          echo
           echo "$message"
           echo
           echo
