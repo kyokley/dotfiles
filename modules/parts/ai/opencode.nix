@@ -169,6 +169,9 @@
             commit = ./conventional-commit-ai-prompt.md;
             review = ./review_code.md;
           };
+          skills = {
+            stacked-jj-prs = ./stacked-jj-prs.md;
+          };
           settings = {
             autoupdate = false;
             provider = {
