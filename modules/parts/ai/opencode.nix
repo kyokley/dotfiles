@@ -118,7 +118,6 @@
     opencode = {
       pkgs,
       inputs,
-      config,
       ...
     }: let
       bun2nix-lib = inputs.bun2nix.packages.${pkgs.stdenv.hostPlatform.system}.default;
@@ -152,8 +151,6 @@
         cp -R ${opencode_notify}/workers/kdco-registry/files/plugins/. "$out/plugins"
         ln -s ${npm_deps} "$out/node_modules"
       '';
-
-      zen_key_path = "${config.home.homeDirectory}/.config/opencode/zen.key";
     in {
       _module.args.opencode_npm_deps = npm_deps;
 
@@ -175,14 +172,14 @@
           settings = {
             autoupdate = false;
             provider = {
-              opencode = {
-                options = {
-                  apiKey = "{file:${zen_key_path}}";
-                  baseUrl = "https://opencode.ai/zen/v1";
-                  timeout = 600000;
-                  headerTimeout = 600000;
-                };
-              };
+              # opencode = {
+              #   options = {
+              #     apiKey = "{file:${config.age.secrets.opencode-zen.path}}";
+              #     baseUrl = "https://opencode.ai/zen/v1";
+              #     timeout = 600000;
+              #     headerTimeout = 600000;
+              #   };
+              # };
               openai = {
                 options = {
                   timeout = 600000;
@@ -221,7 +218,6 @@
       age.secrets = {
         opencode-zen = {
           file = ../_secrets/opencode_zen.age;
-          path = zen_key_path;
         };
       };
 
