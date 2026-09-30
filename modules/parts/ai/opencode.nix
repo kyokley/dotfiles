@@ -172,14 +172,6 @@
           settings = {
             autoupdate = false;
             provider = {
-              # opencode = {
-              #   options = {
-              #     apiKey = "{file:${config.age.secrets.opencode-zen.path}}";
-              #     baseUrl = "https://opencode.ai/zen/v1";
-              #     timeout = 600000;
-              #     headerTimeout = 600000;
-              #   };
-              # };
               openai = {
                 options = {
                   timeout = 600000;
@@ -215,11 +207,18 @@
         };
       };
 
-      age.secrets = {
-        opencode-zen = {
-          file = ../_secrets/opencode_zen.age;
-        };
-      };
+      # Uncomment the following to enable Opencode Zen
+      # programs.opencode.settings.provider.opencode.options = {
+      #   apiKey = "{file:${config.age.secrets.opencode-zen.path}}";
+      #   baseUrl = "https://opencode.ai/zen/v1";
+      #   timeout = 600000;
+      #   headerTimeout = 600000;
+      # };
+      # age.secrets = {
+      #   opencode-zen = {
+      #     file = ../_secrets/opencode_zen.age;
+      #   };
+      # };
 
       home = {
         sessionVariables.OPENCODE_EXPERIMENTAL_BACKGROUND_SUBAGENTS = "true";
