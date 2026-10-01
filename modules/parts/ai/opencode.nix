@@ -51,11 +51,11 @@
       presets = {
         openai = mkPreset {
           orchestrator = {
-            model = "openai/gpt-6-sol";
+            model = "openai/gpt-6.1-sol";
             variant = "high";
           };
           oracle = {
-            model = "openai/gpt-6-sol";
+            model = "openai/gpt-6.1-sol";
             variant = "high";
           };
           librarian = {
@@ -71,7 +71,7 @@
             model = "openai/gpt-6-luna";
             variant = "high";
           };
-          council.model = "openai/gpt-6-sol";
+          council.model = "openai/gpt-6.1-sol";
         };
         opencode-zen = mkPreset {
           orchestrator = {
@@ -179,7 +179,7 @@
                 };
               };
             };
-            model = "openai/gpt-6-sol";
+            model = "openai/gpt-6.1-sol";
             small_model = "openai/gpt-6-luna";
             agent = {
               explore.disable = true;
