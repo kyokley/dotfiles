@@ -3,8 +3,22 @@
     nixos.hyprland = {
       inputs,
       pkgs,
+      config,
       ...
-    }: {
+    }: let
+      hyprPkgs = inputs.hyprland.inputs.nixpkgs.legacyPackages.${pkgs.stdenv.hostPlatform.system};
+    in {
+      assertions = [
+        {
+          assertion = config.programs.hyprland.package.stdenv.cc.libc.outPath == config.hardware.graphics.package.stdenv.cc.libc.outPath;
+          message = "Hyprland and selected Mesa must use the same glibc; select Mesa from Hyprland's nixpkgs input.";
+        }
+        {
+          assertion = !config.hardware.graphics.enable32Bit || config.hardware.graphics.package32.outPath == hyprPkgs.pkgsi686Linux.mesa.outPath;
+          message = "32-bit Mesa must come from Hyprland's nixpkgs input when 32-bit graphics are enabled.";
+        }
+      ];
+
       imports = with inputs.self.modules.nixos; [
         noctalia
       ];
@@ -41,6 +55,11 @@
           withUWSM = true;
           xwayland.enable = true;
         };
+      };
+
+      hardware.graphics = {
+        package = hyprPkgs.mesa;
+        package32 = hyprPkgs.pkgsi686Linux.mesa;
       };
 
       services = {
