@@ -10,6 +10,9 @@
       krillPlugin = ./krill;
       workspaceLayoutPlugin = ./workspace-layout;
     in {
+      # Noctalia's upstream module disables the old HM file path, but HM now
+      # imports the directory directly. Keep only Noctalia's module active.
+      disabledModules = ["${inputs.home-manager}/modules/programs/noctalia"];
       imports = [inputs.noctalia.homeModules.default];
 
       # Krill is a hand-placed local plugin: noctalia auto-discovers
