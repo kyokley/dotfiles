@@ -335,6 +335,9 @@ is uncertain.
   their glibc must match. Keeping the source pin avoids incompatible Hyprland
   toolkit dependencies; update Hyprland and Mesa pins together for driver
   updates. The module asserts both graphics package selection and ABI match.
+- Noctalia must follow system `nixpkgs`: it dynamically loads host PAM libraries,
+  so an independent older glibc can fail the system PAM ABI. Unlike Hyprland and
+  Mesa, do not preserve an independent older libc pin for Noctalia.
 - An unversioned OpenCode plugin name can load a stale `@latest` cache instead
   of the version pinned in `ai/package.json`. Reference its Nix-built entry
   point in `programs.opencode.settings.plugin` when using the pinned version.

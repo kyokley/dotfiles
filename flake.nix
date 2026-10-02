@@ -61,6 +61,7 @@
     noctalia = {
       # cachix branch always points to the latest commit that CI has cached.
       url = "github:noctalia-dev/noctalia/cachix";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     caveman = {
