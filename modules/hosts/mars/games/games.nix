@@ -14,7 +14,7 @@
     mkN64Game = attrs: (pkgs.writeShellApplication {
       inherit (attrs) name;
       text = ''
-        ${n64}/bin/n64 --fullscreen ${attrs.rom}
+        ${n64}/bin/n64 --fullscreen "$@" ${attrs.rom}
       '';
     });
   in {
