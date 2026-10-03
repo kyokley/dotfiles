@@ -22,6 +22,9 @@
       };
       themeFile = "Dark_Pastel";
       settings = {
+        # Avoid restoring maximized startup geometry before Hyprland tiles the window.
+        remember_window_size = "no";
+
         cursor_shape = "block";
         cursor_trail = 3;
         scrollback_pager_history_size = 1000;
