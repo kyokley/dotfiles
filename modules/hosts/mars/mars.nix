@@ -41,6 +41,9 @@ in {
         stateVersion = "24.05"; # Don't touch me!
       };
 
+      # Avoid restoring maximized startup geometry before Hyprland tiles the window.
+      programs.kitty.settings.remember_window_size = "no";
+
       wayland.windowManager.hyprland = {
         settings.monitor = [
           {
