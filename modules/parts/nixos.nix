@@ -274,6 +274,12 @@
             ${pkgs.grim}/bin/grim -g "$(${pkgs.slurp}/bin/slurp)" "$@"
           '';
         };
+        recorder = pkgs.writeShellApplication {
+          name = "recorder";
+          text = ''
+            ${pkgs.wf-recorder}/bin/wf-recorder -g "$(${pkgs.slurp}/bin/slurp)" -f "$@"
+          '';
+        };
       in {
         imports = with inputs.self.modules.homeManager; [
           hyprland
@@ -290,6 +296,7 @@
             nerd-fonts.hack
             vlc
             shot
+            recorder
             open-all
             inputs.fastfetch-config.packages.${pkgs.stdenv.hostPlatform.system}.default
           ];
