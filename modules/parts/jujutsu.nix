@@ -50,9 +50,11 @@
           };
           revset-aliases = {
             "closest_pushable(to)" = ''heads(::to & mutable() & ~description(exact:"") & (~empty() | merges()))'';
+            "recent()" = ''committer_date(after:"1 month ago")'';
           };
           revsets = {
             bookmark-advance-to = "closest_pushable(@)";
+            log = "@ | ancestors(trunk()..(visible_heads() & (tracked_bookmarks() | mine()) & recent()), 3) | trunk()";
           };
         };
       };
