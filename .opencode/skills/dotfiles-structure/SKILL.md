@@ -244,6 +244,12 @@ than its separate npm plugin cache. Its native background tasks require
 The derivation explicitly copies the installed `node_modules` tree; the
 default bun2nix install phase only emits the package executable.
 
+The native `opencode-mem@2.29.0` registry plugin is pinned outside the Nix-built
+node tree; its declarative `opencode-mem.jsonc` reuses OpenCode's OpenAI auth
+and model provider, with local memory and embeddings (the embedding model
+downloads on first use). Captured context is sent to the configured provider;
+the web UI binds to loopback.
+
 ## Maintenance protocol (this skill self-updates)
 
 This skill is the source of truth for repo structure, so it must evolve with

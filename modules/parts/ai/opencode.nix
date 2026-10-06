@@ -188,6 +188,7 @@
             plugin = [
               "${npm_deps}/oh-my-opencode-slim/dist/index.js"
               "opencode-skill-creator"
+              "opencode-mem@2.29.0"
             ];
             permission = {
               external_directory = {
@@ -228,6 +229,15 @@
           };
           ".config/opencode/kdco-notify.json" = {
             text = builtins.toJSON {timeout = 10;};
+          };
+          ".config/opencode/opencode-mem.jsonc" = {
+            text = builtins.toJSON {
+              opencodeProvider = "openai";
+              opencodeModel = "gpt-6-luna";
+              autoUpdate = false;
+              webServerEnabled = true;
+              webServerHost = "127.0.0.1";
+            };
           };
           ".config/opencode/node_modules" = {
             source = npm_deps;
