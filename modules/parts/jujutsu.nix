@@ -30,9 +30,25 @@
             # diff-formatter = ":git";
             diff-formatter = "delta";
           };
-          merge-tools.delta = {
-            diff-command = ["${pkgs.delta}/bin/delta" "$left" "$right"];
-            diff-expected-exit-codes = [0 1];
+          merge-tools = {
+            delta = {
+              diff-command = ["${pkgs.delta}/bin/delta" "$left" "$right"];
+              diff-expected-exit-codes = [0 1];
+            };
+            diffconflicts = {
+              program = "nvim";
+              merge-args = [
+                "-c"
+                "let g:jj_diffconflicts_marker_length=$marker_length"
+                "-c"
+                "JJDiffConflicts!"
+                "$output"
+                "$base"
+                "$left"
+                "$right"
+              ];
+              merge-tool-edits-conflict-markers = true;
+            };
           };
           fix.tools = {
             "1-ruff-lint" = {
