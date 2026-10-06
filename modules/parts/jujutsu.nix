@@ -56,6 +56,12 @@
             bookmark-advance-to = "closest_pushable(@)";
             log = "@ | ancestors(trunk()..(visible_heads() & (tracked_remote_bookmarks() | mine()) & recent()), 3) | trunk()";
           };
+          aliases = {
+            ba = [
+              "bookmark"
+              "advance"
+            ];
+          };
         };
       };
       jjui = {
