@@ -251,6 +251,13 @@
             offset_x = 20;
             offset_y = 64;
             filter = {
+              aaa-opencode-mem-capture = {
+                enabled = true;
+                show_toast = false;
+                save_history = false;
+                play_sound = false;
+                match_content = "opencode-mem capture";
+              };
               spotify = {
                 enabled = true;
                 show_toast = false;

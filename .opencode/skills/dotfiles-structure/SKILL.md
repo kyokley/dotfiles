@@ -344,6 +344,10 @@ is uncertain.
 - Noctalia must follow system `nixpkgs`: it dynamically loads host PAM libraries,
   so an independent older glibc can fail the system PAM ABI. Unlike Hyprland and
   Mesa, do not preserve an independent older libc pin for Noctalia.
+- Noctalia notification filters resolve the first match in name order.
+  `match_content` is a case-insensitive ECMAScript regex searched against the
+  title OR body separately; it cannot require both fields to match. Omit
+  `match` to filter content regardless of the sending app.
 - An unversioned OpenCode plugin name can load a stale `@latest` cache instead
   of the version pinned in `ai/package.json`. Reference its Nix-built entry
   point in `programs.opencode.settings.plugin` when using the pinned version.
