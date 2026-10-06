@@ -39,6 +39,10 @@
               program = "nvim";
               merge-args = [
                 "-c"
+                "nnoremap <silent> H :<C-U>tabp<CR>"
+                "-c"
+                "nnoremap <silent> L :<C-U>tabn<CR>"
+                "-c"
                 "let g:jj_diffconflicts_marker_length=$marker_length"
                 "-c"
                 "JJDiffConflicts!"
