@@ -161,6 +161,18 @@
       programs = {
         opencode = {
           enable = true;
+          package =
+            if pkgs.stdenv.hostPlatform.isLinux
+            then
+              pkgs.opencode.overrideAttrs (old: {
+                # Preload the C++ runtime for registry native plugins.
+                postFixup =
+                  (old.postFixup or "")
+                  + ''
+                    ${pkgs.patchelf}/bin/patchelf --add-needed "${pkgs.stdenv.cc.cc.lib}/lib/libstdc++.so.6" "$out/bin/.opencode-wrapped"
+                  '';
+              })
+            else pkgs.opencode;
           context = builtins.readFile "${inputs.caveman}/plugins/caveman/skills/caveman/SKILL.md";
           commands = {
             commit = ./conventional-commit-ai-prompt.md;

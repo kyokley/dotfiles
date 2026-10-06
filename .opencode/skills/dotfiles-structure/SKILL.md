@@ -250,6 +250,13 @@ and model provider, with local memory and embeddings (the embedding model
 downloads on first use). Captured context is sent to the configured provider;
 the web UI binds to loopback.
 
+On Linux, `programs.opencode.package` adds an absolute ELF `DT_NEEDED` entry
+for Nix's `libstdc++.so.6` to `bin/.opencode-wrapped`. This loads the C++
+runtime before cached native plugins such as ONNX Runtime need it, without
+patching the cache or setting `LD_LIBRARY_PATH`. Executable RPATH alone is
+insufficient when an addon has its own RUNPATH; `nix-ld` does not handle
+these library loads from a Nix-built executable. Darwin keeps the stock package.
+
 ## Maintenance protocol (this skill self-updates)
 
 This skill is the source of truth for repo structure, so it must evolve with
