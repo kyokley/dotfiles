@@ -121,6 +121,18 @@
       ...
     }: let
       bun2nix-lib = inputs.bun2nix.packages.${pkgs.stdenv.hostPlatform.system}.default;
+      opencode_base_package =
+        if pkgs.stdenv.hostPlatform.isLinux
+        then
+          pkgs.opencode.overrideAttrs (old: {
+            # Preload the C++ runtime for registry native plugins.
+            postFixup =
+              (old.postFixup or "")
+              + ''
+                ${pkgs.patchelf}/bin/patchelf --add-needed "${pkgs.stdenv.cc.cc.lib}/lib/libstdc++.so.6" "$out/bin/.opencode-wrapped"
+              '';
+          })
+        else pkgs.opencode;
       npm_deps = bun2nix-lib.mkDerivation {
         packageJson = ./package.json;
         src = ./.;
@@ -153,6 +165,7 @@
       '';
     in {
       _module.args.opencode_npm_deps = npm_deps;
+      _module.args.opencode_base_package = opencode_base_package;
 
       imports = [
         inputs.self.modules.homeManager.gitoc
@@ -161,18 +174,7 @@
       programs = {
         opencode = {
           enable = true;
-          package =
-            if pkgs.stdenv.hostPlatform.isLinux
-            then
-              pkgs.opencode.overrideAttrs (old: {
-                # Preload the C++ runtime for registry native plugins.
-                postFixup =
-                  (old.postFixup or "")
-                  + ''
-                    ${pkgs.patchelf}/bin/patchelf --add-needed "${pkgs.stdenv.cc.cc.lib}/lib/libstdc++.so.6" "$out/bin/.opencode-wrapped"
-                  '';
-              })
-            else pkgs.opencode;
+          package = opencode_base_package;
           context = builtins.readFile "${inputs.caveman}/plugins/caveman/skills/caveman/SKILL.md";
           commands = {
             commit = ./conventional-commit-ai-prompt.md;

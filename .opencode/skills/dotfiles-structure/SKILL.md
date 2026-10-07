@@ -250,7 +250,12 @@ and model provider, with local memory and embeddings (the embedding model
 downloads on first use). Captured context is sent to the configured provider;
 the web UI binds to loopback.
 
-On Linux, `programs.opencode.package` adds an absolute ELF `DT_NEEDED` entry
+The shared module exposes its platform-specific base executable as
+`opencode_base_package` through `_module.args`; `programs.opencode.package`
+uses the same binding. Host wrappers should execute this argument, not
+`pkgs.opencode` or `config.programs.opencode.package`: the former bypasses
+Linux's patch and the latter recurses when the wrapper is the configured package.
+On Linux, the shared base package adds an absolute ELF `DT_NEEDED` entry
 for Nix's `libstdc++.so.6` to `bin/.opencode-wrapped`. This loads the C++
 runtime before cached native plugins such as ONNX Runtime need it, without
 patching the cache or setting `LD_LIBRARY_PATH`. Executable RPATH alone is
