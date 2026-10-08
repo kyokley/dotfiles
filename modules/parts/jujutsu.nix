@@ -74,7 +74,7 @@
           };
           revsets = {
             bookmark-advance-to = "closest_pushable(@)";
-            log = "@ | ancestors(trunk()..(visible_heads() & (tracked_remote_bookmarks() | mine()) & recent()), 3) | trunk()";
+            log = "@ | ancestors(trunk()..(visible_heads() & (tracked_remote_bookmarks() | bookmarks() | mine()) & recent()), 3) | trunk()";
           };
           aliases = {
             ba = [
