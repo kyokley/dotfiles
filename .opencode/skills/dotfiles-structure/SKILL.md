@@ -261,6 +261,9 @@ runtime before cached native plugins such as ONNX Runtime need it, without
 patching the cache or setting `LD_LIBRARY_PATH`. Executable RPATH alone is
 insufficient when an addon has its own RUNPATH; `nix-ld` does not handle
 these library loads from a Nix-built executable. Darwin keeps the stock package.
+The Linux `homeManager.dev` package overrides ai-browser's `opencode` argument
+with this same base executable, preserving ai-browser's wrapper settings while
+avoiding its default `pkgs.opencode` reference. Darwin does not install ai-browser.
 
 ## Maintenance protocol (this skill self-updates)
 

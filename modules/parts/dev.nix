@@ -4,6 +4,7 @@
       pkgs,
       lib,
       config,
+      opencode_base_package,
       ...
     }: let
       AGE_DIR = "${config.home.homeDirectory}/.config/age";
@@ -38,7 +39,11 @@
           inputs.usql.packages.${pkgs.stdenv.hostPlatform.system}.default
         ]
         ++ lib.optionals pkgs.stdenv.hostPlatform.isLinux
-        [inputs.ai-browser.packages.${pkgs.stdenv.hostPlatform.system}.default];
+        [
+          (inputs.ai-browser.packages.${pkgs.stdenv.hostPlatform.system}.default.override {
+            opencode = opencode_base_package;
+          })
+        ];
 
       home.file = {
         pdbpp = {
