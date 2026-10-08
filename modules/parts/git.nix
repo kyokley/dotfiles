@@ -72,6 +72,7 @@
             ".nixos-test-history"
             "result"
             ".direnv"
+            ".devenv"
           ];
         };
       };
