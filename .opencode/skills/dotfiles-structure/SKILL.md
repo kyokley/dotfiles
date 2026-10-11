@@ -67,6 +67,7 @@ The `common` keys are baselines every host inherits; platform keys
 | `.pre-commit-config.yaml` | **GENERATED** by git-hooks.nix — never edit |
 | `.github/workflows/test.yml` | CI: evaluates flake checks and configurations, builds every unique NixOS and standalone home-manager output on Linux plus the nix-darwin output on ARM macOS, and pushes builds to Horus Cachix when a write token is available; there is no separate legacy `nix-build`/`nix-shell` test job |
 | `tests/krill-widget.lua` | Standalone Lua regression tests for the Noctalia Krill widget; see "Lua widget tests" |
+| `tests/noctalia-global-workspaces.lua` | Standalone Lua regression tests for the Noctalia global-workspaces plugin; see "Lua widget tests" |
 | `tests/powerlevel10k-jj.zsh`, `tests/powerlevel10k-jj-integration.zsh` | JJ prompt regression tests and real Powerlevel10k rendering tests, including working-copy, description, bookmark, and conflict color states |
 | `devenv.lock`, `flake.lock` | Lockfiles |
 
@@ -86,7 +87,7 @@ The `common` keys are baselines every host inherits; platform keys
 | `dev.nix` | `homeManager.dev` | Dev tools: age (+`init-age`/`show-age`), devenv, direnv, usql, tig, jq |
 | `git.nix`, `bitwarden.nix`, `clamav.nix`, `flatpak.nix`, `shutdown.nix` | various | Single-purpose parts, names say it all |
 | `syncthing.nix`, `systemd.nix` (`systemd-services`), `tailscale.nix`, `distributed_builds.nix`, `laptop.nix` | various | Services / system integration parts |
-| `hyprland.nix`, `waybar/`, `rofi/`, `dunst.nix`, `picom.nix` (+ `picom.conf`), `noctalia/` | various | Window managers / desktop; Noctalia includes local bar plugins such as `krill/` and `workspace-layout/` |
+| `hyprland.nix`, `waybar/`, `rofi/`, `dunst.nix`, `picom.nix` (+ `picom.conf`), `noctalia/` | various | Window managers / desktop; Noctalia includes local bar plugins such as `krill/`, `workspace-layout/`, and `global-workspaces/` |
 | `kitty.nix`, `terminator.nix`, `tmux.nix`, `vim.nix` | `homeManager.*` | Terminal / editor |
 | `zsh/` (`zsh.nix`, `powerlevel10k_config.zsh`, `powerlevel10k_jj.zsh`) | `homeManager.common` | Prezto shell and Powerlevel10k prompt, with JJ status replacing Git in JJ workspaces |
 | `ai/` | `homeManager.opencode`, `.fabric`, `.gitoc`, `.jitoc` | AI tooling; `jitoc.nix` generates descriptions for the current jj working copy — see "opencode config" below |
@@ -184,10 +185,11 @@ The `common` keys are baselines every host inherits; platform keys
 
 ### Lua widget tests
 
-Run the Krill regression tests from the repository root:
+Run the Noctalia widget regression tests from the repository root:
 
 ```sh
 nix shell nixpkgs#lua5_4 --command lua tests/krill-widget.lua
+nix shell nixpkgs#lua5_4 --command lua tests/noctalia-global-workspaces.lua
 ```
 
 `tests/krill-widget.lua` loads `modules/parts/noctalia/krill/widget.luau`
@@ -198,6 +200,14 @@ headlines. The widget currently uses a Lua-compatible subset of Luau; this
 test does not validate Noctalia runtime integration. Use Lua 5.4 explicitly:
 the default `nixpkgs#lua` may reject the `\u{...}` escapes. These tests run
 manually and are not wired into flake checks or CI.
+
+`tests/noctalia-global-workspaces.lua` loads the deployed
+`modules/parts/noctalia/global-workspaces/widget.luau` entrypoint in independent
+stubbed Noctalia instances. Numbered workspaces sort by ID before ID-less
+workspaces sorted by canonical address; ID-less labels use display names.
+Fixtures cover focused windows/special overlays, canonical safe selectors,
+native stable keys, stale callbacks, malformed snapshots, and polling. Manual
+Lua 5.4 coverage; not CI.
 
 ### Powerlevel10k JJ tests
 

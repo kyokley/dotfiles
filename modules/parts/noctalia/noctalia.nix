@@ -9,6 +9,7 @@
     }: let
       krillPlugin = ./krill;
       workspaceLayoutPlugin = ./workspace-layout;
+      globalWorkspacesPlugin = ./global-workspaces;
     in {
       # Noctalia's upstream module disables the old HM file path, but HM now
       # imports the directory directly. Keep only Noctalia's module active.
@@ -29,6 +30,12 @@
         };
         ".local/share/noctalia/plugins/workspace-layout/widget.luau" = {
           source = workspaceLayoutPlugin + "/widget.luau";
+        };
+        ".local/share/noctalia/plugins/global-workspaces/plugin.toml" = {
+          source = globalWorkspacesPlugin + "/plugin.toml";
+        };
+        ".local/share/noctalia/plugins/global-workspaces/widget.luau" = {
+          source = globalWorkspacesPlugin + "/widget.luau";
         };
       };
 
@@ -58,6 +65,7 @@
               "dotnetrob/cat"
               "yokley/krill"
               "yokley/workspace-layout"
+              "yokley/global-workspaces"
             ];
           };
 
@@ -230,7 +238,7 @@
                 position = "bottom";
                 # layer = "top";
                 start = [
-                  "workspaces"
+                  "global_workspaces"
                   "workspace_layout"
                 ];
                 # noctalia merges per-lane: absent center/end keep the default
@@ -428,6 +436,9 @@
             };
             workspace_layout = {
               type = "yokley/workspace-layout:workspace-layout";
+            };
+            global_workspaces = {
+              type = "yokley/global-workspaces:global-workspaces";
             };
 
             # Bongo cat (official plugin noctalia/bongocat). Reads keyboard
