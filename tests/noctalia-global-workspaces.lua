@@ -8,16 +8,45 @@ local function instance(outputName, vertical, documents)
   local callbackContext = false
   local expectedFocusedOutput, expectedSelectedIndex
   local function render(tree)
+    assert(tree.props.key == "global-workspaces" and tree.props.gap == 4,
+      "workspace gap must match native Style::spaceXs")
     local keys = {}
     local function visit(node, isRoot)
       assert(type(node) == "table" and type(node.props) == "table", "render nodes need props")
       local key = node.props.key
       assert(type(key) == "string" and key ~= "", "native renderer requires props.key on root and controls")
       assert(not keys[key], "props.key must be unique in one rendered tree: " .. key)
-      keys[key] = true
-      if not isRoot and node.type == "button" then
-        assert(node.props.controlSize == nil, "do not override native compact control sizing")
+      if key:sub(1, #"workspace-entry-") == "workspace-entry-" then
+        assert(node.type == "row" and node.props.radius == 8,
+          "workspace pills must use the configured bar capsule radius")
+        if vertical then
+          assert(node.props.width == nil and node.props.minWidth == 16
+            and (node.props.minHeight == 16 or node.props.minHeight == 32),
+            "vertical pills must keep full label width and native active-axis sizing")
+        else
+          assert(node.props.minHeight == 16 and node.props.paddingH == 4.8
+            and node.props.width == nil and (node.props.minWidth == 16 or node.props.minWidth == 32),
+            "horizontal pills must use native inactive/active minimum widths")
+        end
+        assert(node.props.fill ~= nil and node.props.onClick and node.props.onHover and node.props.tooltip,
+          "each pill must retain palette fill, click, hover, and tooltip behavior")
+        assert(node.children[1].type == "label" and node.children[1].props.fontSize == 11,
+          "workspace labels must use Noctalia mini typography")
+        assert(node.children[1].props.maxWidth == nil,
+          "workspace display names must remain complete in both orientations")
+        assert(node.children[1].props.fontFamily == nil and node.children[1].props.fontWeight == nil,
+          "workspace labels must inherit the configured bar font family and weight")
+        local expectedText = ({
+          primary = "on_primary",
+          secondary = "on_secondary",
+          error = "on_error",
+          hover = "on_hover",
+          ["surface_variant/0.55"] = "on_surface",
+        })[node.props.fill]
+        assert(node.children[1].props.color == expectedText,
+          "workspace label contrast must follow the built-in palette role")
       end
+      keys[key] = true
       for _, child in ipairs(node.children or {}) do visit(child, false) end
     end
     visit(tree, true) -- Deliberately ignore node.key; Noctalia reads props.key.
@@ -127,7 +156,8 @@ local function documentsFor(workspaces, monitors, window, documents)
   documents.workspaces = workspaces
   documents.monitors = monitors
   documents.window = window
-  return "workspaces" .. RS .. "monitors" .. RS .. "window"
+  documents.clients = documents.clients or {}
+  return "workspaces" .. RS .. "monitors" .. RS .. "window" .. RS .. "clients"
 end
 
 local function complete(widget, index, result)
@@ -151,11 +181,23 @@ end
 local function buttons(tree)
   local result = {}
   local function visit(node)
-    if node.type == "button" then result[#result + 1] = node end
+    local key = node.props and node.props.key or ""
+    if node.type == "button" or key:sub(1, #"workspace-entry-") == "workspace-entry-" then
+      result[#result + 1] = node
+    end
     for _, child in ipairs(node.children or {}) do visit(child) end
   end
   visit(tree)
   return result
+end
+
+local function labelOf(node)
+  if node.type == "button" then return node.props.text end
+  return node.children[1].props.text
+end
+
+local function selected(node)
+  return node.props.fill == "primary"
 end
 
 local function click(widget, button)
@@ -227,9 +269,10 @@ local function assertFramesUseHostContext(widget, firstFrame)
     for itemIndex, item in ipairs(items) do
       local expected = context.output ~= nil and context.output == context.focusedOutput
         and context.selectedIndex == itemIndex
-      if item.props.selected ~= expected then
-        failures[#failures + 1] = string.format("frame %d button %d: expected selected=%s, got %s (output=%s, async=%s)",
-          index, itemIndex, tostring(expected), tostring(item.props.selected), tostring(context.output), tostring(context.asyncCallback))
+      local selected = item.props.fill == "primary"
+      if selected ~= expected then
+        failures[#failures + 1] = string.format("frame %d workspace %d: expected selected=%s, fill=%s (output=%s, async=%s)",
+          index, itemIndex, tostring(expected), tostring(item.props.fill), tostring(context.output), tostring(context.asyncCallback))
       end
     end
   end
@@ -241,7 +284,7 @@ local function expectList(tree, labels)
   local items = buttons(tree)
   assert(#items == #labels, "unexpected workspace control count")
   for index, label in ipairs(labels) do
-    assert(items[index].props.text == label, "workspace order/label mismatch at " .. index)
+    assert(labelOf(items[index]) == label, "workspace order/label mismatch at " .. index)
   end
   return items
 end
@@ -262,13 +305,37 @@ local monitors = {
 }
 local window = activeWindow(identity("named:alpha", "normal", "Shared"), 1)
 
+local styleDocs = {
+  clients = {
+    { workspace = identity("9", "normal", "Nine", 9), urgent = false },
+    { workspace = identity("named:beta", "normal", "Shared"), urgent = true },
+  },
+}
+local styleWidget = instance("DP-1", false, styleDocs)
+styleWidget.expectSelection("DP-1", 3)
+styleWidget.env.update()
+success(styleWidget, 1, all, monitors, window, styleDocs)
+local stylePills = buttons(styleWidget.trees[#styleWidget.trees])
+assert(stylePills[1].props.fill == "surface_variant/0.55" and stylePills[1].props.minWidth == 16,
+  "empty workspace uses dim surface_variant and inactive pill size")
+assert(stylePills[2].props.fill == "secondary" and stylePills[2].props.minWidth == 16,
+  "active workspace on another output uses occupied color and does not expand on this bar")
+assert(stylePills[3].props.fill == "primary" and stylePills[3].props.minWidth == 32,
+  "focused owning-output workspace uses primary color and active pill size")
+assert(stylePills[4].props.fill == "error" and stylePills[4].props.minWidth == 16,
+  "urgent occupied workspace uses native error color")
+stylePills[1].props.onHover("true")
+assert(buttons(styleWidget.trees[#styleWidget.trees])[1].props.fill == "hover",
+  "workspace hover uses the native hover palette")
+buttons(styleWidget.trees[#styleWidget.trees])[1].props.onHover("false")
+
 assert(widget.trees[1], "entrypoint must render at load")
 assert(#widget.intervals == 1 and widget.intervals[1] == 1000, "poll interval must be set once during initialization")
 widget.expectSelection("DP-1", 3)
 widget.env.update()
 assert(#widget.intervals == 1, "update must not reset the poll interval")
 assert(#widget.requests == 1, "update must start one snapshot request")
-assert(widget.commands[1] == "workspaces=$(timeout 2s hyprctl -j workspaces) && monitors=$(timeout 2s hyprctl -j monitors) && activewindow=$(timeout 2s hyprctl -j activewindow) && printf '%s\\036%s\\036%s' \"$workspaces\" \"$monitors\" \"$activewindow\"", "snapshot command must fetch exactly three bounded JSON documents")
+assert(widget.commands[1] == "workspaces=$(timeout 2s hyprctl -j workspaces) && monitors=$(timeout 2s hyprctl -j monitors) && activewindow=$(timeout 2s hyprctl -j activewindow) && clients=$(timeout 2s hyprctl -j clients) && printf '%s\\036%s\\036%s\\036%s' \"$workspaces\" \"$monitors\" \"$activewindow\" \"$clients\"", "snapshot command must fetch exactly four bounded JSON documents")
 local beforePending = #widget.trees
 widget.output("DP-2")
 widget.orientation(true)
@@ -281,8 +348,10 @@ success(widget, 1, all, monitors, window, docs)
 local tree = widget.trees[#widget.trees]
 assert(tree.type == "column", "async completion must preserve latest vertical bar context")
 local ordered = expectList(tree, { "2", "9", "Shared", "Shared" })
-assert(ordered[1].props.selected == false and ordered[2].props.selected == false, "focused ID-less workspace must not select numbered rows")
-assert(ordered[3].props.selected == false and ordered[4].props.selected == false, "focused output bar must not select another monitor's duplicate display name")
+assert(not selected(ordered[1]) and not selected(ordered[2]), "focused ID-less workspace must not select numbered rows")
+assert(not selected(ordered[3]) and not selected(ordered[4]), "focused output bar must not select another monitor's duplicate display name")
+assert(ordered[2].props.minWidth == 16,
+  "active workspace on another monitor must not expand on this unfocused bar")
 local initialRootKey = tree.props.key
 local initialAlphaKey, initialBetaKey = ordered[3].props.key, ordered[4].props.key
 assert(initialAlphaKey ~= initialBetaKey, "same display name must have distinct canonical keys")
@@ -300,7 +369,9 @@ assert(tree.type == "column", "identical poll completion must preserve vertical 
 assertFramesUseHostContext(widget, firstStableFrame)
 assert(tree.props.key == initialRootKey, "root props.key must stay stable")
 assert(ordered[3].props.key == initialAlphaKey and ordered[4].props.key == initialBetaKey, "ID-less item keys must use canonical address, not display name")
-assert(ordered[3].props.selected == true, "focused ID-less active-window workspace must select on its owner bar")
+assert(selected(ordered[3]), "focused ID-less active-window workspace must select on its owner bar")
+assert(ordered[3].props.minHeight == 32,
+  "only the selected workspace receives active-pill expansion on its owning bar")
 local oldAlphaButton, oldBetaButton = ordered[3], ordered[4]
 
 local renamed = {
@@ -326,8 +397,8 @@ widget.env.update()
 assert(widget.frameContexts[#widget.frameContexts].output == nil
   and widget.trees[#widget.trees].type == "row",
   "genuinely unknown output must replace prior known output and current orientation")
-for _, button in ipairs(buttons(widget.trees[#widget.trees])) do
-  assert(not button.props.selected, "unknown output must never retain previous highlight")
+  for _, button in ipairs(buttons(widget.trees[#widget.trees])) do
+   assert(button.props.fill ~= "primary", "unknown output must never retain previous highlight")
 end
 widget.output("DP-2")
 widget.orientation(false)
@@ -340,11 +411,11 @@ widget.expectSelection("DP-2", 4)
 success(widget, 3, renamed, movedMonitors, activeWindow(identity("named:alpha", "normal", "Renamed"), 2), docs)
 tree = widget.trees[#widget.trees]
 ordered = expectList(tree, { "2", "9", "New", "Renamed", "Shared" })
-assert(tree.type == "row" and ordered[4].props.selected == true,
+assert(tree.type == "row" and selected(ordered[4]),
   "callback must use most recent pending host context and focused selection")
 assert(ordered[4].props.key == initialAlphaKey, "move and display rename must preserve canonical key")
 assert(ordered[5].props.key == initialBetaKey, "insertion before an item must not retarget its key")
-assert(ordered[4].props.selected == true, "renamed workspace remains selected by its stable address")
+assert(selected(ordered[4]), "renamed workspace remains selected by its stable address")
 expectDispatch(widget, ordered[4], "focus", "name:named:alpha", "renaming must not replace the canonical activation selector")
 assert(click(widget, oldAlphaButton) == nil, "callback for a moved workspace must be stale")
 
@@ -370,7 +441,7 @@ local numericRows = { workspace("3", "normal", "Three", "DP-1", 1, 3) }
 local numericMonitor = { monitor("DP-1", 1, true, identity("3", "normal", "Three", 3)) }
 success(numeric, 1, numericRows, numericMonitor, activeWindow(identity("3", "normal", "Three", 3), 1), numericDocs)
 local numericButton = buttons(numeric.trees[#numeric.trees])[1]
-assert(numericButton.props.text == "3", "numbered workspace label must use its numeric ID")
+assert(labelOf(numericButton) == "3", "numbered workspace label must use its numeric ID")
 expectDispatch(numeric, numericButton, "focus", "3", "numbered workspace uses its numeric selector")
 
 -- Canonical named addresses, not mutable display labels, drive selectors.
@@ -396,7 +467,7 @@ success(namedWidget, 1, namedRows, numericMonitor,
   activeWindow(identity("3", "normal", "Three", 3), 1), namedDocs)
 local namedButtons = buttons(namedWidget.trees[#namedWidget.trees])
 for index = 2, #namedButtons do
-  assert(namedButtons[index].props.text == "Friendly Label", "ID-less entries use display names, including duplicates")
+  assert(labelOf(namedButtons[index]) == "Friendly Label", "ID-less entries retain their complete display names")
 end
 table.sort(namedAddresses)
 for index, address in ipairs(namedAddresses) do
@@ -419,8 +490,8 @@ focusedSpecial.env.update()
 success(focusedSpecial, 1, overlayRows, specialMonitor,
   activeWindow(identity("special:scratch", "special", "special:scratch"), 1), specialDocs)
 local specialButtons = buttons(focusedSpecial.trees[#focusedSpecial.trees])
-assert(specialButtons[1].props.text == "Regular" and specialButtons[2].props.text == "special:scratch", "ID-less controls sort by canonical address")
-assert(specialButtons[2].props.selected == true and specialButtons[1].props.selected == false, "focused special window selects only its special workspace")
+assert(labelOf(specialButtons[1]) == "Regular" and labelOf(specialButtons[2]) == "special:scratch", "ID-less controls retain display names and canonical address order")
+assert(selected(specialButtons[2]) and not selected(specialButtons[1]), "focused special window selects only its special workspace")
 expectDispatch(focusedSpecial, specialButtons[2], "special", "scratch", "special selector uses canonical address suffix")
 
 local regularOverlayDocs = {}
@@ -429,14 +500,15 @@ regularOverlay.env.update()
 success(regularOverlay, 1, overlayRows, specialMonitor,
   activeWindow(activeNormal, 1), regularOverlayDocs)
 local regularOverlayButtons = buttons(regularOverlay.trees[#regularOverlay.trees])
-assert(regularOverlayButtons[1].props.selected == true and regularOverlayButtons[2].props.selected == false, "focused regular window remains selected during a special overlay")
+assert(selected(regularOverlayButtons[1]) and not selected(regularOverlayButtons[2]), "focused regular window remains selected during a special overlay")
 
 local noWindowDocs = {}
 local noWindow = instance("DP-1", false, noWindowDocs)
 noWindow.env.update()
 success(noWindow, 1, overlayRows, specialMonitor, {}, noWindowDocs)
 for _, button in ipairs(buttons(noWindow.trees[#noWindow.trees])) do
-  assert(button.props.selected == false, "special overlay with no active window selects nothing")
+  assert(not selected(button), "special overlay with no active window selects nothing")
+  assert(button.props.minWidth == 16, "special overlay without a focused window keeps pills inactive-sized")
 end
 
 local emptyNormalDocs = {}
@@ -445,7 +517,7 @@ emptyNormal.env.update()
 success(emptyNormal, 1, { normal }, {
   monitor("DP-1", 1, true, activeNormal),
 }, {}, emptyNormalDocs)
-assert(buttons(emptyNormal.trees[#emptyNormal.trees])[1].props.selected == true,
+assert(selected(buttons(emptyNormal.trees[#emptyNormal.trees])[1]),
   "normal focused active workspace stays selected when it has no windows")
 
 local remoteDocs = {}
@@ -454,7 +526,7 @@ remoteBar.env.update()
 success(remoteBar, 1, overlayRows, specialMonitor,
   activeWindow(identity("special:scratch", "special", "special:scratch"), 1), remoteDocs)
 for _, button in ipairs(buttons(remoteBar.trees[#remoteBar.trees])) do
-  assert(button.props.selected == false, "focused special workspace must not select on another output's bar")
+  assert(not selected(button), "focused special workspace must not select on another output's bar")
 end
 
 -- Hyprland permits a normal named workspace and a special workspace to share
@@ -472,11 +544,11 @@ normalFocus.env.update()
 success(normalFocus, 1, collisionRows, collisionMonitor,
   activeWindow(identity(collisionAddress, "normal", "Regular alias"), 1), normalFocusDocs)
 local collisionButtons = buttons(normalFocus.trees[#normalFocus.trees])
-assert(collisionButtons[1].props.text == "Regular alias" and collisionButtons[2].props.text == collisionAddress,
+assert(labelOf(collisionButtons[1]) == "Regular alias" and labelOf(collisionButtons[2]) == collisionAddress,
   "type tie-break must be deterministic for equal ID-less addresses")
 assert(collisionButtons[1].props.key ~= collisionButtons[2].props.key,
   "normal and special address collision needs distinct props.key values")
-assert(collisionButtons[1].props.selected == true and collisionButtons[2].props.selected == false,
+assert(selected(collisionButtons[1]) and not selected(collisionButtons[2]),
   "normal active window selects only its typed identity")
 local normalCollisionCommand = expectDispatch(normalFocus, collisionButtons[1], "focus",
   "name:" .. collisionAddress, "normal collision uses canonical named workspace selector")
@@ -493,7 +565,7 @@ local specialFocusButtons = buttons(specialFocus.trees[#specialFocus.trees])
 assert(specialFocusButtons[1].props.key == collisionButtons[1].props.key
   and specialFocusButtons[2].props.key == collisionButtons[2].props.key,
   "typed identity keys must stay stable when focused window changes")
-assert(specialFocusButtons[1].props.selected == false and specialFocusButtons[2].props.selected == true,
+assert(not selected(specialFocusButtons[1]) and selected(specialFocusButtons[2]),
   "special active window selects only its typed identity")
 
 -- Canonical default special address toggles with an empty argument; named
@@ -524,7 +596,7 @@ local function noMonitorSelection(rows, monitorRows, windowDoc, label)
   success(fixture, 1, rows, monitorRows, windowDoc, fixtureDocs)
   local items = buttons(fixture.trees[#fixture.trees])
   assert(#items == #rows, label .. " must preserve all workspaces")
-  for _, button in ipairs(items) do assert(button.props.selected == false, label .. " must select none") end
+  for _, button in ipairs(items) do assert(not selected(button), label .. " must select none") end
 end
 noMonitorSelection({ workspace("1", "normal", "One", "DP-1", 1, 1) }, {
   monitor("DP-1", 1, false, identity("1", "normal", "One", 1)),
@@ -604,7 +676,7 @@ assert(#recovery.requests == 2, "request guard must recover after a synchronous 
 success(recovery, 2, { workspace("1", "normal", "One", "DP-1", 1, 1) }, {
   monitor("DP-1", 1, true, identity("1", "normal", "One", 1)),
 }, activeWindow(identity("1", "normal", "One", 1), 1), recoveryDocs)
-assert(buttons(recovery.trees[#recovery.trees])[1].props.selected == true, "recovered snapshot must be usable")
+assert(selected(buttons(recovery.trees[#recovery.trees])[1]), "recovered snapshot must be usable")
 
 -- A completed async failure also clears old state and allows the next poll.
 recovery.env.update()

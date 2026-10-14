@@ -2,12 +2,20 @@
 
 local SEP = "\030" -- ASCII record separator between complete JSON documents
 local POLL_MS = 1000
+local LABEL_FONT_SIZE = 11 -- Noctalia Style::fontSizeMini
+local PILL_SIZE = 16 -- Noctalia Style::baseGlyphSize, logical pixels
+local ACTIVE_PILL_SIZE = 2.0 -- modules/parts/noctalia/noctalia.nix widget.workspaces.active_pill_size
+local INACTIVE_PILL_SIZE = 1.0
+local PILL_PADDING = PILL_SIZE * 0.3 -- native regular style adds 0.6 * pill height total
+local PILL_RADIUS = 8 -- inherited bar capsule_radius, logical pixels
+local WORKSPACE_GAP = 4 -- Noctalia Style::spaceXs, logical pixels
 local inFlight = false
 local workspaces = nil
 local focusedIdentity = nil
 local focusedMonitor = nil
 local cachedOutputName = nil
 local cachedIsVertical = false
+local hoveredIdentity = nil
 
 local function cacheBarContext()
   cachedOutputName = barWidget.outputName()
@@ -30,6 +38,31 @@ end
 
 local function validText(value)
   return type(value) == "string" and value ~= "" and not value:find("[%z\1-\31\127]")
+end
+
+local function workspaceLabel(workspace)
+  if workspace.id ~= nil then return string.format("%.0f", workspace.id) end
+  return workspace.name
+end
+
+local function styleFor(workspace, selected, hovered)
+  if hovered then return "hover", "on_hover" end
+  local fill
+  if selected then
+    fill = "primary"
+  elseif workspace.active then
+    fill = "secondary"
+  elseif workspace.urgent then
+    fill = "error"
+  elseif workspace.occupied then
+    fill = "secondary"
+  else
+    fill = "surface_variant/0.55"
+  end
+  if workspace.urgent then return fill, "on_error" end
+  if fill == "primary" then return fill, "on_primary" end
+  if fill == "secondary" then return fill, "on_secondary" end
+  return fill, "on_surface"
 end
 
 local function activationSelector(workspace)
@@ -98,8 +131,9 @@ local function sortWorkspaces(workspaces)
   end)
 end
 
-local function normalize(workspaceDoc, monitorDoc, windowDoc)
-  if not isArray(workspaceDoc) or not isArray(monitorDoc) or type(windowDoc) ~= "table" then return nil end
+local function normalize(workspaceDoc, monitorDoc, windowDoc, clientsDoc)
+  if not isArray(workspaceDoc) or not isArray(monitorDoc) or type(windowDoc) ~= "table"
+    or not isArray(clientsDoc) then return nil end
   local result, ids, identities, monitors, monitorIds = {}, {}, {}, {}, {}
   for _, raw in ipairs(workspaceDoc) do
     if type(raw) ~= "table" or (raw.id ~= nil and (type(raw.id) ~= "number"
@@ -125,6 +159,9 @@ local function normalize(workspaceDoc, monitorDoc, windowDoc)
       monitor = raw.monitor,
       monitorID = raw.monitorID,
       special = raw.type == "special",
+      active = false,
+      occupied = false,
+      urgent = false,
     }
   end
   local focused, ambiguousFocus
@@ -151,9 +188,11 @@ local function normalize(workspaceDoc, monitorDoc, windowDoc)
     monitorIds[raw.id] = raw.name
     local active = workspaceForIdentity(result, raw.activeWorkspace)
     if active == nil or active.special or active.monitor ~= raw.name or active.monitorID ~= raw.id then return nil end
+    active.active = true
     if not inactiveSpecial then
       local special = workspaceForIdentity(result, raw.specialWorkspace)
       if special == nil or not special.special or special.monitor ~= raw.name or special.monitorID ~= raw.id then return nil end
+      special.active = true
     end
     if raw.focused then
       if focused ~= nil then
@@ -161,6 +200,21 @@ local function normalize(workspaceDoc, monitorDoc, windowDoc)
       else
         focused = { monitor = raw.name, monitorId = raw.id, active = raw.activeWorkspace,
           special = raw.specialWorkspace }
+      end
+    end
+  end
+  for _, raw in ipairs(clientsDoc) do
+    if type(raw) ~= "table" then return nil end
+    if raw.workspace ~= nil then
+      local clientWorkspace = workspaceForIdentity(result, raw.workspace)
+      if clientWorkspace ~= nil then
+        if raw.urgent ~= nil and type(raw.urgent) ~= "boolean" then return nil end
+        clientWorkspace.occupied = true
+        clientWorkspace.urgent = clientWorkspace.urgent or raw.urgent == true
+      elseif type(raw.workspace) ~= "table" or not validText(raw.workspace.address)
+        or not validText(raw.workspace.name)
+        or (raw.workspace.type ~= "normal" and raw.workspace.type ~= "special") then
+        return nil
       end
     end
   end
@@ -217,20 +271,25 @@ local function render()
   else
     for _, workspace in ipairs(workspaces) do
       local selector, special = activationSelector(workspace)
-      local label = workspace.id ~= nil and string.format("%.0f", workspace.id) or workspace.name
+      local label = workspaceLabel(workspace)
       local identity = workspaceIdentity(workspace)
+      local selected = cachedOutputName ~= nil and focusedMonitor == cachedOutputName
+        and focusedIdentity == identity
+      local hovered = hoveredIdentity == identity
+      local fill, textColor = styleFor(workspace, selected, hovered)
+      local activePill = selected
       local tooltip = "Workspace " .. label .. " · " .. workspace.name
         .. " · " .. workspace.monitor
       if workspace.special then tooltip = tooltip .. " · toggles on focused monitor" end
       children[#children + 1] = {
-        type = "button",
+        type = "row",
         props = {
-          key = "workspace-" .. identity,
-          text = label,
-          variant = "ghost",
-          enabled = selector ~= nil,
-          selected = cachedOutputName ~= nil and focusedMonitor == cachedOutputName and focusedIdentity == identity,
-          tooltip = tooltip,
+          key = "workspace-entry-" .. identity,
+          fill = fill,
+          radius = PILL_RADIUS,
+          minHeight = PILL_SIZE,
+          justify = "center",
+          align = "center",
           onClick = selector ~= nil and function()
             if not isCurrent(workspace) then return end
             local expression = special
@@ -238,13 +297,42 @@ local function render()
               or ("hl.dsp.focus({workspace = " .. luaStringLiteral(selector) .. "})")
             noctalia.runAsync("hyprctl dispatch " .. shellQuote(expression))
           end or nil,
+          onHover = function(state)
+            if state == "true" then
+              hoveredIdentity = identity
+            elseif hoveredIdentity == identity then
+              hoveredIdentity = nil
+            end
+            render()
+          end,
+          tooltip = tooltip,
+        },
+        children = {
+          {
+            type = "label",
+            props = {
+              key = "workspace-label-" .. identity,
+              text = label,
+              fontSize = LABEL_FONT_SIZE,
+              color = textColor,
+              maxLines = 1,
+            },
+          },
         },
       }
+      if cachedIsVertical then
+        local pillMainSize = PILL_SIZE * (activePill and ACTIVE_PILL_SIZE or INACTIVE_PILL_SIZE)
+        children[#children].props.minWidth = PILL_SIZE
+        children[#children].props.minHeight = pillMainSize
+      else
+        children[#children].props.minWidth = PILL_SIZE * (activePill and ACTIVE_PILL_SIZE or INACTIVE_PILL_SIZE)
+        children[#children].props.paddingH = PILL_PADDING
+      end
     end
   end
   barWidget.render({
     type = cachedIsVertical and "column" or "row",
-    props = { key = "global-workspaces", gap = 3, align = "center" },
+    props = { key = "global-workspaces", gap = WORKSPACE_GAP, align = "center" },
     children = children,
   })
 end
@@ -258,7 +346,8 @@ local function refresh()
   local command = "workspaces=$(timeout 2s hyprctl -j workspaces)"
     .. " && monitors=$(timeout 2s hyprctl -j monitors)"
     .. " && activewindow=$(timeout 2s hyprctl -j activewindow)"
-    .. " && printf '%s\\036%s\\036%s' \"$workspaces\" \"$monitors\" \"$activewindow\""
+    .. " && clients=$(timeout 2s hyprctl -j clients)"
+    .. " && printf '%s\\036%s\\036%s\\036%s' \"$workspaces\" \"$monitors\" \"$activewindow\" \"$clients\""
   local started = pcall(noctalia.runAsync, command, function(result)
     inFlight = false
     local ok, nextSnapshot, nextFocus = pcall(function()
@@ -268,15 +357,19 @@ local function refresh()
       local boundary = result.stdout:find(SEP, 1, true)
       if boundary == nil then return nil end
       local secondBoundary = result.stdout:find(SEP, boundary + 1, true)
-      if secondBoundary == nil or result.stdout:find(SEP, secondBoundary + 1, true) ~= nil then return nil end
+      if secondBoundary == nil then return nil end
+      local thirdBoundary = result.stdout:find(SEP, secondBoundary + 1, true)
+      if thirdBoundary == nil or result.stdout:find(SEP, thirdBoundary + 1, true) ~= nil then return nil end
       local workspacesJson = result.stdout:sub(1, boundary - 1)
       local monitorsJson = result.stdout:sub(boundary + #SEP, secondBoundary - 1)
-      local activewindowJson = result.stdout:sub(secondBoundary + #SEP)
-      if workspacesJson == "" or monitorsJson == "" or activewindowJson == "" then return nil end
+      local activewindowJson = result.stdout:sub(secondBoundary + #SEP, thirdBoundary - 1)
+      local clientsJson = result.stdout:sub(thirdBoundary + #SEP)
+      if workspacesJson == "" or monitorsJson == "" or activewindowJson == "" or clientsJson == "" then return nil end
       local workspaceDoc = noctalia.json.decode(workspacesJson)
       local monitorDoc = noctalia.json.decode(monitorsJson)
       local activewindowDoc = noctalia.json.decode(activewindowJson)
-      return normalize(workspaceDoc, monitorDoc, activewindowDoc)
+      local clientsDoc = noctalia.json.decode(clientsJson)
+      return normalize(workspaceDoc, monitorDoc, activewindowDoc, clientsDoc)
     end)
     workspaces = ok and nextSnapshot or nil
     focusedIdentity = nil

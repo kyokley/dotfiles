@@ -206,7 +206,9 @@ manually and are not wired into flake checks or CI.
 stubbed Noctalia instances. Numbered workspaces sort by ID before ID-less
 workspaces sorted by canonical address; ID-less labels use display names.
 Fixtures cover focused windows/special overlays, canonical safe selectors,
-native stable keys, stale callbacks, malformed snapshots, and polling. Async
+native bubble/font styling, stable keys, stale callbacks, malformed snapshots,
+and polling. Pill rows require API 32 for container tooltips; client snapshots
+provide occupancy and urgency colors. Async
 Noctalia callbacks lack bar context, so the widget caches output/orientation at
 load and each update. Manual Lua 5.4 coverage; not CI.
 
@@ -370,6 +372,9 @@ is uncertain.
 - Noctalia must follow system `nixpkgs`: it dynamically loads host PAM libraries,
   so an independent older glibc can fail the system PAM ABI. Unlike Hyprland and
   Mesa, do not preserve an independent older libc pin for Noctalia.
+- Noctalia 5.2.1 applies declarative `radius` to row backgrounds, not buttons.
+  Rounded Flex backgrounds do not clip children; wrappers must accommodate
+  native button corner geometry and padding.
 - Noctalia notification filters resolve the first match in name order.
   `match_content` is a case-insensitive ECMAScript regex searched against the
   title OR body separately; it cannot require both fields to match. Omit
