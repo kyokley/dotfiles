@@ -12,3 +12,5 @@ node_modules
 *.qcow2
 
 worktrees
+
+.slim/deepwork/

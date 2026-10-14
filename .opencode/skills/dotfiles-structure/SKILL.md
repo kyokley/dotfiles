@@ -67,6 +67,7 @@ The `common` keys are baselines every host inherits; platform keys
 | `.pre-commit-config.yaml` | **GENERATED** by git-hooks.nix — never edit |
 | `.github/workflows/test.yml` | CI: evaluates flake checks and configurations, builds every unique NixOS and standalone home-manager output on Linux plus the nix-darwin output on ARM macOS, and pushes builds to Horus Cachix when a write token is available; there is no separate legacy `nix-build`/`nix-shell` test job |
 | `tests/krill-widget.lua` | Standalone Lua regression tests for the Noctalia Krill widget; see "Lua widget tests" |
+| `tests/noctalia-global-workspaces.lua` | Standalone Lua regression tests for the Noctalia global-workspaces plugin; see "Lua widget tests" |
 | `tests/powerlevel10k-jj.zsh`, `tests/powerlevel10k-jj-integration.zsh` | JJ prompt regression tests and real Powerlevel10k rendering tests, including working-copy, description, bookmark, and conflict color states |
 | `devenv.lock`, `flake.lock` | Lockfiles |
 
@@ -86,7 +87,7 @@ The `common` keys are baselines every host inherits; platform keys
 | `dev.nix` | `homeManager.dev` | Dev tools: age (+`init-age`/`show-age`), devenv, direnv, usql, tig, jq |
 | `git.nix`, `bitwarden.nix`, `clamav.nix`, `flatpak.nix`, `shutdown.nix` | various | Single-purpose parts, names say it all |
 | `syncthing.nix`, `systemd.nix` (`systemd-services`), `tailscale.nix`, `distributed_builds.nix`, `laptop.nix` | various | Services / system integration parts |
-| `hyprland.nix`, `waybar/`, `rofi/`, `dunst.nix`, `picom.nix` (+ `picom.conf`), `noctalia/` | various | Window managers / desktop; Noctalia includes local bar plugins such as `krill/` and `workspace-layout/` |
+| `hyprland.nix`, `waybar/`, `rofi/`, `dunst.nix`, `picom.nix` (+ `picom.conf`), `noctalia/` | various | Window managers / desktop; Noctalia includes local bar plugins such as `krill/`, `workspace-layout/`, and `global-workspaces/` |
 | `kitty.nix`, `terminator.nix`, `tmux.nix`, `vim.nix` | `homeManager.*` | Terminal / editor |
 | `zsh/` (`zsh.nix`, `powerlevel10k_config.zsh`, `powerlevel10k_jj.zsh`) | `homeManager.common` | Prezto shell and Powerlevel10k prompt, with JJ status replacing Git in JJ workspaces |
 | `ai/` | `homeManager.opencode`, `.fabric`, `.gitoc`, `.jitoc` | AI tooling; `jitoc.nix` generates descriptions for the current jj working copy — see "opencode config" below |
@@ -184,10 +185,11 @@ The `common` keys are baselines every host inherits; platform keys
 
 ### Lua widget tests
 
-Run the Krill regression tests from the repository root:
+Run the Noctalia widget regression tests from the repository root:
 
 ```sh
 nix shell nixpkgs#lua5_4 --command lua tests/krill-widget.lua
+nix shell nixpkgs#lua5_4 --command lua tests/noctalia-global-workspaces.lua
 ```
 
 `tests/krill-widget.lua` loads `modules/parts/noctalia/krill/widget.luau`
@@ -198,6 +200,20 @@ headlines. The widget currently uses a Lua-compatible subset of Luau; this
 test does not validate Noctalia runtime integration. Use Lua 5.4 explicitly:
 the default `nixpkgs#lua` may reject the `\u{...}` escapes. These tests run
 manually and are not wired into flake checks or CI.
+
+`tests/noctalia-global-workspaces.lua` loads the deployed
+`modules/parts/noctalia/global-workspaces/widget.luau` entrypoint in independent
+stubbed Noctalia instances. Numbered workspaces sort by ID before ID-less
+workspaces sorted by canonical address; ID-less labels use display names.
+Fixtures cover legacy Hyprland `{id,name}` and newer typed workspace identities,
+three-monitor snapshots, focused windows/special overlays, canonical safe selectors,
+native bubble/font styling, bar-local visible-workspace expansion in both orientations
+without changing focus colors, stable keys, stale callbacks, malformed snapshots,
+and polling. Pill rows require API 32 for container tooltips; client snapshots
+provide occupancy and urgency colors. A cancellable `runStream` listener uses
+Nix-rendered `socat`/`sleep` paths; five-second polling is fallback. Async
+callbacks lack bar context, so output/orientation are cached at load and each
+update. Manual Lua 5.4 coverage; not CI.
 
 ### Powerlevel10k JJ tests
 
@@ -359,6 +375,12 @@ is uncertain.
 - Noctalia must follow system `nixpkgs`: it dynamically loads host PAM libraries,
   so an independent older glibc can fail the system PAM ABI. Unlike Hyprland and
   Mesa, do not preserve an independent older libc pin for Noctalia.
+- Noctalia 5.2.1 applies declarative `radius` to row backgrounds, not buttons.
+  Rounded Flex backgrounds do not clip children; wrappers must accommodate
+  native button corner geometry and padding.
+- Hyprland 0.56.0 workspace JSON uses `{id,name}`, without `address` or `type`.
+  The global-workspaces plugin adapts both legacy and typed identities; keep
+  both schemas covered when changing snapshot validation.
 - Noctalia notification filters resolve the first match in name order.
   `match_content` is a case-insensitive ECMAScript regex searched against the
   title OR body separately; it cannot require both fields to match. Omit

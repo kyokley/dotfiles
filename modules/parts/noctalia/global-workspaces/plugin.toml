@@ -1,0 +1,11 @@
+id          = "yokley/global-workspaces"
+name        = "Global Workspaces"
+version     = "0.1.0"
+plugin_api  = 32
+author      = "yokley"
+license     = "MIT"
+description = "All Hyprland workspaces, available on every monitor"
+
+[[widget]]
+id    = "global-workspaces"
+entry = "widget.luau"
