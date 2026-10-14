@@ -207,7 +207,8 @@ stubbed Noctalia instances. Numbered workspaces sort by ID before ID-less
 workspaces sorted by canonical address; ID-less labels use display names.
 Fixtures cover legacy Hyprland `{id,name}` and newer typed workspace identities,
 three-monitor snapshots, focused windows/special overlays, canonical safe selectors,
-native bubble/font styling, stable keys, stale callbacks, malformed snapshots,
+native bubble/font styling, bar-local visible-workspace expansion in both orientations
+without changing focus colors, stable keys, stale callbacks, malformed snapshots,
 and polling. Pill rows require API 32 for container tooltips; client snapshots
 provide occupancy and urgency colors. A cancellable `runStream` listener uses
 Nix-rendered `socat`/`sleep` paths; five-second polling is fallback. Async

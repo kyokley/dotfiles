@@ -396,7 +396,8 @@ local function render()
         and focusedIdentity == identity
       local hovered = hoveredIdentity == identity
       local fill, textColor = styleFor(workspace, selected, hovered)
-      local activePill = selected
+      local activePill = selected or (workspace.active and cachedOutputName ~= nil
+        and workspace.monitor == cachedOutputName)
       local tooltip = "Workspace " .. label .. " · " .. workspace.name
         .. " · " .. workspace.monitor
       if workspace.special then tooltip = tooltip .. " · toggles on focused monitor" end

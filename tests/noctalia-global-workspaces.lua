@@ -414,6 +414,10 @@ for _, output in ipairs({ "DP-4", "eDP-1", "DP-5" }) do
   for index, button in ipairs(rendered) do
     assert(selected(button) == (output == "DP-4" and index == 1),
       "only the focused DP-4 workspace may select across independent output instances")
+    assert(button.props.minWidth == (index == (output == "DP-4" and 1 or output == "eDP-1" and 2 or 3) and 32 or 16),
+      "horizontal pill expansion follows only this bar's monitor without changing focus selection")
+    assert(button.props.fill == (output == "DP-4" and index == 1 and "primary" or "secondary"),
+      "visible unfocused workspaces retain secondary colors")
   end
   assertLegacyDocsUnchanged(docs, monitors, activeWindowDoc)
   legacyInstances[output] = { widget = widget, docs = docs }
@@ -525,7 +529,7 @@ local stylePills = buttons(styleWidget.trees[#styleWidget.trees])
 assert(stylePills[1].props.fill == "surface_variant/0.55" and stylePills[1].props.minWidth == 16,
   "empty workspace uses dim surface_variant and inactive pill size")
 assert(stylePills[2].props.fill == "secondary" and stylePills[2].props.minWidth == 16,
-  "active workspace on another output uses occupied color and does not expand on this bar")
+  "visible active workspace on another output stays compact and keeps occupied color")
 assert(stylePills[3].props.fill == "primary" and stylePills[3].props.minWidth == 32,
   "focused owning-output workspace uses primary color and active pill size")
 assert(stylePills[4].props.fill == "error" and stylePills[4].props.minWidth == 16,
@@ -594,8 +598,8 @@ assert(tree.type == "column", "async completion must preserve latest vertical ba
 local ordered = expectList(tree, { "2", "9", "Shared", "Shared" })
 assert(not selected(ordered[1]) and not selected(ordered[2]), "focused ID-less workspace must not select numbered rows")
 assert(not selected(ordered[3]) and not selected(ordered[4]), "focused output bar must not select another monitor's duplicate display name")
-assert(ordered[2].props.minWidth == 16,
-  "active workspace on another monitor must not expand on this unfocused bar")
+assert(ordered[2].props.minHeight == 32,
+  "the bar's monitor-visible active workspace expands vertically")
 local initialRootKey = tree.props.key
 local initialAlphaKey, initialBetaKey = ordered[3].props.key, ordered[4].props.key
 assert(initialAlphaKey ~= initialBetaKey, "same display name must have distinct canonical keys")
@@ -614,8 +618,8 @@ assertFramesUseHostContext(widget, firstStableFrame)
 assert(tree.props.key == initialRootKey, "root props.key must stay stable")
 assert(ordered[3].props.key == initialAlphaKey and ordered[4].props.key == initialBetaKey, "ID-less item keys must use canonical address, not display name")
 assert(selected(ordered[3]), "focused ID-less active-window workspace must select on its owner bar")
-assert(ordered[3].props.minHeight == 32,
-  "only the selected workspace receives active-pill expansion on its owning bar")
+assert(ordered[2].props.minHeight == 16 and ordered[3].props.minHeight == 32,
+  "vertical expansion follows this bar's monitor while focused selection stays independent")
 local oldAlphaButton, oldBetaButton = ordered[3], ordered[4]
 
 local renamed = {
@@ -752,7 +756,8 @@ noWindow.env.update()
 success(noWindow, 1, overlayRows, specialMonitor, {}, noWindowDocs)
 for _, button in ipairs(buttons(noWindow.trees[#noWindow.trees])) do
   assert(not selected(button), "special overlay with no active window selects nothing")
-  assert(button.props.minWidth == 16, "special overlay without a focused window keeps pills inactive-sized")
+  assert(button.props.minWidth == (button.props.fill == "secondary" and 32 or 16),
+    "special overlay visibility expands its pill without requiring a focused window")
 end
 
 local emptyNormalDocs = {}
