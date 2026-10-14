@@ -206,8 +206,9 @@ manually and are not wired into flake checks or CI.
 stubbed Noctalia instances. Numbered workspaces sort by ID before ID-less
 workspaces sorted by canonical address; ID-less labels use display names.
 Fixtures cover focused windows/special overlays, canonical safe selectors,
-native stable keys, stale callbacks, malformed snapshots, and polling. Manual
-Lua 5.4 coverage; not CI.
+native stable keys, stale callbacks, malformed snapshots, and polling. Async
+Noctalia callbacks lack bar context, so the widget caches output/orientation at
+load and each update. Manual Lua 5.4 coverage; not CI.
 
 ### Powerlevel10k JJ tests
 

@@ -3,8 +3,10 @@ local ENTRY = "modules/parts/noctalia/global-workspaces/widget.luau"
 local RS = "\030"
 
 local function instance(outputName, vertical, documents)
-  local requests, intervals, trees, commands = {}, {}, {}, {}
+  local requests, intervals, trees, commands, frameContexts = {}, {}, {}, {}, {}
   local throwNextLaunch = false
+  local callbackContext = false
+  local expectedFocusedOutput, expectedSelectedIndex
   local function render(tree)
     local keys = {}
     local function visit(node, isRoot)
@@ -20,11 +22,24 @@ local function instance(outputName, vertical, documents)
     end
     visit(tree, true) -- Deliberately ignore node.key; Noctalia reads props.key.
     trees[#trees + 1] = tree
+    frameContexts[#frameContexts + 1] = {
+      output = outputName,
+      vertical = vertical,
+      focusedOutput = expectedFocusedOutput,
+      selectedIndex = expectedSelectedIndex,
+      asyncCallback = callbackContext,
+    }
   end
   local env = {
     barWidget = {
-      outputName = function() return outputName end,
-      isVertical = function() return vertical end,
+      outputName = function()
+        if callbackContext then return nil end
+        return outputName
+      end,
+      isVertical = function()
+        if callbackContext then return false end
+        return vertical
+      end,
       render = render,
     },
     noctalia = {
@@ -62,9 +77,20 @@ local function instance(outputName, vertical, documents)
     requests = requests,
     intervals = intervals,
     trees = trees,
+    frameContexts = frameContexts,
     commands = commands,
     output = function(value) outputName = value end,
     orientation = function(value) vertical = value end,
+    expectSelection = function(focusedOutput, selectedIndex)
+      expectedFocusedOutput = focusedOutput
+      expectedSelectedIndex = selectedIndex
+    end,
+    deliverAsync = function(callback, result)
+      callbackContext = true
+      local ok, err = pcall(callback, result)
+      callbackContext = false
+      if not ok then error(err) end
+    end,
     throwNextLaunch = function() throwNextLaunch = true end,
   }
 end
@@ -107,7 +133,12 @@ end
 local function complete(widget, index, result)
   local callback = assert(widget.requests[index], "missing pending request")
   widget.requests[index] = false
-  callback(result)
+  local before = #widget.trees
+  widget.deliverAsync(callback, result)
+  assert(#widget.trees > before, "async completion must render a frame")
+  for frame = before + 1, #widget.trees do
+    assert(widget.frameContexts[frame].asyncCallback, "completion frames must use native no-bar-context callback scope")
+  end
 end
 
 local function success(widget, index, workspaces, monitors, window, documents)
@@ -182,6 +213,29 @@ local function expectDispatch(widget, button, kind, selector, label)
   return command
 end
 
+local function assertFramesUseHostContext(widget, firstFrame)
+  local failures = {}
+  for index = firstFrame, #widget.trees do
+    local tree = widget.trees[index]
+    local context = widget.frameContexts[index]
+    local expectedOrientation = context.vertical and "column" or "row"
+    if tree.type ~= expectedOrientation then
+      failures[#failures + 1] = string.format("frame %d: expected %s, got %s (async=%s)", index,
+        expectedOrientation, tostring(tree.type), tostring(context.asyncCallback))
+    end
+    local items = buttons(tree)
+    for itemIndex, item in ipairs(items) do
+      local expected = context.output ~= nil and context.output == context.focusedOutput
+        and context.selectedIndex == itemIndex
+      if item.props.selected ~= expected then
+        failures[#failures + 1] = string.format("frame %d button %d: expected selected=%s, got %s (output=%s, async=%s)",
+          index, itemIndex, tostring(expected), tostring(item.props.selected), tostring(context.output), tostring(context.asyncCallback))
+      end
+    end
+  end
+  assert(#failures == 0, table.concat(failures, "\n"))
+end
+
 local function expectList(tree, labels)
   assert(tree.type == "row" or tree.type == "column", "workspace controls must remain in a native container")
   local items = buttons(tree)
@@ -210,6 +264,7 @@ local window = activeWindow(identity("named:alpha", "normal", "Shared"), 1)
 
 assert(widget.trees[1], "entrypoint must render at load")
 assert(#widget.intervals == 1 and widget.intervals[1] == 1000, "poll interval must be set once during initialization")
+widget.expectSelection("DP-1", 3)
 widget.env.update()
 assert(#widget.intervals == 1, "update must not reset the poll interval")
 assert(#widget.requests == 1, "update must start one snapshot request")
@@ -221,8 +276,10 @@ widget.env.update()
 assert(#widget.requests == 1, "polling must not overlap an in-flight request")
 assert(#widget.intervals == 1, "pending update must not reset interval")
 assert(#widget.trees > beforePending and widget.trees[#widget.trees].type == "column", "pending poll must re-render changed bar context")
+local firstStableFrame = #widget.trees + 1
 success(widget, 1, all, monitors, window, docs)
 local tree = widget.trees[#widget.trees]
+assert(tree.type == "column", "async completion must preserve latest vertical bar context")
 local ordered = expectList(tree, { "2", "9", "Shared", "Shared" })
 assert(ordered[1].props.selected == false and ordered[2].props.selected == false, "focused ID-less workspace must not select numbered rows")
 assert(ordered[3].props.selected == false and ordered[4].props.selected == false, "focused output bar must not select another monitor's duplicate display name")
@@ -233,11 +290,14 @@ assert(initialAlphaKey ~= initialBetaKey, "same display name must have distinct 
 -- Focus owner changes, a workspace moves and is renamed, another is inserted,
 -- and orientation changes. Canonical keys remain stable across every mutation.
 widget.output("DP-1")
-widget.orientation(false)
+widget.orientation(true)
+widget.expectSelection("DP-1", 3)
 widget.env.update()
 success(widget, 2, all, monitors, window, docs)
 tree = widget.trees[#widget.trees]
 ordered = expectList(tree, { "2", "9", "Shared", "Shared" })
+assert(tree.type == "column", "identical poll completion must preserve vertical orientation")
+assertFramesUseHostContext(widget, firstStableFrame)
 assert(tree.props.key == initialRootKey, "root props.key must stay stable")
 assert(ordered[3].props.key == initialAlphaKey and ordered[4].props.key == initialBetaKey, "ID-less item keys must use canonical address, not display name")
 assert(ordered[3].props.selected == true, "focused ID-less active-window workspace must select on its owner bar")
@@ -254,11 +314,34 @@ local movedMonitors = {
   monitor("DP-2", 2, true, identity("named:alpha", "normal", "Renamed")),
   monitor("DP-1", 1, false, identity("2", "normal", "Two", 2)),
 }
-widget.output("DP-2")
+widget.output("DP-1")
+widget.orientation(true)
+widget.expectSelection("DP-1", 3)
 widget.env.update()
+assert(#widget.requests == 3, "pending contextual updates must not start another poll")
+widget.output(nil)
+widget.orientation(false)
+widget.expectSelection("DP-1", 3)
+widget.env.update()
+assert(widget.frameContexts[#widget.frameContexts].output == nil
+  and widget.trees[#widget.trees].type == "row",
+  "genuinely unknown output must replace prior known output and current orientation")
+for _, button in ipairs(buttons(widget.trees[#widget.trees])) do
+  assert(not button.props.selected, "unknown output must never retain previous highlight")
+end
+widget.output("DP-2")
+widget.orientation(false)
+widget.expectSelection("DP-1", 3)
+widget.env.update()
+assert(widget.frameContexts[#widget.frameContexts].output == "DP-2"
+  and widget.trees[#widget.trees].type == "row",
+  "latest pending output/orientation must replace the nil context")
+widget.expectSelection("DP-2", 4)
 success(widget, 3, renamed, movedMonitors, activeWindow(identity("named:alpha", "normal", "Renamed"), 2), docs)
 tree = widget.trees[#widget.trees]
 ordered = expectList(tree, { "2", "9", "New", "Renamed", "Shared" })
+assert(tree.type == "row" and ordered[4].props.selected == true,
+  "callback must use most recent pending host context and focused selection")
 assert(ordered[4].props.key == initialAlphaKey, "move and display rename must preserve canonical key")
 assert(ordered[5].props.key == initialBetaKey, "insertion before an item must not retarget its key")
 assert(ordered[4].props.selected == true, "renamed workspace remains selected by its stable address")
@@ -500,7 +583,7 @@ rejected({ exitCode = 0, stdout = "w" .. RS .. "m" .. RS .. "a" }, { w = {}, m =
 
 -- Sync launch exceptions clear the guard, remove stale clickability, and recover.
 local recoveryDocs = {}
-local recovery = instance("DP-1", false, recoveryDocs)
+local recovery = instance("DP-1", true, recoveryDocs)
 recovery.env.update()
 success(recovery, 1, { workspace("1", "normal", "One", "DP-1", 1, 1) }, {
   monitor("DP-1", 1, true, identity("1", "normal", "One", 1)),
@@ -510,7 +593,11 @@ recovery.throwNextLaunch()
 recovery.env.update()
 local failedTree = recovery.trees[#recovery.trees]
 local failedControls = buttons(failedTree)
-assert(#failedControls == 1 and failedControls[1].props.enabled == false, "synchronous launch failure clears prior snapshot")
+assert(failedTree.type == "column" and #failedControls == 1 and failedControls[1].props.enabled == false,
+  "synchronous launch failure clears prior snapshot and preserves cached orientation")
+assert(not recovery.frameContexts[#recovery.frameContexts].asyncCallback
+  and recovery.frameContexts[#recovery.frameContexts].output == "DP-1",
+  "synchronous launch exceptions must leave contextual update state intact")
 assert(click(recovery, oldButton) == nil, "stale callback after synchronous failure must not dispatch")
 recovery.env.update()
 assert(#recovery.requests == 2, "request guard must recover after a synchronous launch exception")
@@ -524,6 +611,7 @@ recovery.env.update()
 local staleAfterFailure = buttons(recovery.trees[#recovery.trees])[1]
 complete(recovery, 3, { exitCode = 1, stdout = "" })
 assert(click(recovery, staleAfterFailure) == nil, "stale callback after asynchronous failure must not dispatch")
+assert(recovery.trees[#recovery.trees].type == "column", "async failure callback must preserve cached orientation")
 recovery.env.update()
 success(recovery, 4, { workspace("1", "normal", "One", "DP-1", 1, 1) }, {
   monitor("DP-1", 1, true, identity("1", "normal", "One", 1)),

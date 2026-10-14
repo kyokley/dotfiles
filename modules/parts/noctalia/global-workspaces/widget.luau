@@ -6,6 +6,13 @@ local inFlight = false
 local workspaces = nil
 local focusedIdentity = nil
 local focusedMonitor = nil
+local cachedOutputName = nil
+local cachedIsVertical = false
+
+local function cacheBarContext()
+  cachedOutputName = barWidget.outputName()
+  cachedIsVertical = barWidget.isVertical()
+end
 
 local function shellQuote(value)
   return "'" .. string.gsub(value, "'", "'\\''") .. "'"
@@ -198,8 +205,6 @@ local function normalize(workspaceDoc, monitorDoc, windowDoc)
 end
 
 local function render()
-  local vertical = barWidget.isVertical()
-  local output = barWidget.outputName()
   local children = {}
   if workspaces == nil then
     children[1] = { type = "button", props = { key = "unavailable",
@@ -224,7 +229,7 @@ local function render()
           text = label,
           variant = "ghost",
           enabled = selector ~= nil,
-          selected = output ~= nil and focusedMonitor == output and focusedIdentity == identity,
+          selected = cachedOutputName ~= nil and focusedMonitor == cachedOutputName and focusedIdentity == identity,
           tooltip = tooltip,
           onClick = selector ~= nil and function()
             if not isCurrent(workspace) then return end
@@ -238,7 +243,7 @@ local function render()
     end
   end
   barWidget.render({
-    type = vertical and "column" or "row",
+    type = cachedIsVertical and "column" or "row",
     props = { key = "global-workspaces", gap = 3, align = "center" },
     children = children,
   })
@@ -295,8 +300,10 @@ local function refresh()
 end
 
 function update()
+  cacheBarContext()
   refresh()
 end
 
+cacheBarContext()
 noctalia.setUpdateInterval(POLL_MS)
 render()
