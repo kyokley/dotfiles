@@ -1,9 +1,19 @@
 -- Run from the repository root with Lua 5.4.
 local ENTRY = "modules/parts/noctalia/global-workspaces/widget.luau"
 local RS = "\030"
+local STUB_SOCAT = "/test-store/bin/socat"
+local STUB_SLEEP = "/test-store/bin/sleep"
+local RECONNECT_MARKER = "__YOKLEY_GLOBAL_WORKSPACES_RECONNECT__"
 
-local function instance(outputName, vertical, documents)
+local function instance(outputName, vertical, documents, options)
+  options = options or {}
   local requests, intervals, trees, commands, frameContexts = {}, {}, {}, {}, {}
+  local streamAttempts, streams = {}, {}
+  local streamOutcomes = options.streamOutcomes or {}
+  local environment = options.environment or {
+    XDG_RUNTIME_DIR = "/run/user/1000",
+    HYPRLAND_INSTANCE_SIGNATURE = "test-hyprland",
+  }
   local throwNextLaunch = false
   local callbackContext = false
   local expectedFocusedOutput, expectedSelectedIndex
@@ -79,8 +89,18 @@ local function instance(outputName, vertical, documents)
           error("synchronous launch failure")
         end
         if type(callback) == "function" then requests[#requests + 1] = callback end
+        return true
+      end,
+      runStream = function(command, callback)
+        streamAttempts[#streamAttempts + 1] = { command = command, callback = callback }
+        local outcome = table.remove(streamOutcomes, 1)
+        if outcome == "throw" then error("synchronous stream launch failure") end
+        if outcome == false then return false end
+        streams[#streams + 1] = { command = command, callback = callback }
+        return true
       end,
       setUpdateInterval = function(value) intervals[#intervals + 1] = value end,
+      getenv = function(name) return environment[name] end,
       json = {
         decode = function(value)
           if documents[value] == nil then error("bad JSON fixture: " .. value) end
@@ -100,7 +120,14 @@ local function instance(outputName, vertical, documents)
     pcall = pcall,
     error = error,
   }
-  assert(loadfile(ENTRY, "t", env))()
+  local input = assert(io.open(ENTRY, "r"))
+  local source = input:read("*a")
+  input:close()
+  source = source:gsub("@SOCAT@", function() return STUB_SOCAT end)
+  source = source:gsub("@SLEEP@", function() return STUB_SLEEP end)
+  assert(not source:find("@SOCAT@", 1, true) and not source:find("@SLEEP@", 1, true),
+    "test loader must replace runtime tool placeholders")
+  assert(load(source, "@" .. ENTRY, "t", env))()
   return {
     env = env,
     requests = requests,
@@ -108,6 +135,8 @@ local function instance(outputName, vertical, documents)
     trees = trees,
     frameContexts = frameContexts,
     commands = commands,
+    streamAttempts = streamAttempts,
+    streams = streams,
     output = function(value) outputName = value end,
     orientation = function(value) vertical = value end,
     expectSelection = function(focusedOutput, selectedIndex)
@@ -120,7 +149,14 @@ local function instance(outputName, vertical, documents)
       callbackContext = false
       if not ok then error(err) end
     end,
+    deliverStreamLine = function(callback, line)
+      callbackContext = true
+      local ok, err = pcall(callback, line)
+      callbackContext = false
+      if not ok then error(err) end
+    end,
     throwNextLaunch = function() throwNextLaunch = true end,
+    setEnvironment = function(name, value) environment[name] = value end,
   }
 end
 
@@ -176,6 +212,24 @@ local function success(widget, index, workspaces, monitors, window, documents)
     exitCode = 0,
     stdout = documentsFor(workspaces, monitors, window, documents),
   })
+end
+
+local function emitStreamLine(widget, index, line)
+  local stream = assert(widget.streams[index], "missing started Hyprland event stream")
+  widget.deliverStreamLine(stream.callback, line)
+end
+
+local function assertOneListener(widget, environment)
+  assert(#widget.streamAttempts == 1 and #widget.streams == 1, "each widget runtime must start one listener")
+  local socketPath = environment.XDG_RUNTIME_DIR .. "/hypr/" .. environment.HYPRLAND_INSTANCE_SIGNATURE .. "/.socket2.sock"
+  socketPath = string.gsub(socketPath, "[\\'\"]", function(character) return "\\" .. character end)
+  local address = "UNIX-CONNECT:" .. socketPath
+  local quotedAddress = "'" .. string.gsub(address, "'", "'\\''") .. "'"
+  local command = widget.streamAttempts[1].command
+  local expected = "while :; do if '" .. STUB_SOCAT .. "' -u " .. quotedAddress
+    .. " - 2>/dev/null; then :; fi; printf '%s\\n' '" .. RECONNECT_MARKER .. "'; '"
+    .. STUB_SLEEP .. "' 1; done"
+  assert(command == expected, "stream command must use quoted absolute tools and reconnect backoff: " .. command)
 end
 
 local function buttons(tree)
@@ -311,7 +365,13 @@ local styleDocs = {
     { workspace = identity("named:beta", "normal", "Shared"), urgent = true },
   },
 }
-local styleWidget = instance("DP-1", false, styleDocs)
+local styleEnvironment = {
+  XDG_RUNTIME_DIR = "/run/user/1000/runtime space 'quoted' \\segment",
+  HYPRLAND_INSTANCE_SIGNATURE = 'sig "double";$(touch /tmp/noctalia-shell-test)',
+}
+local styleWidget = instance("DP-1", false, styleDocs, { environment = styleEnvironment })
+assert(#styleWidget.requests == 1, "plugin load must start an immediate initial snapshot")
+assertOneListener(styleWidget, styleEnvironment)
 styleWidget.expectSelection("DP-1", 3)
 styleWidget.env.update()
 success(styleWidget, 1, all, monitors, window, styleDocs)
@@ -329,8 +389,46 @@ assert(buttons(styleWidget.trees[#styleWidget.trees])[1].props.fill == "hover",
   "workspace hover uses the native hover palette")
 buttons(styleWidget.trees[#styleWidget.trees])[1].props.onHover("false")
 
+-- Relevant socket events start immediate catch-up snapshots; bursts coalesce
+-- to one follow-up, even when that response fails. Unrelated lines are ignored.
+emitStreamLine(styleWidget, 1, "windowtitle>>unrelated")
+emitStreamLine(styleWidget, 1, "not-an-event")
+assert(#styleWidget.requests == 1, "unrelated or malformed socket lines must not refresh")
+local relevantEvents = {
+  "workspacev2", "focusedmonv2", "activespecialv2", "createworkspacev2",
+  "destroyworkspacev2", "renameworkspace", "changeworkspaceid", "moveworkspacev2",
+  "openwindow", "closewindow", "movewindowv2", "urgent", "activewindowv2",
+  "monitoraddedv2", "monitorremovedv2",
+}
+for index, event in ipairs(relevantEvents) do
+  emitStreamLine(styleWidget, 1, event .. ">>payload-" .. index)
+  if index == 1 then
+    assert(#styleWidget.requests == 2, "relevant event must launch catch-up immediately")
+    local frame = styleWidget.trees[#styleWidget.trees]
+    assert(styleWidget.frameContexts[#styleWidget.frameContexts].asyncCallback
+      and selected(buttons(frame)[3]), "stream callback must render with cached host focus context")
+  else
+    assert(#styleWidget.requests == 2, "event burst must not overlap snapshot requests")
+  end
+end
+emitStreamLine(styleWidget, 1, RECONNECT_MARKER)
+assert(#styleWidget.requests == 2, "reconnect catch-up joins pending event burst")
+success(styleWidget, 2, all, monitors, window, styleDocs)
+assert(#styleWidget.requests == 3, "event burst drains as exactly one immediate follow-up")
+emitStreamLine(styleWidget, 1, "activewindowv2>>queued-during-followup")
+complete(styleWidget, 3, { exitCode = 1, stdout = "" })
+assert(#styleWidget.requests == 4, "events pending across a failed snapshot still trigger one recovery query")
+success(styleWidget, 4, all, monitors, window, styleDocs)
+emitStreamLine(styleWidget, 1, RECONNECT_MARKER)
+assert(#styleWidget.requests == 5, "listener reconnect marker catches up after reconnect")
+success(styleWidget, 5, all, monitors, window, styleDocs)
+styleWidget.env.update()
+assert(#styleWidget.requests == 6 and #styleWidget.streamAttempts == 1,
+  "five-second fallback poll remains active without starting another listener")
+success(styleWidget, 6, all, monitors, window, styleDocs)
+
 assert(widget.trees[1], "entrypoint must render at load")
-assert(#widget.intervals == 1 and widget.intervals[1] == 1000, "poll interval must be set once during initialization")
+assert(#widget.intervals == 1 and widget.intervals[1] == 5000, "fallback poll interval must be set once during initialization")
 widget.expectSelection("DP-1", 3)
 widget.env.update()
 assert(#widget.intervals == 1, "update must not reset the poll interval")
@@ -622,16 +720,16 @@ end
 
 rejected({ exitCode = 1, stdout = "", stderr = "failed" }, nil, "failed query")
 rejected({ exitCode = 0, stdout = "not-json" }, nil, "missing RS framing")
-rejected({ exitCode = 0, stdout = "w" .. RS .. "m" .. RS .. "a" .. RS .. "extra" }, { w = {}, m = {}, a = {} }, "extra RS")
-rejected({ exitCode = 0, stdout = RS .. "m" .. RS .. "a" }, { w = {}, m = {}, a = {} }, "empty first document")
-rejected({ exitCode = 0, stdout = "w" .. RS .. RS .. "a" }, { w = {}, m = {}, a = {} }, "empty middle document")
-rejected({ exitCode = 0, stdout = "w" .. RS .. "m" .. RS }, { w = {}, m = {}, a = {} }, "empty last document")
-rejected({ exitCode = 0, stdout = "w" .. RS .. "m" .. RS .. "a" }, { w = false, m = {}, a = {} }, "decode type error")
-rejected({ exitCode = 0, stdout = "w" .. RS .. "m" .. RS .. "a" }, { w = {}, m = { name = true }, a = {} }, "monitor document not array")
-rejected({ exitCode = 0, stdout = "w" .. RS .. "m" .. RS .. "a" }, { w = { foo = true }, m = {}, a = {} }, "workspace document not array")
-rejected({ exitCode = 0, stdout = "w" .. RS .. "m" .. RS .. "a" }, { w = {
+rejected({ exitCode = 0, stdout = "w" .. RS .. "m" .. RS .. "a" .. RS .. "c" .. RS .. "extra" }, { w = {}, m = {}, a = {}, c = {} }, "extra RS")
+rejected({ exitCode = 0, stdout = RS .. "m" .. RS .. "a" .. RS .. "c" }, { w = {}, m = {}, a = {}, c = {} }, "empty first document")
+rejected({ exitCode = 0, stdout = "w" .. RS .. RS .. "a" .. RS .. "c" }, { w = {}, m = {}, a = {}, c = {} }, "empty middle document")
+rejected({ exitCode = 0, stdout = "w" .. RS .. "m" .. RS .. "a" .. RS }, { w = {}, m = {}, a = {}, c = {} }, "empty last document")
+rejected({ exitCode = 0, stdout = "w" .. RS .. "m" .. RS .. "a" .. RS .. "c" }, { w = false, m = {}, a = {}, c = {} }, "decode type error")
+rejected({ exitCode = 0, stdout = "w" .. RS .. "m" .. RS .. "a" .. RS .. "c" }, { w = {}, m = { name = true }, a = {}, c = {} }, "monitor document not array")
+rejected({ exitCode = 0, stdout = "w" .. RS .. "m" .. RS .. "a" .. RS .. "c" }, { w = { foo = true }, m = {}, a = {}, c = {} }, "workspace document not array")
+rejected({ exitCode = 0, stdout = "w" .. RS .. "m" .. RS .. "a" .. RS .. "c" }, { w = {
   workspace("named:a", "normal", "Same", "DP-1", 1), workspace("named:a", "normal", "Other", "DP-1", 1),
-}, m = {}, a = {} }, "duplicate canonical address")
+}, m = {}, a = {}, c = {} }, "duplicate canonical address")
 local inconsistentDocs = {}
 local inconsistentRows = { workspace("2", "normal", "Two", "DP-1", 1, 1) }
 local inconsistentMonitors = { monitor("DP-1", 1, true, identity("2", "normal", "Two", 1)) }
@@ -648,10 +746,10 @@ local numberedSpecialMonitors = { monitor("DP-1", 1, true,
 local numberedSpecialWindow = activeWindow(identity("1", "normal", "One", 1), 1)
 rejected({ exitCode = 0, stdout = documentsFor(numberedSpecialRows, numberedSpecialMonitors, numberedSpecialWindow, numberedSpecialDocs) },
   numberedSpecialDocs, "source-impossible numbered special workspace")
-rejected({ exitCode = 0, stdout = "w" .. RS .. "m" .. RS .. "a" }, { w = {
+rejected({ exitCode = 0, stdout = "w" .. RS .. "m" .. RS .. "a" .. RS .. "c" }, { w = {
   { address = "named:a", type = "normal", name = "A", monitor = "DP-1", monitorID = "1" },
-}, m = {}, a = {} }, "monitorID must match source JSON integer type")
-rejected({ exitCode = 0, stdout = "w" .. RS .. "m" .. RS .. "a" }, { w = {}, m = {}, a = { workspace = "wrong type" } }, "active window identity type error")
+}, m = {}, a = {}, c = {} }, "monitorID must match source JSON integer type")
+rejected({ exitCode = 0, stdout = "w" .. RS .. "m" .. RS .. "a" .. RS .. "c" }, { w = {}, m = {}, a = { workspace = "wrong type" }, c = {} }, "active window identity type error")
 
 -- Sync launch exceptions clear the guard, remove stale clickability, and recover.
 local recoveryDocs = {}
@@ -688,5 +786,38 @@ recovery.env.update()
 success(recovery, 4, { workspace("1", "normal", "One", "DP-1", 1, 1) }, {
   monitor("DP-1", 1, true, identity("1", "normal", "One", 1)),
 }, activeWindow(identity("1", "normal", "One", 1), 1), recoveryDocs)
+
+-- Failed/missing stream starts retry on later updates, successful starts stay unique.
+local retryDocs = {}
+local retry = instance("DP-1", false, retryDocs, { streamOutcomes = { false, "throw", true } })
+assert(#retry.streamAttempts == 1 and #retry.streams == 0 and #retry.requests == 1,
+  "false runStream startup must not block the immediate initial snapshot")
+success(retry, 1, numericRows, numericMonitor, activeWindow(identity("3", "normal", "Three", 3), 1), retryDocs)
+retry.env.update()
+assert(#retry.streamAttempts == 2 and #retry.streams == 0 and #retry.requests == 2,
+  "thrown stream startup must be caught and retried on contextual update")
+success(retry, 2, numericRows, numericMonitor, activeWindow(identity("3", "normal", "Three", 3), 1), retryDocs)
+retry.env.update()
+assert(#retry.streamAttempts == 3 and #retry.streams == 1 and #retry.requests == 3,
+  "successful stream startup after retries must register exactly one listener")
+assert(retry.streams[1].command == retry.streamAttempts[1].command,
+  "listener reconnect command remains stable across start retries")
+success(retry, 3, numericRows, numericMonitor, activeWindow(identity("3", "normal", "Three", 3), 1), retryDocs)
+retry.env.update()
+assert(#retry.streamAttempts == 3 and #retry.requests == 4,
+  "later fallback update must reuse the started listener")
+success(retry, 4, numericRows, numericMonitor, activeWindow(identity("3", "normal", "Three", 3), 1), retryDocs)
+
+local missingEnvironmentDocs = {}
+local missingEnvironment = instance("DP-1", false, missingEnvironmentDocs, { environment = {} })
+assert(#missingEnvironment.streamAttempts == 0 and #missingEnvironment.requests == 1,
+  "missing socket environment must skip stream startup and retain immediate snapshot")
+success(missingEnvironment, 1, numericRows, numericMonitor,
+  activeWindow(identity("3", "normal", "Three", 3), 1), missingEnvironmentDocs)
+missingEnvironment.env.update()
+assert(#missingEnvironment.streamAttempts == 0 and #missingEnvironment.requests == 2,
+  "missing socket environment must retain periodic snapshot fallback")
+success(missingEnvironment, 2, numericRows, numericMonitor,
+  activeWindow(identity("3", "normal", "Three", 3), 1), missingEnvironmentDocs)
 
 print("Noctalia global workspaces regression tests passed")

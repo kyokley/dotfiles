@@ -35,7 +35,11 @@
           source = globalWorkspacesPlugin + "/plugin.toml";
         };
         ".local/share/noctalia/plugins/global-workspaces/widget.luau" = {
-          source = globalWorkspacesPlugin + "/widget.luau";
+          text =
+            builtins.replaceStrings
+            ["@SOCAT@" "@SLEEP@"]
+            ["${pkgs.socat}/bin/socat" "${pkgs.coreutils}/bin/sleep"]
+            (builtins.readFile (globalWorkspacesPlugin + "/widget.luau"));
         };
       };
 

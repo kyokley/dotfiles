@@ -1,7 +1,10 @@
 -- Compact, global Hyprland workspace buttons. Publish only complete snapshots.
 
 local SEP = "\030" -- ASCII record separator between complete JSON documents
-local POLL_MS = 1000
+local POLL_MS = 5000
+local SOCAT_PATH = "@SOCAT@"
+local SLEEP_PATH = "@SLEEP@"
+local RECONNECT_MARKER = "__YOKLEY_GLOBAL_WORKSPACES_RECONNECT__"
 local LABEL_FONT_SIZE = 11 -- Noctalia Style::fontSizeMini
 local PILL_SIZE = 16 -- Noctalia Style::baseGlyphSize, logical pixels
 local ACTIVE_PILL_SIZE = 2.0 -- modules/parts/noctalia/noctalia.nix widget.workspaces.active_pill_size
@@ -10,6 +13,8 @@ local PILL_PADDING = PILL_SIZE * 0.3 -- native regular style adds 0.6 * pill hei
 local PILL_RADIUS = 8 -- inherited bar capsule_radius, logical pixels
 local WORKSPACE_GAP = 4 -- Noctalia Style::spaceXs, logical pixels
 local inFlight = false
+local pendingRefresh = false
+local streamStarted = false
 local workspaces = nil
 local focusedIdentity = nil
 local focusedMonitor = nil
@@ -38,6 +43,69 @@ end
 
 local function validText(value)
   return type(value) == "string" and value ~= "" and not value:find("[%z\1-\31\127]")
+end
+
+local relevantEvents = {
+  workspacev2 = true,
+  focusedmonv2 = true,
+  activespecialv2 = true,
+  createworkspacev2 = true,
+  destroyworkspacev2 = true,
+  renameworkspace = true,
+  changeworkspaceid = true,
+  moveworkspacev2 = true,
+  openwindow = true,
+  closewindow = true,
+  movewindowv2 = true,
+  urgent = true,
+  activewindowv2 = true,
+  monitoraddedv2 = true,
+  monitorremovedv2 = true,
+}
+
+local refresh
+
+local function requestRefresh()
+  if inFlight then
+    pendingRefresh = true
+    return
+  end
+  refresh()
+end
+
+local function onStreamLine(line)
+  if type(line) ~= "string" then return end
+  if line:sub(-1) == "\r" then line = line:sub(1, -2) end
+  if line == RECONNECT_MARKER then
+    requestRefresh()
+    return
+  end
+  local event = line:match("^([^>]+)>>")
+  if event ~= nil and relevantEvents[event] then requestRefresh() end
+end
+
+local function eventStreamCommand()
+  local ok, runtimeDir, signature = pcall(function()
+    return noctalia.getenv("XDG_RUNTIME_DIR"), noctalia.getenv("HYPRLAND_INSTANCE_SIGNATURE")
+  end)
+  if not ok or not validText(runtimeDir) or not validText(signature) then return nil end
+  local socketPath = runtimeDir .. "/hypr/" .. signature .. "/.socket2.sock"
+  local socatSocketPath = string.gsub(socketPath, "[\\'\"]", function(character)
+    return "\\" .. character
+  end)
+  local address = shellQuote("UNIX-CONNECT:" .. socatSocketPath)
+  return "while :; do if " .. shellQuote(SOCAT_PATH) .. " -u " .. address .. " - 2>/dev/null; then :; fi"
+    .. "; printf '%s\\n' " .. shellQuote(RECONNECT_MARKER)
+    .. "; " .. shellQuote(SLEEP_PATH) .. " 1; done"
+end
+
+local function startEventStream()
+  if streamStarted then return true end
+  local command = eventStreamCommand()
+  if command == nil then return false end
+  local ok, started = pcall(noctalia.runStream, command, onStreamLine)
+  streamStarted = ok and started == true
+  return streamStarted
 end
 
 local function workspaceLabel(workspace)
@@ -337,7 +405,7 @@ local function render()
   })
 end
 
-local function refresh()
+refresh = function()
   if inFlight then
     render()
     return
@@ -348,7 +416,7 @@ local function refresh()
     .. " && activewindow=$(timeout 2s hyprctl -j activewindow)"
     .. " && clients=$(timeout 2s hyprctl -j clients)"
     .. " && printf '%s\\036%s\\036%s\\036%s' \"$workspaces\" \"$monitors\" \"$activewindow\" \"$clients\""
-  local started = pcall(noctalia.runAsync, command, function(result)
+  local callback = function(result)
     inFlight = false
     local ok, nextSnapshot, nextFocus = pcall(function()
       if type(result) ~= "table" or result.exitCode ~= 0 or type(result.stdout) ~= "string" then
@@ -382,21 +450,34 @@ local function refresh()
       end
     end
     render()
-  end)
-  if not started then
+    if pendingRefresh then
+      pendingRefresh = false
+      refresh()
+    end
+  end
+  local ok, started = pcall(noctalia.runAsync, command, callback)
+  if not ok or started ~= true then
     inFlight = false
     workspaces = nil
     focusedIdentity = nil
     focusedMonitor = nil
+    render()
+    if pendingRefresh then
+      pendingRefresh = false
+      refresh()
+    end
+    return
   end
-  render() -- hosting output/orientation are read at render time, including pending polls
+  render() -- pending polls render with the latest cached host context
 end
 
 function update()
   cacheBarContext()
+  startEventStream()
   refresh()
 end
 
 cacheBarContext()
 noctalia.setUpdateInterval(POLL_MS)
-render()
+startEventStream()
+refresh() -- Publish an immediate initial snapshot; polling is only the fallback.

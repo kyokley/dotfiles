@@ -208,9 +208,10 @@ workspaces sorted by canonical address; ID-less labels use display names.
 Fixtures cover focused windows/special overlays, canonical safe selectors,
 native bubble/font styling, stable keys, stale callbacks, malformed snapshots,
 and polling. Pill rows require API 32 for container tooltips; client snapshots
-provide occupancy and urgency colors. Async
-Noctalia callbacks lack bar context, so the widget caches output/orientation at
-load and each update. Manual Lua 5.4 coverage; not CI.
+provide occupancy and urgency colors. A cancellable `runStream` listener uses
+Nix-rendered `socat`/`sleep` paths; five-second polling is fallback. Async
+callbacks lack bar context, so output/orientation are cached at load and each
+update. Manual Lua 5.4 coverage; not CI.
 
 ### Powerlevel10k JJ tests
 
