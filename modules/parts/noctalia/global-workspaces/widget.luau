@@ -199,11 +199,48 @@ local function sortWorkspaces(workspaces)
   end)
 end
 
+local function normalizeIdentity(raw, allowInactiveSpecial)
+  if type(raw) ~= "table" then return nil end
+  -- Typed identities are authoritative. Never reinterpret a partial typed
+  -- identity as the older id/name form.
+  if raw.address ~= nil or raw.type ~= nil then
+    if raw.address == nil or raw.type == nil then return nil end
+    return raw
+  end
+  if type(raw.id) ~= "number" or raw.id % 1 ~= 0 or type(raw.name) ~= "string" then return nil end
+  if allowInactiveSpecial and raw.id == 0 and raw.name == "" then
+    return { address = "", type = "", name = "" }
+  end
+  if raw.id > 0 then
+    return { id = raw.id, address = string.format("%.0f", raw.id), type = "normal", name = raw.name }
+  end
+  if raw.id < 0 and validText(raw.name) then
+    if raw.name:sub(1, 8) == "special:" then
+      return { address = raw.name, type = "special", name = raw.name }
+    end
+    return { address = raw.name, type = "normal", name = raw.name }
+  end
+  return nil
+end
+
 local function normalize(workspaceDoc, monitorDoc, windowDoc, clientsDoc)
   if not isArray(workspaceDoc) or not isArray(monitorDoc) or type(windowDoc) ~= "table"
     or not isArray(clientsDoc) then return nil end
   local result, ids, identities, monitors, monitorIds = {}, {}, {}, {}, {}
   for _, raw in ipairs(workspaceDoc) do
+    local legacy = type(raw) == "table" and raw.address == nil and raw.type == nil
+    if legacy then
+      local identity = normalizeIdentity(raw, false)
+      if identity == nil then return nil end
+      raw = {
+        id = identity.id,
+        address = identity.address,
+        type = identity.type,
+        name = identity.name,
+        monitor = raw.monitor,
+        monitorID = raw.monitorID,
+      }
+    end
     if type(raw) ~= "table" or (raw.id ~= nil and (type(raw.id) ~= "number"
       or raw.id % 1 ~= 0 or raw.id <= 0 or raw.type ~= "normal"
       or string.format("%.0f", raw.id) ~= raw.address))
@@ -234,6 +271,19 @@ local function normalize(workspaceDoc, monitorDoc, windowDoc, clientsDoc)
   end
   local focused, ambiguousFocus
   for _, raw in ipairs(monitorDoc) do
+    if type(raw) == "table" then
+      local activeWorkspace = normalizeIdentity(raw.activeWorkspace, false)
+      local specialWorkspace = normalizeIdentity(raw.specialWorkspace, true)
+      if activeWorkspace ~= nil or specialWorkspace ~= nil then
+        raw = {
+          name = raw.name,
+          id = raw.id,
+          focused = raw.focused,
+          activeWorkspace = activeWorkspace,
+          specialWorkspace = specialWorkspace,
+        }
+      end
+    end
     if type(raw) ~= "table" or not validText(raw.name) or type(raw.id) ~= "number"
       or raw.id % 1 ~= 0 or type(raw.focused) ~= "boolean"
       or type(raw.activeWorkspace) ~= "table"
@@ -274,14 +324,15 @@ local function normalize(workspaceDoc, monitorDoc, windowDoc, clientsDoc)
   for _, raw in ipairs(clientsDoc) do
     if type(raw) ~= "table" then return nil end
     if raw.workspace ~= nil then
-      local clientWorkspace = workspaceForIdentity(result, raw.workspace)
+      local normalizedWorkspace = normalizeIdentity(raw.workspace, false)
+      local clientWorkspace = workspaceForIdentity(result, normalizedWorkspace)
       if clientWorkspace ~= nil then
         if raw.urgent ~= nil and type(raw.urgent) ~= "boolean" then return nil end
         clientWorkspace.occupied = true
         clientWorkspace.urgent = clientWorkspace.urgent or raw.urgent == true
-      elseif type(raw.workspace) ~= "table" or not validText(raw.workspace.address)
-        or not validText(raw.workspace.name)
-        or (raw.workspace.type ~= "normal" and raw.workspace.type ~= "special") then
+      elseif normalizedWorkspace == nil or not validText(normalizedWorkspace.address)
+        or not validText(normalizedWorkspace.name)
+        or (normalizedWorkspace.type ~= "normal" and normalizedWorkspace.type ~= "special") then
         return nil
       end
     end
@@ -304,7 +355,7 @@ local function normalize(workspaceDoc, monitorDoc, windowDoc, clientsDoc)
   local selected = active
   if overlay then selected = nil end
   if next(windowDoc) ~= nil then
-    local identity = windowDoc.workspace
+    local identity = normalizeIdentity(windowDoc.workspace, false)
     if type(identity) ~= "table" then return nil end
     local windowWorkspace = workspaceForIdentity(result, identity)
     if windowWorkspace == nil or windowWorkspace.monitor ~= focused.monitor

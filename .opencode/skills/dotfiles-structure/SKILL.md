@@ -205,7 +205,8 @@ manually and are not wired into flake checks or CI.
 `modules/parts/noctalia/global-workspaces/widget.luau` entrypoint in independent
 stubbed Noctalia instances. Numbered workspaces sort by ID before ID-less
 workspaces sorted by canonical address; ID-less labels use display names.
-Fixtures cover focused windows/special overlays, canonical safe selectors,
+Fixtures cover legacy Hyprland `{id,name}` and newer typed workspace identities,
+three-monitor snapshots, focused windows/special overlays, canonical safe selectors,
 native bubble/font styling, stable keys, stale callbacks, malformed snapshots,
 and polling. Pill rows require API 32 for container tooltips; client snapshots
 provide occupancy and urgency colors. A cancellable `runStream` listener uses
@@ -376,6 +377,9 @@ is uncertain.
 - Noctalia 5.2.1 applies declarative `radius` to row backgrounds, not buttons.
   Rounded Flex backgrounds do not clip children; wrappers must accommodate
   native button corner geometry and padding.
+- Hyprland 0.56.0 workspace JSON uses `{id,name}`, without `address` or `type`.
+  The global-workspaces plugin adapts both legacy and typed identities; keep
+  both schemas covered when changing snapshot validation.
 - Noctalia notification filters resolve the first match in name order.
   `match_content` is a case-insensitive ECMAScript regex searched against the
   title OR body separately; it cannot require both fields to match. Omit

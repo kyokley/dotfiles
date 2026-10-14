@@ -166,6 +166,10 @@ local function identity(address, kind, name, id)
   return value
 end
 
+local function legacyIdentity(id, name)
+  return { id = id, name = name }
+end
+
 local function workspace(address, kind, name, monitorName, monitorID, id)
   local value = identity(address, kind, name, id)
   value.monitor = monitorName
@@ -342,6 +346,148 @@ local function expectList(tree, labels)
   end
   return items
 end
+
+-- Hyprland 0.56 emits legacy {id,name} workspace identities. Keep this
+-- three-monitor snapshot as a regression for each independently normalized
+-- query document, including the inactive special-workspace sentinel.
+local legacyRows = {
+  { id = 1, name = "1", monitor = "DP-4", monitorID = 1 },
+  { id = 3, name = "3", monitor = "eDP-1", monitorID = 0 },
+  { id = 12, name = "12", monitor = "DP-5", monitorID = 2 },
+}
+local legacyMonitors = {
+  { id = 0, name = "eDP-1", focused = false,
+    activeWorkspace = legacyIdentity(3, "3"), specialWorkspace = legacyIdentity(0, "") },
+  { id = 1, name = "DP-4", focused = true,
+    activeWorkspace = legacyIdentity(1, "1"), specialWorkspace = legacyIdentity(0, "") },
+  { id = 2, name = "DP-5", focused = false,
+    activeWorkspace = legacyIdentity(12, "12"), specialWorkspace = legacyIdentity(0, "") },
+}
+local legacyClients = {
+  { workspace = legacyIdentity(12, "12") },
+  { workspace = legacyIdentity(12, "12") },
+  { workspace = legacyIdentity(1, "1") },
+}
+local function legacySnapshot(focusedMonitor, activeWindowDoc)
+  local monitors = {}
+  for index, raw in ipairs(legacyMonitors) do
+    monitors[index] = {
+      id = raw.id,
+      name = raw.name,
+      focused = raw.name == focusedMonitor,
+      activeWorkspace = raw.activeWorkspace,
+      specialWorkspace = raw.specialWorkspace,
+    }
+  end
+  return monitors, activeWindowDoc
+end
+local function assertLegacyDocsUnchanged(docs, monitors, window)
+  for _, row in ipairs(docs.workspaces) do
+    assert(row.address == nil and row.type == nil, "legacy workspace source row must remain unmodified")
+  end
+  for _, raw in ipairs(monitors) do
+    for _, identity in ipairs({ raw.activeWorkspace, raw.specialWorkspace }) do
+      assert(identity.address == nil and identity.type == nil, "legacy monitor source identity must remain unmodified")
+    end
+  end
+  if window.workspace then
+    assert(window.workspace.address == nil and window.workspace.type == nil,
+      "legacy activewindow source identity must remain unmodified")
+  end
+  for _, client in ipairs(docs.clients) do
+    assert(client.workspace.address == nil and client.workspace.type == nil,
+      "legacy client source identity must remain unmodified")
+  end
+end
+local legacyInstances = {}
+for _, output in ipairs({ "DP-4", "eDP-1", "DP-5" }) do
+  local docs = { workspaces = legacyRows, clients = legacyClients }
+  local widget = instance(output, false, docs)
+  widget.env.update()
+  local activeWindowDoc = { workspace = legacyIdentity(1, "1"), monitor = 1 }
+  local monitors = legacySnapshot("DP-4", {
+    workspace = legacyIdentity(1, "1"), monitor = 1,
+  })
+  success(widget, 1, legacyRows, monitors,
+    activeWindowDoc, docs)
+  local rendered = expectList(widget.trees[#widget.trees], { "1", "3", "12" })
+  for index, button in ipairs(rendered) do
+    assert(selected(button) == (output == "DP-4" and index == 1),
+      "only the focused DP-4 workspace may select across independent output instances")
+  end
+  assertLegacyDocsUnchanged(docs, monitors, activeWindowDoc)
+  legacyInstances[output] = { widget = widget, docs = docs }
+end
+local focusedElsewhereMonitors = legacySnapshot("eDP-1", nil)
+for _, output in ipairs({ "DP-4", "eDP-1", "DP-5" }) do
+  local fixture = legacyInstances[output]
+  fixture.widget.env.update()
+  success(fixture.widget, 2, legacyRows, focusedElsewhereMonitors, {}, fixture.docs)
+  local rendered = expectList(fixture.widget.trees[#fixture.widget.trees], { "1", "3", "12" })
+  for index, button in ipairs(rendered) do
+    assert(selected(button) == (output == "eDP-1" and index == 2),
+      "empty activewindow selects only eDP-1's active workspace on its owning instance")
+  end
+  assertLegacyDocsUnchanged(fixture.docs, focusedElsewhereMonitors, {})
+end
+
+local legacyOccupancyDocs = { clients = {
+  { workspace = legacyIdentity(2, "2"), urgent = false },
+  { workspace = legacyIdentity(4, "4"), urgent = true },
+} }
+local legacyOccupancy = instance("DP-4", false, legacyOccupancyDocs)
+legacyOccupancy.env.update()
+local legacyOccupancyRows = {
+  { id = 1, name = "1", monitor = "DP-4", monitorID = 1 },
+  { id = 2, name = "2", monitor = "DP-4", monitorID = 1 },
+  { id = 4, name = "4", monitor = "DP-4", monitorID = 1 },
+}
+local legacyOccupancyMonitors = { {
+  id = 1, name = "DP-4", focused = true,
+  activeWorkspace = legacyIdentity(1, "1"), specialWorkspace = legacyIdentity(0, ""),
+} }
+success(legacyOccupancy, 1, legacyOccupancyRows, legacyOccupancyMonitors,
+  { workspace = legacyIdentity(1, "1"), monitor = 1 }, legacyOccupancyDocs)
+local occupiedLegacy = expectList(legacyOccupancy.trees[#legacyOccupancy.trees], { "1", "2", "4" })
+assert(occupiedLegacy[2].props.fill == "secondary" and occupiedLegacy[3].props.fill == "error",
+  "legacy clients independently mark nonactive workspaces occupied and urgent")
+assertLegacyDocsUnchanged({ workspaces = legacyOccupancyRows, clients = legacyOccupancyDocs.clients },
+  legacyOccupancyMonitors, { workspace = legacyIdentity(1, "1"), monitor = 1 })
+
+local legacySpecialDocs = {}
+local legacySpecial = instance("DP-4", false, legacySpecialDocs)
+legacySpecial.env.update()
+local legacySpecialRows = {
+  { id = -1, name = "special:scratch", monitor = "DP-4", monitorID = 1 },
+  { id = 1, name = "1", monitor = "DP-4", monitorID = 1 },
+}
+local legacySpecialMonitors = { {
+  id = 1, name = "DP-4", focused = true,
+  activeWorkspace = legacyIdentity(1, "1"), specialWorkspace = legacyIdentity(-1, "special:scratch"),
+} }
+success(legacySpecial, 1, legacySpecialRows, legacySpecialMonitors,
+  { workspace = legacyIdentity(-1, "special:scratch"), monitor = 1 }, legacySpecialDocs)
+local legacySpecialButtons = buttons(legacySpecial.trees[#legacySpecial.trees])
+assert(#legacySpecialButtons == 2 and not selected(legacySpecialButtons[1])
+  and selected(legacySpecialButtons[2]), "legacy negative named special workspace must normalize and select")
+expectDispatch(legacySpecial, legacySpecialButtons[2], "special", "scratch",
+  "legacy special workspace keeps canonical special selector")
+
+local legacyNamedDocs = {}
+local legacyNamed = instance("DP-4", false, legacyNamedDocs)
+legacyNamed.env.update()
+local legacyNamedRows = { { id = -2, name = "Work", monitor = "DP-4", monitorID = 1 } }
+local legacyNamedMonitors = { {
+  id = 1, name = "DP-4", focused = true,
+  activeWorkspace = legacyIdentity(-2, "Work"), specialWorkspace = legacyIdentity(0, ""),
+} }
+success(legacyNamed, 1, legacyNamedRows, legacyNamedMonitors,
+  { workspace = legacyIdentity(-2, "Work"), monitor = 1 }, legacyNamedDocs)
+local legacyNamedButton = buttons(legacyNamed.trees[#legacyNamed.trees])[1]
+assert(selected(legacyNamedButton) and labelOf(legacyNamedButton) == "Work",
+  "legacy negative named normal workspace uses its name as canonical identity")
+expectDispatch(legacyNamed, legacyNamedButton, "focus", "name:Work",
+  "legacy named normal workspace keeps name-based selector")
 
 -- Numbered workspaces sort by ID; ID-less rows sort by canonical address.
 -- Display names may collide and may change without changing identity.
@@ -749,6 +895,26 @@ rejected({ exitCode = 0, stdout = documentsFor(numberedSpecialRows, numberedSpec
 rejected({ exitCode = 0, stdout = "w" .. RS .. "m" .. RS .. "a" .. RS .. "c" }, { w = {
   { address = "named:a", type = "normal", name = "A", monitor = "DP-1", monitorID = "1" },
 }, m = {}, a = {}, c = {} }, "monitorID must match source JSON integer type")
+rejected({ exitCode = 0, stdout = "w" .. RS .. "m" .. RS .. "a" .. RS .. "c" }, { w = {
+  { id = 1, name = "1", address = "1", monitor = "DP-1", monitorID = 1 },
+}, m = {}, a = {}, c = {} }, "partial typed workspace must not fall back to legacy")
+rejected({ exitCode = 0, stdout = "w" .. RS .. "m" .. RS .. "a" .. RS .. "c" }, { w = {
+  { id = 1, name = "1", monitor = "DP-1", monitorID = 1 },
+}, m = { { id = 1, name = "DP-1", focused = true,
+  activeWorkspace = { id = 1, name = "1", type = "normal" }, specialWorkspace = legacyIdentity(0, "") } },
+  a = {}, c = {} }, "partial typed monitor identity must not fall back to legacy")
+rejected({ exitCode = 0, stdout = "w" .. RS .. "m" .. RS .. "a" .. RS .. "c" }, { w = {
+  { id = 1, name = "1", monitor = "DP-1", monitorID = 1 },
+}, m = { { id = 1, name = "DP-1", focused = true,
+  activeWorkspace = legacyIdentity(1, "1"), specialWorkspace = legacyIdentity(0, "") } },
+  a = { workspace = { id = 1, name = "1", address = "1" } }, c = {} },
+  "partial typed activewindow identity must not fall back to legacy")
+rejected({ exitCode = 0, stdout = "w" .. RS .. "m" .. RS .. "a" .. RS .. "c" }, { w = {
+  { id = 1, name = "1", monitor = "DP-1", monitorID = 1 },
+}, m = { { id = 1, name = "DP-1", focused = true,
+  activeWorkspace = legacyIdentity(1, "1"), specialWorkspace = legacyIdentity(0, "") } },
+  a = {}, c = { { workspace = { id = 1, name = "1", type = "normal" } } } },
+  "partial typed client identity must not fall back to legacy")
 rejected({ exitCode = 0, stdout = "w" .. RS .. "m" .. RS .. "a" .. RS .. "c" }, { w = {}, m = {}, a = { workspace = "wrong type" }, c = {} }, "active window identity type error")
 
 -- Sync launch exceptions clear the guard, remove stale clickability, and recover.
