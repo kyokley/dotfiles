@@ -177,11 +177,12 @@
           package = opencode_base_package;
           context = builtins.readFile "${inputs.caveman}/plugins/caveman/skills/caveman/SKILL.md";
           commands = {
-            commit = ./conventional-commit-ai-prompt.md;
-            review = ./review_code.md;
+            commit = ./commands/conventional-commit-ai-prompt.md;
+            review = ./commands/review_code.md;
           };
           skills = {
-            stacked-jj-prs = ./stacked-jj-prs.md;
+            # stacked-jj-prs = ./stacked-jj-prs.md;
+            dev-incremental-implementation = ./skills/dev-incremental-implementation/SKILL.md;
           };
           settings = {
             autoupdate = false;
