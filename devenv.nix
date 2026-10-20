@@ -4,6 +4,7 @@
   ...
 }: let
   cacheName = "horus";
+  sysc-greet = import ./modules/lib/sysc-greet.nix inputs.sysc-greet;
 in {
   cachix = {
     pull = [cacheName];
@@ -20,7 +21,7 @@ in {
     ]
     ++ (
       if pkgs.stdenv.hostPlatform.isLinux
-      then [inputs.sysc-greet.packages.${pkgs.stdenv.hostPlatform.system}.default]
+      then [sysc-greet.packages.${pkgs.stdenv.hostPlatform.system}.default]
       else []
     );
 

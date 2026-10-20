@@ -4,6 +4,7 @@
 }: let
   inherit (constants) defaultUsername defaultFullName;
   inherit (constants.systems) x86_linux aarch64_darwin;
+  sysc-greet = import ./sysc-greet.nix inputs.sysc-greet;
 in {
   mkHomeConfiguration = {
     system ? x86_linux,
@@ -68,7 +69,7 @@ in {
       specialArgs = specArgs;
       modules = [
         inputs.home-manager.nixosModules.home-manager
-        inputs.sysc-greet.nixosModules.default
+        sysc-greet.nixosModules.default
         {
           home-manager = {
             users.${username} = inputs.nixpkgs.lib.mkMerge [

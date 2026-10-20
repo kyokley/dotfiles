@@ -36,6 +36,7 @@
             "steam"
             "steam-unwrapped"
             "obsidian"
+            "sysc-greet"
           ];
       };
 
