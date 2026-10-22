@@ -71,9 +71,9 @@
           initrd.systemd.network.wait-online.enable = false;
           tmp.cleanOnBoot = true;
           kernel.sysctl = {
-            max_user_watches = 524288;
-            max_user_instances = 8192;
-            max_queued_events = 32768;
+            "fs.inotify.max_user_watches" = 1048576;
+            "fs.inotify.max_user_instances" = 8192;
+            "fs.inotify.max_queued_events" = 32768;
           };
         };
 
