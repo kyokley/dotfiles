@@ -125,11 +125,11 @@
         if pkgs.stdenv.hostPlatform.isLinux
         then
           pkgs.opencode.overrideAttrs (old: {
-            # Preload the C++ runtime for registry native plugins.
+            # Patching Bun's compiled ELF with DT_NEEDED makes it crash.
             postFixup =
               (old.postFixup or "")
               + ''
-                ${pkgs.patchelf}/bin/patchelf --add-needed "${pkgs.stdenv.cc.cc.lib}/lib/libstdc++.so.6" "$out/bin/.opencode-wrapped"
+                wrapProgram "$out/bin/opencode" --prefix LD_PRELOAD : "${pkgs.stdenv.cc.cc.lib}/lib/libstdc++.so.6"
               '';
           })
         else pkgs.opencode;

@@ -272,12 +272,11 @@ The shared module exposes its platform-specific base executable as
 uses the same binding. Host wrappers should execute this argument, not
 `pkgs.opencode` or `config.programs.opencode.package`: the former bypasses
 Linux's patch and the latter recurses when the wrapper is the configured package.
-On Linux, the shared base package adds an absolute ELF `DT_NEEDED` entry
-for Nix's `libstdc++.so.6` to `bin/.opencode-wrapped`. This loads the C++
-runtime before cached native plugins such as ONNX Runtime need it, without
-patching the cache or setting `LD_LIBRARY_PATH`. Executable RPATH alone is
-insufficient when an addon has its own RUNPATH; `nix-ld` does not handle
-these library loads from a Nix-built executable. Darwin keeps the stock package.
+On Linux, the shared base package adds a wrapper that prefixes `LD_PRELOAD`
+with Nix's `libstdc++.so.6`, preserving the existing Wayland `LD_LIBRARY_PATH`
+and caller `LD_PRELOAD`. Patching Bun's compiled ELF with `DT_NEEDED` makes
+`opencode --version` crash. This preloads the C++ runtime before cached native
+plugins such as ONNX Runtime need it; Darwin keeps the stock package.
 The Linux `homeManager.dev` package overrides ai-browser's `opencode` argument
 with this same base executable, preserving ai-browser's wrapper settings while
 avoiding its default `pkgs.opencode` reference. Darwin does not install ai-browser.
