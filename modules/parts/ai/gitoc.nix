@@ -54,7 +54,7 @@
       fi
 
       if [[ "$dry_run" != true ]]; then
-          message="$(git diff --staged | ${config.programs.opencode.package}/bin/opencode --log-level INFO run "/commit" 2>/dev/null)"
+          message="$(git diff --staged | ${config.programs.opencode.package}/bin/opencode --log-level info run "/commit" 2>/dev/null)"
           echo
           echo "$message"
           echo
@@ -62,7 +62,7 @@
           git commit -m "$message"
       else
           echo -e "\033[33mDry run: No changes will be made. Commit message would be:\033[0m"
-          printf "$(${config.programs.opencode.package}/bin/opencode --log-level INFO run --command commit 2>/dev/null)"
+          printf "$(${config.programs.opencode.package}/bin/opencode --log-level info run --command commit 2>/dev/null)"
       fi
     '';
   in {

@@ -54,7 +54,7 @@
         fi
 
         if ! message="$(
-          printf '%s\n' "$diff" | ${config.programs.opencode.package}/bin/opencode --log-level INFO run --title "jitoc generator" "/commit"
+          printf '%s\n' "$diff" | ${config.programs.opencode.package}/bin/opencode --log-level info run --title "jitoc generator" "/commit"
         )"; then
           printf '%s\n' "Failed to generate description" >&2
           exit 1
