@@ -150,19 +150,6 @@
           runHook postInstall
         '';
       };
-
-      opencode_notify = pkgs.fetchFromGitHub {
-        owner = "kdcokenny";
-        repo = "ocx";
-        rev = "636dc2dbd10a780ef9f4b7a0bbf175aacd742e8c";
-        hash = "sha256-e2GbBB0RG8AjEZPwDkP1z94+K+vZ9hx1gq9OpHKWlh0=";
-      };
-
-      opencode_notify_plugin = pkgs.runCommand "opencode-notify-plugin" {} ''
-        mkdir -p "$out/plugins"
-        cp -R ${opencode_notify}/workers/kdco-registry/files/plugins/. "$out/plugins"
-        ln -s ${npm_deps} "$out/node_modules"
-      '';
     in {
       _module.args.opencode_npm_deps = npm_deps;
       _module.args.opencode_base_package = opencode_base_package;
@@ -200,10 +187,11 @@
               explore.disable = true;
               general.disable = true;
             };
-            plugin = [
+            plugins = [
               "${npm_deps}/oh-my-opencode-slim/dist/index.js"
               "opencode-skill-creator"
               "opencode-mem@2.29.0"
+              "@mohak34/opencode-notifier@latest"
             ];
             permission = {
               external_directory = {
@@ -256,15 +244,6 @@
           };
           ".config/opencode/node_modules" = {
             source = npm_deps;
-            recursive = true;
-          };
-          ".config/opencode/plugins/notify.ts".source = "${opencode_notify_plugin}/plugins/notify.ts";
-          ".config/opencode/plugins/notify" = {
-            source = "${opencode_notify_plugin}/plugins/notify";
-            recursive = true;
-          };
-          ".config/opencode/plugins/kdco-primitives" = {
-            source = "${opencode_notify_plugin}/plugins/kdco-primitives";
             recursive = true;
           };
         };
