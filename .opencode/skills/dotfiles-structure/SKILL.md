@@ -75,7 +75,7 @@ The `common` keys are baselines every host inherits; platform keys
 
 - `constants.nix` — `defaultUsername = "yokley"`, systems map
 - `generators.nix` — `mkHomeConfiguration`, `mkDarwinConfiguration`, `mkNixosConfiguration`
-- `sysc-greet.nix` — re-evaluates the pinned upstream flake with unfree allowed only for `sysc-greet`
+- `sysc-greet.nix` — re-evaluates the pinned upstream flake with unfree allowed only for `sysc-greet`; repairs its stale Go module fixed-output hash only at the affected upstream revision, shared by NixOS and devenv
 
 ### `modules/parts/` (auto-imported; each registers under `flake.modules.*`)
 
@@ -342,6 +342,11 @@ is uncertain.
   and Home Manager unfree settings do not apply. `modules/lib/sysc-greet.nix`
   re-evaluates each pinned input with only `sysc-greet` allowed, for NixOS and
   devenv; keep each consumer's lock pin unchanged.
+- At `fc406221767da5557bace80e455db6312aac44bd`, upstream `sysc-greet` has no
+  vendored source tree and its fixed-output Go dependency hash is stale after
+  the `sysc-Go` module update. The shared adapter replaces only that revision's
+  `packages.default` vendor hash; regenerate it from the build's hash mismatch,
+  rather than changing Go vendoring behavior or lock pins.
 - Remote builders are not automatically substituters. Mars explicitly queries
   Mercury's existing store over `ssh-ng` in `modules/hosts/mars/mars.nix` with
   priority 50, below the default public cache. `trusted=true` accepts Mercury's unsigned
