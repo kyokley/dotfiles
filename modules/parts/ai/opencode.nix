@@ -150,6 +150,12 @@
           runHook postInstall
         '';
       };
+      plugin_adapters = pkgs.runCommand "opencode-plugin-adapters" {} ''
+        mkdir -p "$out/oh-my-opencode-slim" "$out/opencode-skill-creator"
+        printf '%s\n' 'export { default } from "${npm_deps}/oh-my-opencode-slim/dist/server/index.js";' > "$out/oh-my-opencode-slim/server.js"
+        printf '%s\n' 'export { default } from "${npm_deps}/oh-my-opencode-slim/dist/tui2.js";' > "$out/oh-my-opencode-slim/tui.js"
+        printf '%s\n' 'export { default } from "${npm_deps}/opencode-skill-creator/dist/skill-creator.js";' > "$out/opencode-skill-creator/server.js"
+      '';
     in {
       _module.args.opencode_npm_deps = npm_deps;
       _module.args.opencode_base_package = opencode_base_package;
@@ -172,6 +178,7 @@
             dev-incremental-implementation = ./skills/dev-incremental-implementation/SKILL.md;
           };
           settings = {
+            "$schema" = "https://opencode.ai/config.json";
             autoupdate = false;
             provider = {
               openai = {
@@ -188,10 +195,10 @@
               general.disable = true;
             };
             plugins = [
-              "${npm_deps}/oh-my-opencode-slim/dist/index.js"
-              "opencode-skill-creator"
+              "${plugin_adapters}/oh-my-opencode-slim"
+              "${plugin_adapters}/opencode-skill-creator"
               "opencode-mem@2.29.0"
-              "@mohak34/opencode-notifier@latest"
+              "@mohak34/opencode-notifier@1.1.0"
             ];
             permission = {
               external_directory = {
@@ -201,10 +208,12 @@
             };
             lsp = true;
             mcp = {
-              "mv-mcp" = {
-                enabled = false;
-                type = "remote";
-                url = "http://127.0.0.1:8089/mcp";
+              servers = {
+                "mv-mcp" = {
+                  type = "remote";
+                  url = "http://127.0.0.1:8089/mcp";
+                  disabled = true;
+                };
               };
             };
           };
@@ -225,6 +234,7 @@
       # };
 
       home = {
+        # Legacy flag retained pending confirmation of its behavior on OpenCode v2.
         sessionVariables.OPENCODE_EXPERIMENTAL_BACKGROUND_SUBAGENTS = "true";
         file = {
           ".config/opencode/oh-my-opencode-slim.json" = {

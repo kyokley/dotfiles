@@ -4,8 +4,8 @@
   "dependencies": {
     "detect-terminal": "^3.0.0",
     "node-notifier": "^10.0.1",
-    "oh-my-opencode-slim": "^2.2.24",
-    "opencode-skill-creator": "^0.2.25"
+    "oh-my-opencode-slim": "3.0.5",
+    "opencode-skill-creator": "0.3.6"
   },
   "scripts": {
     "postinstall": "bun2nix -o _bun.nix"

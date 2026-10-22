@@ -255,11 +255,20 @@ config, zen key from the
 `opencode_zen.age` secret, third-party plugin sources pinned with Nix, and node
 deps built with **bun2nix** from `package.json` + `_bun.nix`. When
 `package.json` changes, regenerate `_bun.nix` with `bun2nix` in the devenv
-shell. OpenCode loads oh-my-opencode-slim from this Nix-built tree, rather
-than its separate npm plugin cache. Its native background tasks require
-`OPENCODE_EXPERIMENTAL_BACKGROUND_SUBAGENTS=true` in the session environment.
-The derivation explicitly copies the installed `node_modules` tree; the
-default bun2nix install phase only emits the package executable.
+shell. OpenCode v2.0.32's local-directory plugin loader reads concrete
+`server.js` and `tui.js` entry files; it does not resolve package `exports` for
+local directories. The Nix-built adapter directories provide regular wrapper
+files that re-export oh-my-opencode-slim 3.0.5's server and TUI entries, and
+opencode-skill-creator 0.3.6's server plugin. Keep the adapters separate from
+the package roots so runtime dependencies resolve through the original
+Nix-built tree. The notifier is pinned to `@mohak34/opencode-notifier@1.1.0`;
+`opencode-mem@2.29.0` remains an OpenCode registry plugin. The module keeps
+`lsp = true` for schema compatibility, although OpenCode v2 does not run
+language servers through it.
+`OPENCODE_EXPERIMENTAL_BACKGROUND_SUBAGENTS=true` is retained as a legacy flag;
+its effect on v2 is unverified. The derivation explicitly copies the installed
+`node_modules` tree; the default bun2nix install phase only emits the package
+executable.
 
 The native `opencode-mem@2.29.0` registry plugin is pinned outside the Nix-built
 node tree; its declarative `opencode-mem.jsonc` reuses OpenCode's OpenAI auth
@@ -395,10 +404,11 @@ is uncertain.
   title OR body separately; it cannot require both fields to match. Omit
   `match` to filter content regardless of the sending app.
 - An unversioned OpenCode plugin name can load a stale `@latest` cache instead
-  of the version pinned in `ai/package.json`. Reference its Nix-built entry
-  point in `programs.opencode.settings.plugin` when using the pinned version.
-  oh-my-opencode-slim 2.2.24 uses native background tasks; its old
-  `fallback.timeoutMs` option does not set their deadline.
+  of the version pinned in `ai/package.json`. OpenCode v2.0.32's local-directory
+  plugin loader does not honor package exports: configure Nix-built adapter
+  directories containing real `server.js` and, when needed, `tui.js` files.
+  Re-export source package entries from those wrappers; do not configure an npm
+  package root or a direct compiled file as a local directory plugin.
 - `gitoc` and `jitoc` use `config.programs.opencode.package`, not
   `pkgs.opencode`, so package overrides also apply to commit generation.
   Their baked-in store paths do not follow the shell's `opencode` executable.
