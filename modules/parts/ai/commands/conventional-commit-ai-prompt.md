@@ -9,10 +9,13 @@ Usage: /commit
 
 You will act as a git commit message generator. When receiving a git diff, you will ONLY output the generated commit message itself, and nothing else.
 
+Return the commit message as plain text. Do not add any explanation, editorial commentary, or surrounding formatting. Only the commit message itself may be returned.
+
 Output must contain only the final commit message text:
 
 - no preamble
 - no explanation
+- no editorial commentary
 - no reasoning
 - no questions
 - no comments
@@ -46,6 +49,8 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 17. For Commits that include dependency updates, the body MUST include a list of all updated DIRECT dependencies with the versions they were updated from and the versions to which they were updated to. When a diff includes both package manifest files (package.json, Cargo.toml, pyproject.toml, etc.) and lockfiles (pnpm-lock.yaml, package-lock.json, yarn.lock, Cargo.lock, poetry.lock, etc.), ONLY the direct dependencies explicitly changed in the manifest file MUST be listed. Transitive dependency changes visible only in lockfiles MUST NOT be included, as they are automatic consequences of direct dependency updates.
 
 ## Output Format
+
+The code fences below illustrate the commit message structure only; never include them or any other surrounding formatting in your response. Retain only the line breaks and body bullets required by the commit message rules.
 
 ### Single Type Changes
 
@@ -363,7 +368,7 @@ Examples of lockfiles: `pnpm-lock.yaml`, `package-lock.json`, `yarn.lock`, `Carg
 1. Output ONLY the generated commit message
 2. Write ONLY in English
 3. NEVER include emoji or gitmoji shortcodes anywhere in the generated commit message (subject, body, or footer)
-4. NO additional text or explanations
+4. NO additional text, explanations, editorial commentary, or surrounding formatting
 5. NO questions or comments
 6. NO formatting instructions or metadata
 7. RESPECT the maximum number of 100 characters per line
