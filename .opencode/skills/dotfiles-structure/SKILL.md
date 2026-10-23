@@ -92,7 +92,7 @@ The `common` keys are baselines every host inherits; platform keys
 | `kitty.nix`, `terminator.nix`, `tmux.nix`, `vim.nix` | `homeManager.*` | Terminal / editor |
 | `zsh/` (`zsh.nix`, `powerlevel10k_config.zsh`, `powerlevel10k_jj.zsh`) | `homeManager.common` | Prezto shell and Powerlevel10k prompt, with JJ status replacing Git in JJ workspaces |
 | `ai/` | `homeManager.opencode`, `.fabric`, `.gitoc`, `.jitoc` | AI tooling; `jitoc.nix` generates descriptions for the current jj working copy — see "opencode config" below |
-| `ai/conventional-commit-ai-prompt.md` | N/A | Emoji-free Conventional Commit prompt used by the OpenCode `commit` command, `gitoc`, and `jitoc` |
+| `ai/commands/conventional-commit-ai-prompt.md` | N/A | Emoji-free Conventional Commit prompt used by the OpenCode `commit` command, `gitoc`, and `jitoc` |
 | `_secrets/` | **not imported** | agenix secrets: `secrets.nix` (definitions), `*.age` (encrypted), `syncthing/<host>/` certs+keys |
 
 ### `modules/hosts/` (auto-imported)
@@ -240,10 +240,11 @@ Both suites run manually, not in CI.
 
 ### opencode config
 
-The `opencode` module imports `gitoc` and `jitoc`. Both use its `commit`
-command, backed by `conventional-commit-ai-prompt.md`, to generate emoji-free
-messages; `jitoc` feeds `jj diff --git -r @` into that
-command and applies the result with `jj commit` by default. Use
+The `opencode` module imports `gitoc` and `jitoc`. The `commit` command uses
+`commands/conventional-commit-ai-prompt.md` to generate emoji-free messages.
+`jitoc` passes that prompt text explicitly to `opencode run`, pipes
+`jj diff --git -r @` through stdin, rejects output without a Conventional
+Commit subject, and applies the result with `jj commit` by default. Use
 `jitoc -d` / `jitoc --describe` to run `jj describe -r @` instead, without
 creating a new working-copy change. `jitoc --dry-run` prints the generated
 description without committing or describing, including with `--describe`
@@ -413,6 +414,9 @@ is uncertain.
   `pkgs.opencode`, so package overrides also apply to commit generation.
   Their baked-in store paths do not follow the shell's `opencode` executable.
   `jitoc` preserves OpenCode stderr so generation failures remain visible.
+- OpenCode v2.0.32's `run` appends piped stdin to its positional prompt; passing
+  `"/commit"` there does not expand the configured command. It has no
+  `--command` flag. `jitoc` therefore passes the generator instructions directly.
 - This skill self-maintains: after any structure-relevant change, follow the
   Maintenance protocol above. `AGENTS.md` at the repo root reminds every
   session of this duty.

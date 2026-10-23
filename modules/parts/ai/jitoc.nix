@@ -53,8 +53,11 @@
           exit 1
         fi
 
+        prompt="Generate only the commit message. Do not run tools or modify the repository.
+        $(< ${./commands/conventional-commit-ai-prompt.md})"
+
         if ! message="$(
-          printf '%s\n' "$diff" | ${config.programs.opencode.package}/bin/opencode --log-level info run --title "jitoc generator" "/commit"
+          printf '%s\n' "$diff" | ${config.programs.opencode.package}/bin/opencode --log-level info run --title "jitoc generator" "$prompt"
         )"; then
           printf '%s\n' "Failed to generate description" >&2
           exit 1
@@ -62,6 +65,12 @@
 
         if [[ -z "''${message//[[:space:]]/}" ]]; then
           printf '%s\n' "Generated description is blank" >&2
+          exit 1
+        fi
+
+        subject_pattern='^[a-z][a-z0-9]*(\([^()]+\))*!?: .+'
+        if [[ ! "$message" =~ $subject_pattern ]]; then
+          printf '%s\n' "Generated description must start with a Conventional Commit subject" >&2
           exit 1
         fi
 
