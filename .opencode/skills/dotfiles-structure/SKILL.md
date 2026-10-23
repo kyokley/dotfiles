@@ -242,9 +242,11 @@ Both suites run manually, not in CI.
 
 The `opencode` module imports `gitoc` and `jitoc`. The `commit` command uses
 `commands/conventional-commit-ai-prompt.md` to generate emoji-free messages.
-`jitoc` passes that prompt text explicitly to `opencode run`, pipes
-`jj diff --git -r @` through stdin, rejects output without a Conventional
-Commit subject, and applies the result with `jj commit` by default. Use
+`gitoc` and `jitoc` pass that prompt text explicitly to `opencode run`, pipe
+`git diff --staged` or `jj diff --git -r @` through stdin, and reject output
+without a Conventional Commit subject. `gitoc --dry-run` uses the same staged
+diff and validation without committing; `--all` still stages files first.
+`jitoc` applies the result with `jj commit` by default. Use
 `jitoc -d` / `jitoc --describe` to run `jj describe -r @` instead, without
 creating a new working-copy change. `jitoc --dry-run` prints the generated
 description without committing or describing, including with `--describe`
@@ -413,10 +415,10 @@ is uncertain.
 - `gitoc` and `jitoc` use `config.programs.opencode.package`, not
   `pkgs.opencode`, so package overrides also apply to commit generation.
   Their baked-in store paths do not follow the shell's `opencode` executable.
-  `jitoc` preserves OpenCode stderr so generation failures remain visible.
+  Both preserve OpenCode stderr so generation failures remain visible.
 - OpenCode v2.0.32's `run` appends piped stdin to its positional prompt; passing
   `"/commit"` there does not expand the configured command. It has no
-  `--command` flag. `jitoc` therefore passes the generator instructions directly.
+  `--command` flag. Both helpers therefore pass the generator instructions directly.
 - This skill self-maintains: after any structure-relevant change, follow the
   Maintenance protocol above. `AGENTS.md` at the repo root reminds every
   session of this duty.

@@ -53,8 +53,26 @@
           exit 1
       fi
 
+      prompt="Generate only the commit message. Do not run tools or modify the repository.
+      $(< ${./commands/conventional-commit-ai-prompt.md})"
+
+      if ! message="$(set -o pipefail; git diff --staged | ${config.programs.opencode.package}/bin/opencode --log-level info run --title "gitoc generator" "$prompt")"; then
+          printf '%s\n' "Failed to generate commit message" >&2
+          exit 1
+      fi
+
+      if [[ -z "''${message//[[:space:]]/}" ]]; then
+          printf '%s\n' "Generated commit message is blank" >&2
+          exit 1
+      fi
+
+      subject_pattern='^[a-z][a-z0-9]*(\([^()]+\))*!?: .+'
+      if [[ ! "$message" =~ $subject_pattern ]]; then
+          printf '%s\n' "Generated commit message must start with a Conventional Commit subject" >&2
+          exit 1
+      fi
+
       if [[ "$dry_run" != true ]]; then
-          message="$(git diff --staged | ${config.programs.opencode.package}/bin/opencode --log-level info run "/commit" 2>/dev/null)"
           echo
           echo "$message"
           echo
@@ -62,7 +80,7 @@
           git commit -m "$message"
       else
           echo -e "\033[33mDry run: No changes will be made. Commit message would be:\033[0m"
-          printf "$(${config.programs.opencode.package}/bin/opencode --log-level info run --command commit 2>/dev/null)"
+          printf '%s\n' "$message"
       fi
     '';
   in {
