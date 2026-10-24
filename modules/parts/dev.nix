@@ -5,6 +5,7 @@
       lib,
       config,
       opencode_base_package,
+      nixvim-output,
       ...
     }: let
       AGE_DIR = "${config.home.homeDirectory}/.config/age";
@@ -37,6 +38,7 @@
           pkgs.devenv
           pkgs.direnv
           inputs.usql.packages.${pkgs.stdenv.hostPlatform.system}.default
+          inputs.nixvim.packages.${pkgs.stdenv.hostPlatform.system}.${nixvim-output}
         ]
         ++ lib.optionals pkgs.stdenv.hostPlatform.isLinux
         [
