@@ -16,6 +16,7 @@
       pkgs.pass
       pkgs.borgbackup
       pkgs.borgmatic
+      pkgs.secretspec
     ];
 
     systemd = {

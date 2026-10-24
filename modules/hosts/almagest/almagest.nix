@@ -14,6 +14,7 @@
 
     home.packages = [
       pkgs.docker-compose
+      pkgs.secretspec
     ];
 
     systemd.user.services = {
