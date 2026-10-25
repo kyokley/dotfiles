@@ -27,16 +27,19 @@
       };
     in {
       home.packages =
-        [
-          pkgs.age
+        with pkgs; [
+          age
+          devenv
+          direnv
+          gh
+          gnumake
+          jq
+          ripgrep
+          tig
+
           init-age
           show-age
-          pkgs.gnumake
-          pkgs.ripgrep
-          pkgs.tig
-          pkgs.jq
-          pkgs.devenv
-          pkgs.direnv
+
           inputs.usql.packages.${pkgs.stdenv.hostPlatform.system}.default
           inputs.nixvim.packages.${pkgs.stdenv.hostPlatform.system}.${nixvim-output}
         ]
