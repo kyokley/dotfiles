@@ -12,12 +12,16 @@
       # manage.
       homeDirectory = "/home/${username}";
     in {
+      age.secrets.github.file = ./_secrets/github.age;
       nix = {
         package = lib.mkDefault pkgs.nix;
         settings = {
           experimental-features = ["nix-command" "flakes"];
         };
         nixPath = ["nixpkgs=${inputs.nixpkgs}"];
+        extraOptions = ''
+          !include ${config.age.secrets.github.path}
+        '';
       };
 
       nixpkgs = {

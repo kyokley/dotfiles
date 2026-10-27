@@ -63,4 +63,15 @@ in
       ];
       armor = true;
     };
+    "github.age" = {
+      publicKeys = mkPublicKeys [
+        "dioxygen"
+        "jupiter"
+        "mars"
+        "mercury"
+        "venus"
+        "saturn"
+      ];
+      armor = true;
+    };
   }
