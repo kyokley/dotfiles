@@ -111,15 +111,13 @@
         enable = true;
         backups = {
           mediawaiter = {
-            location = {
-              sourceDirectories = [
+            settings = {
+              source_directories = [
                 "/mnt/hd"
                 "/mnt/hd2"
               ];
               repositories = ["ssh://u415868@u415868.your-storagebox.de:23/./mw-repo"];
-            };
-            storage = {
-              encryptionPasscommand = "${pkgs.pass}/bin/pass borg/mediawaiter";
+              encryption_passcommand = "${pkgs.pass}/bin/pass borg/mediawaiter";
             };
           };
         };
