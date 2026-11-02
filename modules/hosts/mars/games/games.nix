@@ -22,7 +22,6 @@
       packages = with pkgs;
         [
           n64
-          lutris
           steam
           mupen64plus
         ]
