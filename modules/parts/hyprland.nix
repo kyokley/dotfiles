@@ -122,6 +122,9 @@
               border_size = 5;
               layout = "master";
             };
+            master = {
+              orientation = "left";
+            };
 
             decoration = {
               rounding = 10;
@@ -154,16 +157,22 @@
             cycleWorkspaceLayout = lib.generators.mkLuaInline ''
               function()
                 -- local layouts = {"master", "dwindle", "scrolling", "monocle"}
-                local layouts = {"master", "scrolling", "monocle"}
+                local layouts = {
+                  { layout = "master", orientation = "left" },
+                  { layout = "master", orientation = "top" },
+                  { layout = "scrolling" },
+                  { layout = "monocle" },
+                }
                 local current = hl.get_config("general.layout")
+                local currentOrientation = hl.get_config("master.orientation")
                 local nextLayout = layouts[1]
                 for i, layout in ipairs(layouts) do
-                  if current == layout then
+                  if current == layout.layout and (layout.layout ~= "master" or currentOrientation == layout.orientation) then
                     nextLayout = layouts[(i % #layouts) + 1]
                     break
                   end
                 end
-                hl.config({ general = { layout = nextLayout } })
+                hl.config({ general = { layout = nextLayout.layout }, master = { orientation = nextLayout.orientation } })
               end
             '';
             workspaceEntries = let
