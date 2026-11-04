@@ -68,6 +68,7 @@ The `common` keys are baselines every host inherits; platform keys
 | `.github/workflows/test.yml` | CI: evaluates flake checks and configurations, builds every unique NixOS and standalone home-manager output on Linux plus the nix-darwin output on ARM macOS, and pushes builds to Horus Cachix when a write token is available; there is no separate legacy `nix-build`/`nix-shell` test job |
 | `tests/krill-widget.lua` | Standalone Lua regression tests for the Noctalia Krill widget; see "Lua widget tests" |
 | `tests/noctalia-global-workspaces.lua` | Standalone Lua regression tests for the Noctalia global-workspaces plugin; see "Lua widget tests" |
+| `tests/noctalia-workspace-layout.lua` | Standalone Lua regression tests for Noctalia layout labels and master orientation queries; see "Lua widget tests" |
 | `tests/powerlevel10k-jj.zsh`, `tests/powerlevel10k-jj-integration.zsh` | JJ prompt regression tests and real Powerlevel10k rendering tests, including working-copy, description, bookmark, and conflict color states |
 | `devenv.lock`, `flake.lock` | Lockfiles |
 
@@ -191,6 +192,7 @@ Run the Noctalia widget regression tests from the repository root:
 ```sh
 nix shell nixpkgs#lua5_4 --command lua tests/krill-widget.lua
 nix shell nixpkgs#lua5_4 --command lua tests/noctalia-global-workspaces.lua
+nix shell nixpkgs#lua5_4 --command lua tests/noctalia-workspace-layout.lua
 ```
 
 `tests/krill-widget.lua` loads `modules/parts/noctalia/krill/widget.luau`
@@ -215,6 +217,11 @@ provide occupancy and urgency colors. A cancellable `runStream` listener uses
 Nix-rendered `socat`/`sleep` paths; five-second polling is fallback. Async
 callbacks lack bar context, so output/orientation are cached at load and each
 update. Manual Lua 5.4 coverage; not CI.
+
+`tests/noctalia-workspace-layout.lua` loads the workspace-layout widget with
+stubbed Noctalia and bar APIs. It covers master-left (`tall`), master-top
+(`wide`), other layout labels, tooltips, polling, in-flight query suppression,
+and query/decode failures with recovery. Run manually with Lua 5.4; not in CI.
 
 ### Powerlevel10k JJ tests
 

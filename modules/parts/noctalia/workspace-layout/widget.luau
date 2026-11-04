@@ -4,9 +4,29 @@
 local refreshing = false
 
 local function render(layout)
-  layout = layout == "master" and "primary" or layout
   barWidget.setText(layout)
   barWidget.setTooltip("Hyprland layout: " .. layout)
+end
+
+local function failed(result, err)
+  refreshing = false
+  render("?")
+  noctalia.log(err or result.stderr)
+end
+
+local function decodeOption(result)
+  if result.exitCode ~= 0 then
+    failed(result)
+    return nil
+  end
+
+  local option, err = noctalia.json.decode(result.stdout)
+  if type(option) ~= "table" or type(option.str) ~= "string" or option.str == "" then
+    failed(result, err or "Hyprland did not return a layout")
+    return nil
+  end
+
+  return option.str
 end
 
 local function refresh()
@@ -16,22 +36,26 @@ local function refresh()
 
   refreshing = true
   noctalia.runAsync("hyprctl -j getoption general:layout", function(result)
-    refreshing = false
-
-    if result.exitCode ~= 0 then
-      render("?")
-      noctalia.log(result.stderr)
+    local layout = decodeOption(result)
+    if layout == nil then
       return
     end
 
-    local option, err = noctalia.json.decode(result.stdout)
-    if option == nil or option.str == nil or option.str == "" then
-      render("?")
-      noctalia.log(err or "Hyprland did not return a layout")
+    if layout ~= "master" then
+      refreshing = false
+      render(layout)
       return
     end
 
-    render(option.str)
+    noctalia.runAsync("hyprctl -j getoption master:orientation", function(orientationResult)
+      local orientation = decodeOption(orientationResult)
+      if orientation == nil then
+        return
+      end
+
+      refreshing = false
+      render(({ left = "tall", top = "wide" })[orientation] or "primary")
+    end)
   end)
 end
 
