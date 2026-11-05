@@ -273,6 +273,10 @@ On Linux, the Nix-built plugin clears Wayland socket variables only for the
 managed Companion child and adds its X11 libraries, preserving inherited library
 paths and leaving managed binary updates intact. This avoids the observed native
 Wayland `eglSwapBuffers` UI hang; OpenCode itself retains its Wayland environment.
+The workaround was required on `mars` with Companion `0.1.8` on 2026-11-04.
+Reassess around **2026-12-04** against then-current Companion, Mesa, and Hyprland
+versions. Retest native Wayland animation and menu responsiveness before removing
+the child-only override; process survival alone did not establish UI health.
 OpenCode v2.0.32's local-directory plugin loader reads concrete
 `server.js` and `tui.js` entry files; it does not resolve package `exports` for
 local directories. The Nix-built adapter directories provide regular wrapper
