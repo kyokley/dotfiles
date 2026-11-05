@@ -529,17 +529,21 @@ local typedZeroDocs = { clients = {
 local typedZero = instance("DP-4", false, typedZeroDocs)
 typedZero.env.update()
 local typedZeroRows = {
+  workspace("3", "normal", "3", "DP-4", 1, 3),
   workspace("1", "normal", "1", "DP-4", 1, 1),
+  workspace("named:other-zero", "normal", "0", "DP-4", 1),
   workspace("zero", "normal", "0", "DP-4", 1),
 }
 success(typedZero, 1, typedZeroRows, {
   { id = 1, name = "DP-4", focused = true,
     activeWorkspace = identity("zero", "normal", "0"), specialWorkspace = legacyIdentity(0, "") },
 }, activeWindow(identity("zero", "normal", "0"), 1), typedZeroDocs)
-local typedZeroButtons = expectList(typedZero.trees[#typedZero.trees], { "1", "0" })
-local typedZeroButton = typedZeroButtons[2]
+local typedZeroButtons = expectList(typedZero.trees[#typedZero.trees], { "0", "1", "3", "0" })
+local typedZeroButton = typedZeroButtons[1]
 assert(labelOf(typedZeroButton) == "0" and selected(typedZeroButton),
-  "typed workspace named \"0\" with canonical address zero must display and select by its name")
+  "canonical workspace address zero must sort first and display and select by its name")
+assert(typedZeroButtons[4].props.key:find("named:other%-zero"),
+  "another workspace named \"0\" must not take canonical zero's first position")
 expectDispatch(typedZero, typedZeroButton, "focus", "name:zero",
   "typed workspace named \"0\" must dispatch its supported canonical address selector")
 
@@ -550,8 +554,8 @@ success(occupiedTypedZero, 1, typedZeroRows, {
     activeWorkspace = identity("1", "normal", "1", 1), specialWorkspace = legacyIdentity(0, "") },
 }, activeWindow(identity("1", "normal", "1", 1), 1), typedZeroDocs)
 local occupiedTypedZeroButtons = expectList(
-  occupiedTypedZero.trees[#occupiedTypedZero.trees], { "1", "0" })
-assert(not selected(occupiedTypedZeroButtons[2]) and occupiedTypedZeroButtons[2].props.fill == "secondary",
+  occupiedTypedZero.trees[#occupiedTypedZero.trees], { "0", "1", "3", "0" })
+assert(not selected(occupiedTypedZeroButtons[1]) and occupiedTypedZeroButtons[1].props.fill == "secondary",
   "typed workspace named \"0\" with canonical address zero and clients must retain occupied styling")
 
 -- Numbered workspaces sort by ID; ID-less rows sort by canonical address.
