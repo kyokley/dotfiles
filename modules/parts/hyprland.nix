@@ -213,7 +213,7 @@
               {
                 _args = [
                   (lib.generators.mkLuaInline ''mod .. " + code:49"'')
-                  (lib.generators.mkLuaInline ''hl.dsp.focus({ workspace = "name:zero", on_current_monitor = true })'')
+                  (lib.generators.mkLuaInline ''function() local ws = hl.get_active_workspace(); if ws and ws.addressable_name == "zero" then hl.dispatch(hl.dsp.focus({ workspace = "previous", on_current_monitor = true })) else hl.dispatch(hl.dsp.focus({ workspace = "name:zero", on_current_monitor = true })) end end'')
                 ];
               }
               {

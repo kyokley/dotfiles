@@ -436,8 +436,9 @@ is uncertain.
   keep both schemas covered when changing global-workspaces snapshot validation.
 - Hyprland reserves numeric workspace ID `0` and rejects numeric named addresses.
   The extra workspace uses `name:zero` with `default_name = "0"`, displayed as
-  `0` by Noctalia. ALT + grave (`code:49`) focuses it; ALT + SHIFT + grave moves
-  the active window without following it.
+  `0` by Noctalia. ALT + grave (`code:49`) focuses it, or returns to the previous
+  workspace when already there. ALT + SHIFT + grave moves the active window
+  without following it.
   Existing ALT + 0 still selects workspace 10.
 - Noctalia notification filters resolve the first match in name order.
   `match_content` is a case-insensitive ECMAScript regex searched against the
