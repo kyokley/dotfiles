@@ -211,6 +211,7 @@
                 "/nix/store/**" = "allow";
                 "/tmp/**" = "allow";
                 "${config.home.homeDirectory}/.config/opencode/**" = "allow";
+                "${config.home.homeDirectory}/.local/share/opencode/**" = "allow";
               };
             };
             lsp = true;
