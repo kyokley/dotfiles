@@ -514,6 +514,7 @@
               };
               float = true;
               move = ["16" "monitor_h-window_h-16"];
+              workspace = "name:zero silent";
             }
             {
               match.class = "kitty";
