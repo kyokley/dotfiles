@@ -49,7 +49,7 @@
       autoUpdate = false;
       companion = {
         enabled = true;
-        position = "bottom-left";
+        size = "large";
       };
       preset = "opencode-zen";
       presets = {
