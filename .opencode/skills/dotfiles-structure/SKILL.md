@@ -350,6 +350,9 @@ is uncertain.
   command in the later OSC 133 marker; upstream emits an empty marker that
   leaves `%c` blank in command-finish notifications.
 - The repo is expected at `~/dotfiles` on hosts (`nh` default).
+- Agenix's default Darwin `age.secretsDir` contains shell command substitution,
+  which cannot be embedded in a literal `nix.conf` include. `homeManager.darwin`
+  sets it to `~/.agenix`; decrypted generations still use macOS temporary storage.
 - GitHub-hosted `macos-15` is arm64 for this public repository; `macos-15-arm`
   is not a valid runner label and leaves the Darwin CI job queued indefinitely.
 - Add custom Nix caches with `nix.settings.extra-substituters` and

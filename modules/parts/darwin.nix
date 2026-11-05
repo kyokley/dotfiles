@@ -54,8 +54,16 @@
       };
     };
 
-    homeManager.darwin = {username, ...}: {
+    homeManager.darwin = {
+      config,
+      username,
+      ...
+    }: {
       home.homeDirectory = "/Users/${username}";
+
+      # nix.conf includes need literal paths, not agenix's Darwin shell expression.
+      # Keep decrypted generations in the default macOS temporary directory.
+      age.secretsDir = "${config.home.homeDirectory}/.agenix";
 
       nixpkgs = {
         overlays = [
