@@ -122,6 +122,7 @@
     opencode = {
       pkgs,
       inputs,
+      config,
       ...
     }: let
       bun2nix-lib = inputs.bun2nix.packages.${pkgs.stdenv.hostPlatform.system}.default;
@@ -209,6 +210,7 @@
               external_directory = {
                 "/nix/store/**" = "allow";
                 "/tmp/**" = "allow";
+                "${config.home.homeDirectory}/.config/opencode/**" = "allow";
               };
             };
             lsp = true;
