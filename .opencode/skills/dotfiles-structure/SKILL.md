@@ -425,7 +425,8 @@ is uncertain.
   toolkit dependencies; update Hyprland and Mesa pins together for driver
   updates. The module asserts both graphics package selection and ABI match.
 - A Hyprland rule anchors the OpenCode Companion main window because native
-  Wayland clients cannot honor requested window positions.
+  Wayland clients cannot honor requested window positions. It also routes the
+  main window silently to `name:zero` (displayed as `0`), without changing focus.
 - Noctalia must follow system `nixpkgs`: it dynamically loads host PAM libraries,
   so an independent older glibc can fail the system PAM ABI. Unlike Hyprland and
   Mesa, do not preserve an independent older libc pin for Noctalia.
