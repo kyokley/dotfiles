@@ -296,10 +296,12 @@ uses the same binding. Host wrappers should execute this argument, not
 `pkgs.opencode` or `config.programs.opencode.package`: the former bypasses
 Linux's patch and the latter recurses when the wrapper is the configured package.
 On Linux, the shared base package adds a wrapper that prefixes `LD_PRELOAD`
-with Nix's `libstdc++.so.6`, preserving the existing Wayland `LD_LIBRARY_PATH`
-and caller `LD_PRELOAD`. Patching Bun's compiled ELF with `DT_NEEDED` makes
-`opencode --version` crash. This preloads the C++ runtime before cached native
-plugins such as ONNX Runtime need it; Darwin keeps the stock package.
+with Nix's `libstdc++.so.6` and `LD_LIBRARY_PATH` with Wayland, XKB, and GL
+libraries, preserving caller-provided values. These runtime libraries let the
+managed native Companion start independently of the caller's environment.
+Patching Bun's compiled ELF with `DT_NEEDED` makes `opencode --version` crash.
+The preload also provides the C++ runtime for cached native plugins such as
+ONNX Runtime; Darwin keeps the stock package.
 The Linux `homeManager.dev` package overrides ai-browser's `opencode` argument
 with this same base executable, preserving ai-browser's wrapper settings while
 avoiding its default `pkgs.opencode` reference. Darwin does not install ai-browser.
@@ -412,6 +414,8 @@ is uncertain.
   their glibc must match. Keeping the source pin avoids incompatible Hyprland
   toolkit dependencies; update Hyprland and Mesa pins together for driver
   updates. The module asserts both graphics package selection and ABI match.
+- A Hyprland rule anchors the OpenCode Companion main window because native
+  Wayland clients cannot honor requested window positions.
 - Noctalia must follow system `nixpkgs`: it dynamically loads host PAM libraries,
   so an independent older glibc can fail the system PAM ABI. Unlike Hyprland and
   Mesa, do not preserve an independent older libc pin for Noctalia.

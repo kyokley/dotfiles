@@ -488,6 +488,14 @@
 
           window_rule = [
             {
+              match = {
+                class = "^oh-my-opencode-slim-companion$";
+                title = "^oh-my-opencode-slim-companion$";
+              };
+              float = true;
+              move = ["16" "monitor_h-window_h-16"];
+            }
+            {
               match.class = "kitty";
               border_size = 3;
             }
