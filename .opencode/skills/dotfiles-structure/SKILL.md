@@ -267,8 +267,10 @@ config, zen key from the
 `opencode_zen.age` secret, third-party plugin sources pinned with Nix, and node
 deps built with **bun2nix** from `package.json` + `_bun.nix`. When
 `package.json` changes, regenerate `_bun.nix` with `bun2nix` in the devenv
-shell. The shared oh-my-opencode-slim config enables the desktop Companion at
-`bottom-left`; its native binary is managed separately by the plugin under
+shell. The shared oh-my-opencode-slim config enables the desktop Companion in
+`large` format; Hyprland centers its main window on workspace `0`. The plugin's
+position setting only supports corners, so centering belongs to the window rule.
+Its native binary is managed separately by the plugin under
 `$XDG_DATA_HOME/opencode/storage/oh-my-opencode-slim/bin/` (defaulting to
 `~/.local/share` when `XDG_DATA_HOME` is unset).
 On Linux, the Nix-built plugin clears Wayland socket variables only for the
@@ -420,7 +422,7 @@ is uncertain.
   their glibc must match. Keeping the source pin avoids incompatible Hyprland
   toolkit dependencies; update Hyprland and Mesa pins together for driver
   updates. The module asserts both graphics package selection and ABI match.
-- A Hyprland rule anchors the OpenCode Companion main window because native
+- A Hyprland rule centers the OpenCode Companion main window because native
   Wayland clients cannot honor requested window positions. It also routes the
   main window silently to `name:zero` (displayed as `0`), without changing focus.
 - Noctalia must follow system `nixpkgs`: it dynamically loads host PAM libraries,

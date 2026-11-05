@@ -513,7 +513,7 @@
                 title = "^oh-my-opencode-slim-companion$";
               };
               float = true;
-              move = ["16" "monitor_h-window_h-16"];
+              center = true;
               workspace = "name:zero silent";
             }
             {
