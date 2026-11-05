@@ -265,7 +265,11 @@ config, zen key from the
 `opencode_zen.age` secret, third-party plugin sources pinned with Nix, and node
 deps built with **bun2nix** from `package.json` + `_bun.nix`. When
 `package.json` changes, regenerate `_bun.nix` with `bun2nix` in the devenv
-shell. OpenCode v2.0.32's local-directory plugin loader reads concrete
+shell. The shared oh-my-opencode-slim config enables the desktop Companion at
+`bottom-left`; its native binary is managed separately by the plugin under
+`$XDG_DATA_HOME/opencode/storage/oh-my-opencode-slim/bin/` (defaulting to
+`~/.local/share` when `XDG_DATA_HOME` is unset).
+OpenCode v2.0.32's local-directory plugin loader reads concrete
 `server.js` and `tui.js` entry files; it does not resolve package `exports` for
 local directories. The Nix-built adapter directories provide regular wrapper
 files that re-export oh-my-opencode-slim 3.0.5's server and TUI entries, and

@@ -47,6 +47,10 @@
 
     oh_my_opencode_slim = {
       autoUpdate = false;
+      companion = {
+        enabled = true;
+        position = "bottom-left";
+      };
       preset = "opencode-zen";
       presets = {
         openai = mkPreset {
