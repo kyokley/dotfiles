@@ -206,8 +206,9 @@ manually and are not wired into flake checks or CI.
 
 `tests/noctalia-global-workspaces.lua` loads the deployed
 `modules/parts/noctalia/global-workspaces/widget.luau` entrypoint in independent
-stubbed Noctalia instances. Numbered workspaces sort by ID before ID-less
-workspaces sorted by canonical address; ID-less labels use display names.
+stubbed Noctalia instances. Workspace `zero` (displayed as `0`) sorts first;
+remaining numbered workspaces sort by ID before ID-less workspaces sorted by
+canonical address. ID-less labels use display names.
 Fixtures cover legacy Hyprland `{id,name}` and newer typed workspace identities,
 three-monitor snapshots, focused windows/special overlays, canonical safe selectors,
 native bubble/font styling, bar-local visible-workspace expansion in both orientations

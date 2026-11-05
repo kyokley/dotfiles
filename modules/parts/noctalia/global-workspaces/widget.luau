@@ -191,6 +191,9 @@ end
 
 local function sortWorkspaces(workspaces)
   table.sort(workspaces, function(a, b)
+    local aIsZero = a.type == "normal" and a.address == "zero"
+    local bIsZero = b.type == "normal" and b.address == "zero"
+    if aIsZero ~= bIsZero then return aIsZero end
     if a.id ~= nil and b.id ~= nil then return a.id < b.id end
     if a.id ~= nil then return true end
     if b.id ~= nil then return false end
