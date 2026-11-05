@@ -134,7 +134,9 @@
             postFixup =
               (old.postFixup or "")
               + ''
-                wrapProgram "$out/bin/opencode" --prefix LD_PRELOAD : "${pkgs.stdenv.cc.cc.lib}/lib/libstdc++.so.6"
+                wrapProgram "$out/bin/opencode" \
+                  --prefix LD_PRELOAD : "${pkgs.stdenv.cc.cc.lib}/lib/libstdc++.so.6" \
+                  --prefix LD_LIBRARY_PATH : "${lib.makeLibraryPath [pkgs.wayland pkgs.libxkbcommon pkgs.libglvnd]}"
               '';
           })
         else pkgs.opencode;
