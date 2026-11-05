@@ -151,6 +151,13 @@
             }
           ];
 
+          workspace_rule = [
+            {
+              workspace = "name:zero";
+              default_name = "0";
+            }
+          ];
+
           bind = let
             cycleWorkspaceLayout = lib.generators.mkLuaInline ''
               function()
@@ -202,6 +209,19 @@
             ws = builtins.concatLists workspaceEntries;
           in
             [
+              # Numeric workspace ID 0 is reserved; use a normal named workspace.
+              {
+                _args = [
+                  (lib.generators.mkLuaInline ''mod .. " + code:49"'')
+                  (lib.generators.mkLuaInline ''hl.dsp.focus({ workspace = "name:zero", on_current_monitor = true })'')
+                ];
+              }
+              {
+                _args = [
+                  (lib.generators.mkLuaInline ''mod .. " + SHIFT + code:49"'')
+                  (lib.generators.mkLuaInline ''hl.dsp.window.move({ workspace = "name:zero", follow = false })'')
+                ];
+              }
               {
                 _args = [
                   (lib.generators.mkLuaInline ''mod .. " + SHIFT + C"'')
