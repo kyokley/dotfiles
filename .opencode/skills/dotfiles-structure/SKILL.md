@@ -212,7 +212,8 @@ Fixtures cover legacy Hyprland `{id,name}` and newer typed workspace identities,
 three-monitor snapshots, focused windows/special overlays, canonical safe selectors,
 native bubble/font styling, bar-local visible-workspace expansion in both orientations
 without changing focus colors, stable keys, stale callbacks, malformed snapshots,
-and polling. Pill rows require API 32 for container tooltips; client snapshots
+and polling. Named workspace `zero` is covered for its `0` label and `name:zero`
+activation selector. Pill rows require API 32 for container tooltips; client snapshots
 provide occupancy and urgency colors. A cancellable `runStream` listener uses
 Nix-rendered `socat`/`sleep` paths; five-second polling is fallback. Async
 callbacks lack bar context, so output/orientation are cached at load and each
@@ -426,9 +427,14 @@ is uncertain.
 - Noctalia 5.2.1 applies declarative `radius` to row backgrounds, not buttons.
   Rounded Flex backgrounds do not clip children; wrappers must accommodate
   native button corner geometry and padding.
-- Hyprland 0.56.0 workspace JSON uses `{id,name}`, without `address` or `type`.
-  The global-workspaces plugin adapts both legacy and typed identities; keep
-  both schemas covered when changing snapshot validation.
+- Hyprland workspace JSON can use legacy `{id,name}` or typed
+  `{address,type,name}` identities. The current pinned build uses typed identities;
+  keep both schemas covered when changing global-workspaces snapshot validation.
+- Hyprland reserves numeric workspace ID `0` and rejects numeric named addresses.
+  The extra workspace uses `name:zero` with `default_name = "0"`, displayed as
+  `0` by Noctalia. ALT + grave (`code:49`) focuses it; ALT + SHIFT + grave moves
+  the active window without following it.
+  Existing ALT + 0 still selects workspace 10.
 - Noctalia notification filters resolve the first match in name order.
   `match_content` is a case-insensitive ECMAScript regex searched against the
   title OR body separately; it cannot require both fields to match. Omit

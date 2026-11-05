@@ -493,6 +493,67 @@ assert(selected(legacyNamedButton) and labelOf(legacyNamedButton) == "Work",
 expectDispatch(legacyNamed, legacyNamedButton, "focus", "name:Work",
   "legacy named normal workspace keeps name-based selector")
 
+local legacyZeroDocs = { clients = {
+  { workspace = legacyIdentity(-2, "0") },
+} }
+local legacyZero = instance("DP-4", false, legacyZeroDocs)
+legacyZero.env.update()
+local legacyZeroRows = {
+  { id = -2, name = "0", monitor = "DP-4", monitorID = 1 },
+  { id = 1, name = "1", monitor = "DP-4", monitorID = 1 },
+}
+local legacyZeroMonitors = { {
+  id = 1, name = "DP-4", focused = true,
+  activeWorkspace = legacyIdentity(-2, "0"), specialWorkspace = legacyIdentity(0, ""),
+} }
+success(legacyZero, 1, legacyZeroRows, legacyZeroMonitors,
+  { workspace = legacyIdentity(-2, "0"), monitor = 1 }, legacyZeroDocs)
+local legacyZeroButtons = expectList(legacyZero.trees[#legacyZero.trees], { "1", "0" })
+assert(selected(legacyZeroButtons[2]) and legacyZeroButtons[2].props.fill == "primary",
+  "legacy negative-ID named workspace \"0\" must retain normal selected styling")
+
+local occupiedLegacyZero = instance("DP-4", false, legacyZeroDocs)
+occupiedLegacyZero.env.update()
+success(occupiedLegacyZero, 1, legacyZeroRows, {
+  { id = 1, name = "DP-4", focused = true,
+    activeWorkspace = legacyIdentity(1, "1"), specialWorkspace = legacyIdentity(0, "") },
+}, { workspace = legacyIdentity(1, "1"), monitor = 1 }, legacyZeroDocs)
+local occupiedLegacyZeroButtons = expectList(
+  occupiedLegacyZero.trees[#occupiedLegacyZero.trees], { "1", "0" })
+assert(not selected(occupiedLegacyZeroButtons[2]) and occupiedLegacyZeroButtons[2].props.fill == "secondary",
+  "legacy negative-ID named workspace \"0\" with clients must retain occupied styling")
+
+local typedZeroDocs = { clients = {
+  { workspace = identity("zero", "normal", "0") },
+} }
+local typedZero = instance("DP-4", false, typedZeroDocs)
+typedZero.env.update()
+local typedZeroRows = {
+  workspace("1", "normal", "1", "DP-4", 1, 1),
+  workspace("zero", "normal", "0", "DP-4", 1),
+}
+success(typedZero, 1, typedZeroRows, {
+  { id = 1, name = "DP-4", focused = true,
+    activeWorkspace = identity("zero", "normal", "0"), specialWorkspace = legacyIdentity(0, "") },
+}, activeWindow(identity("zero", "normal", "0"), 1), typedZeroDocs)
+local typedZeroButtons = expectList(typedZero.trees[#typedZero.trees], { "1", "0" })
+local typedZeroButton = typedZeroButtons[2]
+assert(labelOf(typedZeroButton) == "0" and selected(typedZeroButton),
+  "typed workspace named \"0\" with canonical address zero must display and select by its name")
+expectDispatch(typedZero, typedZeroButton, "focus", "name:zero",
+  "typed workspace named \"0\" must dispatch its supported canonical address selector")
+
+local occupiedTypedZero = instance("DP-4", false, typedZeroDocs)
+occupiedTypedZero.env.update()
+success(occupiedTypedZero, 1, typedZeroRows, {
+  { id = 1, name = "DP-4", focused = true,
+    activeWorkspace = identity("1", "normal", "1", 1), specialWorkspace = legacyIdentity(0, "") },
+}, activeWindow(identity("1", "normal", "1", 1), 1), typedZeroDocs)
+local occupiedTypedZeroButtons = expectList(
+  occupiedTypedZero.trees[#occupiedTypedZero.trees], { "1", "0" })
+assert(not selected(occupiedTypedZeroButtons[2]) and occupiedTypedZeroButtons[2].props.fill == "secondary",
+  "typed workspace named \"0\" with canonical address zero and clients must retain occupied styling")
+
 -- Numbered workspaces sort by ID; ID-less rows sort by canonical address.
 -- Display names may collide and may change without changing identity.
 local docs = {}
