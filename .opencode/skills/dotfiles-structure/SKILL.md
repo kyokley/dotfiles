@@ -269,6 +269,10 @@ shell. The shared oh-my-opencode-slim config enables the desktop Companion at
 `bottom-left`; its native binary is managed separately by the plugin under
 `$XDG_DATA_HOME/opencode/storage/oh-my-opencode-slim/bin/` (defaulting to
 `~/.local/share` when `XDG_DATA_HOME` is unset).
+On Linux, the Nix-built plugin clears Wayland socket variables only for the
+managed Companion child and adds its X11 libraries, preserving inherited library
+paths and leaving managed binary updates intact. This avoids the observed native
+Wayland `eglSwapBuffers` UI hang; OpenCode itself retains its Wayland environment.
 OpenCode v2.0.32's local-directory plugin loader reads concrete
 `server.js` and `tui.js` entry files; it does not resolve package `exports` for
 local directories. The Nix-built adapter directories provide regular wrapper
