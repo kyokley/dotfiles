@@ -140,6 +140,10 @@
               '';
           })
         else pkgs.opencode;
+      companion_x11_library_path =
+        if pkgs.stdenv.hostPlatform.isLinux
+        then lib.makeLibraryPath [pkgs.libx11 pkgs.libxcursor pkgs.libxrandr pkgs.libxi]
+        else "";
       npm_deps = bun2nix-lib.mkDerivation {
         packageJson = ./package.json;
         src = ./.;
@@ -154,6 +158,25 @@
         installPhase = ''
           runHook preInstall
           cp -R node_modules "$out"
+          ${lib.optionalString pkgs.stdenv.hostPlatform.isLinux ''
+            # Run only the Companion under XWayland to avoid its Wayland EGL swap hang.
+            # Keep the downloaded managed Companion binary and updater untouched.
+            companion_entry="$out/oh-my-opencode-slim/dist/server/index.js"
+            test -f "$companion_entry"
+            companion_entry="$(realpath "$companion_entry")"
+            case "$companion_entry" in
+              "$out"/*) ;;
+              *) echo "Companion entry resolves outside npm dependencies: $companion_entry" >&2; exit 1 ;;
+            esac
+            chmod u+w "$companion_entry"
+            substituteInPlace "$companion_entry" \
+              --replace-fail \
+                'OH_MY_OPENCODE_SLIM_COMPANION_SESSION_ID: this.id,' \
+                'WAYLAND_DISPLAY: undefined,
+                  WAYLAND_SOCKET: undefined,
+                  LD_LIBRARY_PATH: "${companion_x11_library_path}" + (process.env.LD_LIBRARY_PATH ? ":" + process.env.LD_LIBRARY_PATH : ""),
+                  OH_MY_OPENCODE_SLIM_COMPANION_SESSION_ID: this.id,'
+          ''}
           runHook postInstall
         '';
       };
