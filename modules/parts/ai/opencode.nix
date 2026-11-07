@@ -131,14 +131,16 @@
         if pkgs.stdenv.hostPlatform.isLinux
         then
           pkgs.opencode.overrideAttrs (old: {
-            # nixpkgs' OpenCode 2.2.5 dependency hash mismatches on Linux.
-            node_modules =
-              if old.version == "2.2.5"
-              then
-                old.node_modules.overrideAttrs {
-                  outputHash = "sha256-prx9dX7kUvs/E3zopkaPk5LXh3xJAy5sZeum/W8L7cA=";
-                }
-              else old.node_modules;
+            # Repair the dependency hash observed with this pinned x86_64-linux builder.
+            node_modules = old.node_modules.overrideAttrs (_:
+              lib.optionalAttrs
+              (old.version
+                == "2.2.5"
+                && pkgs.stdenv.hostPlatform.system == "x86_64-linux"
+                && inputs.nixpkgs.rev == "1d060086d60cb76a40cf37109f979d88a5bd6396")
+              {
+                outputHash = "sha256-prx9dX7kUvs/E3zopkaPk5LXh3xJAy5sZeum/W8L7cA=";
+              });
             # Patching Bun's compiled ELF with DT_NEEDED makes it crash.
             postFixup =
               (old.postFixup or "")
@@ -170,7 +172,12 @@
           ${lib.optionalString pkgs.stdenv.hostPlatform.isLinux ''
             # Run only the Companion under XWayland to avoid its Wayland EGL swap hang.
             # Keep the downloaded managed Companion binary and updater untouched.
-            companion_entry="$out/oh-my-opencode-slim/dist/server/index.js"
+            companion_entries=("$out"/oh-my-opencode-slim/dist/server/chunks/manager-*.js)
+            if [ "''${#companion_entries[@]}" -ne 1 ]; then
+              echo "Expected exactly one Companion manager chunk" >&2
+              exit 1
+            fi
+            companion_entry="''${companion_entries[0]}"
             test -f "$companion_entry"
             companion_entry="$(realpath "$companion_entry")"
             case "$companion_entry" in

@@ -277,6 +277,9 @@ On Linux, the Nix-built plugin clears Wayland socket variables only for the
 managed Companion child and adds its X11 libraries, preserving inherited library
 paths and leaving managed binary updates intact. This avoids the observed native
 Wayland `eglSwapBuffers` UI hang; OpenCode itself retains its Wayland environment.
+In oh-my-opencode-slim 3.0.7, the child spawn code lives in
+`dist/server/chunks/manager-*.js`, not `dist/server/index.js`; the build requires
+exactly one manager chunk and fails if the environment patch no longer matches.
 The workaround was required on `mars` with Companion `0.1.8` on 2026-11-04.
 Reassess around **2026-12-04** against then-current Companion, Mesa, and Hyprland
 versions. Retest native Wayland animation and menu responsiveness before removing
@@ -314,6 +317,10 @@ managed native Companion start independently of the caller's environment.
 Patching Bun's compiled ELF with `DT_NEEDED` makes `opencode --version` crash.
 The preload also provides the C++ runtime for cached native plugins such as
 ONNX Runtime; Darwin keeps the stock package.
+For OpenCode 2.2.5 at nixpkgs `1d060086d60cb76a40cf37109f979d88a5bd6396`,
+the shared base package overrides the nested `node_modules` fixed-output hash
+on `x86_64-linux` with the observed build hash. The override expires when that
+version or revision changes; Darwin and other architectures are unchanged.
 The Linux `homeManager.dev` package overrides ai-browser's `opencode` argument
 with this same base executable, preserving ai-browser's wrapper settings while
 avoiding its default `pkgs.opencode` reference. Darwin does not install ai-browser.
