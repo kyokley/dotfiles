@@ -63,6 +63,7 @@
           pkgs.home-manager
           pkgs.python3Packages.python
           pkgs.uv
+          inputs.zen-browser.packages."${pkgs.stdenv.hostPlatform.system}".default
         ];
 
         shellAliases = {
