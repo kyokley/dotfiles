@@ -126,6 +126,14 @@
         if pkgs.stdenv.hostPlatform.isLinux
         then
           pkgs.opencode.overrideAttrs (old: {
+            # nixpkgs' OpenCode 2.2.5 dependency hash mismatches on Linux.
+            node_modules =
+              if old.version == "2.2.5"
+              then
+                old.node_modules.overrideAttrs {
+                  outputHash = "sha256-prx9dX7kUvs/E3zopkaPk5LXh3xJAy5sZeum/W8L7cA=";
+                }
+              else old.node_modules;
             # Patching Bun's compiled ELF with DT_NEEDED makes it crash.
             postFixup =
               (old.postFixup or "")
