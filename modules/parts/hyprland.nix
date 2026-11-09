@@ -528,6 +528,10 @@
               workspace = "9 silent";
             }
             {
+              match.class = "chrome-eoficlgicibekocmfdomjbfnjmehnhcd-Profile_1"; # Outlook PWA
+              workspace = "9 silent";
+            }
+            {
               match.class = "md.Obsidian";
               workspace = "11 silent";
             }
