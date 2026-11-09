@@ -74,7 +74,7 @@ function p10k-on-pre-prompt() {
 }
 
 function prompt_jj() {
-  p10k segment -b 1 -f 0 -i jj -c '${_dotfiles_jj_text:+${(M)_dotfiles_jj_warning:#2}}' -e -t '${_dotfiles_jj_text}'
-  p10k segment -b 2 -f 0 -i jj -c '${_dotfiles_jj_text:+${(M)_dotfiles_jj_warning:#0}}' -e -t '${_dotfiles_jj_text}'
-  p10k segment -b 3 -f 0 -i jj -c '${_dotfiles_jj_text:+${(M)_dotfiles_jj_warning:#1}}' -e -t '${_dotfiles_jj_text}'
+  p10k segment -b 1 -f 0 -i '' -c '${_dotfiles_jj_text:+${(M)_dotfiles_jj_warning:#2}}' -e -t '${_dotfiles_jj_text}'
+  p10k segment -b 2 -f 0 -i '' -c '${_dotfiles_jj_text:+${(M)_dotfiles_jj_warning:#0}}' -e -t '${_dotfiles_jj_text}'
+  p10k segment -b 3 -f 0 -i '' -c '${_dotfiles_jj_text:+${(M)_dotfiles_jj_warning:#1}}' -e -t '${_dotfiles_jj_text}'
 }

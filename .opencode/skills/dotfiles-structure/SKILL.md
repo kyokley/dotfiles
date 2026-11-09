@@ -384,7 +384,7 @@ is uncertain.
   conditions so background changes also appear immediately: red when `@` is
   conflicted; otherwise yellow when JJ's working copy is nonempty and has no
   description, or is empty with a bookmark on `@`; green otherwise.
-  Bookmarks on parents do not affect the color.
+  Bookmarks on parents do not affect the color. The segment has no `jj` icon label.
   Bookmark text uses `heads(bookmarks() & ::@)`: bookmarks on `@` take
   precedence; otherwise, the nearest non-shadowed bookmarked ancestors appear.
   Merges can show bookmarks from multiple ancestry paths, not a single

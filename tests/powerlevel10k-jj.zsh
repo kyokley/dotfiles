@@ -44,9 +44,9 @@ function last_display() { print -r -- ${p10k_calls[-1]}; }
 function reset_recorder() { : >$JJ_CALLS; p10k_calls=(); }
 function assert_jj_segments() {
   assert_eq ${#p10k_calls} 3
-  assert_contains ${p10k_calls[1]} '-b 1 -f 0 -i jj -c ${_dotfiles_jj_text:+${(M)_dotfiles_jj_warning:#2}} -e -t ${_dotfiles_jj_text}'
-  assert_contains ${p10k_calls[2]} '-b 2 -f 0 -i jj -c ${_dotfiles_jj_text:+${(M)_dotfiles_jj_warning:#0}} -e -t ${_dotfiles_jj_text}'
-  assert_contains ${p10k_calls[3]} '-b 3 -f 0 -i jj -c ${_dotfiles_jj_text:+${(M)_dotfiles_jj_warning:#1}} -e -t ${_dotfiles_jj_text}'
+  assert_contains ${p10k_calls[1]} '-b 1 -f 0 -i  -c ${_dotfiles_jj_text:+${(M)_dotfiles_jj_warning:#2}} -e -t ${_dotfiles_jj_text}'
+  assert_contains ${p10k_calls[2]} '-b 2 -f 0 -i  -c ${_dotfiles_jj_text:+${(M)_dotfiles_jj_warning:#0}} -e -t ${_dotfiles_jj_text}'
+  assert_contains ${p10k_calls[3]} '-b 3 -f 0 -i  -c ${_dotfiles_jj_text:+${(M)_dotfiles_jj_warning:#1}} -e -t ${_dotfiles_jj_text}'
 }
 function assert_deferred_segment_conditions() {
   local expected=$1 red yellow green

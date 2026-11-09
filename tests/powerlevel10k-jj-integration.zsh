@@ -88,6 +88,8 @@ _p9k_precmd
 first=$(print -rP -- "$PROMPT")
 assert_eq "$(calls)" 1
 assert_contains $first 'first description'
+plain_first=${(S)first//$'\e'\[*m/}
+[[ $plain_first =~ '(^|[[:space:]])jj([[:space:]]|$)' ]] && fail 'prompt rendered standalone jj label'
 assert_not_contains $first git-visible
 assert_contains $first $green_background
 assert_not_contains $first $yellow_background
