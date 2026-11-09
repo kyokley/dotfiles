@@ -508,6 +508,10 @@
               workspace = "6 silent";
             }
             {
+              match.class = "chromium";
+              workspace = "6 silent";
+            }
+            {
               match.class = "Mattermost.Desktop";
               workspace = "10 silent";
             }

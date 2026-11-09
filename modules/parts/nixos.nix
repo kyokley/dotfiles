@@ -185,9 +185,6 @@
             "docker"
             "vboxusers"
           ];
-          packages = with pkgs; [
-            firefox
-          ];
         };
 
         # Allow unfree packages
@@ -200,7 +197,7 @@
           neovim
           wget
           curl
-          brave
+          firefox
           terminator
           pavucontrol
           volctl
@@ -286,6 +283,7 @@
 
           terminator
           kitty
+          chrome
         ];
 
         home = {
@@ -310,16 +308,6 @@
           shellAliases = {
             nixos-switch = "nixos-rebuild switch --refresh --sudo --flake 'github:kyokley/dotfiles'";
             nixos-test = "nixos-rebuild test --refresh --sudo --flake 'github:kyokley/dotfiles'";
-          };
-        };
-
-        xdg.mimeApps = {
-          enable = true;
-          defaultApplications = {
-            "application/pdf" = ["brave-browser.desktop"];
-            "text/html" = ["brave-browser.desktop"];
-            "x-scheme-handler/http" = ["brave-browser.desktop"];
-            "x-scheme-handler/https" = ["brave-browser.desktop"];
           };
         };
 
