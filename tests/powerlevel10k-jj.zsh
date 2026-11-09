@@ -206,6 +206,54 @@ assert_warning 1 # Empty, described, bookmarked.
 jj --quiet new -m ''
 jj --quiet bookmark create parent-bookmark -r @-
 assert_warning 0
+assert_contains $_dotfiles_jj_text parent-bo…
+
+# Display the nearest ancestral bookmark frontier, not unrelated or shadowed bookmarks.
+jj --quiet git init --colocate $test_root/bookmark-history >/dev/null
+cd $test_root/bookmark-history
+jj --quiet describe -m root
+root_id=$(jj log -r @ --no-graph --template 'change_id.shortest(4)')
+reset_recorder
+_dotfiles_jj_update
+assert_eq $_dotfiles_jj_text "$root_id root [empty]"
+jj --quiet bookmark create old-mark -r @
+jj --quiet new -m middle
+middle=$(jj log -r @ --no-graph --template 'change_id')
+jj --quiet new -m head
+head=$(jj log -r @ --no-graph --template 'change_id')
+reset_recorder
+_dotfiles_jj_update
+assert_eq "$(calls)" 1
+assert_contains $_dotfiles_jj_text old-mark
+jj --quiet bookmark create near-mark -r "$middle"
+reset_recorder
+_dotfiles_jj_update
+assert_eq "$(calls)" 1
+assert_contains $_dotfiles_jj_text near-mark
+assert_not_contains $_dotfiles_jj_text old-mark
+jj --quiet new "$middle" -m unrelated
+jj --quiet bookmark create stray-mark -r @
+jj --quiet new "$head" -m working
+reset_recorder
+_dotfiles_jj_update
+assert_eq "$(calls)" 1
+assert_contains $_dotfiles_jj_text near-mark
+assert_not_contains $_dotfiles_jj_text stray-mark
+jj --quiet bookmark create direct-mark -r @
+reset_recorder
+_dotfiles_jj_update
+assert_eq "$(calls)" 1
+assert_contains $_dotfiles_jj_text direct-ma…
+assert_not_contains $_dotfiles_jj_text near-mark
+jj --quiet new @ stray-mark -m merge
+reset_recorder
+_dotfiles_jj_update
+assert_eq "$(calls)" 1
+assert_contains $_dotfiles_jj_text direct-ma…
+assert_contains $_dotfiles_jj_text stray-mark
+assert_not_contains $_dotfiles_jj_text near-mark
+assert_not_contains $_dotfiles_jj_text old-mark
+cd $test_root/colocated
 
 # Nonempty working copies warn when undescribed, regardless of bookmarks.
 print matrix-nonempty >$test_root/colocated/matrix-nonempty

@@ -231,8 +231,8 @@ prompt refresh snapshots working-copy edits while redraws use cached text.
 It also checks description truncation, omission of unset descriptions without extra spacing,
 and cached color state across all combinations of empty/nonempty,
 described/undescribed, and bookmarked/unbookmarked working copies.
-Bookmark add/remove transitions, bookmarks on only the parent, conflict color
-precedence, and conflict resolution are covered.
+Bookmark add/remove transitions, nearest ancestral bookmark display (including
+merge ancestry), conflict color precedence, and conflict resolution are covered.
 Requires `zsh`, `jj`, and `git` on PATH.
 
 Run the real rendering test with
@@ -385,6 +385,10 @@ is uncertain.
   conflicted; otherwise yellow when JJ's working copy is nonempty and has no
   description, or is empty with a bookmark on `@`; green otherwise.
   Bookmarks on parents do not affect the color.
+  Bookmark text uses `heads(bookmarks() & ::@)`: bookmarks on `@` take
+  precedence; otherwise, the nearest non-shadowed bookmarked ancestors appear.
+  Merges can show bookmarks from multiple ancestry paths, not a single
+  shortest-distance or newest-timestamp selection.
   It snapshots the working copy once per prompt refresh
   so status reflects file edits; redraws use cached text. JJ is omitted from
   instant prompt; the serialized hook guards against an unavailable helper.

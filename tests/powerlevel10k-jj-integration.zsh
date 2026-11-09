@@ -186,6 +186,12 @@ assert_working_copy_color yellow # Empty, described, bookmarked.
 jj --quiet new -m '' >/dev/null
 jj --quiet bookmark create parent-bookmark -r @- >/dev/null
 assert_working_copy_color green
+reset_calls
+_p9k_precmd
+parent_bookmarked=$(print -rP -- "$PROMPT")
+assert_eq "$(calls)" 1
+assert_contains $parent_bookmarked parent-bo…
+assert_not_contains $parent_bookmarked git-visible
 
 # Nonempty working copies only ignore bookmarks when they have descriptions.
 print matrix-nonempty >matrix-nonempty
