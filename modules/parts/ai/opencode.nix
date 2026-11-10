@@ -119,6 +119,7 @@
       pkgs,
       inputs,
       config,
+      username,
       ...
     }: let
       bun2nix-lib = inputs.bun2nix.packages.${pkgs.stdenv.hostPlatform.system}.default;
@@ -216,6 +217,7 @@
                 "/tmp/**" = "allow";
                 "${config.home.homeDirectory}/.config/opencode/**" = "allow";
                 "${config.home.homeDirectory}/.local/share/opencode/**" = "allow";
+                "/etc/profiles/per-user/${username}/share/**" = "allow";
               };
             };
             lsp = true;
