@@ -508,7 +508,7 @@
               workspace = "6 silent";
             }
             {
-              match.class = "chromium";
+              match.class = "chromium-browser";
               workspace = "6 silent";
             }
             {
