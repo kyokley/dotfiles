@@ -39,6 +39,13 @@ in {
         ];
 
         stateVersion = "24.05"; # Don't touch me!
+
+        file = {
+          ".config/hyprmoncfg" = {
+            source = ./hyprmoncfg;
+            recursive = true;
+          };
+        };
       };
 
       wayland.windowManager.hyprland = {
