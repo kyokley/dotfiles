@@ -524,11 +524,12 @@
               workspace = "8 silent";
             }
             {
-              match.class = "brave-faolnafnngnfdaknnbpnkhgohbobgegn-Default"; # Outlook PWA
+              # Legacy brave support
+              match.class = "brave-faolnafnngnfdaknnbpnkhgohbobgegn.*"; # Outlook PWA
               workspace = "9 silent";
             }
             {
-              match.class = "chrome-eoficlgicibekocmfdomjbfnjmehnhcd-Profile_1"; # Outlook PWA
+              match.class = "chrome-eoficlgicibekocmfdomjbfnjmehnhcd.*"; # Outlook PWA
               workspace = "9 silent";
             }
             {
