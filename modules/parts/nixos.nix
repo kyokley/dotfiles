@@ -284,6 +284,7 @@
           terminator
           kitty
           chrome
+          brave
         ];
 
         home = {
