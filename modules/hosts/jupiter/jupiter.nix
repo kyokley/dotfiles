@@ -109,10 +109,6 @@
     };
 
     programs = {
-      vim = {
-        enable = true;
-        package = inputs.nixvim.packages.${pkgs.stdenv.hostPlatform.system}.${nixvim-output};
-      };
       borgmatic = {
         enable = true;
         backups = {
