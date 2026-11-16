@@ -89,12 +89,12 @@ in {
         kernelPackages = pkgs.linuxPackages_latest;
         initrd.availableKernelModules = ["nvme" "xhci_pci" "thunderbolt" "uas" "sd_mod"];
         initrd.kernelModules = ["amdgpu"];
-        kernelModules = ["kvm-amd" "amdgpu"];
+        kernelModules = ["kvm-amd" "amdgpu" "framework_laptop"];
         # pcie_aspm=off prevents PCIe link state changes on suspend that
         # cause the MT7921E to become unresponsive. Costs a small amount
         # of battery — remove if you need the power savings.
         kernelParams = ["pcie_aspm=off"];
-        extraModulePackages = [];
+        extraModulePackages = [config.boot.kernelPackages.framework-laptop-kmod];
         extraModprobeConfig = ''
           # Mediatek MT7921E can be unstable around suspend/resume with ASPM/CLC.
           options mt7921e disable_aspm=Y
