@@ -403,7 +403,7 @@
             };
             workspaces = {
               active_pill_size = 2.0;
-              empty_color = "surface_variant";
+              empty_color = "surface_container";
               occupied_color = "secondary"; # Cyberpunk red
               hide_when_empty = true;
               label_source = "id";
