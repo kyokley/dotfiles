@@ -3,6 +3,7 @@
     pkgs,
     lib,
     username,
+    nixvim-output,
     ...
   }: let
     homeDir = "/home/${username}";
@@ -17,6 +18,7 @@
       pkgs.borgbackup
       pkgs.borgmatic
       pkgs.secretspec
+      inputs.nixvim.packages.${pkgs.stdenv.hostPlatform.system}.${nixvim-output}
     ];
 
     systemd = {
