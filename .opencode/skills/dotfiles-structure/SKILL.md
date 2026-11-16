@@ -88,7 +88,8 @@ The `common` keys are baselines every host inherits; platform keys
 | `agenix.nix` | `homeManager.common` | Imports agenix HM module, adds `ragenix` |
 | `dev.nix` | `homeManager.dev` | Dev tools: age (+`init-age`/`show-age`), devenv, direnv, usql, tig, jq |
 | `git.nix`, `bitwarden.nix`, `clamav.nix`, `flatpak.nix`, `shutdown.nix` | various | Single-purpose parts, names say it all |
-| `syncthing.nix`, `systemd.nix` (`systemd-services`), `tailscale.nix`, `distributed_builds.nix`, `laptop.nix` | various | Services / system integration parts |
+| `syncthing.nix`, `systemd.nix` (`systemd-services`), `tailscale.nix`, `distributed_builds.nix` | various | Services / system integration parts |
+| `laptop.nix` | `nixos.laptop` | Shared auto-cpufreq power policy and 50%/80% battery charge thresholds, lid handling, and AC idle-suspend inhibitor |
 | `hyprland.nix`, `waybar/`, `rofi/`, `dunst.nix`, `picom.nix` (+ `picom.conf`), `noctalia/` | various | Window managers / desktop; Noctalia includes local bar plugins such as `krill/`, `workspace-layout/`, and `global-workspaces/` |
 | `kitty.nix`, `terminator.nix`, `tmux.nix`, `vim.nix` | `homeManager.*` | Terminal / editor |
 | `zsh/` (`zsh.nix`, `powerlevel10k_config.zsh`, `powerlevel10k_jj.zsh`) | `homeManager.common` | Prezto shell and Powerlevel10k prompt, with JJ status replacing Git in JJ workspaces |
