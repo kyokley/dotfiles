@@ -132,7 +132,10 @@ in {
       };
 
       services = {
-        displayManager.noctalia-greeter.enable = true;
+        displayManager.noctalia-greeter = {
+          enable = true;
+          passwordlessSyncUsers = [username];
+        };
 
         xserver = {
           videoDrivers = ["amdgpu"];
