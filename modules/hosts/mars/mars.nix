@@ -132,6 +132,8 @@ in {
       };
 
       services = {
+        displayManager.noctalia-greeter.enable = true;
+
         xserver = {
           videoDrivers = ["amdgpu"];
         };
