@@ -1,0 +1,28 @@
+when:
+  - event: push
+    branch: main
+engine: microvm
+image: nixos
+dependencies:
+  - cachix
+substituters:
+  https://horus.cachix.org: "horus.cachix.org-1:YZ4tQYAoKH+zkKbD4aqFcMHgZxIM7Uo4dPEfwUrubT4="
+steps:
+  - name: Build Linux configurations
+    command: |
+      set -euo pipefail
+      build=(
+        nix build --keep-going --no-link --print-build-logs
+        '.#nixosConfigurations.mars.config.system.build.toplevel'
+        '.#nixosConfigurations.mercury.config.system.build.toplevel'
+        '.#homeConfigurations.default.activationPackage'
+        '.#homeConfigurations."yokley@venus".activationPackage'
+        '.#homeConfigurations."yokley@almagest".activationPackage'
+        '.#homeConfigurations."yokley@jupiter".activationPackage'
+        '.#homeConfigurations."yokley@singularity".activationPackage'
+      )
+      if [[ -n "${CACHIX_AUTH_TOKEN:-}" ]]; then
+        cachix watch-exec horus -- "${build[@]}"
+      else
+        "${build[@]}"
+      fi

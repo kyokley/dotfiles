@@ -1,0 +1,25 @@
+when:
+  - event: pull_request
+  - event: push
+    branch: main
+engine: microvm
+image: nixos
+substituters:
+  https://horus.cachix.org: "horus.cachix.org-1:YZ4tQYAoKH+zkKbD4aqFcMHgZxIM7Uo4dPEfwUrubT4="
+steps:
+  - name: Evaluate flake checks
+    command: nix flake check --keep-going
+  - name: Evaluate NixOS configurations
+    command: |
+      set -euo pipefail
+      for host in mars mercury; do
+        nix eval --raw --show-trace \
+          ".#nixosConfigurations.${host}.config.system.build.toplevel.drvPath"
+      done
+  - name: Evaluate Home Manager configurations
+    command: |
+      set -euo pipefail
+      for host in yokley@venus yokley@almagest yokley@jupiter yokley@singularity; do
+        nix eval --raw --show-trace \
+          ".#homeConfigurations.\"${host}\".activationPackage.drvPath"
+      done

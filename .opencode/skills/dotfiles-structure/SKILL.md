@@ -66,6 +66,7 @@ The `common` keys are baselines every host inherits; platform keys
 | `devenv.nix` / `devenv.yaml` / `.envrc` | Dev shell (direnv + devenv), pre-commit hooks config |
 | `.pre-commit-config.yaml` | **GENERATED** by git-hooks.nix — never edit |
 | `.github/workflows/test.yml` | CI: evaluates flake checks and configurations, builds every unique NixOS and standalone home-manager output on Linux plus the nix-darwin output on ARM macOS, and pushes builds to Horus Cachix when a write token is available; there is no separate legacy `nix-build`/`nix-shell` test job |
+| `.tangled/workflows/`, `.tangled/README.md` | Spindle CI: evaluates on all PRs and main pushes; builds all seven Linux outputs together with `--keep-going` on main pushes, reads Horus and optionally uploads with `CACHIX_AUTH_TOKEN`; setup and platform limits are documented in the README |
 | `tests/krill-widget.lua` | Standalone Lua regression tests for the Noctalia Krill widget; see "Lua widget tests" |
 | `tests/noctalia-global-workspaces.lua` | Standalone Lua regression tests for the Noctalia global-workspaces plugin; see "Lua widget tests" |
 | `tests/noctalia-workspace-layout.lua` | Standalone Lua regression tests for Noctalia layout labels and master orientation queries; see "Lua widget tests" |
@@ -150,7 +151,8 @@ The `common` keys are baselines every host inherits; platform keys
    (`mkNixosConfiguration` / `mkDarwinConfiguration` / `mkHomeConfiguration`).
 4. Add the identity to `modules/parts/_secrets/secrets.nix` and the host to
    the appropriate build matrix/job in `.github/workflows/test.yml` (and the
-   evaluation loops for NixOS or standalone home-manager hosts).
+   evaluation loops for NixOS or standalone home-manager hosts). Keep the
+   corresponding `.tangled/workflows/` evaluation and Linux build lists in sync.
 5. Set `home.stateVersion` (and `system.stateVersion`) on first deploy — then
    never touch them.
 
@@ -175,6 +177,9 @@ The `common` keys are baselines every host inherits; platform keys
   pin Ubuntu 24.04 rather than following `ubuntu-latest` migrations.
   Cachix uploads require `CACHIX_AUTH_TOKEN`; fork PRs do not receive
   repository secrets. The NixOS `default` alias shares the `mars` build output.
+- Tangled mirrors the evaluation and Linux builds in `.tangled/workflows/`;
+  Darwin remains on GitHub. Spindle timeouts are operator-controlled, with a
+  five-minute default; see `.tangled/README.md` for setup and secret scope.
 
 ### Dev shell & formatting
 
