@@ -344,6 +344,9 @@ is uncertain.
 
 ## Conventions & gotchas
 
+- Tangled pull request triggers need an explicit `branch` filter; use `"**"`
+  to match all target branches, including names containing `/`. Omitting the
+  filter produces a remote validation warning and matches no ref.
 - Underscore prefix (`_secrets/`, `_bun.nix`) = invisible to import-tree.
 - Hosts explicitly opt into parts — a new part does nothing until imported.
 - `stateVersion` comments say "Don't touch me!" — obey.
