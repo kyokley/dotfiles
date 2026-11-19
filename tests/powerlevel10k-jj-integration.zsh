@@ -193,11 +193,17 @@ _p9k_precmd
 parent_bookmarked=$(print -rP -- "$PROMPT")
 assert_eq "$(calls)" 1
 assert_contains $parent_bookmarked parent-bo…
+assert_not_contains $parent_bookmarked 'parent-bo…^'
 assert_not_contains $parent_bookmarked git-visible
 
 # Nonempty working copies only ignore bookmarks when they have descriptions.
 print matrix-nonempty >matrix-nonempty
 assert_working_copy_color yellow # Nonempty, undescribed, unbookmarked.
+reset_calls
+_p9k_precmd
+parent_bookmarked_nonempty=$(print -rP -- "$PROMPT")
+assert_eq "$(calls)" 1
+assert_contains $parent_bookmarked_nonempty 'parent-bo…^'
 jj --quiet describe -m 'nonempty description' >/dev/null
 assert_working_copy_color green # Nonempty, described, unbookmarked.
 jj --quiet bookmark create nonempty-described -r @ >/dev/null

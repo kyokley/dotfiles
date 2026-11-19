@@ -98,6 +98,7 @@ reset_recorder
 _dotfiles_jj_update
 assert_eq "$(calls)" 1
 assert_contains $_dotfiles_jj_text 'bookmark-…'
+assert_not_contains $_dotfiles_jj_text 'bookmark-…^'
 assert_contains $_dotfiles_jj_text '…'
 assert_contains $_dotfiles_jj_text '%%'
 [[ $_dotfiles_jj_text != *$'\t'* ]] || fail 'control character reached prompt text'
@@ -207,6 +208,7 @@ jj --quiet new -m ''
 jj --quiet bookmark create parent-bookmark -r @-
 assert_warning 0
 assert_contains $_dotfiles_jj_text parent-bo…
+assert_not_contains $_dotfiles_jj_text 'parent-bo…^'
 
 # Display the nearest ancestral bookmark frontier, not unrelated or shadowed bookmarks.
 jj --quiet git init --colocate $test_root/bookmark-history >/dev/null
@@ -217,19 +219,30 @@ reset_recorder
 _dotfiles_jj_update
 assert_eq $_dotfiles_jj_text "$root_id root [empty]"
 jj --quiet bookmark create old-mark -r @
+jj --quiet bookmark create bookmark-name-is-too-long -r @
 jj --quiet new -m middle
 middle=$(jj log -r @ --no-graph --template 'change_id')
+reset_recorder
+_dotfiles_jj_update
+assert_eq "$(calls)" 1
+assert_contains $_dotfiles_jj_text 'bookmark-…'
+assert_contains $_dotfiles_jj_text old-mark
+assert_not_contains $_dotfiles_jj_text 'bookmark-…^'
+assert_not_contains $_dotfiles_jj_text 'old-mark^'
 jj --quiet new -m head
 head=$(jj log -r @ --no-graph --template 'change_id')
 reset_recorder
 _dotfiles_jj_update
 assert_eq "$(calls)" 1
 assert_contains $_dotfiles_jj_text old-mark
+assert_contains $_dotfiles_jj_text 'old-mark^'
+assert_contains $_dotfiles_jj_text 'bookmark-…^'
 jj --quiet bookmark create near-mark -r "$middle"
 reset_recorder
 _dotfiles_jj_update
 assert_eq "$(calls)" 1
 assert_contains $_dotfiles_jj_text near-mark
+assert_not_contains $_dotfiles_jj_text 'near-mark^'
 assert_not_contains $_dotfiles_jj_text old-mark
 jj --quiet new "$middle" -m unrelated
 jj --quiet bookmark create stray-mark -r @
@@ -244,15 +257,32 @@ reset_recorder
 _dotfiles_jj_update
 assert_eq "$(calls)" 1
 assert_contains $_dotfiles_jj_text direct-ma…
+assert_not_contains $_dotfiles_jj_text 'direct-ma…^'
 assert_not_contains $_dotfiles_jj_text near-mark
 jj --quiet new @ stray-mark -m merge
 reset_recorder
 _dotfiles_jj_update
 assert_eq "$(calls)" 1
 assert_contains $_dotfiles_jj_text direct-ma…
+assert_not_contains $_dotfiles_jj_text 'direct-ma…^'
 assert_contains $_dotfiles_jj_text stray-mark
+assert_not_contains $_dotfiles_jj_text 'stray-mark^'
 assert_not_contains $_dotfiles_jj_text near-mark
 assert_not_contains $_dotfiles_jj_text old-mark
+
+# Empty direct-parent bookmarks lose the suffix; nonempty working copies keep it.
+jj --quiet bookmark create merge-parent -r @
+jj --quiet new -m empty-child
+reset_recorder
+_dotfiles_jj_update
+assert_eq "$(calls)" 1
+assert_contains $_dotfiles_jj_text merge-par…
+assert_not_contains $_dotfiles_jj_text 'merge-par…^'
+print nonempty >$test_root/bookmark-history/nonempty
+reset_recorder
+_dotfiles_jj_update
+assert_eq "$(calls)" 1
+assert_contains $_dotfiles_jj_text 'merge-par…^'
 cd $test_root/colocated
 
 # Nonempty working copies warn when undescribed, regardless of bookmarks.
