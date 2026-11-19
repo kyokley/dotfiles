@@ -525,11 +525,11 @@
             }
             {
               # Legacy brave support
-              match.class = "brave-faolnafnngnfdaknnbpnkhgohbobgegn.*"; # Outlook PWA
+              match.class = ".*-faolnafnngnfdaknnbpnkhgohbobgegn.*"; # Outlook PWA
               workspace = "9 silent";
             }
             {
-              match.class = "chrome-eoficlgicibekocmfdomjbfnjmehnhcd.*"; # Outlook PWA
+              match.class = ".*-eoficlgicibekocmfdomjbfnjmehnhcd.*"; # Outlook PWA
               workspace = "9 silent";
             }
             {
