@@ -26,7 +26,7 @@ function _dotfiles_jj_update() {
   local template='
 if(conflict, "red|", if((!empty && !description) || (empty && bookmarks.len() > 0), "yellow|", "green|")) ++ separate(" ",
   change_id.shortest(4),
-  revset("heads(bookmarks() & ::@)").map(|c| c.bookmarks().map(|x| truncate_end(10, x.name(), "…") ++ if(c.current_working_copy() || (empty && c.contained_in("@-")), "", "^")).join(" ")).join(" "),
+  revset("heads(bookmarks() & ::@)").map(|c| c.bookmarks().map(|x| truncate_end(10, x.name(), "…") ++ if(!x.remote() && !x.synced(), "*", "") ++ if(c.current_working_copy() || (empty && c.contained_in("@-")), "", "^")).join(" ")).join(" "),
   tags.map(|x| "#" ++ truncate_end(10, x.name(), "…")).join(" "),
   truncate_end(29, description.first_line(), "…"),
   surround("[", "]", separate(",",
