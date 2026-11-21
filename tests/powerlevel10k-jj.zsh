@@ -340,7 +340,7 @@ unfunction _dotfiles_jj_update
 p10k-on-pre-prompt
 source $helper
 
-# Tracked bookmark sync state adds a suffix after truncation and before ancestry markers.
+# Tracked bookmark sync state uses * instead of the ancestry marker ^.
 jj --quiet git init --colocate $test_root/bookmark-sync >/dev/null
 git init --bare -q $test_root/bookmark-remote.git
 cd $test_root/bookmark-sync
@@ -378,7 +378,8 @@ jj --quiet bookmark delete local-only
 reset_recorder
 _dotfiles_jj_update
 assert_eq "$(calls)" 1
-assert_contains $_dotfiles_jj_text 'bookmark-…*^'
+assert_contains $_dotfiles_jj_text 'bookmark-…* '
+assert_not_contains $_dotfiles_jj_text 'bookmark-…*^'
 
 # Real conflict rendering retains comma-separated state flags.
 jj --quiet git init --colocate $test_root/conflict >/dev/null

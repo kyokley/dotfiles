@@ -391,9 +391,9 @@ is uncertain.
   Bookmark text uses `heads(bookmarks() & ::@)`: bookmarks on `@` take
   precedence; otherwise, the nearest non-shadowed bookmarked ancestors appear.
   Each ancestral bookmark gets a `^` suffix after name truncation, except on
-  direct parents when `@` is empty. Bookmarks on `@` never have a suffix.
-  Unsynced local bookmarks get `*` after the truncated name and before any `^`,
-  using JJ's `synced()` state against tracked remotes; local-only bookmarks stay unmarked.
+  direct parents when `@` is empty. Bookmarks on `@` never have an ancestry suffix.
+  Unsynced local bookmarks get `*` after the truncated name instead of any `^`,
+  using JJ's `synced()` state against tracked remotes; local-only bookmarks never get `*`.
   Merges can show bookmarks from multiple ancestry paths, not a single
   shortest-distance or newest-timestamp selection.
   It snapshots the working copy once per prompt refresh
