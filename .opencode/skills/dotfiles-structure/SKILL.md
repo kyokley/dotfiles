@@ -363,6 +363,10 @@ is uncertain.
   user-level `substituters` and `trusted-public-keys` replace system settings;
   a Horus-only list hides `cache.nixos.org` and causes unnecessary source builds.
   Check the effective configuration with `nix config show substituters`.
+- Horus also serves paths signed only by `devenv.cachix.org-1`. The common
+  Home Manager and NixOS settings, plus Dioxygen's system settings, trust both
+  keys advertised by `https://cachix.org/api/v1/cache/horus`. A Horus key alone
+  cannot validate those devenv signatures.
 - `sysc-greet` exports a package from its own `nixpkgs.legacyPackages`; system
   and Home Manager unfree settings do not apply. `modules/lib/sysc-greet.nix`
   re-evaluates each pinned input with only `sysc-greet` allowed, for NixOS and
