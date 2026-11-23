@@ -105,6 +105,11 @@
         # Load the mutable monitors config managed by hyprmoncfgd.
         extraConfig = ''
           dofile("${monitorsFile}")
+
+          -- UWSM owns session environment export; Hyprland skips it under systemd.
+          hl.on("hyprland.start", function()
+            hl.exec_cmd("${lib.getExe pkgs.uwsm} finalize")
+          end)
         '';
 
         settings = {

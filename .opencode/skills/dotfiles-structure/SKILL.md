@@ -419,6 +419,10 @@ is uncertain.
   their glibc must match. Keeping the source pin avoids incompatible Hyprland
   toolkit dependencies; update Hyprland and Mesa pins together for driver
   updates. The module asserts both graphics package selection and ABI match.
+- The Hyprland Lua config calls `uwsm finalize` on `hyprland.start`. Keep this
+  hook when Home Manager's Hyprland systemd integration is disabled: Hyprland
+  skips native environment export under `MANAGERPID`, and UWSM otherwise times
+  out waiting for `WAYLAND_DISPLAY` and `HYPRLAND_INSTANCE_SIGNATURE`.
 - Noctalia must follow system `nixpkgs`: it dynamically loads host PAM libraries,
   so an independent older glibc can fail the system PAM ABI. Unlike Hyprland and
   Mesa, do not preserve an independent older libc pin for Noctalia.
