@@ -234,7 +234,8 @@ and cached color state across all combinations of empty/nonempty,
 described/undescribed, and bookmarked/unbookmarked working copies.
 Bookmark add/remove transitions, nearest ancestral bookmark display (including
 merge ancestry and `^` suffixes, except on `@` or direct parents of empty `@`),
-tracked bookmark sync markers using a local bare remote, conflict color precedence,
+tracked bookmark sync markers using a local bare remote, ancestry marker precedence
+over sync markers, conflict color precedence,
 and conflict resolution are covered.
 Requires `zsh`, `jj`, and `git` on PATH.
 
@@ -396,7 +397,8 @@ is uncertain.
   precedence; otherwise, the nearest non-shadowed bookmarked ancestors appear.
   Each ancestral bookmark gets a `^` suffix after name truncation, except on
   direct parents when `@` is empty. Bookmarks on `@` never have an ancestry suffix.
-  Unsynced local bookmarks get `*` after the truncated name instead of any `^`,
+  The ancestry suffix `^` takes precedence over the sync suffix `*`.
+  When no `^` applies, unsynced local bookmarks get `*` after the truncated name,
   using JJ's `synced()` state against tracked remotes; local-only bookmarks never get `*`.
   Merges can show bookmarks from multiple ancestry paths, not a single
   shortest-distance or newest-timestamp selection.

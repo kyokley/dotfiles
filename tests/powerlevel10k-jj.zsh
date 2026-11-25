@@ -340,7 +340,7 @@ unfunction _dotfiles_jj_update
 p10k-on-pre-prompt
 source $helper
 
-# Tracked bookmark sync state uses * instead of the ancestry marker ^.
+# The ancestry marker ^ takes precedence over tracked bookmark sync state *.
 jj --quiet git init --colocate $test_root/bookmark-sync >/dev/null
 git init --bare -q $test_root/bookmark-remote.git
 cd $test_root/bookmark-sync
@@ -367,6 +367,11 @@ assert_eq "$(calls)" 1
 assert_not_contains $_dotfiles_jj_text 'bookmark-…*'
 jj --quiet new @- -m descendant
 jj --quiet bookmark set bookmark-name-is-too-long -r @- --allow-backwards
+reset_recorder
+_dotfiles_jj_update
+assert_eq "$(calls)" 1
+assert_contains $_dotfiles_jj_text 'bookmark-…* '
+assert_not_contains $_dotfiles_jj_text 'bookmark-…^'
 jj --quiet bookmark create local-only -r @
 print content >$test_root/bookmark-sync/file
 reset_recorder
@@ -378,8 +383,15 @@ jj --quiet bookmark delete local-only
 reset_recorder
 _dotfiles_jj_update
 assert_eq "$(calls)" 1
-assert_contains $_dotfiles_jj_text 'bookmark-…* '
+assert_contains $_dotfiles_jj_text 'bookmark-…^ '
+assert_not_contains $_dotfiles_jj_text 'bookmark-…*'
 assert_not_contains $_dotfiles_jj_text 'bookmark-…*^'
+jj --quiet new -m empty-descendant
+reset_recorder
+_dotfiles_jj_update
+assert_eq "$(calls)" 1
+assert_contains $_dotfiles_jj_text 'bookmark-…^ '
+assert_not_contains $_dotfiles_jj_text 'bookmark-…*'
 
 # Real conflict rendering retains comma-separated state flags.
 jj --quiet git init --colocate $test_root/conflict >/dev/null
