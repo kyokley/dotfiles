@@ -96,7 +96,7 @@
                 enabled = true;
                 timeout = 900;
                 action = "suspend";
-                lock_before_suspend = false;
+                lock_before_suspend = true;
               };
             };
           };
