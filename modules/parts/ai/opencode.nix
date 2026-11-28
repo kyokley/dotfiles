@@ -187,6 +187,7 @@
             # stacked-jj-prs = ./stacked-jj-prs.md;
             dev-incremental-implementation = ./skills/dev-incremental-implementation/SKILL.md;
             jujutsu-skill = ./skills/jujutsu-skill/SKILL.md;
+            tangled-skill = ./skills/tangled-workflows;
           };
           settings = {
             "$schema" = "https://opencode.ai/config.json";
